@@ -1,0 +1,38 @@
+@url_dev=http://localhost:8080/v1/api
+
+### recruiter signup
+POST {{url_dev}}/recruiter/signup
+Content-Type: application/json
+
+{
+    "companyName": "Công ty FPT",
+    "name": "Nguyễn Test A",
+    "position": "HR",
+    "phone": "0399888777",
+    "contactEmail": "contactMail@gmail.com",
+    "email":"vietnampro193913@gmail.com",
+    "password": "12345678",
+    "confirmPassword": "12345678"
+}
+### recruiter verify
+POST {{url_dev}}/recruiter/verify?email=vietnampro193913@gmail.com
+Content-Type: application/json
+
+{
+    "otp":"326031"
+}
+### recruiter resend mail
+POST {{url_dev}}/recruiter/signup/resend_mail
+Content-Type: application/json
+
+{
+    "email":"vietnampro193913@gmail.com"
+}
+### login
+POST {{url_dev}}/login
+Content-Type: application/json
+
+{
+    "email":"vietnampro193913@gmail.com",
+    "password":"123456788"
+}
