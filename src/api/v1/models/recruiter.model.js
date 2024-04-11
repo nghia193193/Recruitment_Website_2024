@@ -23,7 +23,7 @@ const recruiterSchema = new Schema({
     status: {
         type: String,
         enum: ['active', 'inactive'],
-        defaut: 'inactive'
+        default: 'inactive'
     },
     verifyEmail: {
         type: Schema.Types.Boolean,
@@ -50,14 +50,17 @@ const recruiterSchema = new Schema({
     companyCoverPhoto: String,
     about: String,
     employeeNumber: Number,
-    fieldOfActivity: String
+    fieldOfActivity: {
+        type: Array,
+        default: []
+    }
 }, {
     timestamps: true
 })
 
-recruiterSchema.statics.verifyEmail = async function(email) {
+recruiterSchema.statics.verifyEmail = async function (email) {
     try {
-        const result = await this.findOneAndUpdate({email}, {
+        const result = await this.findOneAndUpdate({ email }, {
             $set: {
                 verifyEmail: true
             }
@@ -65,6 +68,24 @@ recruiterSchema.statics.verifyEmail = async function(email) {
             new: true
         })
         return result ? 1 : 0;
+    } catch (error) {
+        throw error;
+    }
+}
+
+recruiterSchema.statics.updateInformation = async function ({ userId, name, position, phone, contactEmail, companyName, companyEmail, 
+    companyPhone, companyWebsite, companyAddress, companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity }) {
+    try {
+        const result = await this.findOneAndUpdate({ _id: userId }, {
+            $set: {
+                name, position, phone, contactEmail, companyName, companyEmail, companyPhone, companyWebsite, companyAddress,
+                companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity, status: 'inactive'
+            }
+        }, {
+            new: true,
+            select: {status: 0, verifyEmail: 0, roles: 0}
+        }).lean()
+        return result ?? null;
     } catch (error) {
         throw error;
     }

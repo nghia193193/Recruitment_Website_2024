@@ -1,0 +1,26 @@
+@url_dev=http://localhost:8080/v1/api/recruiter
+
+### recruiter get information
+GET {{url_dev}}/information
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjE3ZDVjMDQwZDEwN2YyZTgzMDhkOGIiLCJpYXQiOjE3MTI4NDc1NTYsImV4cCI6MTcxMjg1MTE1Nn0.F4nCKLI2PTwfpBX92c_2xE1TgKxaSLcw8SEFXNWwACQ
+### recruiter update information
+PATCH {{url_dev}}/information
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjE3ZDVjMDQwZDEwN2YyZTgzMDhkOGIiLCJpYXQiOjE3MTI4NDc1NTYsImV4cCI6MTcxMjg1MTE1Nn0.F4nCKLI2PTwfpBX92c_2xE1TgKxaSLcw8SEFXNWwACQ
+Content-Type: application/json
+
+{
+    "name":"Nguyễn Văn B", 
+    "position":"HRRR", 
+    "phone":"0393211432", 
+    "contactEmail":"contactEmail@gmail.com", 
+    "companyName":"CTCP Tập đoàn Hòa Phát", 
+    # "companyEmail":"", 
+    "companyPhone":"0246284866", 
+    "companyWebsite":"https://www.hoaphat.com.vn", 
+    "companyAddress":"66 Nguyễn Du, P. Nguyễn Du, Q. Hai Bà Trưng, Hà Nội", 
+    # "companyLogo":"", 
+    # "companyCoverPhoto":"", 
+    "about":"Hòa Phát là Tập đoàn sản xuất công nghiệp hàng đầu Việt Nam. Khởi đầu từ một Công ty chuyên buôn bán các loại máy xây dựng từ tháng 8/1992, Hòa Phát lần lượt mở rộng sang các lĩnh vực khác như Nội thất, ống thép, thép xây dựng, điện lạnh, bất động sản và nông nghiệp. Ngày 15/11/2007, Hòa Phát chính thức niêm yết cổ phiếu trên thị trường chứng khoán Việt Nam với mã chứng khoán HPG.", 
+    "employeeNumber":"30000", 
+    "fieldOfActivity": ["Xây dựng", "Bất động sản", "Chế tạo"]
+}

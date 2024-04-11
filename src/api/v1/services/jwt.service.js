@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const client = require('../dbs/init.redis');
+const { UnauthorizedRequestError } = require('../core/error.response');
 
 class JWTService {
 
@@ -38,18 +39,18 @@ class JWTService {
     
     static verifyAccessToken = (req, res, next) => {
         if (!req.headers['authorization']) {
-            return next(createError.Unauthorized());
+            throw new UnauthorizedRequestError("Vui lòng đăng nhập");
         }
         const authHeader = req.headers['authorization'];
         const token = authHeader.split(' ')[1];
-        jwt.verify(token, process.env.ACCESS_TOKEN, (err, payload) => {
+        jwt.verify(token, process.env.JWT_SECRET_KEY, (err, payload) => {
             if (err) {
                 // invalid error,...
                 if (err.name === 'JsonWebTokenError') {
-                    return next(createError.Unauthorized());
+                    throw new UnauthorizedRequestError("Vui lòng đăng nhập");
                 }
                 // token expired error
-                return next(createError.Unauthorized(err.message));
+                throw new UnauthorizedRequestError("Vui lòng đăng nhập lại");
             }
             req.payload = payload;
             next();
@@ -58,18 +59,18 @@ class JWTService {
 
     static verifyRefreshToken = async (refreshToken) => {
         return new Promise((resolve, reject) => {
-            jwt.verify(refreshToken, process.env.REFRESH_TOKEN, async (err, payload) => {
+            jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY, async (err, payload) => {
                 if (err) {
                     // invalid error,...
                     if (err.name === 'JsonWebTokenError') {
-                        return reject(createError.Unauthorized());
+                        return new UnauthorizedRequestError("Vui lòng đăng nhập");
                     }
                     // token expired error
-                    return reject(createError.Unauthorized(err.message));
+                    return new UnauthorizedRequestError("Vui lòng đăng nhập lại");
                 }
                 const storedRT = await client.get(payload.userId);
                 if (storedRT !== refreshToken) {
-                    return reject(createError.Unauthorized());
+                    return new UnauthorizedRequestError("Vui lòng đăng nhập");
                 }
                 resolve(payload);
             })

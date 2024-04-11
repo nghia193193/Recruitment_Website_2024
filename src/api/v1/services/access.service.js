@@ -182,8 +182,8 @@ class AccessService {
                 throw new BadRequestError('Mật khẩu không chính xác')
             }
             // sigb AT & RT
-            const accessToken = await JWTService.signAccessToken(user._id.toString());
-            const refreshToken = await JWTService.signRefreshToken(user._id.toString());
+            const accessToken = await JWTService.signAccessToken(user.userId.toString());
+            const refreshToken = await JWTService.signRefreshToken(user.userId.toString());
             //return 200
             return {
                 message: "Đăng nhập thành công",
