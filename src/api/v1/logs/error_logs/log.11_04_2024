@@ -1,0 +1,39 @@
+11/04/2024	15:54:01 ::ffff:127.0.0.1---/v1/api/recruiter/signup---POST---Cannot access 'statusCode' before initialization
+11/04/2024	15:56:32 ::ffff:127.0.0.1---/v1/api/recruiter/signup---POST---Invalid status code: undefined
+11/04/2024	15:58:34 ::ffff:127.0.0.1---/v1/api/recruiter/signup---POST---Invalid status code: undefined
+11/04/2024	16:11:47 ::ffff:127.0.0.1---/v1/api/recruiter/verify?email=vietnampro193913@gmail.com---POST---OTP không chính xác
+11/04/2024	16:12:40 ::ffff:127.0.0.1---/v1/api/login---POST---Mật khẩu không chính xác
+11/04/2024	16:13:33 ::ffff:127.0.0.1---/v1/api/login---POST---Mật khẩu không chính xác
+11/04/2024	16:14:59 ::ffff:127.0.0.1---/v1/api/login---POST---Mật khẩu không chính xác
+11/04/2024	16:15:57 ::ffff:127.0.0.1---/v1/api/login---POST---Mật khẩu không chính xác
+11/04/2024	16:20:06 ::ffff:127.0.0.1---/v1/api/login---POST---Mật khẩu không chính xác
+11/04/2024	16:20:14 ::ffff:127.0.0.1---/v1/api/login---POST---Invalid status code: success
+11/04/2024	16:21:56 ::ffff:127.0.0.1---/v1/api/login---POST---Invalid status code: success
+11/04/2024	16:23:17 ::ffff:127.0.0.1---/v1/api/login---POST---Invalid status code: success
+11/04/2024	16:23:48 ::ffff:127.0.0.1---/v1/api/login---POST---Invalid status code: success
+11/04/2024	16:24:58 ::ffff:127.0.0.1---/v1/api/login---POST---Mật khẩu không chính xác
+11/04/2024	16:25:08 ::ffff:127.0.0.1---/v1/api/login---POST---Invalid status code: success
+11/04/2024	16:25:39 ::ffff:127.0.0.1---/v1/api/login---POST---Invalid status code: conga
+11/04/2024	16:26:18 ::ffff:127.0.0.1---/v1/api/login---POST---Invalid status code: success
+11/04/2024	16:26:39 ::ffff:127.0.0.1---/v1/api/login---POST---Invalid status code: undefined
+11/04/2024	16:27:28 ::ffff:127.0.0.1---/v1/api/login---POST---Operation `logins.findOne()` buffering timed out after 10000ms
+11/04/2024	16:29:05 ::ffff:127.0.0.1---/v1/api/login---POST---Invalid status code: undefined
+11/04/2024	16:32:36 ::ffff:127.0.0.1---/v1/api/login---POST---Mật khẩu không chính xác
+11/04/2024	16:44:20 ::ffff:127.0.0.1---/v1/api/login---POST---Class constructor BadRequestError cannot be invoked without 'new'
+11/04/2024	16:44:44 ::ffff:127.0.0.1---/v1/api/login---POST---"email" must be a valid email
+11/04/2024	16:45:05 ::ffff:127.0.0.1---/v1/api/login---POST---Tài khoản đã tồn tại
+11/04/2024	16:45:16 ::ffff:127.0.0.1---/v1/api/login---POST---Tài khoản đã tồn tại
+11/04/2024	16:45:21 ::ffff:127.0.0.1---/v1/api/login---POST---Tài khoản đã tồn tại
+11/04/2024	16:45:28 ::ffff:127.0.0.1---/v1/api/login---POST---"email" must be a valid email
+11/04/2024	16:45:45 ::ffff:127.0.0.1---/v1/api/login---POST---Tài khoản đã tồn tại
+11/04/2024	16:46:24 ::ffff:127.0.0.1---/v1/api/login---POST---Tài khoản không tồn tại
+11/04/2024	16:46:34 ::ffff:127.0.0.1---/v1/api/login---POST---Tài khoản không tồn tại
+11/04/2024	16:46:40 ::ffff:127.0.0.1---/v1/api/login---POST---Tài khoản không tồn tại
+11/04/2024	16:48:19 ::ffff:127.0.0.1---/v1/api/login---POST---Tài khoản không tồn tại
+11/04/2024	16:48:30 ::ffff:127.0.0.1---/v1/api/login---POST---"email" must be a valid email
+11/04/2024	16:48:36 ::ffff:127.0.0.1---/v1/api/login---POST---"email" must be a valid email
+11/04/2024	16:48:43 ::ffff:127.0.0.1---/v1/api/login---POST---"password" length must be at least 8 characters long
+11/04/2024	17:02:46 ::ffff:127.0.0.1---/v1/api/recruiter/signup---POST---"confirmPassword" must be [ref:password]
+11/04/2024	17:03:27 ::ffff:127.0.0.1---/v1/api/recruiter/signup---POST---"phone" with value "03998887771" fails to match the required pattern: /^(0[2-9]|1[0-9]|2[0-8]|3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5])[0-9]{8}$/
+11/04/2024	17:03:55 ::ffff:127.0.0.1---/v1/api/recruiter/signup---POST---"confirmPassword" must be [ref:password]
+11/04/2024	17:07:02 ::ffff:127.0.0.1---/v1/api/recruiter/signup---POST---"confirmPassword" must be [ref:password]

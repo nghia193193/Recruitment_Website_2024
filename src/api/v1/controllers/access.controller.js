@@ -1,46 +1,52 @@
 'use strict'
 
+const { BadRequestError } = require('../core/error.response');
+const { CREATED, OK } = require('../core/success.response');
 const accessService = require('../services/access.service');
+const AccessValidation = require('../validations/access.validation');
+const RecruiterValidation = require('../validations/recruiter.validation');
 
 class AccessController {
 
     recruiterSignUp = async (req, res, next) => {
-        const { companyName, name, position, phone, contactEmail, email, password, confirmPassword } = req.body;
-        if (confirmPassword !== password) {
-            return res.status(400).json({
-                code: '400',
-                message: "Mật khẩu xác nhận không chính xác"
-            })
+        const { error } = RecruiterValidation.recruiterValidate(req.body);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
         }
-        const { code, message, metadata, status } = await accessService.recruiterSignUp(companyName, name, position, phone, contactEmail, email, password);
-        res.status(200).json({
-            code, message, metadata: metadata ?? null, status: status ?? null
-        })
+        const { metadata, message } = await accessService.recruiterSignUp(req.body);
+        new CREATED({
+            message: message,
+            metadata: {...metadata}
+        }).send(res)
     }
 
     recruiterVerifyEmail = async (req, res, next) => {
         const email = req.query.email;
         const { otp } = req.body;
-        const { code, message, status } = await accessService.recruiterVerifyEmail(email, otp);
-        res.status(200).json({
-            code, message, status: status ?? null
-        })
+        const { message } = await accessService.recruiterVerifyEmail(email, otp);
+        new OK({
+            message: message
+        }).send(res)
     }
 
     recruiterResendVerifyEmail = async (req, res, next) => {
-        const { email } = req.body;
-        const { code, message, status } = await accessService.recruiterResendVerifyEmail(email);
-        res.status(200).json({
-            code, message, status: status ?? null
-        })
+        const { message, metadata } = await accessService.recruiterResendVerifyEmail(req.body);
+        new OK({
+            message: message,
+            metadata: {...metadata}
+        }).send(res)
     }
 
     login = async (req, res, next) => {
-        const { email, password } = req.body;
-        const { code, message, status, metadata } = await accessService.login(email, password);
-        res.status(200).json({
-            code, message, status: status ?? null, metadata: metadata ?? null
-        })
+        const { error } = AccessValidation.loginValidate(req.body);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata } = await accessService.login(req.body);
+        new OK({
+            message: message,
+            metadata: {...metadata}
+        }).send(res)
     }
 }
 

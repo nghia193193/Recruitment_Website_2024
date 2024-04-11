@@ -12,7 +12,7 @@ const { BadRequestError, InternalServerError, NotFoundRequestError, ConflictRequ
 
 class AccessService {
 
-    static recruiterSignUp = async (companyName, name, position, phone, contactEmail, email, password) => {
+    static recruiterSignUp = async ({ companyName, name, position, phone, contactEmail, email, password }) => {
         try {
             // check email exist
             const isExist = await Recruiter.findOne({ email }).lean();
@@ -59,9 +59,8 @@ class AccessService {
             transporter.sendMail(mailDetails, err => {
                 throw new InternalServerError('Có lỗi xảy ra');
             });
-            // return
+            // return 201
             return {
-                code: '201',
                 message: "Đăng ký tài khoản thành công",
                 metadata: {
                     sender: process.env.MAIL_SEND
@@ -104,9 +103,8 @@ class AccessService {
             await RedisService.deletePassword(email);
             // delete all otp verify in db
             await OTP.deleteMany({ email });
-            //return
+            //return 200
             return {
-                status: 200,
                 message: "Xác nhận email thành công",
             }
         } catch (error) {
@@ -115,7 +113,7 @@ class AccessService {
         }
     }
 
-    static recruiterResendVerifyEmail = async (email) => {
+    static recruiterResendVerifyEmail = async ({ email }) => {
         try {
             // check email exist
             const isExist = await Recruiter.findOne({ email }).lean();
@@ -158,9 +156,8 @@ class AccessService {
             transporter.sendMail(mailDetails, err => {
                 throw new InternalServerError('Có lỗi xảy ra');
             });
-            // return
+            // return 200
             return {
-                code: '200',
                 message: "Gửi lại mail xác nhận thành công",
                 metadata: {
                     sender: process.env.MAIL_SEND
@@ -172,20 +169,23 @@ class AccessService {
         }
     }
 
-    static login = async (email, password) => {
+    static login = async ({ email, password }) => {
         try {
+            //check Exist
             const user = await Login.findOne({ email }).lean();
             if (!user) {
-                throw new BadRequestError('Tài khoản đã tồn tại')
+                throw new BadRequestError('Tài khoản không tồn tại')
             }
+            //check Password
             const passwordValid = await bcrypt.compare(password, user.password);
             if (!passwordValid) {
                 throw new BadRequestError('Mật khẩu không chính xác')
             }
+            // sigb AT & RT
             const accessToken = await JWTService.signAccessToken(user._id.toString());
             const refreshToken = await JWTService.signRefreshToken(user._id.toString());
+            //return 200
             return {
-                status: "200",
                 message: "Đăng nhập thành công",
                 metadata: {
                     user: {

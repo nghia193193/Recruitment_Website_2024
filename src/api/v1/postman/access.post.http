@@ -12,14 +12,14 @@ Content-Type: application/json
     "contactEmail": "contactMail@gmail.com",
     "email":"vietnampro193913@gmail.com",
     "password": "12345678",
-    "confirmPassword": "12345678"
+    "confirmPassword": "123456789"
 }
 ### recruiter verify
 POST {{url_dev}}/recruiter/verify?email=vietnampro193913@gmail.com
 Content-Type: application/json
 
 {
-    "otp":"326031"
+    "otp":"341542"
 }
 ### recruiter resend mail
 POST {{url_dev}}/recruiter/signup/resend_mail
@@ -33,6 +33,6 @@ POST {{url_dev}}/login
 Content-Type: application/json
 
 {
-    "email":"vietnampro193913@gmail.com",
-    "password":"123456788"
+    "email":"vietnampro193913A2A@gmail.com",
+    "password":"1234567"
 }

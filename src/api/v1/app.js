@@ -41,10 +41,10 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
     logEvents(`${req.connection.localAddress}---${req.url}---${req.method}---${err.message}`);
-    const statusCode = err.status || 500;
+    const statusCode = err.statusCode || 500;
     res.status(statusCode).json({
         status: "error",
-        code: statusCode,
+        statusCode: statusCode,
         message: err.message || "Internal server error",
     })
 })
