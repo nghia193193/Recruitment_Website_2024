@@ -9,6 +9,7 @@ const { Login } = require("../models/login.model");
 const RedisService = require("./redis.service");
 const JWTService = require("./jwt.service");
 const { BadRequestError, InternalServerError, NotFoundRequestError, ConflictRequestError } = require("../core/error.response");
+const { findUserByRole } = require("../utils/findUser");
 
 class AccessService {
 
@@ -67,7 +68,6 @@ class AccessService {
                 }
             }
         } catch (error) {
-            console.log(error);
             throw error;
         }
     }
@@ -92,12 +92,16 @@ class AccessService {
             }
             // add recruiter to login
             const hashPassword = await RedisService.getPassword(email);
-            const recruiterId = (await Recruiter.findOne({ email }).lean())._id.toString();
-            await Login.create({
+            const login = await Login.create({
                 email,
                 password: hashPassword,
                 role: "RECRUITER",
-                userId: recruiterId
+            })
+            // Reference Recruiter, Login
+            await Recruiter.findOneAndUpdate({ email }, {
+                $set: {
+                    loginId: login._id
+                }
             })
             // delete redis password
             await RedisService.deletePassword(email);
@@ -108,7 +112,6 @@ class AccessService {
                 message: "Xác nhận email thành công",
             }
         } catch (error) {
-            console.log(error);
             throw error;
         }
     }
@@ -164,7 +167,6 @@ class AccessService {
                 }
             }
         } catch (error) {
-            console.log(error);
             throw error;
         }
     }
@@ -172,26 +174,28 @@ class AccessService {
     static login = async ({ email, password }) => {
         try {
             //check Exist
-            const user = await Login.findOne({ email }).lean();
-            if (!user) {
+            const userLogin = await Login.findOne({ email }).lean();
+            if (!userLogin) {
                 throw new BadRequestError('Tài khoản không tồn tại')
             }
             //check Password
-            const passwordValid = await bcrypt.compare(password, user.password);
+            const passwordValid = await bcrypt.compare(password, userLogin.password);
             if (!passwordValid) {
                 throw new BadRequestError('Mật khẩu không chính xác')
             }
-            // sigb AT & RT
-            const accessToken = await JWTService.signAccessToken(user.userId.toString());
-            const refreshToken = await JWTService.signRefreshToken(user.userId.toString());
+            // sign AT & RT
+            const user = await findUserByRole(userLogin.role, email);
+            if (!user) {
+                throw new BadRequestError('Tài khoản không tồn tại')
+            }
+            const accessToken = await JWTService.signAccessToken(user._id.toString());
+            const refreshToken = await JWTService.signRefreshToken(user._id.toString());
             //return 200
             return {
                 message: "Đăng nhập thành công",
                 metadata: {
                     user: {
-                        Id: user._id.toString(),
-                        email: user.email,
-                        role: user.role
+                        Id: user._id.toString()
                     },
                     tokens: {
                         accessToken,
@@ -200,7 +204,6 @@ class AccessService {
                 }
             }
         } catch (error) {
-            console.log(error);
             throw error;
         }
     }

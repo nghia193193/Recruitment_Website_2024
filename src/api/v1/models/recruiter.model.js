@@ -53,6 +53,10 @@ const recruiterSchema = new Schema({
     fieldOfActivity: {
         type: Array,
         default: []
+    },
+    loginId: {
+        type: Schema.Types.ObjectId,
+        ref: "Login"
     }
 }, {
     timestamps: true
@@ -73,7 +77,18 @@ recruiterSchema.statics.verifyEmail = async function (email) {
     }
 }
 
-recruiterSchema.statics.updateInformation = async function ({ userId, name, position, phone, contactEmail, companyName, companyEmail, 
+recruiterSchema.statics.getInformation = async function (userId) {
+    try {
+        const recruiterInfor = await this.findById(userId).lean().select(
+            '-status -verifyEmail -roles -loginId -createdAt -updatedAt -__v'
+        );
+        return recruiterInfor;
+    } catch (error) {
+        throw error;
+    }
+}
+
+recruiterSchema.statics.updateInformation = async function ({ userId, name, position, phone, contactEmail, companyName, companyEmail,
     companyPhone, companyWebsite, companyAddress, companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity }) {
     try {
         const result = await this.findOneAndUpdate({ _id: userId }, {
@@ -83,9 +98,18 @@ recruiterSchema.statics.updateInformation = async function ({ userId, name, posi
             }
         }, {
             new: true,
-            select: {status: 0, verifyEmail: 0, roles: 0}
+            select: { status: 0, verifyEmail: 0, roles: 0 }
         }).lean()
         return result ?? null;
+    } catch (error) {
+        throw error;
+    }
+}
+
+recruiterSchema.statics.getRecruiterByStatus = async function (status) {
+    try {
+        const listRecruiter = await this.find({ status: status }).lean();
+        return listRecruiter;
     } catch (error) {
         throw error;
     }

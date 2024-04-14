@@ -19,7 +19,7 @@ POST {{url_dev}}/recruiter/verify?email=vietnampro193913@gmail.com
 Content-Type: application/json
 
 {
-    "otp":"516801"
+    "otp":"037581"
 }
 ### recruiter resend mail
 POST {{url_dev}}/recruiter/signup/resend_mail

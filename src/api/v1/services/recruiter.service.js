@@ -5,10 +5,8 @@ const { Recruiter } = require("../models/recruiter.model");
 class RecruiterService {
 
     static getInformation = async ({ userId }) => {
-        console.log(userId)
         // check Exist
-        const recruiter = await Recruiter.findById(userId).lean().select('-status -verifyEmail -roles');
-        console.log(recruiter)
+        const recruiter = await Recruiter.getInformation(userId);
         if (!recruiter) {
             throw new NotFoundRequestError("Không tìm thấy người dùng");
         }

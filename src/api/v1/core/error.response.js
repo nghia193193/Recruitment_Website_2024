@@ -30,6 +30,12 @@ class UnauthorizedRequestError extends ErrorResponse {
     }
 }
 
+class ForbiddenRequestError extends ErrorResponse {
+    constructor(message = reasonPhrases.FORBIDDEN, statusCode = statusCodes.FORBIDDEN) {
+        super(message, statusCode)
+    }
+}
+
 class ConflictRequestError extends ErrorResponse {
     constructor(message = reasonPhrases.CONFLICT, statusCode = statusCodes.CONFLICT) {
         super(message, statusCode)
@@ -44,9 +50,10 @@ class InternalServerError extends ErrorResponse {
 
 module.exports = {
     BadRequestError,
+    UnauthorizedRequestError,
+    ForbiddenRequestError,
     NotFoundRequestError,
     ConflictRequestError,
-    UnauthorizedRequestError,
     InternalServerError
 }
 

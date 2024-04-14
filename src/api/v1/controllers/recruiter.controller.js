@@ -7,7 +7,7 @@ class RecruiterController {
 
     getInformation = async (req, res, next) => {
         const { metadata, message } = await RecruiterService.getInformation(req.payload);
-        new CREATED({
+        new OK({
             message: message,
             metadata: {...metadata}
         }).send(res)
@@ -19,7 +19,7 @@ class RecruiterController {
             throw new BadRequestError(error.details[0].message);
         }
         const { metadata, message } = await RecruiterService.updateInformation({ ...req.body, ...req.payload });
-        new CREATED({
+        new OK({
             message: message,
             metadata: {...metadata}
         }).send(res)

@@ -37,26 +37,6 @@ class JWTService {
         })
     }
     
-    static verifyAccessToken = (req, res, next) => {
-        if (!req.headers['authorization']) {
-            throw new UnauthorizedRequestError("Vui lòng đăng nhập");
-        }
-        const authHeader = req.headers['authorization'];
-        const token = authHeader.split(' ')[1];
-        jwt.verify(token, process.env.JWT_SECRET_KEY, (err, payload) => {
-            if (err) {
-                // invalid error,...
-                if (err.name === 'JsonWebTokenError') {
-                    throw new UnauthorizedRequestError("Vui lòng đăng nhập");
-                }
-                // token expired error
-                throw new UnauthorizedRequestError("Vui lòng đăng nhập lại");
-            }
-            req.payload = payload;
-            next();
-        })
-    }
-
     static verifyRefreshToken = async (refreshToken) => {
         return new Promise((resolve, reject) => {
             jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY, async (err, payload) => {
