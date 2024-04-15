@@ -195,7 +195,7 @@ class AccessService {
                 message: "Đăng nhập thành công",
                 metadata: {
                     user: {
-                        Id: user._id.toString()
+                        userId: user._id.toString()
                     },
                     tokens: {
                         accessToken,

@@ -6,7 +6,9 @@ const createError = require('http-errors');
 const logEvents = require('./utils/logEvents');
 const compression = require('compression');
 const morgan = require('morgan');
+const { fileConfig } = require('./configs/config.fileUpload');
 require('dotenv').config();
+require('./configs/config.coudinary').cloudinaryConfig;
 
 const app = express();
 
@@ -24,6 +26,7 @@ app.use(compression({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(fileConfig);
 app.use(morgan("combined"));
 
 app.use((req, res, next) => {
