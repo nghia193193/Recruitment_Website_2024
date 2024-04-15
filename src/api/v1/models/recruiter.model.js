@@ -31,10 +31,6 @@ const recruiterSchema = new Schema({
         type: Schema.Types.Boolean,
         default: false
     },
-    roles: {
-        type: Array,
-        default: []
-    },
     position: {
         type: String,
         required: true

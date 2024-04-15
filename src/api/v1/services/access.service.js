@@ -187,7 +187,8 @@ class AccessService {
                 throw new BadRequestError('Mật khẩu không chính xác')
             }
             // sign AT & RT
-            const user = await findUserByRole(userLogin.role, email);
+            const userRole = userLogin.role;
+            const user = await findUserByRole(userRole, email);
             if (!user) {
                 throw new BadRequestError('Tài khoản không tồn tại')
             }
@@ -198,7 +199,9 @@ class AccessService {
                 message: "Đăng nhập thành công",
                 metadata: {
                     user: {
-                        userId: user._id.toString()
+                        userId: user._id.toString(),
+                        status: user.status,
+                        role: userRole
                     },
                     tokens: {
                         accessToken,
