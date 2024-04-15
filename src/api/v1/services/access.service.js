@@ -123,6 +123,9 @@ class AccessService {
             if (!isExist) {
                 throw new BadRequestError('Email không tồn tại');
             }
+            if (isExist.verifyEmail === true) {
+                throw new BadRequestError('Email của bạn đã được xác nhận');
+            }
             // create otp
             const otp = OTPGenerator.generate(6, {
                 lowerCaseAlphabets: false,

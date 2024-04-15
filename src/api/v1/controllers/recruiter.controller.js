@@ -2,7 +2,6 @@ const RecruiterService = require("../services/recruiter.service");
 const RecruiterValidation = require("../validations/recruiter.validation");
 const { CREATED, OK } = require('../core/success.response');
 const { BadRequestError } = require('../core/error.response');
-const { file } = require("googleapis/build/src/apis/file");
 
 class RecruiterController {
 
