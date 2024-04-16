@@ -40,7 +40,6 @@ const recruiterSchema = new Schema({
         required: true,
         maxLength: 150
     },
-    companyEmail: String,
     companyPhone: String,
     companyWebsite: String,
     companyAddress: String,
@@ -86,13 +85,15 @@ recruiterSchema.statics.getInformation = async function (userId) {
         const recruiterInfor = await this.findById(userId).lean().select(
             '-status -verifyEmail -roles -loginId -createdAt -updatedAt -__v'
         );
+        recruiterInfor.companyLogo = recruiterInfor.companyLogo?.url;
+        recruiterInfor.companyCoverPhoto = recruiterInfor.companyCoverPhoto?.url;
         return recruiterInfor;
     } catch (error) {
         throw error;
     }
 }
 
-recruiterSchema.statics.updateInformation = async function ({ userId, name, position, phone, contactEmail, companyName, companyEmail,
+recruiterSchema.statics.updateInformation = async function ({ userId, name, position, phone, contactEmail, companyName,
     companyPhone, companyWebsite, companyAddress, companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity }) {
     try {
         let logo, coverPhoto;
@@ -134,7 +135,7 @@ recruiterSchema.statics.updateInformation = async function ({ userId, name, posi
 
         const result = await this.findOneAndUpdate({ _id: userId }, {
             $set: {
-                name, position, phone, contactEmail, companyName, companyEmail, companyPhone, companyWebsite, companyAddress,
+                name, position, phone, contactEmail, companyName, companyPhone, companyWebsite, companyAddress,
                 about, employeeNumber, fieldOfActivity,
                 companyLogo: logo,
                 companyCoverPhoto: coverPhoto

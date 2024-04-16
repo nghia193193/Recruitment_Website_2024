@@ -11,5 +11,7 @@ router.post('/recruiter/verify', asyncHandler(accessController.recruiterVerifyEm
 router.post('/recruiter/signup/resend_mail', asyncHandler(accessController.recruiterResendVerifyEmail));
 //login
 router.post('/login', asyncHandler(accessController.login));
+// get field of activity
+router.get('/field_of_activity', asyncHandler(accessController.getFieldOfActivity))
 
 module.exports = router;

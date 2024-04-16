@@ -10,6 +10,8 @@ const RedisService = require("./redis.service");
 const JWTService = require("./jwt.service");
 const { BadRequestError, InternalServerError, NotFoundRequestError, ConflictRequestError } = require("../core/error.response");
 const { findUserByRole } = require("../utils/findUser");
+const { fieldOfActivity } = require('../utils');
+
 
 class AccessService {
 
@@ -207,6 +209,19 @@ class AccessService {
                         accessToken,
                         refreshToken
                     }
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getFieldOfActivity = async () => {
+        try {
+            return {
+                message: "Lấy danh sách lĩnh vực thành công",
+                metadata: {
+                    fieldOfActivity
                 }
             }
         } catch (error) {

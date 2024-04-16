@@ -48,6 +48,14 @@ class AccessController {
             metadata: {...metadata}
         }).send(res)
     }
+
+    getFieldOfActivity = async (req, res, next) => {
+        const { metadata, message } = await AccessService.getFieldOfActivity();
+        new OK({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
 }
 
 module.exports = new AccessController();
