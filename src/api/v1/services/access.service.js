@@ -200,11 +200,6 @@ class AccessService {
             return {
                 message: "Đăng nhập thành công",
                 metadata: {
-                    user: {
-                        userId: user._id.toString(),
-                        status: user.status,
-                        role: userRole
-                    },
                     tokens: {
                         accessToken,
                         refreshToken

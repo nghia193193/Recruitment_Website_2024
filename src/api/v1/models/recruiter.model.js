@@ -82,9 +82,11 @@ recruiterSchema.statics.verifyEmail = async function (email) {
 
 recruiterSchema.statics.getInformation = async function (userId) {
     try {
-        const recruiterInfor = await this.findById(userId).lean().select(
-            '-status -verifyEmail -roles -loginId -createdAt -updatedAt -__v'
+        const recruiterInfor = await this.findById(userId).populate("loginId").lean().select(
+            '-verifyEmail -roles -createdAt -updatedAt -__v'
         );
+        recruiterInfor.role = recruiterInfor.loginId?.role;
+        recruiterInfor.loginId = undefined;
         recruiterInfor.companyLogo = recruiterInfor.companyLogo?.url;
         recruiterInfor.companyCoverPhoto = recruiterInfor.companyCoverPhoto?.url;
         return recruiterInfor;
@@ -142,7 +144,7 @@ recruiterSchema.statics.updateInformation = async function ({ userId, name, posi
             }
         }, {
             new: true,
-            select: { status: 0, verifyEmail: 0, roles: 0 }
+            select: { status: 0, verifyEmail: 0, roles: 0, loginId: 0, createdAt: 0, updatedAt: 0, __v: 0 }
         }).lean()
         result.companyLogo = result.companyLogo?.url;
         result.companyCoverPhoto = result.companyCoverPhoto?.url;
