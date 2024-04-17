@@ -65,9 +65,10 @@ class AccessController {
     }
 
     getFieldOfActivity = async (req, res, next) => {
-        const { message } = await AccessService.getFieldOfActivity();
+        const { message, metadata } = await AccessService.getFieldOfActivity();
         new OK({
-            message: message
+            message,
+            metadata: {...metadata}
         }).send(res)
     }
 }
