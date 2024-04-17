@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { UnauthorizedRequestError, NotFoundRequestError, ForbiddenRequestError } = require('../core/error.response');
 const { Recruiter } = require('../models/recruiter.model');
+const { Admin } = require('../models/admin.model');
 
 const verifyAccessToken = (req, res, next) => {
     try {
@@ -24,7 +25,7 @@ const verifyAccessToken = (req, res, next) => {
     } catch (error) {
         next(error)
     }
-    
+
 }
 
 const authPageRecruiter = async (req, res, next) => {
@@ -40,15 +41,33 @@ const authPageRecruiter = async (req, res, next) => {
         if (recruiter.loginId.role !== "RECRUITER") {
             throw new ForbiddenRequestError("Bạn không có quyền");
         }
-        req.recruiter = recruiter;
         next();
     } catch (error) {
         next(error)
     }
+}
 
+const authPageAdmin = async (req, res, next) => {
+    try {
+        const { userId } = req.payload;
+        if (!userId) {
+            throw new UnauthorizedRequestError("Vui lòng đăng nhập");
+        }
+        const admin = await Admin.findById(userId).populate('loginId');
+        if (!admin) {
+            throw new NotFoundRequestError("Không tìm thấy người dùng");
+        }
+        if (admin.loginId.role !== "ADMIN") {
+            throw new ForbiddenRequestError("Bạn không có quyền");
+        }
+        next();
+    } catch (error) {
+        next(error)
+    }
 }
 
 module.exports = {
     verifyAccessToken,
-    authPageRecruiter
+    authPageRecruiter,
+    authPageAdmin
 }

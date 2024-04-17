@@ -144,20 +144,54 @@ recruiterSchema.statics.updateInformation = async function ({ userId, name, posi
             }
         }, {
             new: true,
-            select: { status: 0, verifyEmail: 0, roles: 0, loginId: 0, createdAt: 0, updatedAt: 0, __v: 0 }
+            select: { status: 0, verifyEmail: 0, loginId: 0, createdAt: 0, updatedAt: 0, __v: 0 }
         }).lean()
+        if (!result) {
+            return null;
+        }
         result.companyLogo = result.companyLogo?.url;
         result.companyCoverPhoto = result.companyCoverPhoto?.url;
-        return result ?? null;
+        return result;
     } catch (error) {
         throw error;
     }
 }
 
-recruiterSchema.statics.getRecruiterByStatus = async function (status) {
+recruiterSchema.statics.getListRecruiter = async function ({ name, status, page, limit }) {
     try {
-        const listRecruiter = await this.find({ status: status }).lean();
-        return listRecruiter;
+        let query = {};
+        if (status) {
+            query["status"] = status;
+        }
+        if (name) {
+            query["name"] = new RegExp(name, "i");
+        }
+        const totalElement = await this.find(query).lean().countDocuments();
+        const listRecruiter = await this.find(query).lean().skip((page - 1) * limit).limit(limit);
+        return {
+            totalElement, listRecruiter
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
+recruiterSchema.statics.changeRecruiterStatus = async function ({ recruiterId, status }) {
+    try {
+        const result = await this.findOneAndUpdate({ _id: recruiterId }, {
+            $set: {
+                status: status
+            }
+        }, {
+            new: true,
+            select: {__v: 0, createdAt: 0, udatedAt: 0, loginId: 0}
+        }).lean()
+        if (!result) {
+            return null;
+        }
+        result.companyLogo = result.companyLogo?.url;
+        result.companyCoverPhoto = result.companyCoverPhoto?.url;
+        return result;
     } catch (error) {
         throw error;
     }

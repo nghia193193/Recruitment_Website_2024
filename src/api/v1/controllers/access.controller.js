@@ -9,7 +9,7 @@ const RecruiterValidation = require('../validations/recruiter.validation');
 class AccessController {
 
     recruiterSignUp = async (req, res, next) => {
-        const { error } = RecruiterValidation.RecruiterValidate(req.body);
+        const { error } = RecruiterValidation.validateSignUp(req.body);
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
@@ -38,7 +38,7 @@ class AccessController {
     }
 
     login = async (req, res, next) => {
-        const { error } = AccessValidation.loginValidate(req.body);
+        const { error } = AccessValidation.validateLogin(req.body);
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }

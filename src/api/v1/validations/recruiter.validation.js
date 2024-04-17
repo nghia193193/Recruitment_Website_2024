@@ -4,8 +4,8 @@ const Joi = require('joi');
 
 class RecruiterValidation {
 
-    static RecruiterValidate = data => {
-        const recruiterSchema = joi.object({
+    static validateSignUp = data => {
+        const validateSchema = joi.object({
             companyName: joi.string().max(150).required(),
             name: joi.string().max(50).required(),
             email: joi.string().email().lowercase().required(),
@@ -15,28 +15,28 @@ class RecruiterValidation {
             password: joi.string().min(8).max(32).required(),
             confirmPassword: joi.ref("password")
         })
-        return recruiterSchema.validate(data);
+        return validateSchema.validate(data);
     }
 
-    static updateInformation = data => {
-        const updateInfSchema = joi.object({
-            name: joi.string().max(50),
-            position: joi.string().max(100),
-            phone: joi.string().regex(/^(0[2-9]|1[0-9]|2[0-8]|3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5])[0-9]{8}$/),
-            contactEmail: joi.string().email().lowercase(),
-            companyName: joi.string().max(150),
-            companyPhone: joi.string().regex(/^(0[2-9]|1[0-9]|2[0-8]|3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5])[0-9]{8}$/),
-            companyWebsite: joi.string().max(100),
-            companyAddress: joi.string().max(200),
+    static validateUpdateInformation = data => {
+        const validateSchema = joi.object({
+            name: joi.string().max(50).required(),
+            position: joi.string().max(100).required(),
+            phone: joi.string().regex(/^(0[2-9]|1[0-9]|2[0-8]|3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5])[0-9]{8}$/).required(),
+            contactEmail: joi.string().email().lowercase().required(),
+            companyName: joi.string().max(150).required(),
+            companyPhone: joi.string().regex(/^(0[2-9]|1[0-9]|2[0-8]|3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5])[0-9]{8}$/).required(),
+            companyWebsite: joi.string().max(100).required(),
+            companyAddress: joi.string().max(200).required(),
             about: joi.string().max(1000),
-            employeeNumber: joi.number().min(1),
-            fieldOfActivity: joi.array().items(Joi.string().valid(...fieldOfActivity))
+            employeeNumber: joi.number().min(1).required().required(),
+            fieldOfActivity: joi.array().items(Joi.string().valid(...fieldOfActivity)).required()
         })
-        return updateInfSchema.validate(data);
+        return validateSchema.validate(data);
     }
 
-    static updateInforFiles = data => {
-        const updateInfFilesSchema = joi.object({
+    static validateUpdateFiles = data => {
+        const validateSchema = joi.object({
             companyLogo: joi.object({
                 mimetype: Joi.string().valid('image/jpg', 'image/png', 'image/jpeg'),
             }).unknown(true),
@@ -44,7 +44,7 @@ class RecruiterValidation {
                 mimetype: Joi.string().valid('image/jpg', 'image/png', 'image/jpeg'),
             }).unknown(true)
         })
-        return updateInfFilesSchema.validate(data);
+        return validateSchema.validate(data);
     }
 }
 

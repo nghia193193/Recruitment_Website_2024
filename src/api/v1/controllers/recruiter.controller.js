@@ -14,8 +14,8 @@ class RecruiterController {
     }
 
     updateInformation = async (req, res, next) => {
-        const { error: bodyError } = RecruiterValidation.updateInformation(req.body);
-        const { error: fileError } = RecruiterValidation.updateInforFiles(req.files);
+        const { error: bodyError } = RecruiterValidation.validateUpdateInformation(req.body);
+        const { error: fileError } = RecruiterValidation.validateUpdateFiles(req.files);
         console.log(req.files)
         console.log(fileError)
         if (bodyError || fileError) {
