@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const client = require('../dbs/init.redis');
 const { UnauthorizedRequestError } = require('../core/error.response');
+require('dotenv').config();
 
 class JWTService {
 
@@ -36,21 +37,21 @@ class JWTService {
             });
         })
     }
-    
+
     static verifyRefreshToken = async (refreshToken) => {
         return new Promise((resolve, reject) => {
             jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY, async (err, payload) => {
                 if (err) {
                     // invalid error,...
                     if (err.name === 'JsonWebTokenError') {
-                        return new UnauthorizedRequestError("Vui lòng đăng nhập");
+                        return reject(new UnauthorizedRequestError("Token không hợp lệ"));
                     }
                     // token expired error
-                    return new UnauthorizedRequestError("Vui lòng đăng nhập lại");
+                    return reject(new UnauthorizedRequestError("Token hết hiệu lực"));
                 }
                 const storedRT = await client.get(payload.userId);
                 if (storedRT !== refreshToken) {
-                    return new UnauthorizedRequestError("Vui lòng đăng nhập");
+                    return reject(new UnauthorizedRequestError("Token không hợp lệ"));
                 }
                 resolve(payload);
             })

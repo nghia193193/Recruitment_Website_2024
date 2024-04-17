@@ -49,11 +49,25 @@ class AccessController {
         }).send(res)
     }
 
-    getFieldOfActivity = async (req, res, next) => {
-        const { metadata, message } = await AccessService.getFieldOfActivity();
+    refreshAccessToken = async (req, res, next) => {
+        const { message, metadata } = await AccessService.refreshAccessToken(req.body);
         new OK({
             message: message,
-            metadata: { ...metadata }
+            metadata: {...metadata}
+        }).send(res)
+    }
+
+    logout = async (req, res, next) => {
+        const { message } = await AccessService.logout(req.body);
+        new OK({
+            message: message
+        }).send(res)
+    }
+
+    getFieldOfActivity = async (req, res, next) => {
+        const { message } = await AccessService.getFieldOfActivity();
+        new OK({
+            message: message
         }).send(res)
     }
 }

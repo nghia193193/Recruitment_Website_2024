@@ -1,0 +1,9 @@
+18/04/2024	00:23:40 ::1---/v1/api/refresh_token---POST---Token không hợp lệ
+18/04/2024	00:24:34 ::1---/v1/api/refresh_token---POST---Token không hợp lệ
+18/04/2024	00:24:42 ::1---/v1/api/refresh_token---POST---Token không hợp lệ
+18/04/2024	00:25:45 ::1---/v1/api/logout---POST---Page not found
+18/04/2024	00:25:58 ::1---/v1/api/logout---DELETE---Class constructor BadRequestError cannot be invoked without 'new'
+18/04/2024	00:26:20 ::1---/v1/api/logout---DELETE---Bad Request
+18/04/2024	00:27:58 ::1---/v1/api/logout---DELETE---Token không hợp lệ
+18/04/2024	00:31:07 ::1---/v1/api/recruiter/information---PATCH---Vui lòng đăng nhập lại
+18/04/2024	00:31:19 ::1---/v1/api/recruiter/information---GET---Vui lòng đăng nhập lại

@@ -134,7 +134,7 @@ recruiterSchema.statics.updateInformation = async function ({ userId, name, posi
                 await cloudinary.uploader.destroy(oldCoverPhoto);
             };
         }
-
+        fieldOfActivity = fieldOfActivity.split(",").map(item => item.trim());
         const result = await this.findOneAndUpdate({ _id: userId }, {
             $set: {
                 name, position, phone, contactEmail, companyName, companyPhone, companyWebsite, companyAddress,

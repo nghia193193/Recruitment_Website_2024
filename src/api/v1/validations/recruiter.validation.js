@@ -31,8 +31,14 @@ class RecruiterValidation {
             about: joi.string().max(1000),
             employeeNumber: joi.number().min(1).required().required(),
             fieldOfActivity: joi.array().items(Joi.string().valid(...fieldOfActivity)).required()
-        })
-        return validateSchema.validate(data);
+        }).messages({
+            "any.only": "'{#label}' không hợp lệ",
+        });
+        const processedData = {
+            ...data,
+            fieldOfActivity: data.fieldOfActivity.split(',').map(item => item.trim())
+        }
+        return validateSchema.validate(processedData);
     }
 
     static validateUpdateFiles = data => {

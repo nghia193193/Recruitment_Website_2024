@@ -11,6 +11,7 @@ const JWTService = require("./jwt.service");
 const { BadRequestError, InternalServerError, NotFoundRequestError, ConflictRequestError } = require("../core/error.response");
 const { findUserByRole } = require("../utils/findUser");
 const { fieldOfActivity } = require('../utils');
+const client = require('../dbs/init.redis');
 
 
 class AccessService {
@@ -205,6 +206,40 @@ class AccessService {
                         refreshToken
                     }
                 }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static refreshAccessToken = async ({ refreshToken }) => {
+        try {
+            if (!refreshToken) throw new BadRequestError();
+            const { userId } = await JWTService.verifyRefreshToken(refreshToken);
+            const accessToken = await JWTService.signAccessToken(userId);
+            const refToken = await JWTService.signRefreshToken(userId);
+            return {
+                message: "Làm mới access token thành công",
+                metadata: {
+                    accessToken,
+                    refreshToken: refToken
+                }
+            }
+        } catch (error) {
+            console.log("Errorrrrr service: ", error)
+            throw error;
+        }
+    }
+
+    static logout = async ({ refreshToken }) => {
+        try {
+            if (!refreshToken) {
+                throw new BadRequestError();
+            }
+            const { userId } = await JWTService.verifyRefreshToken(refreshToken);
+            await client.del(userId);
+            return {
+                message: "Logout thành công",
             }
         } catch (error) {
             throw error;
