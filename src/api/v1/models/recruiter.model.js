@@ -40,7 +40,6 @@ const recruiterSchema = new Schema({
         required: true,
         maxLength: 150
     },
-    companyPhone: String,
     companyWebsite: String,
     companyAddress: String,
     companyLogo: {
@@ -96,7 +95,7 @@ recruiterSchema.statics.getInformation = async function (userId) {
 }
 
 recruiterSchema.statics.updateInformation = async function ({ userId, name, position, phone, contactEmail, companyName,
-    companyPhone, companyWebsite, companyAddress, companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity }) {
+    companyWebsite, companyAddress, companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity }) {
     try {
         let logo, coverPhoto;
         if (companyLogo) {
@@ -137,7 +136,7 @@ recruiterSchema.statics.updateInformation = async function ({ userId, name, posi
         fieldOfActivity = fieldOfActivity.split(",").map(item => item.trim());
         const result = await this.findOneAndUpdate({ _id: userId }, {
             $set: {
-                name, position, phone, contactEmail, companyName, companyPhone, companyWebsite, companyAddress,
+                name, position, phone, contactEmail, companyName, companyWebsite, companyAddress,
                 about, employeeNumber, fieldOfActivity,
                 companyLogo: logo,
                 companyCoverPhoto: coverPhoto

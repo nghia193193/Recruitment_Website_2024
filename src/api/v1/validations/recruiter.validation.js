@@ -25,7 +25,6 @@ class RecruiterValidation {
             phone: joi.string().regex(/^(0[2-9]|1[0-9]|2[0-8]|3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5])[0-9]{8}$/).required(),
             contactEmail: joi.string().email().lowercase().required(),
             companyName: joi.string().max(150).required(),
-            companyPhone: joi.string().regex(/^(0[2-9]|1[0-9]|2[0-8]|3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5])[0-9]{8}$/).required(),
             companyWebsite: joi.string().max(100).required(),
             companyAddress: joi.string().max(200).required(),
             about: joi.string().max(1000),

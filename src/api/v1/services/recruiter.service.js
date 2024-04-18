@@ -20,11 +20,11 @@ class RecruiterService {
         }
     }
 
-    static updateInformation = async ({ userId, name, position, phone, contactEmail, companyName, companyEmail, companyPhone,
+    static updateInformation = async ({ userId, name, position, phone, contactEmail, companyName, companyEmail,
         companyWebsite, companyAddress, companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity }) => {
         try {
             const result = await Recruiter.updateInformation({
-                userId, name, position, phone, contactEmail, companyName, companyEmail, companyPhone,
+                userId, name, position, phone, contactEmail, companyName, companyEmail,
                 companyWebsite, companyAddress, companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity
             })
             if (!result) {
