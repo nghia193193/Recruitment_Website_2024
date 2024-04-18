@@ -23,7 +23,6 @@ class RecruiterController {
             if (fileError) errors.push(fileError.details[0].message);
             throw new BadRequestError(errors[0]);
         }
-        console.log(bodyValue)
         const { metadata, message } = await RecruiterService.updateInformation({ ...bodyValue, ...req.payload, ...req.files });
         new OK({
             message: message,
@@ -33,7 +32,6 @@ class RecruiterController {
 
     createJob = async (req, res, next) => {
         const { error, value } = JobValidation.validateCreateJob(req.body);
-        console.log(error)
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }

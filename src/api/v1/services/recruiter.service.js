@@ -1,4 +1,4 @@
-const { InternalServerError, NotFoundRequestError } = require("../core/error.response");
+const { InternalServerError, NotFoundRequestError, ConflictRequestError } = require("../core/error.response");
 const { Job } = require("../models/job.model");
 const { Recruiter } = require("../models/recruiter.model");
 
@@ -39,8 +39,13 @@ class RecruiterService {
     static createJob = async ({ userId, name, location, type, levelRequirement, experience, salary,
         field, description, requirement, benefit, quantity, deadline, gender }) => {
         try {
+            //check exist 
+            const isExist = await Job.findOne({ name });
+            if (isExist) {
+                throw new ConflictRequestError("Công việc đã tồn tại");
+            }
             const result = await Job.create({
-                userId, name, location, type, levelRequirement, experience, salary, field, description, 
+                userId, name, location, type, levelRequirement, experience, salary, field, description,
                 requirement, benefit, quantity, deadline, gender, recruiterId: userId
             })
             if (!result) {
