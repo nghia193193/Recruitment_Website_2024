@@ -13,6 +13,16 @@ router.post('/recruiter/signup/resend_mail', asyncHandler(accessController.recru
 router.post('/login', asyncHandler(accessController.login));
 // get field of activity
 router.get('/field_of_activity', asyncHandler(accessController.getFieldOfActivity));
+// get list jobType
+router.get('/job_type', asyncHandler(accessController.getJobType));
+// get list level requirement
+router.get('/level_requirement', asyncHandler(accessController.getLevelRequirement));
+// get list experience
+router.get('/experience', asyncHandler(accessController.getExperience));
+// get list gender requirement
+router.get('/gender_requirement', asyncHandler(accessController.getGenderRequirement));
+// get list province
+router.get('/province', asyncHandler(accessController.getProvince));
 // refresh access token
 router.post('/refresh_token', asyncHandler(accessController.refreshAccessToken));
 // logout

@@ -11,12 +11,16 @@ const jobSchema = new Schema({
         type: String,
         reuired: true
     },
+    province: {
+        type: String,
+        required: true
+    },
     type: { // loại hình cv: part_time || full_time || remote
         type: String,
         enum: ["Toàn thời gian", "Bán thời gian", "Remote"],
         reuired: true
     },
-    levelRequirement: { // cấp bậc: thực tập sinh, nhân viên, trưởng phòng
+    levelRequirement: { // vị trí: thực tập sinh, nhân viên, trưởng phòng
         type: String,
         enum: ["Thực tập sinh", "Nhân viên", "Trưởng phòng"],
         reuired: true
@@ -67,7 +71,7 @@ const jobSchema = new Schema({
     status: {
         type: String,
         enum: ['active', 'inactive'],
-        default: 'inactive'
+        default: 'active'
     },
     isApproved: {
         type: Schema.Types.Boolean,

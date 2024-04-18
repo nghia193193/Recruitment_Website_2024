@@ -10,7 +10,7 @@ const RedisService = require("./redis.service");
 const JWTService = require("./jwt.service");
 const { BadRequestError, InternalServerError, NotFoundRequestError, ConflictRequestError } = require("../core/error.response");
 const { findUserByRole } = require("../utils/findUser");
-const { fieldOfActivity } = require('../utils');
+const { fieldOfActivity, jobType, levelRequirement, experience, genderRequirement, provinceOfVietNam } = require('../utils');
 const client = require('../dbs/init.redis');
 
 
@@ -258,6 +258,71 @@ class AccessService {
                 message: "Lấy danh sách lĩnh vực thành công",
                 metadata: {
                     fieldOfActivity
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getJobType = async () => {
+        try {
+            return {
+                message: "Lấy danh sách loại hình công việc thành công",
+                metadata: {
+                    jobType
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getLevelRequirement = async () => {
+        try {
+            return {
+                message: "Lấy danh sách vị trí công việc thành công",
+                metadata: {
+                    levelRequirement
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getExperience = async () => {
+        try {
+            return {
+                message: "Lấy danh sách kinh nghiệm thành công",
+                metadata: {
+                    experience
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getGenderRequirement = async () => {
+        try {
+            return { 
+                message: "Lấy danh sách yêu cầu giới tính thành công",
+                metadata: {
+                    genderRequirement
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getProvince = async () => {
+        try {
+            return {
+                message: "Lấy danh sách tỉnh thành thành công",
+                metadata: {
+                    provinceOfVietNam
                 }
             }
         } catch (error) {

@@ -1,5 +1,5 @@
 const joi = require('joi');
-const { fieldOfActivity, jobType, levelRequirement, experience, gender } = require('../utils/index');
+const { fieldOfActivity, jobType, levelRequirement, experience, genderRequirement, provinceOfVietNam } = require('../utils/index');
 const xss = require('xss');
 
 class JobValidation {
@@ -14,6 +14,7 @@ class JobValidation {
                 const cleanLocation = xss(value); // Loại bỏ XSS
                 return cleanLocation;
             }).required(),
+            province: joi.string().valid(...provinceOfVietNam).required(),
             type: joi.string().valid(...jobType).required(),
             levelRequirement: joi.string().valid(...levelRequirement).required(),
             experience: joi.string().valid(...experience).required(),
@@ -36,7 +37,7 @@ class JobValidation {
             }).required(),
             quantity: joi.number().min(1).required(),
             deadline: joi.date().iso().required(),
-            gender: joi.string().valid(...gender).required()
+            gender: joi.string().valid(...genderRequirement).required()
         }).messages({
             "any.only": "'{#label}' không hợp lệ"
         })

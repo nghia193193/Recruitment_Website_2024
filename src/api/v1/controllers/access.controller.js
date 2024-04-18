@@ -71,6 +71,46 @@ class AccessController {
             metadata: {...metadata}
         }).send(res)
     }
+
+    getJobType = async (req, res, next) => {
+        const { message, metadata } = await AccessService.getJobType();
+        new OK({
+            message,
+            metadata: {...metadata}
+        }).send(res)
+    }
+
+    getLevelRequirement = async (req, res, next) => {
+        const { message, metadata } = await AccessService.getLevelRequirement();
+        new OK({
+            message,
+            metadata: {...metadata}
+        }).send(res)
+    }
+
+    getExperience = async (req, res, next) => {
+        const { message, metadata } = await AccessService.getExperience();
+        new OK({
+            message,
+            metadata: {...metadata}
+        }).send(res)
+    }
+
+    getGenderRequirement = async (req, res, next) => {
+        const { message, metadata } = await AccessService.getGenderRequirement();
+        new OK({
+            message,
+            metadata: {...metadata}
+        }).send(res)
+    }
+
+    getProvince = async (req, res, next) => {
+        const { message, metadata } = await AccessService.getProvince();
+        new OK({
+            message,
+            metadata: {...metadata}
+        }).send(res)
+    }
 }
 
 module.exports = new AccessController();
