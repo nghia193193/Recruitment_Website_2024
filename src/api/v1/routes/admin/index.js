@@ -8,6 +8,8 @@ const router = express.Router();
 router.get('/information', verifyAccessToken, authPageAdmin, asyncHandler(adminController.getInformation));
 // get list recruiter
 router.get('/recruiters', verifyAccessToken, authPageAdmin, asyncHandler(adminController.getListRecruiter));
+// approve recruiter
+router.patch('/recruiters/:recruiterId/approve', verifyAccessToken, authPageAdmin, asyncHandler(adminController.approveRecruiter));
 // change recruiter status
 router.patch('/recruiters/:recruiterId/change_status', verifyAccessToken, authPageAdmin, asyncHandler(adminController.changeRecruiterStatus));
 

@@ -166,10 +166,40 @@ recruiterSchema.statics.getListRecruiter = async function ({ name, status, page,
             query["name"] = new RegExp(name, "i");
         }
         const totalElement = await this.find(query).lean().countDocuments();
-        const listRecruiter = await this.find(query).lean().skip((page - 1) * limit).limit(limit);
+        let listRecruiter = await this.find(query).lean().select("-createdAt -updatedAt -__v -loginId").skip((page - 1) * limit).limit(limit);
+        if (listRecruiter.length !==0) {
+            listRecruiter = listRecruiter.map(recruiter => {
+                return {
+                    ...recruiter,
+                    companyLogo: recruiter.companyLogo?.url,
+                    companyCoverPhoto: recruiter.companyCoverPhoto?.url
+                }
+            })
+        }
         return {
             totalElement, listRecruiter
         }
+    } catch (error) {
+        throw error;
+    }
+}
+
+recruiterSchema.statics.approveRecruiter = async function ({ recruiterId }) {
+    try {
+        const result = await this.findOneAndUpdate({ _id: recruiterId }, {
+            $set: {
+                status: "active"
+            }
+        }, {
+            new: true,
+            select: {__v: 0, createdAt: 0, udatedAt: 0, loginId: 0}
+        }).lean()
+        if (!result) {
+            return null;
+        }
+        result.companyLogo = result.companyLogo?.url;
+        result.companyCoverPhoto = result.companyCoverPhoto?.url;
+        return result;
     } catch (error) {
         throw error;
     }

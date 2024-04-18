@@ -25,6 +25,18 @@ class AdminController {
         }).send(res)
     }
 
+    approveRecruiter = async (req, res, next) => {
+        const { error } = AdminValidation.validateRecruiterId(req.params);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { metadata, message } = await AdminService.approveRecruiter({ ...req.payload, ...req.params });
+        new OK({
+            message: message,
+            metadata: { ...metadata },
+        }).send(res)
+    }
+
     changeRecruiterStatus = async (req, res, next) => {
         const { error: statusError } = AdminValidation.validateRecruiterStatus(req.body);
         const { error: idError } = AdminValidation.validateRecruiterId(req.params);

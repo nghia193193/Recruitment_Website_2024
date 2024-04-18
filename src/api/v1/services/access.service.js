@@ -46,18 +46,21 @@ class AccessService {
             let mailDetails = {
                 from: `${process.env.MAIL_SEND}`,
                 to: email,
-                subject: 'Register Account',
+                subject: 'Xác nhận đăng ký tài khoản',
                 html: ` 
-                    <div style="text-align: center; font-family: arial">
-                        <h1 style="color: green; ">JOB POST</h1>
-                        <h2>Welcome</h2>
-                        <span style="margin: 1px">Your OTP confirmation code is: <b>${otp}</b></span>
-                        <p style="margin-top: 0px">Click this link below to verify your account.</p>
-                        <button style="background-color: #008000; padding: 10px 50px; border-radius: 5px; border-style: none"><a href="${process.env.FE_URL}/otp?email=${email}" style="font-size: 15px;color: white; text-decoration: none">Verify</a></button>
-                        <p>Thank you for joining us!</p>
-                        <p style="color: red">Note: This link is only valid in 10 minutes!</p>
+                <div style="text-align: left; font-family: arial; margin: 10px auto;"> 
+                    <span style="margin: 5px 2px"><b>Xin chào</b> <b style="color: red">${newRecruiter.name}</b>,</span>
+                    <p style="margin: 5px 2px">Cảm ơn bạn đã đăng ký dịch vụ của chúng tôi.</p>
+                    <p style="margin: 5px 2px">Mã xác nhận OTP của bạn là: <b >${otp}</b></p>
+                    <p style="margin: 5px 2px">Vui lòng nhập vào nút bên dưới để xác minh email của bạn.</p>
+                    <div style="display: flex; justify-content: center; margin: 30px">
+                    <button style="background-color: #008000; padding: 10px 20px; border-radius: 20px; border-style: none; align-items: center"><a href="${process.env.FE_URL}/otp?email=${email}" style="font-size: 15px;color: white; text-decoration: none">Xác nhận tài khoản</a></button>
                     </div>
-                    `
+                    <p style="margin: 5px 2px">Xin lưu ý rằng nếu tài khoản chưa được xác minh trong vòng <b style="color: red">10 phút</b> vui lòng yêu cầu gửi lại email xác nhận.</p>
+                    <p style="margin: 5px 2px">Nếu bạn không yêu cầu vui lòng bỏ qua yêu cầu này</p>
+                    <p style="margin: 20px 2px">Trân trọng.</p>
+                </div>
+                `
             };
             const transporter = await createTransporter();
             transporter.sendMail(mailDetails, err => {
@@ -148,18 +151,21 @@ class AccessService {
             let mailDetails = {
                 from: `${process.env.MAIL_SEND}`,
                 to: email,
-                subject: 'Register Account',
+                subject: 'Xác nhận đăng ký tài khoản',
                 html: ` 
-                    <div style="text-align: center; font-family: arial">
-                        <h1 style="color: green; ">JOB POST</h1>
-                        <h2>Welcome</h2>
-                        <span style="margin: 1px">Your OTP confirmation code is: <b>${otp}</b></span>
-                        <p style="margin-top: 0px">Click this link below to verify your account.</p>
-                        <button style="background-color: #008000; padding: 10px 50px; border-radius: 5px; border-style: none"><a href="${process.env.FE_URL}/otp?email=${email}" style="font-size: 15px;color: white; text-decoration: none">Verify</a></button>
-                        <p>Thank you for joining us!</p>
-                        <p style="color: red">Note: This link is only valid in 10 minutes!</p>
+                <div style="text-align: left; font-family: arial; margin: 10px auto;"> 
+                    <span style="margin: 5px 2px"><b>Xin chào</b> <b style="color: red">${isExist.name}</b>,</span>
+                    <p style="margin: 5px 2px">Cảm ơn bạn đã đăng ký dịch vụ của chúng tôi.</p>
+                    <p style="margin: 5px 2px">Mã xác nhận OTP của bạn là: <b >${otp}</b></p>
+                    <p style="margin: 5px 2px">Vui lòng nhập vào nút bên dưới để xác minh email của bạn.</p>
+                    <div style="display: flex; justify-content: center; margin: 30px">
+                    <button style="background-color: #008000; padding: 10px 20px; border-radius: 20px; border-style: none; align-items: center"><a href="${process.env.FE_URL}/otp?email=${email}" style="font-size: 15px;color: white; text-decoration: none">Xác nhận tài khoản</a></button>
                     </div>
-                    `
+                    <p style="margin: 5px 2px">Xin lưu ý rằng nếu tài khoản chưa được xác minh trong vòng <b style="color: red">10 phút</b> vui lòng yêu cầu gửi lại email xác nhận.</p>
+                    <p style="margin: 5px 2px">Nếu bạn không yêu cầu vui lòng bỏ qua yêu cầu này</p>
+                    <p style="margin: 20px 2px">Trân trọng.</p>
+                </div>
+                `
             };
             const transporter = await createTransporter();
             transporter.sendMail(mailDetails, err => {
