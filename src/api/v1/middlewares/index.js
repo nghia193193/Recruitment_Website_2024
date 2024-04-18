@@ -36,10 +36,20 @@ const authPageRecruiter = async (req, res, next) => {
         }
         const recruiter = await Recruiter.findById(userId).populate('loginId');
         if (!recruiter) {
-            throw new NotFoundRequestError("Không tìm thấy người dùng");
-        }
-        if (recruiter.loginId.role !== "RECRUITER") {
             throw new ForbiddenRequestError("Bạn không có quyền");
+        }
+        req.recruiterStatus = recruiter.status;
+        next();
+    } catch (error) {
+        next(error)
+    }
+}
+
+const checkActiveRecruiter = async (req, res, next) => {
+    try {
+        const status = req.recruiterStatus;
+        if (status !== "active") {
+            throw new ForbiddenRequestError("Bạn cần được chấp thuận để sử dụng chức năng");
         }
         next();
     } catch (error) {
@@ -55,9 +65,6 @@ const authPageAdmin = async (req, res, next) => {
         }
         const admin = await Admin.findById(userId).populate('loginId');
         if (!admin) {
-            throw new NotFoundRequestError("Không tìm thấy người dùng");
-        }
-        if (admin.loginId.role !== "ADMIN") {
             throw new ForbiddenRequestError("Bạn không có quyền");
         }
         next();
@@ -69,5 +76,6 @@ const authPageAdmin = async (req, res, next) => {
 module.exports = {
     verifyAccessToken,
     authPageRecruiter,
+    checkActiveRecruiter,
     authPageAdmin
 }

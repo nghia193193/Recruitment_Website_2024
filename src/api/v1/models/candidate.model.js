@@ -25,7 +25,10 @@ const candidateSchema = new Schema({
         type: String,
         required: true
     },
-    gender: String,
+    gender: {
+        type: String,
+        enum: ["Nam", "Nữ"]
+    },
     avatar: String,
     address: String,
     dateOfBirth: Date,

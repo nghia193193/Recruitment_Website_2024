@@ -8,9 +8,6 @@ class AdminService {
     static getInformation = async ({ userId }) => {
         try {
             const admin = await Admin.getInformation({ userId });
-            if (!admin) {
-                throw new NotFoundRequestError("Không tìm thấy người dùng");
-            }
             return {
                 message: "Lấy thông tin thành công",
                 metadata: { ...admin },
@@ -20,16 +17,10 @@ class AdminService {
         }
     }
 
-    static getListRecruiter = async ({ userId, name, status, page, limit }) => {
+    static getListRecruiter = async ({ name, status, page, limit }) => {
         try {
-            //checkExist
-            const isExist = await Admin.findById(userId).lean();
-            if (!isExist) {
-                throw new NotFoundRequestError("Không tìm thấy người dùng");
-            }
             page = page ? +page : 1;
             limit = limit ? +limit : 5;
-            //get list recruiter
             const { totalElement, listRecruiter } = await Recruiter.getListRecruiter({ name, status, page, limit });
             return {
                 message: "Lấy danh sách nhà tuyển dụng thành công",
@@ -45,13 +36,8 @@ class AdminService {
 
     }
 
-    static approveRecruiter = async ({ userId, recruiterId }) => {
+    static approveRecruiter = async ({ recruiterId }) => {
         try {
-            //checkExist
-            const isExist = await Admin.findById(userId).lean();
-            if (!isExist) {
-                throw new NotFoundRequestError("Không tìm thấy người dùng");
-            }
             // activate recruiter
             const result = await Recruiter.approveRecruiter({ recruiterId });
             if (!result) {
@@ -85,13 +71,8 @@ class AdminService {
         }
     }
 
-    static changeRecruiterStatus = async ({ userId, recruiterId, status }) => {
+    static changeRecruiterStatus = async ({ recruiterId, status }) => {
         try {
-            //checkExist
-            const isExist = await Admin.findById(userId).lean();
-            if (!isExist) {
-                throw new NotFoundRequestError("Không tìm thấy người dùng");
-            }
             const result = await Recruiter.changeRecruiterStatus({ recruiterId, status });
             if (!result) {
                 throw new NotFoundRequestError("Không tìm thấy nhà tuyển dụng");

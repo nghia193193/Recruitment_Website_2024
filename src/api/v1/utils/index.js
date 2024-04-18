@@ -15,6 +15,15 @@ const fieldOfActivity = [
     "Xuất nhập khẩu", "Xây dựng", "Y tế / Dược", "Điện / Điện tử / Điện lạnh", "Điện tử viễn thông", "Địa chất / Khoáng sản"
 ]
 
+const jobType = ["Toàn thời gian", "Bán thời gian", "Remote"];
+const levelRequirement = ["Thực tập sinh", "Nhân viên", "Trưởng phòng"];
+const experience = ["Không yêu cầu kinh nghiệm", "Dưới 1 năm", "1 năm", "2 năm", "3 năm", "4 năm", "5 năm", "Trên 5 năm"];
+const gender = ["Không yêu cầu", "Nam", "Nữ"];
+
 module.exports = {
-    fieldOfActivity
+    fieldOfActivity,
+    jobType,
+    levelRequirement,
+    experience,
+    gender
 }

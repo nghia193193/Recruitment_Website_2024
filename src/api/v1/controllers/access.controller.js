@@ -9,11 +9,11 @@ const RecruiterValidation = require('../validations/recruiter.validation');
 class AccessController {
 
     recruiterSignUp = async (req, res, next) => {
-        const { error } = RecruiterValidation.validateSignUp(req.body);
+        const { error, value } = RecruiterValidation.validateSignUp(req.body);
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const { metadata, message } = await AccessService.recruiterSignUp(req.body);
+        const { metadata, message } = await AccessService.recruiterSignUp(value);
         new CREATED({
             message: message,
             metadata: {...metadata}
@@ -38,11 +38,11 @@ class AccessController {
     }
 
     login = async (req, res, next) => {
-        const { error } = AccessValidation.validateLogin(req.body);
+        const { error, value } = AccessValidation.validateLogin(req.body);
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const { message, metadata } = await AccessService.login(req.body);
+        const { message, metadata } = await AccessService.login(value);
         new OK({
             message: message,
             metadata: {...metadata}

@@ -18,7 +18,11 @@ const applicationSchema = new Schema({
         required: true,
         ref: 'Resume'
     },
-    status: String
+    status: {
+        type: String,
+        enum: ['Đã nộp','Đã nhận', 'Không nhận'],
+        default: 'Đã nộp'
+    }
 }, {
     timestamps: true
 })

@@ -98,42 +98,37 @@ recruiterSchema.statics.updateInformation = async function ({ userId, name, posi
     companyWebsite, companyAddress, companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity }) {
     try {
         let logo, coverPhoto;
-        if (companyLogo) {
-            //upload logo
-            const resultLogo = await cloudinary.uploader.upload(companyLogo.tempFilePath);
-            if (!resultLogo) {
-                throw InternalServerError("Upload logo thất bại");
-            };
-            const logoPublicId = resultLogo.public_id;
-            const logoUrl = cloudinary.url(logoPublicId);
-            logo = {
-                publicId: logoPublicId,
-                url: logoUrl
-            }
-            //check oldLogo
-            const oldLogo = (await this.findById(userId)).companyLogo?.publicId;
-            if (oldLogo) {
-                await cloudinary.uploader.destroy(oldLogo);
-            };
+        //upload logo
+        const resultLogo = await cloudinary.uploader.upload(companyLogo.tempFilePath);
+        if (!resultLogo) {
+            throw InternalServerError("Upload logo thất bại");
+        };
+        const logoPublicId = resultLogo.public_id;
+        const logoUrl = cloudinary.url(logoPublicId);
+        logo = {
+            publicId: logoPublicId,
+            url: logoUrl
         }
-
-        if (companyCoverPhoto) {
-            const resultCoverPhoto = await cloudinary.uploader.upload(companyCoverPhoto.tempFilePath);
-            if (!resultCoverPhoto) {
-                throw InternalServerError("Upload logo thất bại");
-            };
-            const coverPhotoPublicId = resultCoverPhoto.public_id;
-            const coverPhotoUrl = cloudinary.url(coverPhotoPublicId);
-            coverPhoto = {
-                publicId: coverPhotoPublicId,
-                url: coverPhotoUrl
-            }
-            const oldCoverPhoto = (await this.findById(userId)).companyCoverPhoto?.publicId;
-            if (oldCoverPhoto) {
-                await cloudinary.uploader.destroy(oldCoverPhoto);
-            };
+        //check oldLogo
+        const oldLogo = (await this.findById(userId)).companyLogo?.publicId;
+        if (oldLogo) {
+            await cloudinary.uploader.destroy(oldLogo);
+        };
+        //upload cover photo
+        const resultCoverPhoto = await cloudinary.uploader.upload(companyCoverPhoto.tempFilePath);
+        if (!resultCoverPhoto) {
+            throw InternalServerError("Upload logo thất bại");
+        };
+        const coverPhotoPublicId = resultCoverPhoto.public_id;
+        const coverPhotoUrl = cloudinary.url(coverPhotoPublicId);
+        coverPhoto = {
+            publicId: coverPhotoPublicId,
+            url: coverPhotoUrl
         }
-        fieldOfActivity = fieldOfActivity.split(",").map(item => item.trim());
+        const oldCoverPhoto = (await this.findById(userId)).companyCoverPhoto?.publicId;
+        if (oldCoverPhoto) {
+            await cloudinary.uploader.destroy(oldCoverPhoto);
+        };
         const result = await this.findOneAndUpdate({ _id: userId }, {
             $set: {
                 name, position, phone, contactEmail, companyName, companyWebsite, companyAddress,
@@ -167,7 +162,7 @@ recruiterSchema.statics.getListRecruiter = async function ({ name, status, page,
         }
         const totalElement = await this.find(query).lean().countDocuments();
         let listRecruiter = await this.find(query).lean().select("-createdAt -updatedAt -__v -loginId").skip((page - 1) * limit).limit(limit);
-        if (listRecruiter.length !==0) {
+        if (listRecruiter.length !== 0) {
             listRecruiter = listRecruiter.map(recruiter => {
                 return {
                     ...recruiter,
@@ -192,7 +187,7 @@ recruiterSchema.statics.approveRecruiter = async function ({ recruiterId }) {
             }
         }, {
             new: true,
-            select: {__v: 0, createdAt: 0, udatedAt: 0, loginId: 0}
+            select: { __v: 0, createdAt: 0, udatedAt: 0, loginId: 0 }
         }).lean()
         if (!result) {
             return null;
@@ -213,7 +208,7 @@ recruiterSchema.statics.changeRecruiterStatus = async function ({ recruiterId, s
             }
         }, {
             new: true,
-            select: {__v: 0, createdAt: 0, udatedAt: 0, loginId: 0}
+            select: { __v: 0, createdAt: 0, udatedAt: 0, loginId: 0 }
         }).lean()
         if (!result) {
             return null;

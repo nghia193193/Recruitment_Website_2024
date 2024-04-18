@@ -17,7 +17,7 @@ class AdminController {
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const { metadata, message, options } = await AdminService.getListRecruiter({ ...req.body, ...req.payload, ...req.query });
+        const { metadata, message, options } = await AdminService.getListRecruiter({ ...req.body, ...req.query });
         new OK({
             message: message,
             metadata: { ...metadata },
@@ -30,7 +30,7 @@ class AdminController {
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const { metadata, message } = await AdminService.approveRecruiter({ ...req.payload, ...req.params });
+        const { metadata, message } = await AdminService.approveRecruiter({ ...req.params });
         new OK({
             message: message,
             metadata: { ...metadata },
@@ -47,7 +47,7 @@ class AdminController {
             if (idError) errors.push(idError.details[0].message);
             throw new BadRequestError(errors[0]);
         }
-        const { metadata, message } = await AdminService.changeRecruiterStatus({ ...req.body, ...req.payload, ...req.params });
+        const { metadata, message } = await AdminService.changeRecruiterStatus({ ...req.body, ...req.params });
         new OK({
             message: message,
             metadata: { ...metadata },

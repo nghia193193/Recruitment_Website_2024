@@ -4,9 +4,11 @@ const { verifyAccessToken, authPageRecruiter } = require('../../middlewares');
 const recruiterController = require('../../controllers/recruiter.controller');
 const router = express.Router();
 
-// Recruiter get information
+// get information
 router.get('/information', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getInformation));
-// Recruiter update information
+// update information
 router.patch('/information', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.updateInformation));
+// create job
+router.post('/jobs/create_job', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.createJob));
 
 module.exports = router;
