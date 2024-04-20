@@ -101,11 +101,17 @@ jobSchema.statics.getListWaitingJobByRecruiterId = async function({ userId, name
             query["status"] = status;
         }
         const length = await this.find(query).lean().countDocuments();
-        const result = await this.find(query).lean()
+        let result = await this.find(query).lean()
             .select("name field levelRequirement status deadline")
             .skip((page - 1) * limit)
             .limit(limit)
             .sort({ updatedAt: -1 })
+        result = result.map(item => {
+            return {
+                ...item,
+                applicationNumber: 0
+            }
+        })
         return {
             length, result
         }

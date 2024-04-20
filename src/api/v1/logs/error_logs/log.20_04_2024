@@ -31,3 +31,5 @@
 20/04/2024	22:02:14 ::1---/v1/api/recruiter/jobs/waiting_jobs---GET---joi.string.valid is not a function
 20/04/2024	22:03:36 ::1---/v1/api/recruiter/jobs/waiting_jobs?status=inactives---GET---"status" must be one of [active, inactive]
 20/04/2024	22:03:56 ::1---/v1/api/recruiter/jobs/waiting_jobs?status=inactives---GET---'"status"' không hợp lệ
+20/04/2024	22:40:12 ::1---/v1/api/recruiter/jobs/waiting_jobs---GET---Vui lòng đăng nhập lại
+20/04/2024	22:40:37 ::1---/v1/api/recruiter/jobs/waiting_jobs---GET---Assignment to constant variable.
