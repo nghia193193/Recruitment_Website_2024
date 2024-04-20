@@ -73,11 +73,17 @@ class RecruiterValidation {
         }).messages({
             "any.only": "'{#label}' không hợp lệ",
         });
-        const processedData = {
-            ...data,
-            fieldOfActivity: data.fieldOfActivity.split(',').map(item => item.trim())
+        let fieldOA = data?.fieldOfActivity;
+        if (Array.isArray(fieldOA)) {
+            fieldOA = fieldOA;
+        } else {
+            fieldOA = fieldOA.split(',').map(item => item.trim())
         }
-        return validateSchema.validate(processedData);
+        const processData = {
+            ...data,
+            fieldOfActivity: fieldOA
+        }
+        return validateSchema.validate(processData);
     }
 }
 
