@@ -10,5 +10,7 @@ router.get('/information', verifyAccessToken, authPageRecruiter, asyncHandler(re
 router.patch('/information', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.updateInformation));
 // create job
 router.post('/jobs/create_job', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.createJob));
+// get list waiting job
+router.get('/jobs/waiting_jobs', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListWaitingJob));
 
 module.exports = router;

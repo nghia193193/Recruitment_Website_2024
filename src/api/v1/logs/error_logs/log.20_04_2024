@@ -1,0 +1,30 @@
+20/04/2024	17:03:50 ::1---/v1/api/recruiter/signup---POST---email is not defined
+20/04/2024	17:09:39 ::1---/v1/api/recruiter/signup---POST---Vui lòng truy cập email đã đăng ký để xác nhận email
+20/04/2024	17:10:59 ::1---/v1/api/recruiter/signup---POST---Email này đã được đăng ký, vui lòng truy cập email để xác nhận tài khoản
+20/04/2024	17:11:48 ::1---/v1/api/recruiter/signup---POST---Email này đã được đăng ký, vui lòng truy cập email để xác nhận tài khoản
+20/04/2024	17:13:02 ::1---/v1/api/recruiter/signup---POST---Email này đã được đăng ký, vui lòng truy cập email để xác nhận tài khoản
+20/04/2024	17:15:50 ::1---/v1/api/recruiter/signup---POST---Email này đã được đăng ký, vui lòng truy cập email để xác nhận tài khoản
+20/04/2024	17:17:04 ::1---/v1/api/recruiter/signup---POST---Tài khoản đã tồn tại
+20/04/2024	17:17:53 ::1---/v1/api/recruiter/signup---POST---Email này đã được sử dụng vui lòng nhập email khác
+20/04/2024	17:24:17 ::1---/v1/api/recruiter/information---PATCH---Vui lòng đăng nhập lại
+20/04/2024	17:25:48 ::1---/v1/api/recruiter/information---PATCH---data.fieldOfActivity.split is not a function
+20/04/2024	17:28:44 ::1---/v1/api/recruiter/information---PATCH---"companyLogo" is not allowed
+20/04/2024	17:34:40 ::1---/v1/api/recruiter/information---PATCH---Cannot read properties of undefined (reading 'split')
+20/04/2024	17:35:40 ::1---/v1/api/recruiter/information---PATCH---Cannot read properties of undefined (reading 'tempFilePath')
+20/04/2024	17:55:03 ::1---/v1/api/recruiter/information---PATCH---"companyLogo" is not allowed to be empty
+20/04/2024	17:56:55 ::1---/v1/api/recruiter/information---PATCH---"employeeNumber" must be a number
+20/04/2024	17:57:03 ::1---/v1/api/recruiter/information---PATCH---"employeeNumber" must be greater than or equal to 1
+20/04/2024	18:09:16 ::1---/v1/api/recruiter/information---PATCH---Cannot access 'fieldOfActivity' before initialization
+20/04/2024	18:09:52 ::1---/v1/api/recruiter/information---PATCH---Cannot access 'fieldOfActivity' before initialization
+20/04/2024	18:11:04 ::1---/v1/api/recruiter/information---PATCH---Cannot access 'fieldOfActivity' before initialization
+20/04/2024	18:12:23 ::1---/v1/api/recruiter/information---PATCH---Cannot access 'fieldOfActivity' before initialization
+20/04/2024	18:13:38 ::1---/v1/api/recruiter/information---PATCH---Assignment to constant variable.
+20/04/2024	21:32:48 ::1---/v1/api/recruiter/jobs/create_job---POST---Vui lòng đăng nhập lại
+20/04/2024	21:33:10 ::1---/v1/api/recruiter/jobs/create_job---POST---Công việc đã tồn tại
+20/04/2024	21:35:17 ::1---/v1/api/recruiter/jobs/create_job---POST---Tên công việc đã được sử dụng
+20/04/2024	21:35:59 ::1---/v1/api/recruiter/jobs/create_job---POST---'"type"' không hợp lệ
+20/04/2024	21:38:18 ::1---/v1/api/recruiter/jobs/waiting_jobs---GET---Page not found
+20/04/2024	21:38:40 ::1---/v1/api/recruiter/jobs/waiting_jobs---GET---Vui lòng đăng nhập
+20/04/2024	21:38:56 ::1---/v1/api/recruiter/jobs/waiting_jobs---GET---this.find is not a function
+20/04/2024	21:40:32 ::1---/v1/api/recruiter/jobs/waiting_jobs?page&limit---GET---"page" must be a number
+20/04/2024	21:42:20 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=1&name---GET---"name" is not allowed to be empty

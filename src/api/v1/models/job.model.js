@@ -73,13 +73,43 @@ const jobSchema = new Schema({
         enum: ['active', 'inactive'],
         default: 'active'
     },
-    isApproved: {
-        type: Schema.Types.Boolean,
-        default: false
+    acceptanceStatus: {
+        type: String,
+        enum: ["waiting", "accept", "decline"],
+        default: "waiting"
     }
 }, {
     timestamps: true
 })
+
+jobSchema.statics.getListWaitingJobByRecruiterId = async function({ userId, name, field, levelRequirement, page, limit }) {
+    try {
+        const query = {
+            recruiterId: userId,
+            acceptanceStatus: "waiting"
+        }
+        if (name) {
+            query["name"] = new RegExp(name, "i");
+        }
+        if (field) {
+            query["field"] = field;
+        }
+        if (levelRequirement) {
+            query["levelRequirement"] = levelRequirement;
+        }
+        const length = await this.find(query).lean().countDocuments();
+        const result = await this.find(query).lean()
+            .select("name field levelRequirement status deadline")
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .sort({ updatedAt: -1 })
+        return {
+            length, result
+        }
+    } catch (error) {
+        throw error;
+    }
+}
 
 
 module.exports = {

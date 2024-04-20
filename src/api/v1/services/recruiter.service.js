@@ -40,9 +40,9 @@ class RecruiterService {
         field, description, requirement, benefit, quantity, deadline, gender }) => {
         try {
             //check exist 
-            const isExist = await Job.findOne({ name });
+            const isExist = await Job.findOne({ name, recruiterId: userId });
             if (isExist) {
-                throw new ConflictRequestError("Công việc đã tồn tại");
+                throw new ConflictRequestError("Tên công việc đã được sử dụng");
             }
             const result = await Job.create({
                 userId, name, location, province, type, levelRequirement, experience, salary, field, description,
@@ -55,11 +55,30 @@ class RecruiterService {
             delete returnResult.recruiterId;
             delete returnResult.createdAt;
             delete returnResult.updatedAt;
-            delete returnResult.isApproved;
+            delete returnResult.acceptanceStatus;
             delete returnResult.__v;
             return {
                 message: "Tạo công việc thành công",
                 metadata: { ...returnResult }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getListWaitingJob = async ({ userId, name, field, levelRequirement, page, limit }) => {
+        try {
+            const { result, length } = await Job.getListWaitingJobByRecruiterId({ userId, name, field, levelRequirement, page, limit })
+            return {
+                message: "Lấy danh sách công việc thành công",
+                metadata: {
+                    listWaitingJob: result,
+                    totalElement: length
+                },
+                options: {
+                    page: page,
+                    limit: limit
+                }
             }
         } catch (error) {
             throw error;
