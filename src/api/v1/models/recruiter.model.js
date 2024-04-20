@@ -99,36 +99,56 @@ recruiterSchema.statics.updateInformation = async function ({ userId, name, posi
     try {
         let logo, coverPhoto;
         //upload logo
-        const resultLogo = await cloudinary.uploader.upload(companyLogo.tempFilePath);
-        if (!resultLogo) {
-            throw InternalServerError("Upload logo thất bại");
-        };
-        const logoPublicId = resultLogo.public_id;
-        const logoUrl = cloudinary.url(logoPublicId);
-        logo = {
-            publicId: logoPublicId,
-            url: logoUrl
+        if (companyLogo?.tempFilePath) {
+            const resultLogo = await cloudinary.uploader.upload(companyLogo.tempFilePath);
+            if (!resultLogo) {
+                throw InternalServerError("Upload logo thất bại");
+            };
+            const logoPublicId = resultLogo.public_id;
+            const logoUrl = cloudinary.url(logoPublicId);
+            logo = {
+                publicId: logoPublicId,
+                url: logoUrl
+            }
+            //check oldLogo
+            const oldLogo = (await this.findById(userId)).companyLogo?.publicId;
+            if (oldLogo) {
+                await cloudinary.uploader.destroy(oldLogo);
+            };
+        } else {
+            const oldLogo = (await this.findById(userId)).companyLogo?.publicId;
+            if (oldLogo) {
+                await cloudinary.uploader.destroy(oldLogo);
+            };
+            logo = {
+                url: companyLogo
+            }
         }
-        //check oldLogo
-        const oldLogo = (await this.findById(userId)).companyLogo?.publicId;
-        if (oldLogo) {
-            await cloudinary.uploader.destroy(oldLogo);
-        };
         //upload cover photo
-        const resultCoverPhoto = await cloudinary.uploader.upload(companyCoverPhoto.tempFilePath);
-        if (!resultCoverPhoto) {
-            throw InternalServerError("Upload logo thất bại");
-        };
-        const coverPhotoPublicId = resultCoverPhoto.public_id;
-        const coverPhotoUrl = cloudinary.url(coverPhotoPublicId);
-        coverPhoto = {
-            publicId: coverPhotoPublicId,
-            url: coverPhotoUrl
+        if (companyCoverPhoto?.tempFilePath) {
+            const resultCoverPhoto = await cloudinary.uploader.upload(companyCoverPhoto?.tempFilePath);
+            if (!resultCoverPhoto) {
+                throw InternalServerError("Upload logo thất bại");
+            };
+            const coverPhotoPublicId = resultCoverPhoto.public_id;
+            const coverPhotoUrl = cloudinary.url(coverPhotoPublicId);
+            coverPhoto = {
+                publicId: coverPhotoPublicId,
+                url: coverPhotoUrl
+            }
+            const oldCoverPhoto = (await this.findById(userId)).companyCoverPhoto?.publicId;
+            if (oldCoverPhoto) {
+                await cloudinary.uploader.destroy(oldCoverPhoto);
+            };
+        } else {
+            const oldCoverPhoto = (await this.findById(userId)).companyCoverPhoto?.publicId;
+            if (oldCoverPhoto) {
+                await cloudinary.uploader.destroy(oldCoverPhoto);
+            };
+            coverPhoto = {
+                url: companyCoverPhoto
+            }
         }
-        const oldCoverPhoto = (await this.findById(userId)).companyCoverPhoto?.publicId;
-        if (oldCoverPhoto) {
-            await cloudinary.uploader.destroy(oldCoverPhoto);
-        };
         const result = await this.findOneAndUpdate({ _id: userId }, {
             $set: {
                 name, position, phone, contactEmail, companyName, companyWebsite, companyAddress,

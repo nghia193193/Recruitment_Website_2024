@@ -47,14 +47,23 @@ class RecruiterValidation {
                 const cleanCN = xss(value); // Loại bỏ XSS
                 return cleanCN;
             }).required(),
-            companyWebsite: joi.string().max(100).custom((value) => {
-                const cleanCW = xss(value); // Loại bỏ XSS
-                return cleanCW;
-            }).required(),
+            companyWebsite: joi.string().uri().required(),
             companyAddress: joi.string().max(200).custom((value) => {
                 const cleanCA = xss(value); // Loại bỏ XSS
                 return cleanCA;
             }).required(),
+            companyLogo: joi.alternatives().try(
+                joi.object({
+                    mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg'),
+                }).unknown(true),
+                joi.string().uri() // Cho phép URL hợp lệ
+            ),
+            companyCoverPhoto: joi.alternatives().try(
+                joi.object({
+                    mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg'),
+                }).unknown(true),
+                joi.string().uri() // Cho phép URL hợp lệ
+            ),
             about: joi.string().custom((value) => {
                 const cleanAbout = xss(value); // Loại bỏ XSS
                 return cleanAbout;
@@ -69,18 +78,6 @@ class RecruiterValidation {
             fieldOfActivity: data.fieldOfActivity.split(',').map(item => item.trim())
         }
         return validateSchema.validate(processedData);
-    }
-
-    static validateUpdateFiles = data => {
-        const validateSchema = joi.object({
-            companyLogo: joi.object({
-                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg'),
-            }).unknown(true),
-            companyCoverPhoto: joi.object({
-                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg'),
-            }).unknown(true)
-        })
-        return validateSchema.validate(data);
     }
 }
 

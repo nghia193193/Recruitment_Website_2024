@@ -4,7 +4,7 @@ const { Recruiter } = require("../models/recruiter.model");
 const { validOtp, insertOtp } = require("./otp.service");
 const OTPGenerator = require('otp-generator');
 const bcrypt = require('bcryptjs');
-const { createTransporter } = require('../utils/sendMails');
+const { createTransporter, sendSignUpMail } = require('../utils/sendMails');
 const { Login } = require("../models/login.model");
 const RedisService = require("./redis.service");
 const JWTService = require("./jwt.service");
@@ -18,11 +18,23 @@ class AccessService {
 
     static recruiterSignUp = async ({ companyName, name, position, phone, contactEmail, email, password }) => {
         try {
-            // check email exist
-            const isExist = await Recruiter.findOne({ email }).lean();
-            if (isExist) {
-                throw new ConflictRequestError('Tài khoản đã tồn tại');
+            // check user exist by mail
+            const recruiter = await Recruiter.findOne({ email }).lean();
+            if (recruiter) {
+                // check verify email
+                if (recruiter.verifyEmail === true) {
+                    throw new ConflictRequestError('Email này đã được sử dụng vui lòng nhập email khác');
+                }
+                // if not verify email check otp exist
+                const otpHolder = await OTP.find({ email });
+                if (otpHolder.length) {
+                    // otp exist tell user to check mail and verify
+                    throw new BadRequestError('Email này đã được đăng ký, vui lòng truy cập email để xác nhận tài khoản');
+                }
+                // otp expired allowed user to Resignup
+                await Recruiter.findOneAndDelete({ email });
             }
+            // user not exist create new user
             // hash password
             const hashPassword = await bcrypt.hash(password, 10);
             await RedisService.setPassword(email, hashPassword);
@@ -30,42 +42,7 @@ class AccessService {
             const newRecruiter = await Recruiter.create({
                 companyName, name, position, phone, contactEmail, email
             })
-            // create otp
-            const otp = OTPGenerator.generate(6, {
-                lowerCaseAlphabets: false,
-                upperCaseAlphabets: false,
-                specialChars: false,
-                digits: 6
-            })
-            // save otp to db
-            const isSaveOtp = await insertOtp(otp, email);
-            if (isSaveOtp === 0) {
-                throw new InternalServerError("Có lỗi xảy ra trong quá trình xử lý");
-            }
-            // send mail
-            let mailDetails = {
-                from: `${process.env.MAIL_SEND}`,
-                to: email,
-                subject: 'Xác nhận đăng ký tài khoản',
-                html: ` 
-                <div style="text-align: left; font-family: arial; margin: 10px auto;"> 
-                    <span style="margin: 5px 2px"><b>Xin chào</b> <b style="color: red">${newRecruiter.name}</b>,</span>
-                    <p style="margin: 5px 2px">Cảm ơn bạn đã đăng ký dịch vụ của chúng tôi.</p>
-                    <p style="margin: 5px 2px">Mã xác nhận OTP của bạn là: <b >${otp}</b></p>
-                    <p style="margin: 5px 2px">Vui lòng nhập vào nút bên dưới để xác minh email của bạn.</p>
-                    <div style="display: flex; justify-content: center; margin: 30px">
-                    <button style="background-color: #008000; padding: 10px 20px; border-radius: 20px; border-style: none; align-items: center"><a href="${process.env.FE_URL}/otp?email=${email}" style="font-size: 15px;color: white; text-decoration: none">Xác nhận tài khoản</a></button>
-                    </div>
-                    <p style="margin: 5px 2px">Xin lưu ý rằng nếu tài khoản chưa được xác minh trong vòng <b style="color: red">10 phút</b> vui lòng yêu cầu gửi lại email xác nhận.</p>
-                    <p style="margin: 5px 2px">Nếu bạn không yêu cầu vui lòng bỏ qua yêu cầu này</p>
-                    <p style="margin: 20px 2px">Trân trọng.</p>
-                </div>
-                `
-            };
-            const transporter = await createTransporter();
-            transporter.sendMail(mailDetails, err => {
-                throw new InternalServerError('Có lỗi xảy ra');
-            });
+            await sendSignUpMail({ toEmail: email, userName: newRecruiter.name });
             // return 201
             return {
                 message: "Đăng ký tài khoản thành công",
@@ -124,53 +101,18 @@ class AccessService {
 
     static recruiterResendVerifyEmail = async ({ email }) => {
         try {
-            // check email exist
-            const isExist = await Recruiter.findOne({ email }).lean();
-            if (!isExist) {
+            // check user exist
+            const recruiter = await Recruiter.findOne({ email }).lean();
+            if (!recruiter) {
                 throw new BadRequestError('Email không tồn tại');
             }
-            if (isExist.verifyEmail === true) {
+            if (recruiter.verifyEmail === true) {
                 throw new BadRequestError('Email của bạn đã được xác nhận');
-            }
-            // create otp
-            const otp = OTPGenerator.generate(6, {
-                lowerCaseAlphabets: false,
-                upperCaseAlphabets: false,
-                specialChars: false,
-                digits: 6
-            })
-            // save otp to db
-            const isSaveOtp = await insertOtp(otp, email);
-            if (isSaveOtp === 0) {
-                throw new InternalServerError('Có lỗi xảy ra');
             }
             // refresh ttl redis password
             const password = await RedisService.getPassword(email);
             await RedisService.setPassword(email, password);
-            // send mail
-            let mailDetails = {
-                from: `${process.env.MAIL_SEND}`,
-                to: email,
-                subject: 'Xác nhận đăng ký tài khoản',
-                html: ` 
-                <div style="text-align: left; font-family: arial; margin: 10px auto;"> 
-                    <span style="margin: 5px 2px"><b>Xin chào</b> <b style="color: red">${isExist.name}</b>,</span>
-                    <p style="margin: 5px 2px">Cảm ơn bạn đã đăng ký dịch vụ của chúng tôi.</p>
-                    <p style="margin: 5px 2px">Mã xác nhận OTP của bạn là: <b >${otp}</b></p>
-                    <p style="margin: 5px 2px">Vui lòng nhập vào nút bên dưới để xác minh email của bạn.</p>
-                    <div style="display: flex; justify-content: center; margin: 30px">
-                    <button style="background-color: #008000; padding: 10px 20px; border-radius: 20px; border-style: none; align-items: center"><a href="${process.env.FE_URL}/otp?email=${email}" style="font-size: 15px;color: white; text-decoration: none">Xác nhận tài khoản</a></button>
-                    </div>
-                    <p style="margin: 5px 2px">Xin lưu ý rằng nếu tài khoản chưa được xác minh trong vòng <b style="color: red">10 phút</b> vui lòng yêu cầu gửi lại email xác nhận.</p>
-                    <p style="margin: 5px 2px">Nếu bạn không yêu cầu vui lòng bỏ qua yêu cầu này</p>
-                    <p style="margin: 20px 2px">Trân trọng.</p>
-                </div>
-                `
-            };
-            const transporter = await createTransporter();
-            transporter.sendMail(mailDetails, err => {
-                throw new InternalServerError('Có lỗi xảy ra');
-            });
+            await sendSignUpMail({ toEmail: email, userName: recruiter.name });
             // return 200
             return {
                 message: "Gửi lại mail xác nhận thành công",
@@ -306,7 +248,7 @@ class AccessService {
 
     static getGenderRequirement = async () => {
         try {
-            return { 
+            return {
                 message: "Lấy danh sách yêu cầu giới tính thành công",
                 metadata: {
                     genderRequirement

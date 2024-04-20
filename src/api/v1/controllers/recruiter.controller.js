@@ -15,15 +15,11 @@ class RecruiterController {
     }
 
     updateInformation = async (req, res, next) => {
-        const { error: bodyError, value: bodyValue } = RecruiterValidation.validateUpdateInformation(req.body);
-        const { error: fileError } = RecruiterValidation.validateUpdateFiles(req.files);
-        if (bodyError || fileError) {
-            const errors = [];
-            if (bodyError) errors.push(bodyError.details[0].message);
-            if (fileError) errors.push(fileError.details[0].message);
-            throw new BadRequestError(errors[0]);
+        const { error, value } = RecruiterValidation.validateUpdateInformation({ ...req.body, ...req.files });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
         }
-        const { metadata, message } = await RecruiterService.updateInformation({ ...bodyValue, ...req.payload, ...req.files });
+        const { metadata, message } = await RecruiterService.updateInformation({ ...value, ...req.payload });
         new OK({
             message: message,
             metadata: { ...metadata }
