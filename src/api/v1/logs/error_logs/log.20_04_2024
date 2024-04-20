@@ -28,3 +28,6 @@
 20/04/2024	21:38:56 ::1---/v1/api/recruiter/jobs/waiting_jobs---GET---this.find is not a function
 20/04/2024	21:40:32 ::1---/v1/api/recruiter/jobs/waiting_jobs?page&limit---GET---"page" must be a number
 20/04/2024	21:42:20 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=1&name---GET---"name" is not allowed to be empty
+20/04/2024	22:02:14 ::1---/v1/api/recruiter/jobs/waiting_jobs---GET---joi.string.valid is not a function
+20/04/2024	22:03:36 ::1---/v1/api/recruiter/jobs/waiting_jobs?status=inactives---GET---"status" must be one of [active, inactive]
+20/04/2024	22:03:56 ::1---/v1/api/recruiter/jobs/waiting_jobs?status=inactives---GET---'"status"' không hợp lệ

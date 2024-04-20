@@ -134,8 +134,11 @@ class RecruiterValidation {
             }),
             field: joi.string().valid(...fieldOfActivity), 
             levelRequirement: joi.string().valid(...levelRequirement), 
+            status: joi.string().valid(...["active","inactive"]),
             page: joi.number().min(1),
             limit: joi.number().min(1)
+        }).messages({
+            "any.only": "'{#label}' không hợp lệ"
         })
         return validateSchema.validate(data);
     }

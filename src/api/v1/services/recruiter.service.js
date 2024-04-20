@@ -66,9 +66,9 @@ class RecruiterService {
         }
     }
 
-    static getListWaitingJob = async ({ userId, name, field, levelRequirement, page, limit }) => {
+    static getListWaitingJob = async ({ userId, name, field, levelRequirement, status, page, limit }) => {
         try {
-            const { result, length } = await Job.getListWaitingJobByRecruiterId({ userId, name, field, levelRequirement, page, limit })
+            const { result, length } = await Job.getListWaitingJobByRecruiterId({ userId, name, field, levelRequirement, status, page, limit })
             return {
                 message: "Lấy danh sách công việc thành công",
                 metadata: {

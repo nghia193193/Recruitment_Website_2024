@@ -82,7 +82,7 @@ const jobSchema = new Schema({
     timestamps: true
 })
 
-jobSchema.statics.getListWaitingJobByRecruiterId = async function({ userId, name, field, levelRequirement, page, limit }) {
+jobSchema.statics.getListWaitingJobByRecruiterId = async function({ userId, name, field, levelRequirement, status, page, limit }) {
     try {
         const query = {
             recruiterId: userId,
@@ -96,6 +96,9 @@ jobSchema.statics.getListWaitingJobByRecruiterId = async function({ userId, name
         }
         if (levelRequirement) {
             query["levelRequirement"] = levelRequirement;
+        }
+        if (status) {
+            query["status"] = status;
         }
         const length = await this.find(query).lean().countDocuments();
         const result = await this.find(query).lean()
