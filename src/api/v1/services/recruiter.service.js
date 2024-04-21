@@ -1,5 +1,6 @@
 const { InternalServerError, NotFoundRequestError, ConflictRequestError } = require("../core/error.response");
 const { Job } = require("../models/job.model");
+const { Login } = require("../models/login.model");
 const { Recruiter } = require("../models/recruiter.model");
 
 
@@ -30,6 +31,18 @@ class RecruiterService {
             return {
                 message: "cập nhật thông tin thành công",
                 metadata: { ...result }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static changePassword = async ({ userId, currentPassword, newPassword }) => {
+        try {
+            const email = (await Recruiter.findById(userId).lean()).email;
+            const { message } = await Login.changePassword({ email, currentPassword, newPassword });
+            return {
+                message: message
             }
         } catch (error) {
             throw error;
@@ -68,7 +81,7 @@ class RecruiterService {
 
     static getListWaitingJob = async ({ userId, name, field, levelRequirement, status, page, limit }) => {
         try {
-            const { result, length, applicationNumber } = await Job.getListWaitingJobByRecruiterId({ userId, name, field, levelRequirement, status, page, limit })
+            const { result, length } = await Job.getListWaitingJobByRecruiterId({ userId, name, field, levelRequirement, status, page, limit })
             return {
                 message: "Lấy danh sách công việc thành công",
                 metadata: {

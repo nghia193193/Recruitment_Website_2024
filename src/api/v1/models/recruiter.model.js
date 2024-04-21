@@ -85,7 +85,7 @@ recruiterSchema.statics.getInformation = async function (userId) {
             '-verifyEmail -roles -createdAt -updatedAt -__v'
         );
         recruiterInfor.role = recruiterInfor.loginId?.role;
-        recruiterInfor.loginId = undefined;
+        delete recruiterInfor.loginId;
         recruiterInfor.companyLogo = recruiterInfor.companyLogo?.url;
         recruiterInfor.companyCoverPhoto = recruiterInfor.companyCoverPhoto?.url;
         return recruiterInfor;
@@ -158,11 +158,13 @@ recruiterSchema.statics.updateInformation = async function ({ userId, name, posi
             }
         }, {
             new: true,
-            select: { status: 0, verifyEmail: 0, loginId: 0, createdAt: 0, updatedAt: 0, __v: 0 }
-        }).lean()
+            select: { status: 0, verifyEmail: 0, createdAt: 0, updatedAt: 0, __v: 0 }
+        }).lean().populate('loginId')
         if (!result) {
             return null;
         }
+        result.role = result.loginId.role;
+        delete result.loginId;
         result.companyLogo = result.companyLogo?.url;
         result.companyCoverPhoto = result.companyCoverPhoto?.url;
         return result;

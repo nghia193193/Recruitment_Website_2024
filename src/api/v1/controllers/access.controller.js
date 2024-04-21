@@ -16,7 +16,7 @@ class AccessController {
         const { metadata, message } = await AccessService.recruiterSignUp(value);
         new CREATED({
             message: message,
-            metadata: {...metadata}
+            metadata: { ...metadata }
         }).send(res)
     }
 
@@ -33,7 +33,7 @@ class AccessController {
         const { message, metadata } = await AccessService.recruiterResendVerifyEmail(req.body);
         new OK({
             message: message,
-            metadata: {...metadata}
+            metadata: { ...metadata }
         }).send(res)
     }
 
@@ -45,7 +45,7 @@ class AccessController {
         const { message, metadata } = await AccessService.login(value);
         new OK({
             message: message,
-            metadata: {...metadata}
+            metadata: { ...metadata }
         }).send(res)
     }
 
@@ -53,7 +53,7 @@ class AccessController {
         const { message, metadata } = await AccessService.refreshAccessToken(req.body);
         new OK({
             message: message,
-            metadata: {...metadata}
+            metadata: { ...metadata }
         }).send(res)
     }
 
@@ -68,7 +68,7 @@ class AccessController {
         const { message, metadata } = await AccessService.getFieldOfActivity();
         new OK({
             message,
-            metadata: {...metadata}
+            metadata: { ...metadata }
         }).send(res)
     }
 
@@ -76,7 +76,7 @@ class AccessController {
         const { message, metadata } = await AccessService.getJobType();
         new OK({
             message,
-            metadata: {...metadata}
+            metadata: { ...metadata }
         }).send(res)
     }
 
@@ -84,7 +84,7 @@ class AccessController {
         const { message, metadata } = await AccessService.getLevelRequirement();
         new OK({
             message,
-            metadata: {...metadata}
+            metadata: { ...metadata }
         }).send(res)
     }
 
@@ -92,7 +92,7 @@ class AccessController {
         const { message, metadata } = await AccessService.getExperience();
         new OK({
             message,
-            metadata: {...metadata}
+            metadata: { ...metadata }
         }).send(res)
     }
 
@@ -100,7 +100,7 @@ class AccessController {
         const { message, metadata } = await AccessService.getGenderRequirement();
         new OK({
             message,
-            metadata: {...metadata}
+            metadata: { ...metadata }
         }).send(res)
     }
 
@@ -108,7 +108,7 @@ class AccessController {
         const { message, metadata } = await AccessService.getProvince();
         new OK({
             message,
-            metadata: {...metadata}
+            metadata: { ...metadata }
         }).send(res)
     }
 }

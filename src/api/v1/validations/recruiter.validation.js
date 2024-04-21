@@ -26,7 +26,10 @@ class RecruiterValidation {
                 const cleanPassword = xss(value); // Loại bỏ XSS
                 return cleanPassword;
             }).required(),
-            confirmPassword: joi.ref("password")
+            confirmPassword: joi.string().valid(joi.ref("password")).required().messages({
+                'any.only': 'Mật khẩu xác nhận không khớp',
+                'any.required': 'Vui lòng nhập mật khẩu xác nhận'
+            })
         })
         return validateSchema.validate(data);
     }
@@ -132,13 +135,31 @@ class RecruiterValidation {
                 const cleanName = xss(value); // Loại bỏ XSS
                 return cleanName;
             }),
-            field: joi.string().valid(...fieldOfActivity), 
-            levelRequirement: joi.string().valid(...levelRequirement), 
-            status: joi.string().valid(...["active","inactive"]),
+            field: joi.string().valid(...fieldOfActivity),
+            levelRequirement: joi.string().valid(...levelRequirement),
+            status: joi.string().valid(...["active", "inactive"]),
             page: joi.number().min(1),
             limit: joi.number().min(1)
         }).messages({
             "any.only": "'{#label}' không hợp lệ"
+        })
+        return validateSchema.validate(data);
+    }
+
+    static validateChangePassword = data => {
+        const validateSchema = joi.object({
+            currentPassword: joi.string().min(8).max(32).custom((value) => {
+                const cleanPass = xss(value); // Loại bỏ XSS
+                return cleanPass;
+            }).required(),
+            newPassword: joi.string().min(8).max(32).custom((value) => {
+                const cleanPass = xss(value); // Loại bỏ XSS
+                return cleanPass;
+            }).required(),
+            confirmNewPassword: joi.string().valid(joi.ref("newPassword")).required().messages({
+                'any.only': 'Mật khẩu xác nhận không khớp',
+                'any.required': 'Vui lòng nhập mật khẩu xác nhận'
+            })
         })
         return validateSchema.validate(data);
     }

@@ -13,6 +13,7 @@ class AccessValidation {
         })
         return validateSchema.validate(data);
     }
+
 }
 
 module.exports = AccessValidation

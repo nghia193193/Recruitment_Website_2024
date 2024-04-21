@@ -25,6 +25,17 @@ class RecruiterController {
         }).send(res)
     }
 
+    changePassword = async (req, res, next) => {
+        const { error, value } = RecruiterValidation.validateChangePassword(req.body);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message } = await RecruiterService.changePassword({ ...req.payload, ...value })
+        new OK({
+            message: message
+        }).send(res)
+    }
+
     createJob = async (req, res, next) => {
         const { error, value } = RecruiterValidation.validateCreateJob(req.body);
         if (error) {
