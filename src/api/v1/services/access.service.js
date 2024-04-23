@@ -10,7 +10,7 @@ const RedisService = require("./redis.service");
 const JWTService = require("./jwt.service");
 const { BadRequestError, InternalServerError, NotFoundRequestError, ConflictRequestError } = require("../core/error.response");
 const { findUserByRole } = require("../utils/findUser");
-const { fieldOfActivity, jobType, levelRequirement, experience, genderRequirement, provinceOfVietNam } = require('../utils');
+const { fieldOfActivity, jobType, levelRequirement, experience, genderRequirement, provinceOfVietNam, mapRolePermission } = require('../utils');
 const client = require('../dbs/init.redis');
 
 
@@ -146,6 +146,7 @@ class AccessService {
             return {
                 message: "Đăng nhập thành công",
                 metadata: {
+                    permission: mapRolePermission[userRole],
                     tokens: {
                         accessToken,
                         refreshToken

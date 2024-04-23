@@ -86,6 +86,12 @@ const provinceOfVietNam = [
     "Yên Bái"
 ]
 
+mapRolePermission = {
+    "ADMIN": "001",
+    "RECRUITER": "002",
+    "CANDIDATE": "003"
+}
+
 module.exports = {
     fieldOfActivity,
     jobType,
@@ -93,5 +99,6 @@ module.exports = {
     experience,
     genderRequirement,
     acceptanceStatus,
-    provinceOfVietNam
+    provinceOfVietNam,
+    mapRolePermission
 }
