@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const model = mongoose.model;
 const Schema = mongoose.Schema;
+const { formatInTimeZone } = require('date-fns-tz');
+const { NotFoundRequestError, InternalServerError } = require('../core/error.response');
 
 const jobSchema = new Schema({
     name: { //tên
@@ -82,7 +84,7 @@ const jobSchema = new Schema({
     timestamps: true
 })
 
-jobSchema.statics.getListWaitingJobByRecruiterId = async function({ userId, name, field, levelRequirement, status, page, limit }) {
+jobSchema.statics.getListWaitingJobByRecruiterId = async function ({ userId, name, field, levelRequirement, status, page, limit }) {
     try {
         const query = {
             recruiterId: userId,
@@ -120,6 +122,165 @@ jobSchema.statics.getListWaitingJobByRecruiterId = async function({ userId, name
     }
 }
 
+jobSchema.statics.getListAcceptedJobByRecruiterId = async function ({ userId, name, field, levelRequirement, status, page, limit }) {
+    try {
+        const query = {
+            recruiterId: userId,
+            acceptanceStatus: "accept"
+        }
+        if (name) {
+            query["name"] = new RegExp(name, "i");
+        }
+        if (field) {
+            query["field"] = field;
+        }
+        if (levelRequirement) {
+            query["levelRequirement"] = levelRequirement;
+        }
+        if (status) {
+            query["status"] = status;
+        }
+        const length = await this.find(query).lean().countDocuments();
+        let result = await this.find(query).lean()
+            .select("name field levelRequirement status deadline")
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .sort({ updatedAt: -1 })
+        result = result.map(item => {
+            return {
+                ...item,
+                applicationNumber: 0
+            }
+        })
+        return {
+            length, result
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
+jobSchema.statics.getListDeclinedJobByRecruiterId = async function ({ userId, name, field, levelRequirement, status, page, limit }) {
+    try {
+        const query = {
+            recruiterId: userId,
+            acceptanceStatus: "decline"
+        }
+        if (name) {
+            query["name"] = new RegExp(name, "i");
+        }
+        if (field) {
+            query["field"] = field;
+        }
+        if (levelRequirement) {
+            query["levelRequirement"] = levelRequirement;
+        }
+        if (status) {
+            query["status"] = status;
+        }
+        const length = await this.find(query).lean().countDocuments();
+        let result = await this.find(query).lean()
+            .select("name field levelRequirement status deadline")
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .sort({ updatedAt: -1 })
+        result = result.map(item => {
+            return {
+                ...item,
+                applicationNumber: 0
+            }
+        })
+        return {
+            length, result
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
+jobSchema.statics.getListJobAdmin = async function ({ name, field, levelRequirement, acceptanceStatus, page, limit }) {
+    try {
+        const query = {};
+        if (name) {
+            query["name"] = new RegExp(name, "i");
+        }
+        if (field) {
+            query["field"] = field;
+        }
+        if (levelRequirement) {
+            query["levelRequirement"] = levelRequirement;
+        }
+        if (acceptanceStatus) {
+            query["acceptanceStatus"] = acceptanceStatus;
+        }
+        const length = await this.find(query).lean().countDocuments();
+        let result = await this.find(query).lean().populate("recruiterId")
+            .select("name field levelRequirement acceptanceStatus deadline recruiterId")
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .sort({ updatedAt: -1 })
+        result = result.map(job => {
+            job.companyName = job.recruiterId.companyName;
+            job.companyLogo = job.recruiterId.companyLogo?.url;
+            job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
+            delete job.recruiterId;
+            return { ...job };
+        })
+        return {
+            length, result
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
+jobSchema.statics.getJobDetail = async function ({ jobId }) {
+    try {
+        let job = await this.findById(jobId).lean().populate("recruiterId")
+            .select("-__v ")
+        if (!job) {
+            throw new NotFoundRequestError("Không tìm thấy công việc");
+        }
+        job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
+        job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        job.companyName = job.recruiterId.companyName;
+        job.companyLogo = job.recruiterId.companyLogo?.url;
+        job.employeeNumber = job.recruiterId.employeeNumber;
+        job.companyAddress = job.recruiterId.companyAddress;
+        delete job.recruiterId;
+        return job;
+    } catch (error) {
+        throw error;
+    }
+}
+
+jobSchema.statics.approveJob = async function ({ jobId, acceptanceStatus }) {
+    try {
+        const job = await this.findOneAndUpdate({ _id: jobId }, {
+            $set: {
+                acceptanceStatus: acceptanceStatus
+            }
+        }, {
+            new: true,
+            select: {__v: 0}
+        }).lean().populate("recruiterId")
+        if (!job) {
+            throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
+        }
+        job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
+        job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        job.companyName = job.recruiterId.companyName;
+        job.companyLogo = job.recruiterId.companyLogo?.url;
+        job.employeeNumber = job.recruiterId.employeeNumber;
+        job.companyAddress = job.recruiterId.companyAddress;
+        delete job.recruiterId;
+        return job;
+    } catch (error) {
+        throw error;
+    }
+}
 
 module.exports = {
     Job: model('Job', jobSchema)

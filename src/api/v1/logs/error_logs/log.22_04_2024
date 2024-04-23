@@ -1,0 +1,8 @@
+22/04/2024	21:57:04 ::1---/v1/api/admin/jobs---GET---Vui lòng đăng nhập
+22/04/2024	22:03:42 ::1---/v1/api/admin/jobs?limit=0---GET---"limit" must be greater than or equal to 1
+22/04/2024	22:07:25 ::1---/v1/api/admin/jobs?acceptanceStatus=css---GET---"acceptanceStatus" must be one of [waiting, accept, decline]
+22/04/2024	22:08:05 ::1---/v1/api/admin/jobs?acceptanceStatus=css---GET---'"acceptanceStatus"' không hợp lệ
+22/04/2024	22:08:25 ::1---/v1/api/admin/jobs?levelRequirement=sdfsdf---GET---'"levelRequirement"' không hợp lệ
+22/04/2024	22:09:02 ::1---/v1/api/admin/jobs?field=sfsdf---GET---'"field"' không hợp lệ
+22/04/2024	22:14:49 ::1---/v1/api/admin/acceptance_status---GET---Vui lòng đăng nhập
+22/04/2024	22:15:46 ::1---/v1/api/admin/jobs?acceptanceStatus=sfsfs---GET---'"acceptanceStatus"' không hợp lệ

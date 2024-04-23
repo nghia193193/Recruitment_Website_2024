@@ -73,7 +73,9 @@ recruiterSchema.statics.verifyEmail = async function (email) {
         }, {
             new: true
         })
-        return result ? 1 : 0;
+        if (!result) {
+            throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại');
+        }
     } catch (error) {
         throw error;
     }
@@ -161,7 +163,7 @@ recruiterSchema.statics.updateInformation = async function ({ userId, name, posi
             select: { status: 0, verifyEmail: 0, createdAt: 0, updatedAt: 0, __v: 0 }
         }).lean().populate('loginId')
         if (!result) {
-            return null;
+            throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại');
         }
         result.role = result.loginId.role;
         delete result.loginId;
@@ -212,7 +214,7 @@ recruiterSchema.statics.approveRecruiter = async function ({ recruiterId }) {
             select: { __v: 0, createdAt: 0, udatedAt: 0, loginId: 0 }
         }).lean()
         if (!result) {
-            return null;
+            throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
         }
         result.companyLogo = result.companyLogo?.url;
         result.companyCoverPhoto = result.companyCoverPhoto?.url;
@@ -233,7 +235,7 @@ recruiterSchema.statics.changeRecruiterStatus = async function ({ recruiterId, s
             select: { __v: 0, createdAt: 0, udatedAt: 0, loginId: 0 }
         }).lean()
         if (!result) {
-            return null;
+            throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
         }
         result.companyLogo = result.companyLogo?.url;
         result.companyCoverPhoto = result.companyCoverPhoto?.url;

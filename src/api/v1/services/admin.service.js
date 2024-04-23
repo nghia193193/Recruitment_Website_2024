@@ -1,6 +1,8 @@
-const { NotFoundRequestError, BadRequestError } = require('../core/error.response');
+const { NotFoundRequestError, BadRequestError, InternalServerError } = require('../core/error.response');
 const { Admin } = require('../models/admin.model');
+const { Job } = require('../models/job.model');
 const { Recruiter } = require('../models/recruiter.model');
+const { acceptanceStatus } = require('../utils');
 const { createTransporter } = require('../utils/sendMails');
 
 class AdminService {
@@ -40,9 +42,6 @@ class AdminService {
         try {
             // activate recruiter
             const result = await Recruiter.approveRecruiter({ recruiterId });
-            if (!result) {
-                throw new NotFoundRequestError("Không tìm thấy nhà tuyển dụng");
-            }
             // send mail
             let mailDetails = {
                 from: `${process.env.MAIL_SEND}`,
@@ -74,11 +73,59 @@ class AdminService {
     static changeRecruiterStatus = async ({ recruiterId, status }) => {
         try {
             const result = await Recruiter.changeRecruiterStatus({ recruiterId, status });
-            if (!result) {
-                throw new NotFoundRequestError("Không tìm thấy nhà tuyển dụng");
-            }
             return {
                 message: "Thay đổi trạng thái thành công",
+                metadata: { ...result },
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getListAcceptanceStatus = async () => {
+        try {
+            return {
+                message: "Lấy danh sách trạng thái công việc thành công",
+                metadata: { listAcceptanceStatus: acceptanceStatus },
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getListJob = async ({ name, field, levelRequirement, acceptanceStatus, page, limit }) => {
+        try {
+            const { result, length } = await Job.getListJobAdmin({ name, field, levelRequirement, acceptanceStatus, page, limit });
+            return {
+                message: "Lấy danh sách công việc thành công",
+                metadata: { listJob: result, totalElement: length },
+                options: {
+                    page: page,
+                    limit: limit
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getJobDetail = async ({ jobId }) => {
+        try {
+            const job = await Job.getJobDetail({ jobId });
+            return {
+                message: "Lấy thông tin công việc thành công",
+                metadata: { ...job },
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static approveJob = async ({ jobId, acceptanceStatus }) => {
+        try {
+            const result = await Job.approveJob({ jobId, acceptanceStatus });
+            return {
+                message: "Duyệt công việc thành công",
                 metadata: { ...result },
             }
         } catch (error) {

@@ -69,10 +69,7 @@ class AccessService {
                 throw new BadRequestError('OTP không chính xác')
             }
             // verify Email
-            const result = await Recruiter.verifyEmail(email);
-            if (!result) {
-                throw new InternalServerError('Có lỗi xảy ra');
-            }
+            await Recruiter.verifyEmail(email);
             // add recruiter to login
             const hashPassword = await RedisService.getPassword(email);
             const login = await Login.create({

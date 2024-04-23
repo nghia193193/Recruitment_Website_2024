@@ -53,6 +53,51 @@ class AdminController {
             metadata: { ...metadata },
         }).send(res)
     }
+
+    getListAcceptanceStatus = async (req, res, next) => {
+        const { metadata, message } = await AdminService.getListAcceptanceStatus();
+        new OK({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
+    getListJob = async (req, res, next) => {
+        const { error, value } = AdminValidation.validateGetListJob(req.query);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { metadata, message, options } = await AdminService.getListJob({ ...value });
+        new OK({
+            message: message,
+            metadata: { ...metadata },
+            options: options
+        }).send(res)
+    }
+
+    getJobDetail = async (req, res, next) => {
+        const { error, value } = AdminValidation.validateJobId(req.params);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { metadata, message } = await AdminService.getJobDetail({ ...value });
+        new OK({
+            message: message,
+            metadata: { ...metadata },
+        }).send(res)
+    }
+
+    approveJob = async (req, res, next) => {
+        const { error, value } = AdminValidation.validateApproveJob({ ...req.params, ...req.body });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { metadata, message } = await AdminService.approveJob({ ...value });
+        new OK({
+            message: message,
+            metadata: { ...metadata },
+        }).send(res)
+    }
 }
 
 module.exports = new AdminController;

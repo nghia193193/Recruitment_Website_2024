@@ -1,5 +1,5 @@
 const joi = require('joi');
-const { fieldOfActivity } = require('../utils/index');
+const { fieldOfActivity, levelRequirement, acceptanceStatus } = require('../utils/index');
 const Joi = require('joi');
 const mongoose = require('mongoose');
 
@@ -25,6 +25,40 @@ class AdminValidation {
     static validateRecruiterId = data => {
         const validateSchema = joi.object({
             recruiterId: objectIdJoiSchema.required()
+        })
+        return validateSchema.validate(data);
+    }
+
+    static validateGetListJob = data => {
+        const validateSchema = joi.object({
+            name: joi.string().custom((value) => {
+                const cleanName = xss(value); // Loại bỏ XSS
+                return cleanName;
+            }),
+            field: joi.string().valid(...fieldOfActivity),
+            levelRequirement: joi.string().valid(...levelRequirement),
+            acceptanceStatus: joi.string().valid(...["waiting", "accept", "decline"]),
+            page: joi.number().min(1),
+            limit: joi.number().min(1)
+        }).messages({
+            "any.only": "'{#label}' không hợp lệ"
+        })
+        return validateSchema.validate(data);
+    }
+
+    static validateJobId = data => {
+        const validateSchema = joi.object({
+            jobId: objectIdJoiSchema.required()
+        })
+        return validateSchema.validate(data);
+    }
+
+    static validateApproveJob = data => {
+        const validateSchema = joi.object({
+            jobId: objectIdJoiSchema.required(),
+            acceptanceStatus: joi.string().valid(...["accept", "decline"])
+        }).messages({
+            "any.only": "'{#label}' không hợp lệ"
         })
         return validateSchema.validate(data);
     }

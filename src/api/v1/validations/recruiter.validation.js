@@ -129,7 +129,7 @@ class RecruiterValidation {
         return validateSchema.validate(data);
     }
 
-    static validateGetListWaitingJob = data => {
+    static validateRecruiterGetListJob = data => {
         const validateSchema = joi.object({
             name: joi.string().custom((value) => {
                 const cleanName = xss(value); // Loại bỏ XSS

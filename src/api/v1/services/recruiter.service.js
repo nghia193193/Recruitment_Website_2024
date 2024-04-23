@@ -25,9 +25,6 @@ class RecruiterService {
                 userId, name, position, phone, contactEmail, companyName, companyEmail,
                 companyWebsite, companyAddress, companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity
             })
-            if (!result) {
-                throw new InternalServerError('Có lỗi xảy ra');
-            }
             return {
                 message: "cập nhật thông tin thành công",
                 metadata: { ...result }
@@ -86,6 +83,44 @@ class RecruiterService {
                 message: "Lấy danh sách công việc thành công",
                 metadata: {
                     listWaitingJob: result,
+                    totalElement: length
+                },
+                options: {
+                    page: page,
+                    limit: limit
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getListAcceptedJob = async ({ userId, name, field, levelRequirement, status, page, limit }) => {
+        try {
+            const { result, length } = await Job.getListAcceptedJobByRecruiterId({ userId, name, field, levelRequirement, status, page, limit })
+            return {
+                message: "Lấy danh sách công việc thành công",
+                metadata: {
+                    listAcceptedJob: result,
+                    totalElement: length
+                },
+                options: {
+                    page: page,
+                    limit: limit
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getListDeclinedJob = async ({ userId, name, field, levelRequirement, status, page, limit }) => {
+        try {
+            const { result, length } = await Job.getListDeclinedJobByRecruiterId({ userId, name, field, levelRequirement, status, page, limit })
+            return {
+                message: "Lấy danh sách công việc thành công",
+                metadata: {
+                    listDeclinedJob: result,
                     totalElement: length
                 },
                 options: {
