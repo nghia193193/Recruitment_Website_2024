@@ -48,6 +48,50 @@ class RecruiterController {
         }).send(res)
     }
 
+    getJobDetail = async (req, res, next) => {
+        const { error, value } = RecruiterValidation.validateJobId(req.params);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { metadata, message } = await RecruiterService.getJobDetail({ ...value, ...req.payload });
+        new OK({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
+    getJobStatus = async (req, res, next) => {
+        const { metadata, message } = await RecruiterService.getJobStatus();
+        new OK({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
+    changeJobStatus = async (req, res, next) => {
+        const { error, value } = RecruiterValidation.validateChangeJobStatus({ ...req.body, ...req.params });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { metadata, message } = await RecruiterService.changeJobStatus({ ...value, ...req.payload });
+        new OK({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
+    updateJob = async (req, res, next) => {
+        const { error, value } = RecruiterValidation.validateChangeJobStatus({ ...req.body, ...req.params });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { metadata, message } = await RecruiterService.changeJobStatus({ ...value, ...req.payload });
+        new OK({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
     getListWaitingJob = async (req, res, next) => {
         const { error, value } = RecruiterValidation.validateRecruiterGetListJob({ ...req.body, ...req.query });
         if (error) {

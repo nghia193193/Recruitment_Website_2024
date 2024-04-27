@@ -2,6 +2,7 @@ const { InternalServerError, NotFoundRequestError, ConflictRequestError } = requ
 const { Job } = require("../models/job.model");
 const { Login } = require("../models/login.model");
 const { Recruiter } = require("../models/recruiter.model");
+const { status } = require("../utils");
 
 
 class RecruiterService {
@@ -70,6 +71,42 @@ class RecruiterService {
             return {
                 message: "Tạo công việc thành công",
                 metadata: { ...returnResult }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getJobDetail = async ({ userId, jobId }) => {
+        try {
+            const job = await Job.getJobDetailByRecruiter({ userId, jobId })
+            return {
+                message: "Lấy thông tin công việc thành công",
+                metadata: { ...job }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getJobStatus = async () => {
+        try {
+            const listStatus = status;
+            return {
+                message: "Lấy danh sách trạng thái công việc thành công",
+                metadata: { listStatus }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static changeJobStatus = async ({ userId, jobId, status }) => {
+        try {
+            const job = await Job.changeJobStatus({ userId, jobId, status })
+            return {
+                message: "Thay đổi trạng thái công việc thành công",
+                metadata: { ...job }
             }
         } catch (error) {
             throw error;

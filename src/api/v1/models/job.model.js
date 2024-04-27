@@ -84,6 +84,27 @@ const jobSchema = new Schema({
     timestamps: true
 })
 
+jobSchema.statics.changeJobStatus = async function ({ userId, jobId, status }) {
+    try {
+        const job = await this.findOneAndUpdate({ _id: jobId, recruiterId: userId }, {
+            $set: {
+                status: status
+            }
+        }, {
+            new: true,
+            select: {__v: 0, recruiterId: 0}
+        }).lean()
+        if (!job) {
+            throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
+        }
+        job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        return job;
+    } catch (error) {
+        throw error;
+    }
+}
+
 jobSchema.statics.getListWaitingJobByRecruiterId = async function ({ userId, name, field, levelRequirement, status, page, limit }) {
     try {
         const query = {
@@ -255,6 +276,21 @@ jobSchema.statics.getJobDetail = async function ({ jobId }) {
     }
 }
 
+jobSchema.statics.getJobDetailByRecruiter = async function ({ userId, jobId }) {
+    try {
+        let job = await this.findOne({_id: jobId, recruiterId: userId}).lean()
+            .select("-__v -recruiterId")
+        if (!job) {
+            throw new NotFoundRequestError("Không tìm thấy công việc");
+        }
+        job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        return job;
+    } catch (error) {
+        throw error;
+    }
+}
+
 jobSchema.statics.approveJob = async function ({ jobId, acceptanceStatus }) {
     try {
         const job = await this.findOneAndUpdate({ _id: jobId }, {
@@ -263,7 +299,7 @@ jobSchema.statics.approveJob = async function ({ jobId, acceptanceStatus }) {
             }
         }, {
             new: true,
-            select: {__v: 0}
+            select: { __v: 0 }
         }).lean().populate("recruiterId")
         if (!job) {
             throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");

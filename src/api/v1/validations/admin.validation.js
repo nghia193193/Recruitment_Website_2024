@@ -1,7 +1,7 @@
 const joi = require('joi');
 const { fieldOfActivity, levelRequirement, acceptanceStatus } = require('../utils/index');
-const Joi = require('joi');
 const mongoose = require('mongoose');
+const xss = require('xss');
 
 class AdminValidation {
 
@@ -37,7 +37,7 @@ class AdminValidation {
             }),
             field: joi.string().valid(...fieldOfActivity),
             levelRequirement: joi.string().valid(...levelRequirement),
-            acceptanceStatus: joi.string().valid(...["waiting", "accept", "decline"]),
+            acceptanceStatus: joi.string().valid(...acceptanceStatus),
             page: joi.number().min(1),
             limit: joi.number().min(1)
         }).messages({
@@ -70,7 +70,7 @@ const objectIdValidator = (value, helpers) => {
     }
     return value;
 };
-const objectIdJoiSchema = Joi.string().custom(objectIdValidator, 'Custom validation for ObjectId').message("Id không hợp lệ");
+const objectIdJoiSchema = joi.string().custom(objectIdValidator, 'Custom validation for ObjectId').message("Id không hợp lệ");
 
 
 module.exports = AdminValidation
