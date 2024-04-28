@@ -1,0 +1,8 @@
+28/04/2024	16:55:08 ::1---/v1/api/login---POST---Mật khẩu không chính xác
+28/04/2024	16:55:29 ::1---/v1/api/recruiter/information---GET---Vui lòng đăng nhập lại
+28/04/2024	16:58:31 ::1---/v1/api/recruiter/update_avatar---PATCH---Vui lòng đăng nhập
+28/04/2024	16:58:38 ::1---/v1/api/recruiter/update_avatar---PATCH---"avatar" is required
+28/04/2024	17:00:00 ::1---/v1/api/recruiter/update_avatar?avatar=https://zshop.vn/blogs/wp-content/uploads/2016/10/shutterstock_163347836springWEB-ONLY-e13988696803171.jpg---PATCH---"avatar" is required
+28/04/2024	17:02:13 ::1---/v1/api/recruiter/update_profile---GET---Page not found
+28/04/2024	17:02:28 ::1---/v1/api/recruiter/update_profile---GET---Page not found
+28/04/2024	17:04:28 ::1---/v1/api/recruiter/update_company---PATCH---Page not found

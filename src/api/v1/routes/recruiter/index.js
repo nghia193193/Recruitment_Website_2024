@@ -7,7 +7,13 @@ const router = express.Router();
 // get information
 router.get('/information', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getInformation));
 // update information
-router.patch('/information', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.updateInformation));
+router.patch('/update_information', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.updateInformation));
+// update avatar
+router.patch('/update_avatar', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.updateAvatar));
+// update profile
+router.patch('/update_profile', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.updateProfile));
+// update company information
+router.patch('/update_company_information', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.updateCompany));
 // change password
 router.post('/change_password', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.changePassword));
 // create job

@@ -35,6 +35,50 @@ class RecruiterService {
         }
     }
 
+    static updateAvatar = async ({ userId, avatar }) => {
+        try {
+            const result = await Recruiter.updateAvatar({
+                userId, avatar
+            })
+            return {
+                message: "cập nhật ảnh đại diện thành công",
+                metadata: { ...result }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static updateProfile = async ({ userId, name, position, phone, contactEmail }) => {
+        try {
+            const result = await Recruiter.updateProfile({
+                userId, name, position, phone, contactEmail
+            })
+            return {
+                message: "cập nhật thông tin thành công",
+                metadata: { ...result }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static updateCompany = async ({ userId, companyName, companyEmail, companyWebsite, companyAddress, 
+        companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity }) => {
+        try {
+            const result = await Recruiter.updateCompany({
+                userId, companyName, companyEmail, companyWebsite, companyAddress, companyLogo, 
+                companyCoverPhoto, about, employeeNumber, fieldOfActivity
+            })
+            return {
+                message: "cập nhật thông tin thành công",
+                metadata: { ...result }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
     static changePassword = async ({ userId, currentPassword, newPassword }) => {
         try {
             const email = (await Recruiter.findById(userId).lean()).email;

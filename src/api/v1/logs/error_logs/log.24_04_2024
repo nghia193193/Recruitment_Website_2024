@@ -1,0 +1,18 @@
+24/04/2024	20:53:25 ::1---/v1/api/login---POST---Mật khẩu không chính xác
+24/04/2024	20:54:22 ::1---/v1/api/recruiter/jobs/status---GET---Vui lòng đăng nhập
+24/04/2024	20:54:27 ::1---/v1/api/recruiter/jobs/status---GET---Id không hợp lệ
+24/04/2024	20:55:05 ::1---/v1/api/recruiter/jobs/status---GET---Id không hợp lệ
+24/04/2024	20:56:38 ::1---/v1/api/recruiter/jobs/sfsdfsdf---GET---Vui lòng đăng nhập
+24/04/2024	20:56:49 ::1---/v1/api/recruiter/jobs/sfsdfsdf---GET---Id không hợp lệ
+24/04/2024	20:57:22 ::1---/v1/api/recruiter/jobs/waiting_jobs---GET---Vui lòng đăng nhập lại
+24/04/2024	20:57:25 ::1---/v1/api/recruiter/jobs/waiting_jobs---GET---Id không hợp lệ
+24/04/2024	20:58:52 ::1---/v1/api/recruiter/jobs/6623d312331df6a3b29f91f2---GET---Id không hợp lệ
+24/04/2024	20:58:59 ::1---/v1/api/recruiter/jobs/6623d312331df6a3b29f91f3---GET---Id không hợp lệ
+24/04/2024	20:59:03 ::1---/v1/api/recruiter/jobs/6623d312331df6a3b29f91f2---GET---Id không hợp lệ
+24/04/2024	21:00:31 ::1---/v1/api/recruiter/jobs/6623d312331df6a3b29f91f2---GET---Không tìm thấy công việc
+24/04/2024	21:00:36 ::1---/v1/api/recruiter/jobs/6623d312331df6a3b29f91f3---GET---Không tìm thấy công việc
+24/04/2024	21:00:50 ::1---/v1/api/recruiter/jobs/6623d312331df6a3b29f91f3---GET---Không tìm thấy công việc
+24/04/2024	21:05:36 ::1---/v1/api/recruiter/jobs/6623d312331df6a3b29f91f3---PATCH---Vui lòng đăng nhập
+24/04/2024	21:05:48 ::1---/v1/api/recruiter/jobs/6623d312331df6a3b29f91f3---PATCH---"name" is required
+24/04/2024	21:07:56 ::1---/v1/api/recruiter/jobs/6623d312331df6a3b29f91f3/change_status---PATCH---"name" is required
+24/04/2024	21:08:33 ::1---/v1/api/recruiter/jobs/6623d312331df6a3b29f91f3/change_status---PATCH---'"status"' không hợp lệ

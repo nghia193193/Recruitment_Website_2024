@@ -25,6 +25,42 @@ class RecruiterController {
         }).send(res)
     }
 
+    updateAvatar = async (req, res, next) => {
+        const { error, value } = RecruiterValidation.validateUpdateAvatar({ ...req.body, ...req.files });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { metadata, message } = await RecruiterService.updateAvatar({ ...value, ...req.payload });
+        new OK({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
+    updateProfile = async (req, res, next) => {
+        const { error, value } = RecruiterValidation.validateUpdateProfile(req.body);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { metadata, message } = await RecruiterService.updateProfile({ ...value, ...req.payload });
+        new OK({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
+    updateCompany = async (req, res, next) => {
+        const { error, value } = RecruiterValidation.validateUpdateCompany({ ...req.body, ...req.files });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { metadata, message } = await RecruiterService.updateCompany({ ...value, ...req.payload });
+        new OK({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
     changePassword = async (req, res, next) => {
         const { error, value } = RecruiterValidation.validateChangePassword(req.body);
         if (error) {
