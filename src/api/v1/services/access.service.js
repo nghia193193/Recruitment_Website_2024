@@ -12,6 +12,7 @@ const { BadRequestError, InternalServerError, NotFoundRequestError, ConflictRequ
 const { findUserByRole } = require("../utils/findUser");
 const { fieldOfActivity, jobType, levelRequirement, experience, genderRequirement, provinceOfVietNam, mapRolePermission } = require('../utils');
 const client = require('../dbs/init.redis');
+const { Job } = require("../models/job.model");
 
 
 class AccessService {
@@ -263,6 +264,29 @@ class AccessService {
                 message: "Lấy danh sách tỉnh thành thành công",
                 metadata: {
                     provinceOfVietNam
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getListJob = async ({ name, province, type, levelRequirement, experience, field,
+        genderRequirement, page, limit }) => {
+        try {
+            const { result, length } = await Job.getListJob({
+                name, province, type, levelRequirement, experience, field,
+                genderRequirement, page, limit
+            })
+            return {
+                message: "Lấy danh sách công việc thành công",
+                metadata: {
+                    listJob: result,
+                    totalElement: length
+                },
+                options: {
+                    page: page,
+                    limit: limit
                 }
             }
         } catch (error) {

@@ -111,6 +111,18 @@ class AccessController {
             metadata: { ...metadata }
         }).send(res)
     }
+
+    getListJob = async (req, res, next) => {
+        const { error, value } = AccessValidation.validateGetListJob(req.query);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata } = await AccessService.getListJob(value);
+        new OK({
+            message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
 }
 
 module.exports = new AccessController();

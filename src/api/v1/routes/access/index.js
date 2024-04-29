@@ -27,5 +27,7 @@ router.get('/province', asyncHandler(accessController.getProvince));
 router.post('/refresh_token', asyncHandler(accessController.refreshAccessToken));
 // logout
 router.delete('/logout', asyncHandler(accessController.logout));
+// get list job
+router.get('/jobs', asyncHandler(accessController.getListJob));
 
 module.exports = router;

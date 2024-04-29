@@ -80,7 +80,8 @@ const jobSchema = new Schema({
         type: String,
         enum: ["waiting", "accept", "decline"],
         default: "waiting"
-    }
+    },
+    approvalDate: Date
 }, {
     timestamps: true
 })
@@ -111,7 +112,7 @@ jobSchema.statics.updateJob = async function ({ userId, jobId, name, location, p
     try {
         const job = await this.findOneAndUpdate({ _id: jobId, recruiterId: userId }, {
             $set: {
-                name, location, province, type, levelRequirement, experience, salary, 
+                name, location, province, type, levelRequirement, experience, salary,
                 field, description, requirement, benefit, quantity, deadline, gender, acceptanceStatus: "waiting"
             }
         }, {
@@ -279,6 +280,58 @@ jobSchema.statics.getListJobAdmin = async function ({ name, field, levelRequirem
     }
 }
 
+jobSchema.statics.getListJob = async function ({ name, province, type, levelRequirement, experience, field,
+    genderRequirement, page, limit }) {
+    try {
+        const query = {
+            status: "active",
+            acceptanceStatus: "accept"
+        };
+        if (name) {
+            query["name"] = new RegExp(name, "i");
+        }
+        if (province) {
+            query["province"] = province;
+        }
+        if (type) {
+            query["type"] = type;
+        }
+        if (experience) {
+            query["experience"] = experience;
+        }
+        if (field) {
+            query["field"] = field;
+        }
+        if (levelRequirement) {
+            query["levelRequirement"] = levelRequirement;
+        }
+        if (genderRequirement) {
+            query["genderRequirement"] = genderRequirement;
+        }
+        const length = await this.find(query).lean().countDocuments();
+        let result = await this.find(query).lean().populate("recruiterId")
+            .select("name field levelRequirement salary province approvalDate deadline recruiterId createdAt updatedAt")
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .sort({ updatedAt: -1 })
+        result = result.map(job => {
+            job.companyName = job.recruiterId.companyName;
+            job.companyLogo = job.recruiterId.companyLogo?.url;
+            job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+            job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+            job.approvalDate = job.approvalDate ? formatInTimeZone(job.approvalDate, "Asia/Ho_Chi_Minh", "dd/MM/yyyy") : undefined;
+            job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
+            delete job.recruiterId;
+            return { ...job };
+        })
+        return {
+            length, result
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
 jobSchema.statics.getJobDetail = async function ({ jobId }) {
     try {
         let job = await this.findById(jobId).lean().populate("recruiterId")
@@ -319,7 +372,8 @@ jobSchema.statics.approveJob = async function ({ jobId, acceptanceStatus }) {
     try {
         const job = await this.findOneAndUpdate({ _id: jobId }, {
             $set: {
-                acceptanceStatus: acceptanceStatus
+                acceptanceStatus: acceptanceStatus,
+                approvalDate: formatInTimeZone(new Date(), "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
             }
         }, {
             new: true,
@@ -331,6 +385,7 @@ jobSchema.statics.approveJob = async function ({ jobId, acceptanceStatus }) {
         job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
         job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        job.approvalDate = formatInTimeZone(job.approvalDate, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         job.companyName = job.recruiterId.companyName;
         job.companyLogo = job.recruiterId.companyLogo?.url;
         job.employeeNumber = job.recruiterId.employeeNumber;

@@ -19,6 +19,6 @@ router.get('/jobs', verifyAccessToken, authPageAdmin, asyncHandler(adminControll
 // get job detail
 router.get('/jobs/:jobId', verifyAccessToken, authPageAdmin, asyncHandler(adminController.getJobDetail));
 // approve job
-router.patch('/jobs/:jobId', verifyAccessToken, authPageAdmin, asyncHandler(adminController.approveJob));
+router.patch('/jobs/:jobId/approve', verifyAccessToken, authPageAdmin, asyncHandler(adminController.approveJob));
 
 module.exports = router;
