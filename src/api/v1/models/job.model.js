@@ -61,7 +61,7 @@ const jobSchema = new Schema({
         type: Date,
         reuired: true
     },
-    gender: {
+    genderRequirement: {
         type: String,
         enum: ["Không yêu cầu", "Nam", "Nữ"],
         default: "Không yêu cầu"

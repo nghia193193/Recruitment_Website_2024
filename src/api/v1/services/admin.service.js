@@ -19,11 +19,11 @@ class AdminService {
         }
     }
 
-    static getListRecruiter = async ({ name, status, page, limit }) => {
+    static getListRecruiter = async ({ name, acceptanceStatus, page, limit }) => {
         try {
             page = page ? +page : 1;
             limit = limit ? +limit : 5;
-            const { totalElement, listRecruiter } = await Recruiter.getListRecruiter({ name, status, page, limit });
+            const { totalElement, listRecruiter } = await Recruiter.getListRecruiter({ name, acceptanceStatus, page, limit });
             return {
                 message: "Lấy danh sách nhà tuyển dụng thành công",
                 metadata: { listRecruiter, totalElement },
@@ -38,25 +38,54 @@ class AdminService {
 
     }
 
-    static approveRecruiter = async ({ recruiterId }) => {
+    static getRecruiterInformation = async ({ recruiterId }) => {
         try {
-            // activate recruiter
-            const result = await Recruiter.approveRecruiter({ recruiterId });
+            const recruiter = await Recruiter.getInformation(recruiterId);
+            return {
+                message: "Lấy thông tin nhà tuyển dụng thành công",
+                metadata: { ...recruiter }
+            }
+        } catch (error) {
+            throw error;
+        }
+
+    }
+
+    static approveRecruiter = async ({ recruiterId, acceptanceStatus }) => {
+        try {
+            const result = await Recruiter.approveRecruiter({ recruiterId, acceptanceStatus });
+            let mailDetails;
+            if (result.acceptanceStatus === "accept") {
+                mailDetails = {
+                    from: `${process.env.MAIL_SEND}`,
+                    to: result.email,
+                    subject: 'Tài khoản của bạn đã được duyệt',
+                    html: ` 
+                    <div style="text-align: left; font-family: arial; margin: 10px auto;"> 
+                        <span style="margin: 5px 2px"><b>Xin chào</b> <b style="color: red">${result.name}</b>,</span>        
+                        <p style="margin: 5px 2px">Tài khoản của bạn đã được chấp thuận để sử dụng các dịch vụ.</p>
+                        <p style="margin: 5px 2px">Chúc bạn có những trải nghiệm tuyệt vời ở trang web của chúng tôi.</p>
+                        <p style="margin: 5px 2px">Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi.</p>
+                        <p style="margin: 20px 2px">Trân trọng.</p>
+                    </div>
+                    `
+                }
+            } else {
+                mailDetails = {
+                    from: `${process.env.MAIL_SEND}`,
+                    to: result.email,
+                    subject: 'Tài khoản của bạn đã được duyệt',
+                    html: ` 
+                    <div style="text-align: left; font-family: arial; margin: 10px auto;"> 
+                        <span style="margin: 5px 2px"><b>Xin chào</b> <b style="color: red">${result.name}</b>,</span>        
+                        <p style="margin: 5px 2px">Tài khoản của bạn không được chấp thuận để sử dụng các dịch vụ. Vui lòng kiểm tra, cập nhật lại thông tin hoặc liên hệ với chúng tôi qua email <b>${process.env.MAIL_SEND}</b> để được giải quyết.</p>
+                        <p style="margin: 5px 2px">Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi.</p>
+                        <p style="margin: 20px 2px">Trân trọng.</p>
+                    </div>
+                    `
+                }
+            }
             // send mail
-            let mailDetails = {
-                from: `${process.env.MAIL_SEND}`,
-                to: result.email,
-                subject: 'Tài khoản của bạn đã được duyệt',
-                html: ` 
-                <div style="text-align: left; font-family: arial; margin: 10px auto;"> 
-                    <span style="margin: 5px 2px"><b>Xin chào</b> <b style="color: red">${result.name}</b>,</span>        
-                    <p style="margin: 5px 2px">Tài khoản của bạn đã được chấp thuận để sử dụng các dịch vụ.</p>
-                    <p style="margin: 5px 2px">Chúc bạn có những trải nghiệm tuyệt vời ở trang web của chúng tôi.</p>
-                    <p style="margin: 5px 2px">Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi.</p>
-                    <p style="margin: 20px 2px">Trân trọng.</p>
-                </div>
-                `
-            };
             const transporter = await createTransporter();
             transporter.sendMail(mailDetails, err => {
                 throw new InternalServerError('Có lỗi xảy ra');
@@ -70,22 +99,10 @@ class AdminService {
         }
     }
 
-    static changeRecruiterStatus = async ({ recruiterId, status }) => {
-        try {
-            const result = await Recruiter.changeRecruiterStatus({ recruiterId, status });
-            return {
-                message: "Thay đổi trạng thái thành công",
-                metadata: { ...result },
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
     static getListAcceptanceStatus = async () => {
         try {
             return {
-                message: "Lấy danh sách trạng thái công việc thành công",
+                message: "Lấy danh sách trạng thái thành công",
                 metadata: { listAcceptanceStatus: acceptanceStatus },
             }
         } catch (error) {

@@ -13,11 +13,11 @@ class AdminController {
     }
 
     getListRecruiter = async (req, res, next) => {
-        const { error } = AdminValidation.validateGetListRecruiter(req.query);
+        const { error, value } = AdminValidation.validateGetListRecruiter(req.query);
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const { metadata, message, options } = await AdminService.getListRecruiter({ ...req.body, ...req.query });
+        const { metadata, message, options } = await AdminService.getListRecruiter({ ...req.body, ...value });
         new OK({
             message: message,
             metadata: { ...metadata },
@@ -25,29 +25,24 @@ class AdminController {
         }).send(res)
     }
 
-    approveRecruiter = async (req, res, next) => {
-        const { error } = AdminValidation.validateRecruiterId(req.params);
+    getRecruiterInformation = async (req, res, next) => {
+        const { error, value } = AdminValidation.validateRecruiterId(req.params);
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const { metadata, message } = await AdminService.approveRecruiter({ ...req.params });
+        const { message, metadata } = await AdminService.getRecruiterInformation({ ...value });
         new OK({
             message: message,
-            metadata: { ...metadata },
+            metadata: { ...metadata }
         }).send(res)
     }
 
-    changeRecruiterStatus = async (req, res, next) => {
-        const { error: statusError } = AdminValidation.validateRecruiterStatus(req.body);
-        const { error: idError } = AdminValidation.validateRecruiterId(req.params);
-        console.log(idError)
-        if (statusError || idError) {
-            const errors = [];
-            if (statusError) errors.push(statusError.details[0].message);
-            if (idError) errors.push(idError.details[0].message);
-            throw new BadRequestError(errors[0]);
+    approveRecruiter = async (req, res, next) => {
+        const { error, value } = AdminValidation.validateApproveRecruiter({ ...req.params, ...req.body });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
         }
-        const { metadata, message } = await AdminService.changeRecruiterStatus({ ...req.body, ...req.params });
+        const { metadata, message } = await AdminService.approveRecruiter({ ...value });
         new OK({
             message: message,
             metadata: { ...metadata },

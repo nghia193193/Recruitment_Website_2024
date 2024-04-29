@@ -110,7 +110,6 @@ class RecruiterService {
             delete returnResult.recruiterId;
             delete returnResult.createdAt;
             delete returnResult.updatedAt;
-            delete returnResult.acceptanceStatus;
             delete returnResult.__v;
             return {
                 message: "Tạo công việc thành công",

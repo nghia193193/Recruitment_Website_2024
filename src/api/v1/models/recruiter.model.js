@@ -26,10 +26,10 @@ const recruiterSchema = new Schema({
         type: String,
         required: true
     },
-    status: {
+    acceptanceStatus: {
         type: String,
-        enum: ['active', 'inactive'],
-        default: 'inactive'
+        enum: ["waiting", "accept", "decline"],
+        default: "waiting"
     },
     verifyEmail: {
         type: Schema.Types.Boolean,
@@ -90,6 +90,9 @@ recruiterSchema.statics.getInformation = async function (userId) {
         const recruiterInfor = await this.findById(userId).populate("loginId").lean().select(
             '-roles -createdAt -updatedAt -__v'
         );
+        if (!recruiterInfor) {
+            throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
+        }
         recruiterInfor.role = recruiterInfor.loginId?.role;
         delete recruiterInfor.loginId;
         recruiterInfor.avatar = recruiterInfor.avatar?.url;
@@ -160,7 +163,7 @@ recruiterSchema.statics.updateInformation = async function ({ userId, name, posi
             $set: {
                 name, position, phone, contactEmail, companyName, companyWebsite, companyAddress,
                 about, employeeNumber, fieldOfActivity, companyLogo: logo, companyCoverPhoto: coverPhoto,
-                status: "inactive"
+                acceptanceStatus: "waiting"
             }
         }, {
             new: true,
@@ -235,7 +238,7 @@ recruiterSchema.statics.updateProfile = async function ({ userId, name, position
         const result = await this.findOneAndUpdate({ _id: userId }, {
             $set: {
                 name, position, phone, contactEmail,
-                status: "inactive"
+                acceptanceStatus: "waiting"
             }
         }, {
             new: true,
@@ -314,7 +317,7 @@ recruiterSchema.statics.updateCompany = async function ({ userId, companyName, c
             $set: {
                 companyName, companyWebsite, companyAddress, about, employeeNumber, fieldOfActivity, 
                 companyLogo: logo, companyCoverPhoto: coverPhoto,
-                status: "inactive"
+                acceptanceStatus: "waiting"
             }
         }, {
             new: true,
@@ -334,11 +337,11 @@ recruiterSchema.statics.updateCompany = async function ({ userId, companyName, c
     }
 }
 
-recruiterSchema.statics.getListRecruiter = async function ({ name, status, page, limit }) {
+recruiterSchema.statics.getListRecruiter = async function ({ name, acceptanceStatus, page, limit }) {
     try {
         let query = {};
-        if (status) {
-            query["status"] = status;
+        if (acceptanceStatus) {
+            query["acceptanceStatus"] = acceptanceStatus;
         }
         if (name) {
             query["name"] = new RegExp(name, "i");
@@ -362,40 +365,22 @@ recruiterSchema.statics.getListRecruiter = async function ({ name, status, page,
     }
 }
 
-recruiterSchema.statics.approveRecruiter = async function ({ recruiterId }) {
+recruiterSchema.statics.approveRecruiter = async function ({ recruiterId, acceptanceStatus }) {
     try {
         const result = await this.findOneAndUpdate({ _id: recruiterId }, {
             $set: {
-                status: "active"
+                acceptanceStatus: acceptanceStatus
             }
         }, {
             new: true,
-            select: { __v: 0, createdAt: 0, udatedAt: 0, loginId: 0 }
-        }).lean()
+            select: { __v: 0, createdAt: 0, udatedAt: 0 }
+        }).lean().populate('loginId')
         if (!result) {
             throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
         }
-        result.companyLogo = result.companyLogo?.url;
-        result.companyCoverPhoto = result.companyCoverPhoto?.url;
-        return result;
-    } catch (error) {
-        throw error;
-    }
-}
-
-recruiterSchema.statics.changeRecruiterStatus = async function ({ recruiterId, status }) {
-    try {
-        const result = await this.findOneAndUpdate({ _id: recruiterId }, {
-            $set: {
-                status: status
-            }
-        }, {
-            new: true,
-            select: { __v: 0, createdAt: 0, udatedAt: 0, loginId: 0 }
-        }).lean()
-        if (!result) {
-            throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
-        }
+        result.role = result.loginId.role;
+        delete result.loginId;
+        result.avatar = result.avatar?.url;
         result.companyLogo = result.companyLogo?.url;
         result.companyCoverPhoto = result.companyCoverPhoto?.url;
         return result;

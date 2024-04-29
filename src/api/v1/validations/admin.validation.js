@@ -7,17 +7,25 @@ class AdminValidation {
 
     static validateGetListRecruiter = data => {
         const validateSchema = joi.object({
-            name: joi.string().max(50),
-            status: joi.string().valid("active", "inactive"),
+            name: joi.string().custom((value) => {
+                const cleanName = xss(value); 
+                return cleanName;
+            }),
+            acceptanceStatus: joi.string().valid(...acceptanceStatus),
             page: joi.number().min(1),
             limit: joi.number().min(1)
+        }).messages({
+            "any.only": "'{#label}' không hợp lệ"
         })
         return validateSchema.validate(data);
     }
 
-    static validateRecruiterStatus = data => {
+    static validateApproveRecruiter = data => {
         const validateSchema = joi.object({
-            status: joi.string().valid("active", "inactive").required(),
+            recruiterId: objectIdJoiSchema.required(),
+            acceptanceStatus: joi.string().valid(...["accept", "decline"]).required(),
+        }).messages({
+            "any.only": "'{#label}' không hợp lệ"
         })
         return validateSchema.validate(data);
     }

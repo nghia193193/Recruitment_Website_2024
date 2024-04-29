@@ -38,17 +38,17 @@ const authPageRecruiter = async (req, res, next) => {
         if (!recruiter) {
             throw new ForbiddenRequestError("Bạn không có quyền");
         }
-        req.recruiterStatus = recruiter.status;
+        req.recruiterStatus = recruiter.acceptanceStatus;
         next();
     } catch (error) {
         next(error)
     }
 }
 
-const checkActiveRecruiter = async (req, res, next) => {
+const checkAcceptedRecruiter = async (req, res, next) => {
     try {
         const status = req.recruiterStatus;
-        if (status !== "active") {
+        if (status !== "accept") {
             throw new ForbiddenRequestError("Bạn cần được chấp thuận để sử dụng chức năng");
         }
         next();
@@ -76,6 +76,6 @@ const authPageAdmin = async (req, res, next) => {
 module.exports = {
     verifyAccessToken,
     authPageRecruiter,
-    checkActiveRecruiter,
+    checkAcceptedRecruiter,
     authPageAdmin
 }

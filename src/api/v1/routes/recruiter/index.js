@@ -1,6 +1,6 @@
 const express = require('express');
 const { asyncHandler } = require('../../auth/checkAuth');
-const { verifyAccessToken, authPageRecruiter } = require('../../middlewares');
+const { verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter } = require('../../middlewares');
 const recruiterController = require('../../controllers/recruiter.controller');
 const router = express.Router();
 
@@ -17,21 +17,21 @@ router.patch('/update_company_information', verifyAccessToken, authPageRecruiter
 // change password
 router.post('/change_password', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.changePassword));
 // create job
-router.post('/jobs/create_job', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.createJob));
+router.post('/jobs/create_job', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.createJob));
 // get list waiting job
-router.get('/jobs/waiting_jobs', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListWaitingJob));
+router.get('/jobs/waiting_jobs', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getListWaitingJob));
 // get list accepted job
-router.get('/jobs/accepted_jobs', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListAcceptedJob));
+router.get('/jobs/accepted_jobs', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getListAcceptedJob));
 // get list declined job
-router.get('/jobs/declined_jobs', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListDeclinedJob));
+router.get('/jobs/declined_jobs', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getListDeclinedJob));
 // get job status
-router.get('/jobs/status', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getJobStatus));
+router.get('/jobs/status', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getJobStatus));
 // get job detail
-router.get('/jobs/:jobId', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getJobDetail));
+router.get('/jobs/:jobId', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getJobDetail));
 // update job
-router.patch('/jobs/:jobId/update_job', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.updateJob));
+router.patch('/jobs/:jobId/update_job', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.updateJob));
 // change job status
-router.patch('/jobs/:jobId/change_status', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.changeJobStatus));
+router.patch('/jobs/:jobId/change_status', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.changeJobStatus));
 
 
 

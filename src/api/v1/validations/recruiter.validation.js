@@ -201,7 +201,7 @@ class RecruiterValidation {
             }).required(),
             quantity: joi.number().min(1).required(),
             deadline: joi.date().iso().required(),
-            gender: joi.string().valid(...genderRequirement).required()
+            genderRequirement: joi.string().valid(...genderRequirement).required()
         }).messages({
             "any.only": "'{#label}' không hợp lệ"
         })
@@ -242,7 +242,7 @@ class RecruiterValidation {
             }),
             quantity: joi.number().min(1),
             deadline: joi.date().iso(),
-            gender: joi.string().valid(...genderRequirement)
+            genderRequirement: joi.string().valid(...genderRequirement)
         }).messages({
             "any.only": "'{#label}' không hợp lệ"
         })
