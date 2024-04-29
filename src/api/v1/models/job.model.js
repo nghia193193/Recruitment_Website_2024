@@ -3,6 +3,7 @@ const model = mongoose.model;
 const Schema = mongoose.Schema;
 const { formatInTimeZone } = require('date-fns-tz');
 const { NotFoundRequestError, InternalServerError } = require('../core/error.response');
+const { acceptanceStatus } = require('../utils');
 
 const jobSchema = new Schema({
     name: { //tên
@@ -92,7 +93,30 @@ jobSchema.statics.changeJobStatus = async function ({ userId, jobId, status }) {
             }
         }, {
             new: true,
-            select: {__v: 0, recruiterId: 0}
+            select: { __v: 0, recruiterId: 0 }
+        }).lean()
+        if (!job) {
+            throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
+        }
+        job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        return job;
+    } catch (error) {
+        throw error;
+    }
+}
+
+jobSchema.statics.updateJob = async function ({ userId, jobId, name, location, province, type, levelRequirement,
+    experience, salary, field, description, requirement, benefit, quantity, deadline, gender }) {
+    try {
+        const job = await this.findOneAndUpdate({ _id: jobId, recruiterId: userId }, {
+            $set: {
+                name, location, province, type, levelRequirement, experience, salary, 
+                field, description, requirement, benefit, quantity, deadline, gender, acceptanceStatus: "waiting"
+            }
+        }, {
+            new: true,
+            select: { __v: 0, recruiterId: 0 }
         }).lean()
         if (!job) {
             throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
@@ -278,7 +302,7 @@ jobSchema.statics.getJobDetail = async function ({ jobId }) {
 
 jobSchema.statics.getJobDetailByRecruiter = async function ({ userId, jobId }) {
     try {
-        let job = await this.findOne({_id: jobId, recruiterId: userId}).lean()
+        let job = await this.findOne({ _id: jobId, recruiterId: userId }).lean()
             .select("-__v -recruiterId")
         if (!job) {
             throw new NotFoundRequestError("Không tìm thấy công việc");

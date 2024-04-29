@@ -63,11 +63,11 @@ class RecruiterService {
         }
     }
 
-    static updateCompany = async ({ userId, companyName, companyEmail, companyWebsite, companyAddress, 
+    static updateCompany = async ({ userId, companyName, companyEmail, companyWebsite, companyAddress,
         companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity }) => {
         try {
             const result = await Recruiter.updateCompany({
-                userId, companyName, companyEmail, companyWebsite, companyAddress, companyLogo, 
+                userId, companyName, companyEmail, companyWebsite, companyAddress, companyLogo,
                 companyCoverPhoto, about, employeeNumber, fieldOfActivity
             })
             return {
@@ -115,6 +115,22 @@ class RecruiterService {
             return {
                 message: "Tạo công việc thành công",
                 metadata: { ...returnResult }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static updateJob = async ({ userId, jobId, name, location, province, type, levelRequirement, experience, salary,
+        field, description, requirement, benefit, quantity, deadline, gender }) => {
+        try {
+            const job = await Job.updateJob({
+                userId, jobId, name, location, province, type, levelRequirement, experience, salary,
+                field, description, requirement, benefit, quantity, deadline, gender
+            })
+            return {
+                message: "Cập nhật công việc thành công",
+                metadata: { ...job }
             }
         } catch (error) {
             throw error;

@@ -117,11 +117,11 @@ class RecruiterController {
     }
 
     updateJob = async (req, res, next) => {
-        const { error, value } = RecruiterValidation.validateChangeJobStatus({ ...req.body, ...req.params });
+        const { error, value } = RecruiterValidation.validateUpdateJob({ ...req.body, ...req.params });
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const { metadata, message } = await RecruiterService.changeJobStatus({ ...value, ...req.payload });
+        const { metadata, message } = await RecruiterService.updateJob({ ...value, ...req.payload });
         new OK({
             message: message,
             metadata: { ...metadata }

@@ -208,6 +208,47 @@ class RecruiterValidation {
         return validateSchema.validate(data);
     }
 
+    static validateUpdateJob = data => {
+        const validateSchema = joi.object({
+            jobId: objectIdJoiSchema.required(),
+            name: joi.string().custom((value) => {
+                const cleanName = xss(value); // Loại bỏ XSS
+                return cleanName;
+            }),
+            location: joi.string().custom((value) => {
+                const cleanLocation = xss(value); // Loại bỏ XSS
+                return cleanLocation;
+            }),
+            province: joi.string().valid(...provinceOfVietNam),
+            type: joi.string().valid(...jobType),
+            levelRequirement: joi.string().valid(...levelRequirement),
+            experience: joi.string().valid(...experience),
+            salary: joi.string().custom((value) => {
+                const cleanSalary = xss(value); // Loại bỏ XSS
+                return cleanSalary;
+            }),
+            field: joi.string().valid(...fieldOfActivity),
+            description: joi.string().custom((value) => {
+                const cleanDescription = xss(value); // Loại bỏ XSS
+                return cleanDescription;
+            }),
+            requirement: joi.string().custom((value) => {
+                const cleanRequirement = xss(value); // Loại bỏ XSS
+                return cleanRequirement;
+            }),
+            benefit: joi.string().custom((value) => {
+                const cleanBenefit = xss(value); // Loại bỏ XSS
+                return cleanBenefit;
+            }),
+            quantity: joi.number().min(1),
+            deadline: joi.date().iso(),
+            gender: joi.string().valid(...genderRequirement)
+        }).messages({
+            "any.only": "'{#label}' không hợp lệ"
+        })
+        return validateSchema.validate(data);
+    }
+
     static validateChangeJobStatus = data => {
         const validateSchema = joi.object({
             jobId: objectIdJoiSchema.required(),

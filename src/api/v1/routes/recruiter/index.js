@@ -17,7 +17,7 @@ router.patch('/update_company_information', verifyAccessToken, authPageRecruiter
 // change password
 router.post('/change_password', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.changePassword));
 // create job
-router.post('/jobs/create_job', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.changeJobStatus));
+router.post('/jobs/create_job', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.createJob));
 // get list waiting job
 router.get('/jobs/waiting_jobs', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListWaitingJob));
 // get list accepted job
@@ -28,6 +28,8 @@ router.get('/jobs/declined_jobs', verifyAccessToken, authPageRecruiter, asyncHan
 router.get('/jobs/status', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getJobStatus));
 // get job detail
 router.get('/jobs/:jobId', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getJobDetail));
+// update job
+router.patch('/jobs/:jobId/update_job', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.updateJob));
 // change job status
 router.patch('/jobs/:jobId/change_status', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.changeJobStatus));
 
