@@ -1,6 +1,7 @@
 const joi = require('joi');
 const xss = require('xss');
 const { provinceOfVietNam, jobType, levelRequirement, experience, fieldOfActivity, genderRequirement } = require('../utils');
+const mongoose = require('mongoose');
 
 class AccessValidation {
 
@@ -32,6 +33,21 @@ class AccessValidation {
         })
         return validateSchema.validate(data);
     }
+
+    static validateJobId = data => {
+        const validateSchema = joi.object({
+            jobId: objectIdJoiSchema.required()
+        })
+        return validateSchema.validate(data);
+    }
 }
+
+const objectIdValidator = (value, helpers) => {
+    if (!mongoose.Types.ObjectId.isValid(value)) {
+        return helpers.error('any.invalid');    
+    }
+    return value;
+};
+const objectIdJoiSchema = joi.string().custom(objectIdValidator, 'Custom validation for ObjectId').message("Id không hợp lệ");
 
 module.exports = AccessValidation

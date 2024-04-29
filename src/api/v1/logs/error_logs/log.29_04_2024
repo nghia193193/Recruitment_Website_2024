@@ -26,3 +26,6 @@
 29/04/2024	21:15:31 ::1---/v1/api/jobs---GET---provinceOfVietNam is not defined
 29/04/2024	21:16:20 ::1---/v1/api/jobs---GET---Job is not defined
 29/04/2024	21:16:37 ::1---/v1/api/jobs---GET---Invalid time value
+29/04/2024	21:31:28 ::1---/v1/api/jobs?conga=s---GET---"conga" is not allowed
+29/04/2024	21:40:26 ::1---/v1/api/jobs/fsdfsdfsdf---GET---Page not found
+29/04/2024	21:41:18 ::1---/v1/api/jobs/fsdfsdfsdf---GET---Id không hợp lệ

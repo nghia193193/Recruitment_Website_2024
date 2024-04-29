@@ -29,5 +29,7 @@ router.post('/refresh_token', asyncHandler(accessController.refreshAccessToken))
 router.delete('/logout', asyncHandler(accessController.logout));
 // get list job
 router.get('/jobs', asyncHandler(accessController.getListJob));
+// get job detail
+router.get('/jobs/:jobId', asyncHandler(accessController.getJobDetail));
 
 module.exports = router;

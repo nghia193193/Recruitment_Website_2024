@@ -342,6 +342,7 @@ jobSchema.statics.getJobDetail = async function ({ jobId }) {
         job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
         job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        job.approvalDate = job.approvalDate ? formatInTimeZone(job.approvalDate, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX") : undefined;
         job.companyName = job.recruiterId.companyName;
         job.companyLogo = job.recruiterId.companyLogo?.url;
         job.employeeNumber = job.recruiterId.employeeNumber;

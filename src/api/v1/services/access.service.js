@@ -293,6 +293,18 @@ class AccessService {
             throw error;
         }
     }
+
+    static getJobDetail = async ({ jobId }) => {
+        try {
+            const job = await Job.getJobDetail({ jobId })
+            return {
+                message: "Lấy thông tin công việc thành công",
+                metadata: { ...job }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 module.exports = AccessService;
