@@ -150,7 +150,7 @@ jobSchema.statics.getListWaitingJobByRecruiterId = async function ({ userId, nam
         }
         const length = await this.find(query).lean().countDocuments();
         let result = await this.find(query).lean()
-            .select("name field levelRequirement status deadline")
+            .select("name field type levelRequirement status deadline")
             .skip((page - 1) * limit)
             .limit(limit)
             .sort({ updatedAt: -1 })
@@ -188,7 +188,7 @@ jobSchema.statics.getListAcceptedJobByRecruiterId = async function ({ userId, na
         }
         const length = await this.find(query).lean().countDocuments();
         let result = await this.find(query).lean()
-            .select("name field levelRequirement status deadline")
+            .select("name field type levelRequirement status deadline")
             .skip((page - 1) * limit)
             .limit(limit)
             .sort({ updatedAt: -1 })
@@ -226,7 +226,7 @@ jobSchema.statics.getListDeclinedJobByRecruiterId = async function ({ userId, na
         }
         const length = await this.find(query).lean().countDocuments();
         let result = await this.find(query).lean()
-            .select("name field levelRequirement status deadline")
+            .select("name field type levelRequirement status deadline")
             .skip((page - 1) * limit)
             .limit(limit)
             .sort({ updatedAt: -1 })
@@ -261,13 +261,13 @@ jobSchema.statics.getListJobAdmin = async function ({ name, field, levelRequirem
         }
         const length = await this.find(query).lean().countDocuments();
         let result = await this.find(query).lean().populate("recruiterId")
-            .select("name field levelRequirement acceptanceStatus deadline recruiterId")
+            .select("name field type levelRequirement acceptanceStatus deadline recruiterId")
             .skip((page - 1) * limit)
             .limit(limit)
             .sort({ updatedAt: -1 })
         result = result.map(job => {
-            job.companyName = job.recruiterId.companyName;
-            job.companyLogo = job.recruiterId.companyLogo?.url;
+            job.companyName = job.recruiterId.companyName ?? null;
+            job.companyLogo = job.recruiterId.companyLogo?.url ?? null;
             job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
             delete job.recruiterId;
             return { ...job };
@@ -310,13 +310,13 @@ jobSchema.statics.getListJob = async function ({ name, province, type, levelRequ
         }
         const length = await this.find(query).lean().countDocuments();
         let result = await this.find(query).lean().populate("recruiterId")
-            .select("name field levelRequirement salary province approvalDate deadline recruiterId createdAt updatedAt")
+            .select("name field type levelRequirement salary province approvalDate deadline recruiterId createdAt updatedAt")
             .skip((page - 1) * limit)
             .limit(limit)
             .sort({ updatedAt: -1 })
         result = result.map(job => {
-            job.companyName = job.recruiterId.companyName;
-            job.companyLogo = job.recruiterId.companyLogo?.url;
+            job.companyName = job.recruiterId.companyName ?? null;
+            job.companyLogo = job.recruiterId.companyLogo?.url ?? null;
             job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
             job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
             job.approvalDate = job.approvalDate ? formatInTimeZone(job.approvalDate, "Asia/Ho_Chi_Minh", "dd/MM/yyyy") : undefined;
@@ -343,8 +343,8 @@ jobSchema.statics.getJobDetail = async function ({ jobId }) {
         job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         job.approvalDate = job.approvalDate ? formatInTimeZone(job.approvalDate, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX") : undefined;
-        job.companyName = job.recruiterId.companyName;
-        job.companyLogo = job.recruiterId.companyLogo?.url;
+        job.companyName = job.recruiterId.companyName ?? null;
+        job.companyLogo = job.recruiterId.companyLogo?.url ?? null;
         job.employeeNumber = job.recruiterId.employeeNumber;
         job.companyAddress = job.recruiterId.companyAddress;
         delete job.recruiterId;
@@ -387,8 +387,8 @@ jobSchema.statics.approveJob = async function ({ jobId, acceptanceStatus }) {
         job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         job.approvalDate = formatInTimeZone(job.approvalDate, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-        job.companyName = job.recruiterId.companyName;
-        job.companyLogo = job.recruiterId.companyLogo?.url;
+        job.companyName = job.recruiterId.companyName ?? null;
+        job.companyLogo = job.recruiterId.companyLogo?.url ?? null;
         job.employeeNumber = job.recruiterId.employeeNumber;
         job.companyAddress = job.recruiterId.companyAddress;
         delete job.recruiterId;

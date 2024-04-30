@@ -95,9 +95,9 @@ recruiterSchema.statics.getInformation = async function (userId) {
         }
         recruiterInfor.role = recruiterInfor.loginId?.role;
         delete recruiterInfor.loginId;
-        recruiterInfor.avatar = recruiterInfor.avatar?.url;
-        recruiterInfor.companyLogo = recruiterInfor.companyLogo?.url;
-        recruiterInfor.companyCoverPhoto = recruiterInfor.companyCoverPhoto?.url;
+        recruiterInfor.avatar = recruiterInfor.avatar?.url ?? null;
+        recruiterInfor.companyLogo = recruiterInfor.companyLogo?.url ?? null;
+        recruiterInfor.companyCoverPhoto = recruiterInfor.companyCoverPhoto?.url ?? null;
         return recruiterInfor;
     } catch (error) {
         throw error;
@@ -174,8 +174,9 @@ recruiterSchema.statics.updateInformation = async function ({ userId, name, posi
         }
         result.role = result.loginId.role;
         delete result.loginId;
-        result.companyLogo = result.companyLogo?.url;
-        result.companyCoverPhoto = result.companyCoverPhoto?.url;
+        result.avatar = result.avatar?.url ?? null;
+        result.companyLogo = result.companyLogo?.url ?? null;
+        result.companyCoverPhoto = result.companyCoverPhoto?.url ?? null;
         return result;
     } catch (error) {
         throw error;
@@ -224,9 +225,9 @@ recruiterSchema.statics.updateAvatar = async function ({ userId, avatar }) {
         }
         result.role = result.loginId.role;
         delete result.loginId;
-        result.avatar = result.avatar?.url;
-        result.companyLogo = result.companyLogo?.url;
-        result.companyCoverPhoto = result.companyCoverPhoto?.url;
+        result.avatar = result.avatar?.url ?? null;
+        result.companyLogo = result.companyLogo?.url ?? null;
+        result.companyCoverPhoto = result.companyCoverPhoto?.url ?? null;
         return result;
     } catch (error) {
         throw error;
@@ -249,9 +250,9 @@ recruiterSchema.statics.updateProfile = async function ({ userId, name, position
         }
         result.role = result.loginId.role;
         delete result.loginId;
-        result.avatar = result.avatar?.url;
-        result.companyLogo = result.companyLogo?.url;
-        result.companyCoverPhoto = result.companyCoverPhoto?.url;
+        result.avatar = result.avatar?.url ?? null;
+        result.companyLogo = result.companyLogo?.url ?? null;
+        result.companyCoverPhoto = result.companyCoverPhoto?.url ?? null;
         return result;
     } catch (error) {
         throw error;
@@ -328,9 +329,9 @@ recruiterSchema.statics.updateCompany = async function ({ userId, companyName, c
         }
         result.role = result.loginId.role;
         delete result.loginId;
-        result.avatar = result.avatar?.url;
-        result.companyLogo = result.companyLogo?.url;
-        result.companyCoverPhoto = result.companyCoverPhoto?.url;
+        result.avatar = result.avatar?.url ?? null;
+        result.companyLogo = result.companyLogo?.url ?? null;
+        result.companyCoverPhoto = result.companyCoverPhoto?.url ?? null;
         return result;
     } catch (error) {
         throw error;
@@ -380,9 +381,9 @@ recruiterSchema.statics.approveRecruiter = async function ({ recruiterId, accept
         }
         result.role = result.loginId.role;
         delete result.loginId;
-        result.avatar = result.avatar?.url;
-        result.companyLogo = result.companyLogo?.url;
-        result.companyCoverPhoto = result.companyCoverPhoto?.url;
+        result.avatar = result.avatar?.url ?? null;
+        result.companyLogo = result.companyLogo?.url ?? null;
+        result.companyCoverPhoto = result.companyCoverPhoto?.url ?? null;
         return result;
     } catch (error) {
         throw error;
