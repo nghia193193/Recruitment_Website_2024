@@ -174,6 +174,8 @@ class RecruiterService {
 
     static getListWaitingJob = async ({ userId, name, field, levelRequirement, status, page, limit }) => {
         try {
+            page = page ? +page : 1;
+            limit = limit ? +limit : 5;
             const { result, length } = await Job.getListWaitingJobByRecruiterId({ userId, name, field, levelRequirement, status, page, limit })
             return {
                 message: "Lấy danh sách công việc thành công",
@@ -193,6 +195,8 @@ class RecruiterService {
 
     static getListAcceptedJob = async ({ userId, name, field, levelRequirement, status, page, limit }) => {
         try {
+            page = page ? +page : 1;
+            limit = limit ? +limit : 5;
             const { result, length } = await Job.getListAcceptedJobByRecruiterId({ userId, name, field, levelRequirement, status, page, limit })
             return {
                 message: "Lấy danh sách công việc thành công",
@@ -212,6 +216,8 @@ class RecruiterService {
 
     static getListDeclinedJob = async ({ userId, name, field, levelRequirement, status, page, limit }) => {
         try {
+            page = page ? +page : 1;
+            limit = limit ? +limit : 5;
             const { result, length } = await Job.getListDeclinedJobByRecruiterId({ userId, name, field, levelRequirement, status, page, limit })
             return {
                 message: "Lấy danh sách công việc thành công",

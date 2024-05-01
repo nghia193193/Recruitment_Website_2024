@@ -274,6 +274,8 @@ class AccessService {
     static getListJob = async ({ name, province, type, levelRequirement, experience, field,
         genderRequirement, page, limit }) => {
         try {
+            page = page ? +page : 1;
+            limit = limit ? +limit : 5;
             const { result, length } = await Job.getListJob({
                 name, province, type, levelRequirement, experience, field,
                 genderRequirement, page, limit

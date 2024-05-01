@@ -117,10 +117,11 @@ class AccessController {
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const { message, metadata } = await AccessService.getListJob(value);
+        const { message, metadata, options } = await AccessService.getListJob(value);
         new OK({
             message,
-            metadata: { ...metadata }
+            metadata: { ...metadata },
+            options
         }).send(res)
     }
 
