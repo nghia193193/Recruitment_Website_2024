@@ -20,11 +20,11 @@ class RecruiterService {
     }
 
     static updateInformation = async ({ userId, name, position, phone, contactEmail, companyName, companyEmail,
-        companyWebsite, companyAddress, companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity }) => {
+        companyWebsite, companyAddress, companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity, slug }) => {
         try {
             const result = await Recruiter.updateInformation({
                 userId, name, position, phone, contactEmail, companyName, companyEmail,
-                companyWebsite, companyAddress, companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity
+                companyWebsite, companyAddress, companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity, slug
             })
             return {
                 message: "cập nhật thông tin thành công",
@@ -64,11 +64,11 @@ class RecruiterService {
     }
 
     static updateCompany = async ({ userId, companyName, companyEmail, companyWebsite, companyAddress,
-        companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity }) => {
+        companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity, slug }) => {
         try {
             const result = await Recruiter.updateCompany({
                 userId, companyName, companyEmail, companyWebsite, companyAddress, companyLogo,
-                companyCoverPhoto, about, employeeNumber, fieldOfActivity
+                companyCoverPhoto, about, employeeNumber, fieldOfActivity, slug
             })
             return {
                 message: "cập nhật thông tin thành công",

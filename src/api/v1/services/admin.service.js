@@ -23,7 +23,7 @@ class AdminService {
         try {
             page = page ? +page : 1;
             limit = limit ? +limit : 5;
-            const { totalElement, listRecruiter } = await Recruiter.getListRecruiter({ name, acceptanceStatus, page, limit });
+            const { totalElement, listRecruiter } = await Recruiter.getListRecruiterByAdmin({ name, acceptanceStatus, page, limit });
             return {
                 message: "Lấy danh sách nhà tuyển dụng thành công",
                 metadata: { listRecruiter, totalElement },

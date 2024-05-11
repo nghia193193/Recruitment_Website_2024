@@ -271,6 +271,53 @@ class AccessService {
         }
     }
 
+    static getListRecruiter = async ({ searchText, page, limit }) => {
+        try {
+            page = page ? +page : 1;
+            limit = limit ? +limit : 5;
+            const { totalElement, listRecruiter } = await Recruiter.getListRecruiter({ searchText, page, limit });
+            return {
+                message: "Lấy danh sách nhà tuyển dụng thành công",
+                metadata: {
+                    listRecruiter: listRecruiter,
+                    totalElement: totalElement
+                },
+                options: {
+                    page: page,
+                    limit: limit
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getRecruiterInformation = async ({ slug }) => {
+        try {
+            const recruiter = await Recruiter.getInformationBySlug({ slug });
+            return {
+                message: "Lấy thông tin nhà tuyển dụng thành công",
+                metadata: {
+                    ...recruiter
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getJobDetail = async ({ jobId }) => {
+        try {
+            const job = await Job.getJobDetail({ jobId })
+            return {
+                message: "Lấy thông tin công việc thành công",
+                metadata: { ...job }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
     static getListJob = async ({ name, province, type, levelRequirement, experience, field,
         genderRequirement, page, limit }) => {
         try {
@@ -290,18 +337,6 @@ class AccessService {
                     page: page,
                     limit: limit
                 }
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    static getJobDetail = async ({ jobId }) => {
-        try {
-            const job = await Job.getJobDetail({ jobId })
-            return {
-                message: "Lấy thông tin công việc thành công",
-                metadata: { ...job }
             }
         } catch (error) {
             throw error;

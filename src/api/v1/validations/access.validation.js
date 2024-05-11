@@ -27,7 +27,9 @@ class AccessValidation {
             levelRequirement: joi.string().valid(...levelRequirement),
             experience: joi.string().valid(...experience),
             field: joi.string().valid(...fieldOfActivity),
-            genderRequirement: joi.string().valid(...genderRequirement)
+            genderRequirement: joi.string().valid(...genderRequirement),
+            page: joi.number().min(1),
+            limit: joi.number().min(1)
         }).messages({
             "any.only": "'{#label}' không hợp lệ"
         })
@@ -40,6 +42,31 @@ class AccessValidation {
         })
         return validateSchema.validate(data);
     }
+
+    static validateGetListRecruiter = data => {
+        const validateSchema = joi.object({
+            searchText: joi.string().custom((value) => {
+                const searchText = xss(value);
+                return searchText;
+            }),
+            page: joi.number().min(1),
+            limit: joi.number().min(1)
+        }).messages({
+            "any.only": "'{#label}' không hợp lệ"
+        })
+        return validateSchema.validate(data);
+    }
+
+    static validateGetRecruiterInformationBySlug = data => {
+        const validateSchema = joi.object({
+            slug: joi.string().custom((value) => {
+                const slug = xss(value);
+                return slug;
+            })
+        })
+        return validateSchema.validate(data);
+    }
+
 }
 
 const objectIdValidator = (value, helpers) => {

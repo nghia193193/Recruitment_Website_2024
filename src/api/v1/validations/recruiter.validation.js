@@ -66,14 +66,18 @@ class RecruiterValidation {
                 joi.object({
                     mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg'),
                 }).unknown(true),
-                joi.string().uri() // Cho phép URL hợp lệ
+                joi.string().uri()
             ).required(),
             about: joi.string().custom((value) => {
-                const cleanAbout = xss(value); // Loại bỏ XSS
+                const cleanAbout = xss(value); 
                 return cleanAbout;
             }),
             employeeNumber: joi.number().min(1).required(),
-            fieldOfActivity: joi.array().items(joi.string().valid(...fieldOfActivity)).required()
+            fieldOfActivity: joi.array().items(joi.string().valid(...fieldOfActivity)).required(),
+            slug: joi.string().custom((value) => {
+                const slug = xss(value); 
+                return slug;
+            }).required()
         }).messages({
             "any.only": "'{#label}' không hợp lệ",
         });
@@ -142,11 +146,15 @@ class RecruiterValidation {
                 joi.string().uri() // Cho phép URL hợp lệ
             ),
             about: joi.string().custom((value) => {
-                const cleanAbout = xss(value); // Loại bỏ XSS
+                const cleanAbout = xss(value);
                 return cleanAbout;
             }),
             employeeNumber: joi.number().min(1),
-            fieldOfActivity: joi.array().items(joi.string().valid(...fieldOfActivity))
+            fieldOfActivity: joi.array().items(joi.string().valid(...fieldOfActivity)),
+            slug: joi.string().custom((value) => {
+                const slug = xss(value); 
+                return slug;
+            }),
         }).messages({
             "any.only": "'{#label}' không hợp lệ",
         });

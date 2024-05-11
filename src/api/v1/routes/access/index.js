@@ -31,5 +31,9 @@ router.delete('/logout', asyncHandler(accessController.logout));
 router.get('/jobs', asyncHandler(accessController.getListJob));
 // get job detail
 router.get('/jobs/:jobId', asyncHandler(accessController.getJobDetail));
+// get list recruiter
+router.get('/recruiters', asyncHandler(accessController.getListRecruiter));
+// get recruiter information
+router.get('/recruiters/:slug', asyncHandler(accessController.getRecruiterInformation));
 
 module.exports = router;

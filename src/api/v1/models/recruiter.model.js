@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { v2: cloudinary } = require('cloudinary');
-const { InternalServerError } = require('../core/error.response');
+const { InternalServerError, BadRequestError } = require('../core/error.response');
 const model = mongoose.model;
 const Schema = mongoose.Schema;
 
@@ -63,6 +63,10 @@ const recruiterSchema = new Schema({
     loginId: {
         type: Schema.Types.ObjectId,
         ref: "Login"
+    },
+    slug: {
+        type: String,
+        unique: true
     }
 }, {
     timestamps: true
@@ -98,6 +102,27 @@ recruiterSchema.statics.getInformation = async function (userId) {
         recruiterInfor.avatar = recruiterInfor.avatar?.url ?? null;
         recruiterInfor.companyLogo = recruiterInfor.companyLogo?.url ?? null;
         recruiterInfor.companyCoverPhoto = recruiterInfor.companyCoverPhoto?.url ?? null;
+        recruiterInfor.slug = recruiterInfor.slug ?? null;
+        return recruiterInfor;
+    } catch (error) {
+        throw error;
+    }
+}
+
+recruiterSchema.statics.getInformationBySlug = async function ({ slug }) {
+    try {
+        const recruiterInfor = await this.findOne({ slug }).populate("loginId").lean().select(
+            '-roles -createdAt -updatedAt -__v'
+        );
+        if (!recruiterInfor) {
+            throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
+        }
+        recruiterInfor.role = recruiterInfor.loginId?.role;
+        delete recruiterInfor.loginId;
+        recruiterInfor.avatar = recruiterInfor.avatar?.url ?? null;
+        recruiterInfor.companyLogo = recruiterInfor.companyLogo?.url ?? null;
+        recruiterInfor.companyCoverPhoto = recruiterInfor.companyCoverPhoto?.url ?? null;
+        recruiterInfor.slug = recruiterInfor.slug ?? null;
         return recruiterInfor;
     } catch (error) {
         throw error;
@@ -105,7 +130,7 @@ recruiterSchema.statics.getInformation = async function (userId) {
 }
 
 recruiterSchema.statics.updateInformation = async function ({ userId, name, position, phone, contactEmail, companyName,
-    companyWebsite, companyAddress, companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity }) {
+    companyWebsite, companyAddress, companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity, slug }) {
     try {
         let logo, coverPhoto;
         //upload logo
@@ -159,10 +184,15 @@ recruiterSchema.statics.updateInformation = async function ({ userId, name, posi
                 url: companyCoverPhoto
             }
         }
+        //check slug
+        const slugData = await this.findOne({ slug }).lean();
+        if (slugData) {
+            throw new BadRequestError("Slug này đã tồn tại. Vui lòng nhập slug khác.");
+        }
         const result = await this.findOneAndUpdate({ _id: userId }, {
             $set: {
                 name, position, phone, contactEmail, companyName, companyWebsite, companyAddress,
-                about, employeeNumber, fieldOfActivity, companyLogo: logo, companyCoverPhoto: coverPhoto,
+                about, employeeNumber, fieldOfActivity, companyLogo: logo, companyCoverPhoto: coverPhoto, slug,
                 acceptanceStatus: "waiting"
             }
         }, {
@@ -259,8 +289,8 @@ recruiterSchema.statics.updateProfile = async function ({ userId, name, position
     }
 }
 
-recruiterSchema.statics.updateCompany = async function ({ userId, companyName, companyWebsite, companyAddress, companyLogo, 
-    companyCoverPhoto, about, employeeNumber, fieldOfActivity }) {
+recruiterSchema.statics.updateCompany = async function ({ userId, companyName, companyWebsite, companyAddress, companyLogo,
+    companyCoverPhoto, about, employeeNumber, fieldOfActivity, slug }) {
     try {
         let logo, coverPhoto;
         //upload logo
@@ -314,9 +344,14 @@ recruiterSchema.statics.updateCompany = async function ({ userId, companyName, c
                 url: companyCoverPhoto
             } : undefined
         }
+        //check slug
+        const slugData = await this.findOne({ slug }).lean();
+        if (slugData) {
+            throw new BadRequestError("Slug này đã tồn tại. Vui lòng nhập slug khác.");
+        }
         const result = await this.findOneAndUpdate({ _id: userId }, {
             $set: {
-                companyName, companyWebsite, companyAddress, about, employeeNumber, fieldOfActivity, 
+                companyName, companyWebsite, companyAddress, about, employeeNumber, fieldOfActivity,
                 companyLogo: logo, companyCoverPhoto: coverPhoto,
                 acceptanceStatus: "waiting"
             }
@@ -338,7 +373,7 @@ recruiterSchema.statics.updateCompany = async function ({ userId, companyName, c
     }
 }
 
-recruiterSchema.statics.getListRecruiter = async function ({ name, acceptanceStatus, page, limit }) {
+recruiterSchema.statics.getListRecruiterByAdmin = async function ({ name, acceptanceStatus, page, limit }) {
     try {
         let query = {};
         if (acceptanceStatus) {
@@ -346,6 +381,34 @@ recruiterSchema.statics.getListRecruiter = async function ({ name, acceptanceSta
         }
         if (name) {
             query["name"] = new RegExp(name, "i");
+        }
+        const totalElement = await this.find(query).lean().countDocuments();
+        let listRecruiter = await this.find(query).lean().select("-createdAt -updatedAt -__v -loginId").skip((page - 1) * limit).limit(limit);
+        if (listRecruiter.length !== 0) {
+            listRecruiter = listRecruiter.map(recruiter => {
+                return {
+                    ...recruiter,
+                    companyLogo: recruiter.companyLogo?.url,
+                    companyCoverPhoto: recruiter.companyCoverPhoto?.url
+                }
+            })
+        }
+        return {
+            totalElement, listRecruiter
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
+recruiterSchema.statics.getListRecruiter = async function ({ searchText, page, limit }) {
+    try {
+        let query = {};
+        if (searchText) {
+            query["$or"] = [
+                { "companyName": new RegExp(searchText, "i") },
+                { "slug": new RegExp(searchText, "i") }
+            ];
         }
         const totalElement = await this.find(query).lean().countDocuments();
         let listRecruiter = await this.find(query).lean().select("-createdAt -updatedAt -__v -loginId").skip((page - 1) * limit).limit(limit);

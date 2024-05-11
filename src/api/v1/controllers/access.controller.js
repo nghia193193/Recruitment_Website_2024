@@ -136,6 +136,31 @@ class AccessController {
             metadata: { ...metadata }
         }).send(res)
     }
+
+    getListRecruiter = async (req, res, next) => {
+        const { error, value } = AccessValidation.validateGetListRecruiter(req.query);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata, options } = await AccessService.getListRecruiter(value);
+        new OK({
+            message,
+            metadata: { ...metadata },
+            options
+        }).send(res)
+    }
+
+    getRecruiterInformation = async (req, res, next) => {
+        const { error, value } = AccessValidation.validateGetRecruiterInformationBySlug(req.params);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata } = await AccessService.getRecruiterInformation(value);
+        new OK({
+            message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
 }
 
 module.exports = new AccessController();

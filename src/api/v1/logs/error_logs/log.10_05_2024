@@ -1,0 +1,6 @@
+10/05/2024	17:14:34 ::1---/v1/api/recruiter/update_information---PATCH---Vui lòng đăng nhập lại
+10/05/2024	17:14:40 ::1---/v1/api/recruiter/update_information---PATCH---"slug" is required
+10/05/2024	17:15:15 ::1---/v1/api/recruiter/update_information---PATCH---Cannot access 'slug' before initialization
+10/05/2024	17:17:49 ::1---/v1/api/recruiter/update_information---PATCH---Cannot access 'slug' before initialization
+10/05/2024	17:20:41 ::1---/v1/api/recruiter/update_information---PATCH---Cannot access 'slug' before initialization
+10/05/2024	17:22:52 ::1---/v1/api/recruiter/update_information---PATCH---Cannot access 'slug' before initialization
