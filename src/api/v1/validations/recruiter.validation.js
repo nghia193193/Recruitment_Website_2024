@@ -20,7 +20,10 @@ class RecruiterValidation {
                 const cleanPos = xss(value); // Loại bỏ XSS
                 return cleanPos;
             }).required(),
-            phone: joi.string().regex(/^(0[2-9]|1[0-9]|2[0-8]|3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5])[0-9]{8}$/).required(),
+            phone: joi.string().regex(/^(0[2-9]|1[0-9]|2[0-8]|3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5])[0-9]{8}$/).required()
+                .messages({
+                    'string.pattern.base': 'Không phải là số điện thoại Việt Nam hợp lệ'
+                }),
             contactEmail: joi.string().email().lowercase().required(),
             password: joi.string().min(8).max(32).custom((value) => {
                 const cleanPassword = xss(value); // Loại bỏ XSS
@@ -63,7 +66,10 @@ class RecruiterValidation {
                 const cleanPos = xss(value); // Loại bỏ XSS
                 return cleanPos;
             }).required(),
-            phone: joi.string().regex(/^(0[2-9]|1[0-9]|2[0-8]|3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5])[0-9]{8}$/).required(),
+            phone: joi.string().regex(/^(0[2-9]|1[0-9]|2[0-8]|3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5])[0-9]{8}$/).required()
+                .messages({
+                    'string.pattern.base': 'Không phải là số điện thoại Việt Nam hợp lệ'
+                }),
             contactEmail: joi.string().email().lowercase().required(),
             companyName: joi.string().max(150).custom((value) => {
                 const cleanCN = xss(value); // Loại bỏ XSS
@@ -87,13 +93,13 @@ class RecruiterValidation {
                 joi.string().uri()
             ).required(),
             about: joi.string().custom((value) => {
-                const cleanAbout = xss(value); 
+                const cleanAbout = xss(value);
                 return cleanAbout;
             }),
             employeeNumber: joi.number().min(1).required(),
             fieldOfActivity: joi.array().items(joi.string().valid(...fieldOfActivity)).required(),
             slug: joi.string().custom((value) => {
-                const slug = xss(value); 
+                const slug = xss(value);
                 return slug;
             }).required()
         }).messages({
@@ -134,7 +140,10 @@ class RecruiterValidation {
                 const cleanPos = xss(value); // Loại bỏ XSS
                 return cleanPos;
             }),
-            phone: joi.string().regex(/^(0[2-9]|1[0-9]|2[0-8]|3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5])[0-9]{8}$/),
+            phone: joi.string().regex(/^(0[2-9]|1[0-9]|2[0-8]|3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5])[0-9]{8}$/)
+                .messages({
+                    'string.pattern.base': 'Không phải là số điện thoại Việt Nam hợp lệ'
+                }),
             contactEmail: joi.string().email().lowercase()
         })
         return validateSchema.validate(data);
@@ -170,7 +179,7 @@ class RecruiterValidation {
             employeeNumber: joi.number().min(1),
             fieldOfActivity: joi.array().items(joi.string().valid(...fieldOfActivity)),
             slug: joi.string().custom((value) => {
-                const slug = xss(value); 
+                const slug = xss(value);
                 return slug;
             }),
         }).messages({

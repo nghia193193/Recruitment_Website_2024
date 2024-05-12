@@ -29,7 +29,7 @@ const createTransporter = async () => {
     return transporter;
 }
 
-const sendSignUpMail = async ({ toEmail, userName }) => {
+const sendSignUpMail = async ({ toEmail, userName, code }) => {
     try {
         // create otp
         const otp = OTPGenerator.generate(6, {
@@ -55,7 +55,7 @@ const sendSignUpMail = async ({ toEmail, userName }) => {
             <p style="margin: 5px 2px">Mã xác nhận OTP của bạn là: <b >${otp}</b></p>
             <p style="margin: 5px 2px">Vui lòng nhập vào nút bên dưới để xác minh email của bạn.</p>
             <div style="display: flex; justify-content: center; margin: 30px">
-            <button style="background-color: #008000; padding: 10px 20px; border-radius: 20px; border-style: none; align-items: center"><a href="${process.env.FE_URL}/otp?email=${toEmail}" style="font-size: 15px;color: white; text-decoration: none">Xác nhận tài khoản</a></button>
+            <button style="background-color: #008000; padding: 10px 20px; border-radius: 20px; border-style: none; align-items: center"><a href="${process.env.FE_URL}/otp?email=${toEmail}&code=${code}" style="font-size: 15px;color: white; text-decoration: none">Xác nhận tài khoản</a></button>
             </div>
             <p style="margin: 5px 2px">Xin lưu ý rằng nếu tài khoản chưa được xác minh trong vòng <b style="color: red">10 phút</b> vui lòng yêu cầu gửi lại email xác nhận.</p>
             <p style="margin: 5px 2px">Nếu bạn không yêu cầu vui lòng bỏ qua yêu cầu này</p>

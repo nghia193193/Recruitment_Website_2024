@@ -10,7 +10,7 @@ const RedisService = require("./redis.service");
 const JWTService = require("./jwt.service");
 const { BadRequestError, InternalServerError, NotFoundRequestError, ConflictRequestError } = require("../core/error.response");
 const { findUserByRole } = require("../utils/findUser");
-const { fieldOfActivity, jobType, levelRequirement, experience, genderRequirement, provinceOfVietNam, mapRolePermission } = require('../utils');
+const { fieldOfActivity, jobType, levelRequirement, experience, genderRequirement, provinceOfVietNam, mapRolePermission, workStatus } = require('../utils');
 const client = require('../dbs/init.redis');
 const { Job } = require("../models/job.model");
 
@@ -43,7 +43,7 @@ class AccessService {
             const newRecruiter = await Recruiter.create({
                 companyName, name, position, phone, contactEmail, email
             })
-            await sendSignUpMail({ toEmail: email, userName: newRecruiter.name });
+            await sendSignUpMail({ toEmail: email, userName: newRecruiter.name, code: mapRolePermission["RECRUITER"] });
             // return 201
             return {
                 message: "Đăng ký tài khoản thành công",
@@ -80,7 +80,7 @@ class AccessService {
             await RedisService.setPassword(email, hashPassword);
             // create recruiter
             const newCandidate = await Candidate.create({ name, email })
-            await sendSignUpMail({ toEmail: email, userName: newCandidate.name });
+            await sendSignUpMail({ toEmail: email, userName: newCandidate.name, code: mapRolePermission["CANDIDATE"] });
             // return 201
             return {
                 message: "Đăng ký tài khoản thành công",
@@ -465,6 +465,19 @@ class AccessService {
                 options: {
                     page: page,
                     limit: limit
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getWorkStatus = async () => {
+        try {
+            return {
+                message: "Lấy danh sách trạng thái công việc thành công",
+                metadata: {
+                    workStatus
                 }
             }
         } catch (error) {

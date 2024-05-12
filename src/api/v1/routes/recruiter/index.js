@@ -33,6 +33,4 @@ router.patch('/jobs/:jobId/update_job', verifyAccessToken, authPageRecruiter, ch
 // change job status
 router.patch('/jobs/:jobId/change_status', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.changeJobStatus));
 
-
-
 module.exports = router;

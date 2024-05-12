@@ -92,7 +92,7 @@ recruiterSchema.statics.verifyEmail = async function (email) {
 recruiterSchema.statics.getInformation = async function (userId) {
     try {
         const recruiterInfor = await this.findById(userId).populate("loginId").lean().select(
-            '-roles -createdAt -updatedAt -__v'
+            '-createdAt -updatedAt -__v'
         );
         if (!recruiterInfor) {
             throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");

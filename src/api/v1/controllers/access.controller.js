@@ -203,6 +203,14 @@ class AccessController {
             metadata: { ...metadata }
         }).send(res)
     }
+
+    getWorkStatus = async (req, res, next) => {
+        const { message, metadata } = await AccessService.getWorkStatus();
+        new OK({
+            message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
 }
 
 module.exports = new AccessController();
