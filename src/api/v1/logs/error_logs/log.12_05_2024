@@ -17,3 +17,16 @@
 12/05/2024	19:39:43 ::1---/v1/api/candidate/signup---POST---invalid_grant
 12/05/2024	19:43:03 ::1---/v1/api/candidate/signup/resend_mail---POST---Email không tồn tại
 12/05/2024	19:46:34 ::1---/v1/api/candidate/verify?email=20110683@student.hcmute.edu.vn---POST---OTP không chính xác
+12/05/2024	20:27:23 ::1---/v1/api/candidate/signup---POST---Email này đã được sử dụng vui lòng nhập email khác
+12/05/2024	20:28:06 ::1---/v1/api/candidate/signup---POST---Email này đã được đăng ký, vui lòng truy cập email để xác nhận tài khoản
+12/05/2024	20:30:21 ::1---/v1/api/candidate/verify?email=20110683@student.hcmute.edu.vn---POST---OTP không chính xác
+12/05/2024	20:30:42 ::1---/v1/api/candidate/verify?email=20110683@student.hcmute.edu.vn---POST---OTP không chính xác
+12/05/2024	20:31:15 ::1---/v1/api/candidate/verify?email=20110683@student.hcmute.edu.vn---POST---OTP không chính xác
+12/05/2024	20:32:45 ::1---/v1/api/candidate/verify?email=20110683@student.hcmute.edu.vn---POST---OTP không chính xác
+12/05/2024	20:32:58 ::1---/v1/api/candidate/verify?email=20110683@student.hcmute.edu.vn---POST---OTP không chính xác
+12/05/2024	20:43:51 ::1---/v1/api/candidate/verify?email=20110683@student.hcmute.edu.vn---POST---OTP hết hạn vui lòng làm mới
+12/05/2024	20:45:33 ::1---/v1/api/candidate/verify?email=20110683@student.hcmute.edu.vn---POST---OTP hết hạn vui lòng làm mới
+12/05/2024	20:49:56 ::1---/v1/api/candidate/verify?email=20110683@student.hcmute.edu.vn---POST---OTP không chính xác
+12/05/2024	20:51:31 ::1---/v1/api/candidate/verify?email=20110683@student.hcmute.edu.vn---POST---OTP không chính xác
+12/05/2024	20:52:27 ::1---/v1/api/candidate/verify?email=20110683@student.hcmute.edu.vn---POST---OTP không chính xác
+12/05/2024	20:53:58 ::1---/v1/api/recruiter/signup---POST---Email này đã được sử dụng vui lòng nhập email khác

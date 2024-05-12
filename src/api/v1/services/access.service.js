@@ -20,16 +20,16 @@ class AccessService {
     static recruiterSignUp = async ({ companyName, name, position, phone, contactEmail, email, password }) => {
         try {
             // check user exist by mail
+            const isExist = await Login.findOne({ email });
+            if (isExist) {
+                throw new ConflictRequestError('Email này đã được sử dụng vui lòng nhập email khác');
+            }
+            // check sign up but not verify
             const recruiter = await Recruiter.findOne({ email }).lean();
             if (recruiter) {
-                // check verify email
-                if (recruiter.verifyEmail === true) {
-                    throw new ConflictRequestError('Email này đã được sử dụng vui lòng nhập email khác');
-                }
-                // if not verify email check otp exist
+                // check otp exist
                 const otpHolder = await OTP.find({ email });
                 if (otpHolder.length) {
-                    // otp exist tell user to check mail and verify
                     throw new BadRequestError('Email này đã được đăng ký, vui lòng truy cập email để xác nhận tài khoản');
                 }
                 // otp expired allowed user to Resignup
@@ -59,16 +59,16 @@ class AccessService {
     static candidateSignUp = async ({ name, email, password }) => {
         try {
             // check user exist by mail
+            const isExist = await Login.findOne({ email });
+            if (isExist) {
+                throw new ConflictRequestError('Email này đã được sử dụng vui lòng nhập email khác');
+            }
+            // check sign up but not verify
             const candidate = await Candidate.findOne({ email }).lean();
             if (candidate) {
-                // check verify email
-                if (candidate.verifyEmail === true) {
-                    throw new ConflictRequestError('Email này đã được sử dụng vui lòng nhập email khác');
-                }
-                // if not verify email check otp exist
+                // check otp
                 const otpHolder = await OTP.find({ email });
                 if (otpHolder.length) {
-                    // otp exist tell user to check mail and verify
                     throw new BadRequestError('Email này đã được đăng ký, vui lòng truy cập email để xác nhận tài khoản');
                 }
                 // otp expired allowed user to Resignup
@@ -156,7 +156,7 @@ class AccessService {
                 password: hashPassword,
                 role: "CANDIDATE",
             })
-            // Reference Recruiter, Login
+            // Reference Candidate, Login
             await Candidate.findOneAndUpdate({ email }, {
                 $set: {
                     loginId: login._id

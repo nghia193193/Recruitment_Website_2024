@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 module.exports = {
     validOtp: async (otp, hashOtp) => {
         try {
+            console.log(otp, hashOtp)
             const isValid = await bcrypt.compare(otp, hashOtp);
             return isValid;
         } catch (error) {
