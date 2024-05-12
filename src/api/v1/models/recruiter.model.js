@@ -205,6 +205,7 @@ recruiterSchema.statics.updateInformation = async function ({ userId, name, posi
         result.role = result.loginId.role;
         delete result.loginId;
         result.avatar = result.avatar?.url ?? null;
+        result.slug = result.slug ?? null;
         result.companyLogo = result.companyLogo?.url ?? null;
         result.companyCoverPhoto = result.companyCoverPhoto?.url ?? null;
         return result;
@@ -256,6 +257,7 @@ recruiterSchema.statics.updateAvatar = async function ({ userId, avatar }) {
         result.role = result.loginId.role;
         delete result.loginId;
         result.avatar = result.avatar?.url ?? null;
+        result.slug = result.slug ?? null;
         result.companyLogo = result.companyLogo?.url ?? null;
         result.companyCoverPhoto = result.companyCoverPhoto?.url ?? null;
         return result;
@@ -281,6 +283,7 @@ recruiterSchema.statics.updateProfile = async function ({ userId, name, position
         result.role = result.loginId.role;
         delete result.loginId;
         result.avatar = result.avatar?.url ?? null;
+        result.slug = result.slug ?? null;
         result.companyLogo = result.companyLogo?.url ?? null;
         result.companyCoverPhoto = result.companyCoverPhoto?.url ?? null;
         return result;
@@ -365,6 +368,7 @@ recruiterSchema.statics.updateCompany = async function ({ userId, companyName, c
         result.role = result.loginId.role;
         delete result.loginId;
         result.avatar = result.avatar?.url ?? null;
+        result.slug = result.slug ?? null;
         result.companyLogo = result.companyLogo?.url ?? null;
         result.companyCoverPhoto = result.companyCoverPhoto?.url ?? null;
         return result;

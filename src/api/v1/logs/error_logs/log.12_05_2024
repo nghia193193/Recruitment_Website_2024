@@ -30,3 +30,7 @@
 12/05/2024	20:51:31 ::1---/v1/api/candidate/verify?email=20110683@student.hcmute.edu.vn---POST---OTP không chính xác
 12/05/2024	20:52:27 ::1---/v1/api/candidate/verify?email=20110683@student.hcmute.edu.vn---POST---OTP không chính xác
 12/05/2024	20:53:58 ::1---/v1/api/recruiter/signup---POST---Email này đã được sử dụng vui lòng nhập email khác
+12/05/2024	20:57:36 ::1---/v1/api/recruiter/update_information---PATCH---Vui lòng đăng nhập lại
+12/05/2024	20:58:32 ::1---/v1/api/recruiter/update_information---PATCH---Slug này đã tồn tại. Vui lòng nhập slug khác.
+12/05/2024	20:59:02 ::1---/v1/api/recruiter/update_information---PATCH---Cannot read properties of undefined (reading 'split')
+12/05/2024	21:00:59 ::1---/v1/api/recruiter/update_information---PATCH---Slug này đã tồn tại. Vui lòng nhập slug khác.
