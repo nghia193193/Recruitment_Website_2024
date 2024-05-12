@@ -373,14 +373,18 @@ recruiterSchema.statics.updateCompany = async function ({ userId, companyName, c
     }
 }
 
-recruiterSchema.statics.getListRecruiterByAdmin = async function ({ name, acceptanceStatus, page, limit }) {
+recruiterSchema.statics.getListRecruiterByAdmin = async function ({ searchText, field, acceptanceStatus, page, limit }) {
     try {
         let query = {};
         if (acceptanceStatus) {
+            query["$or"] = [
+                { "companyName": new RegExp(searchText, "i") },
+                { "slug": new RegExp(searchText, "i") }
+            ];
             query["acceptanceStatus"] = acceptanceStatus;
         }
-        if (name) {
-            query["name"] = new RegExp(name, "i");
+        if (field) {
+            query["fieldOfActivity"] = { "$in": field };
         }
         const totalElement = await this.find(query).lean().countDocuments();
         let listRecruiter = await this.find(query).lean().select("-createdAt -updatedAt -__v -loginId").skip((page - 1) * limit).limit(limit);

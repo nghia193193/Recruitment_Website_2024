@@ -13,7 +13,6 @@ class RecruiterValidation {
             }).required(),
             name: joi.string().max(50).custom((value) => {
                 const cleanName = xss(value); // Loại bỏ XSS
-                console.log(cleanName)
                 return cleanName;
             }).required(),
             email: joi.string().email().lowercase().required(),
@@ -25,6 +24,25 @@ class RecruiterValidation {
             contactEmail: joi.string().email().lowercase().required(),
             password: joi.string().min(8).max(32).custom((value) => {
                 const cleanPassword = xss(value); // Loại bỏ XSS
+                return cleanPassword;
+            }).required(),
+            confirmPassword: joi.string().valid(joi.ref("password")).required().messages({
+                'any.only': 'Mật khẩu xác nhận không khớp',
+                'any.required': 'Vui lòng nhập mật khẩu xác nhận'
+            })
+        })
+        return validateSchema.validate(data);
+    }
+
+    static validateCandidateSignUp = data => {
+        const validateSchema = joi.object({
+            name: joi.string().max(50).custom((value) => {
+                const cleanName = xss(value);
+                return cleanName;
+            }).required(),
+            email: joi.string().email().lowercase().required(),
+            password: joi.string().min(8).max(32).custom((value) => {
+                const cleanPassword = xss(value);
                 return cleanPassword;
             }).required(),
             confirmPassword: joi.string().valid(joi.ref("password")).required().messages({

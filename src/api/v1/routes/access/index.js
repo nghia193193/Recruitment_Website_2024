@@ -9,6 +9,12 @@ router.post('/recruiter/signup', asyncHandler(accessController.recruiterSignUp))
 router.post('/recruiter/verify', asyncHandler(accessController.recruiterVerifyEmail));
 // Recruiter resend email
 router.post('/recruiter/signup/resend_mail', asyncHandler(accessController.recruiterResendVerifyEmail));
+// Candidate signup
+router.post('/candidate/signup', asyncHandler(accessController.candidateSignUp));
+// Candidate verify email
+router.post('/candidate/verify', asyncHandler(accessController.candidateVerifyEmail));
+// Candidate resend email
+router.post('/candidate/signup/resend_mail', asyncHandler(accessController.candidateResendVerifyEmail));
 //login
 router.post('/login', asyncHandler(accessController.login));
 // get field of activity
@@ -29,6 +35,8 @@ router.post('/refresh_token', asyncHandler(accessController.refreshAccessToken))
 router.delete('/logout', asyncHandler(accessController.logout));
 // get list job
 router.get('/jobs', asyncHandler(accessController.getListJob));
+// get list job of recruiter
+router.get('/:slug/listjob', asyncHandler(accessController.getListJobOfRecruiter));
 // get job detail
 router.get('/jobs/:jobId', asyncHandler(accessController.getJobDetail));
 // get list recruiter

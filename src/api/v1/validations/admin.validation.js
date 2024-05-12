@@ -39,8 +39,12 @@ class AdminValidation {
 
     static validateGetListJob = data => {
         const validateSchema = joi.object({
+            companyName: joi.string().custom((value) => {
+                const companyName = xss(value);
+                return companyName;
+            }),
             name: joi.string().custom((value) => {
-                const cleanName = xss(value); // Loại bỏ XSS
+                const cleanName = xss(value);
                 return cleanName;
             }),
             field: joi.string().valid(...fieldOfActivity),

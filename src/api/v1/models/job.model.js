@@ -2,8 +2,9 @@ const mongoose = require('mongoose');
 const model = mongoose.model;
 const Schema = mongoose.Schema;
 const { formatInTimeZone } = require('date-fns-tz');
-const { NotFoundRequestError, InternalServerError } = require('../core/error.response');
+const { NotFoundRequestError, InternalServerError, BadRequestError } = require('../core/error.response');
 const { acceptanceStatus } = require('../utils');
+const { Recruiter } = require('./recruiter.model');
 
 const jobSchema = new Schema({
     name: { //tên
@@ -244,32 +245,92 @@ jobSchema.statics.getListDeclinedJobByRecruiterId = async function ({ userId, na
     }
 }
 
-jobSchema.statics.getListJobAdmin = async function ({ name, field, levelRequirement, acceptanceStatus, page, limit }) {
+jobSchema.statics.getListJobAdmin = async function ({ companyName, name, field, levelRequirement, acceptanceStatus, page, limit }) {
     try {
-        const query = {};
+        const pipeline = [
+            {
+                $lookup: {
+                    from: "recruiters",
+                    localField: "recruiterId",
+                    foreignField: "_id",
+                    as: "recruiters"
+                }
+            },
+            {
+                $project: {
+                    "_id": 1,
+                    "name": 1,
+                    "type": 1,
+                    "salary": 1,
+                    "province": 1,
+                    "levelRequirement": 1,
+                    "field": 1,
+                    "deadline": 1,
+                    "acceptanceStatus": 1,
+                    "recruiters.companyName": 1,
+                    "recruiters.slug": 1,
+                    "recruiters.employeeNumber": 1,
+                    "recruiters.companyLogo": 1,
+                }
+            }
+        ]
+        if (companyName) {
+            pipeline.push({
+                $match: {
+                    "recruiters.companyName": new RegExp(companyName, "i")
+                }
+            });
+        }
         if (name) {
-            query["name"] = new RegExp(name, "i");
+            pipeline.push({
+                $match: {
+                    "name": new RegExp(name, "i")
+                }
+            });
         }
         if (field) {
-            query["field"] = field;
+            pipeline.push({
+                $match: {
+                    "field": field
+                }
+            });
         }
         if (levelRequirement) {
-            query["levelRequirement"] = levelRequirement;
+            pipeline.push({
+                $match: {
+                    "levelRequirement": levelRequirement
+                }
+            });
         }
         if (acceptanceStatus) {
-            query["acceptanceStatus"] = acceptanceStatus;
+            pipeline.push({
+                $match: {
+                    "acceptanceStatus": acceptanceStatus
+                }
+            });
         }
-        const length = await this.find(query).lean().countDocuments();
-        let result = await this.find(query).lean().populate("recruiterId")
-            .select("name field type levelRequirement acceptanceStatus deadline recruiterId")
-            .skip((page - 1) * limit)
-            .limit(limit)
-            .sort({ updatedAt: -1 })
+        const totalDocument = await this.aggregate([...pipeline, { $count: "totalDocuments" }]);
+        const length = totalDocument.length > 0 ? totalDocument[0].totalDocuments : 0;
+        let result = await this.aggregate(
+            [...pipeline, {
+                $sort: {
+                    "updatedAt": -1
+                }
+            },
+            {
+                $skip: (page - 1) * limit
+            },
+            {
+                $limit: limit
+            }]
+        );
         result = result.map(job => {
-            job.companyName = job.recruiterId.companyName ?? null;
-            job.companyLogo = job.recruiterId.companyLogo?.url ?? null;
+            job.companySlug = job.recruiters[0].slug ?? null;
+            job.companyName = job.recruiters[0].companyName ?? null;
+            job.companyLogo = job.recruiters[0].companyLogo?.url ?? null;
+            job.employeeNumber = job.recruiters[0].employeeNumber;
             job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
-            delete job.recruiterId;
+            delete job.recruiters;
             return { ...job };
         })
         return {
@@ -319,9 +380,134 @@ jobSchema.statics.getListJob = async function ({ name, province, type, levelRequ
             job.companyLogo = job.recruiterId.companyLogo?.url ?? null;
             job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
             job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-            job.approvalDate = job.approvalDate ? formatInTimeZone(job.approvalDate, "Asia/Ho_Chi_Minh", "dd/MM/yyyy") : undefined;
+            job.approvalDate = job.approvalDate ? formatInTimeZone(job.approvalDate, "Asia/Ho_Chi_Minh", "dd/MM/yyyy") : null;
             job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
             delete job.recruiterId;
+            return { ...job };
+        })
+        return {
+            length, result
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
+jobSchema.statics.getListJobOfRecruiter = async function ({ slug, name, province, type, levelRequirement, experience, field,
+    genderRequirement, page, limit }) {
+    try {
+        const pipeline = [
+            {
+                $lookup: {
+                    from: "recruiters",
+                    localField: "recruiterId",
+                    foreignField: "_id",
+                    as: "recruiters"
+                }
+            },
+            {
+                $match: {
+                    "recruiters.slug": slug,
+                    "status": "active",
+                    "acceptanceStatus": "accept",
+                }
+            },
+            {
+                $project: {
+                    "_id": 1,
+                    "name": 1,
+                    "type": 1,
+                    "salary": 1,
+                    "province": 1,
+                    "levelRequirement": 1,
+                    "field": 1,
+                    "deadline": 1,
+                    "acceptanceStatus": 1,
+                    "approvalDate": 1,
+                    "recruiters.companyName": 1,
+                    "recruiters.slug": 1,
+                    "recruiters.employeeNumber": 1,
+                    "recruiters.companyLogo": 1,
+                    "createdAt": 1,
+                    "updatedAt": 1
+                }
+            }
+        ]
+        if (name) {
+            pipeline.push({
+                $match: {
+                    "name": new RegExp(name, "i")
+                }
+            });
+        }
+        if (province) {
+            pipeline.push({
+                $match: {
+                    "province": province
+                }
+            });
+        }
+        if (type) {
+            pipeline.push({
+                $match: {
+                    "type": type
+                }
+            });
+        }
+        if (experience) {
+            pipeline.push({
+                $match: {
+                    "experience": experience
+                }
+            });
+        }
+        if (field) {
+            pipeline.push({
+                $match: {
+                    "field": field
+                }
+            });
+        }
+        if (levelRequirement) {
+            pipeline.push({
+                $match: {
+                    "levelRequirement": levelRequirement
+                }
+            });
+        }
+        if (genderRequirement) {
+            pipeline.push({
+                $match: {
+                    "genderRequirement": genderRequirement
+                }
+            });
+        }
+        const totalDocument = await this.aggregate([...pipeline, { $count: "totalDocuments" }]);
+        const length = totalDocument.length > 0 ? totalDocument[0].totalDocuments : 0;
+        let result = await this.aggregate(
+            [...pipeline, {
+                $sort: {
+                    "updatedAt": -1
+                }
+            },
+            {
+                $skip: (page - 1) * limit
+            },
+            {
+                $limit: limit
+            }]
+        );
+        console.log(result)
+        result = result.map(job => {
+            job.companySlug = job.recruiters[0].slug ?? null;
+            job.companyName = job.recruiters[0].companyName ?? null;
+            job.companyLogo = job.recruiters[0].companyLogo?.url ?? null;
+            job.employeeNumber = job.recruiters[0].employeeNumber;
+            job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+            job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+            job.approvalDate = job.approvalDate ? formatInTimeZone(job.approvalDate, "Asia/Ho_Chi_Minh", "dd/MM/yyyy") : null;
+            job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
+            delete job.recruiters;
             return { ...job };
         })
         return {
@@ -344,6 +530,7 @@ jobSchema.statics.getJobDetail = async function ({ jobId }) {
         job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         job.approvalDate = job.approvalDate ? formatInTimeZone(job.approvalDate, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX") : undefined;
         job.companyName = job.recruiterId.companyName ?? null;
+        job.companySlug = job.recruiterId.slug ?? null;
         job.companyLogo = job.recruiterId.companyLogo?.url ?? null;
         job.employeeNumber = job.recruiterId.employeeNumber;
         job.companyAddress = job.recruiterId.companyAddress;

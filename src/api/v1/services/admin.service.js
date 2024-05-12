@@ -110,9 +110,11 @@ class AdminService {
         }
     }
 
-    static getListJob = async ({ name, field, levelRequirement, acceptanceStatus, page, limit }) => {
+    static getListJob = async ({ companyName, name, field, levelRequirement, acceptanceStatus, page, limit }) => {
         try {
-            const { result, length } = await Job.getListJobAdmin({ name, field, levelRequirement, acceptanceStatus, page, limit });
+            page = page ? +page : 1;
+            limit = limit ? +limit : 5;
+            const { result, length } = await Job.getListJobAdmin({ companyName, name, field, levelRequirement, acceptanceStatus, page, limit });
             return {
                 message: "Lấy danh sách công việc thành công",
                 metadata: { listJob: result, totalElement: length },

@@ -20,6 +20,18 @@ class AccessController {
         }).send(res)
     }
 
+    candidateSignUp = async (req, res, next) => {
+        const { error, value } = RecruiterValidation.validateCandidateSignUp(req.body);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { metadata, message } = await AccessService.candidateSignUp(value);
+        new CREATED({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
     recruiterVerifyEmail = async (req, res, next) => {
         const email = req.query.email;
         const { otp } = req.body;
@@ -29,8 +41,25 @@ class AccessController {
         }).send(res)
     }
 
+    candidateVerifyEmail = async (req, res, next) => {
+        const email = req.query.email;
+        const { otp } = req.body;
+        const { message } = await AccessService.candidateVerifyEmail(email, otp);
+        new OK({
+            message: message
+        }).send(res)
+    }
+
     recruiterResendVerifyEmail = async (req, res, next) => {
         const { message, metadata } = await AccessService.recruiterResendVerifyEmail(req.body);
+        new OK({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
+    candidateResendVerifyEmail = async (req, res, next) => {
+        const { message, metadata } = await AccessService.candidateResendVerifyEmail(req.body);
         new OK({
             message: message,
             metadata: { ...metadata }
@@ -118,6 +147,19 @@ class AccessController {
             throw new BadRequestError(error.details[0].message);
         }
         const { message, metadata, options } = await AccessService.getListJob(value);
+        new OK({
+            message,
+            metadata: { ...metadata },
+            options
+        }).send(res)
+    }
+
+    getListJobOfRecruiter = async (req, res, next) => {
+        const { error, value } = AccessValidation.validateGetListJobOfRecruiter({ ...req.query, ...req.params });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata, options } = await AccessService.getListJobOfRecruiter(value);
         new OK({
             message,
             metadata: { ...metadata },

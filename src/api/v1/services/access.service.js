@@ -56,6 +56,43 @@ class AccessService {
         }
     }
 
+    static candidateSignUp = async ({ name, email, password }) => {
+        try {
+            // check user exist by mail
+            const candidate = await Candidate.findOne({ email }).lean();
+            if (candidate) {
+                // check verify email
+                if (candidate.verifyEmail === true) {
+                    throw new ConflictRequestError('Email này đã được sử dụng vui lòng nhập email khác');
+                }
+                // if not verify email check otp exist
+                const otpHolder = await OTP.find({ email });
+                if (otpHolder.length) {
+                    // otp exist tell user to check mail and verify
+                    throw new BadRequestError('Email này đã được đăng ký, vui lòng truy cập email để xác nhận tài khoản');
+                }
+                // otp expired allowed user to Resignup
+                await Candidate.findOneAndDelete({ email });
+            }
+            // user not exist create new user
+            // hash password
+            const hashPassword = await bcrypt.hash(password, 10);
+            await RedisService.setPassword(email, hashPassword);
+            // create recruiter
+            const newCandidate = await Candidate.create({ name, email })
+            await sendSignUpMail({ toEmail: email, userName: newCandidate.name });
+            // return 201
+            return {
+                message: "Đăng ký tài khoản thành công",
+                metadata: {
+                    sender: process.env.MAIL_SEND
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
     static recruiterVerifyEmail = async (email, otp) => {
         try {
             // get last otp
@@ -97,6 +134,47 @@ class AccessService {
         }
     }
 
+    static candidateVerifyEmail = async (email, otp) => {
+        try {
+            // get last otp
+            const otpHolder = await OTP.find({ email });
+            if (!otpHolder.length) {
+                throw new NotFoundRequestError('OTP hết hạn vui lòng làm mới');
+            }
+            const lastOtp = otpHolder[otpHolder.length - 1].otp;
+            // verify otp
+            const isValid = await validOtp(otp, lastOtp);
+            if (!isValid) {
+                throw new BadRequestError('OTP không chính xác')
+            }
+            // verify Email
+            await Candidate.verifyEmail(email);
+            // add recruiter to login
+            const hashPassword = await RedisService.getPassword(email);
+            const login = await Login.create({
+                email,
+                password: hashPassword,
+                role: "CANDIDATE",
+            })
+            // Reference Recruiter, Login
+            await Candidate.findOneAndUpdate({ email }, {
+                $set: {
+                    loginId: login._id
+                }
+            })
+            // delete redis password
+            await RedisService.deletePassword(email);
+            // delete all otp verify in db
+            await OTP.deleteMany({ email });
+            //return 200
+            return {
+                message: "Xác nhận email thành công",
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
     static recruiterResendVerifyEmail = async ({ email }) => {
         try {
             // check user exist
@@ -111,6 +189,32 @@ class AccessService {
             const password = await RedisService.getPassword(email);
             await RedisService.setPassword(email, password);
             await sendSignUpMail({ toEmail: email, userName: recruiter.name });
+            // return 200
+            return {
+                message: "Gửi lại mail xác nhận thành công",
+                metadata: {
+                    sender: process.env.MAIL_SEND
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static candidateResendVerifyEmail = async ({ email }) => {
+        try {
+            // check user exist
+            const candidate = await Candidate.findOne({ email }).lean();
+            if (!candidate) {
+                throw new BadRequestError('Email không tồn tại');
+            }
+            if (candidate.verifyEmail === true) {
+                throw new BadRequestError('Email của bạn đã được xác nhận');
+            }
+            // refresh ttl redis password
+            const password = await RedisService.getPassword(email);
+            await RedisService.setPassword(email, password);
+            await sendSignUpMail({ toEmail: email, userName: candidate.name });
             // return 200
             return {
                 message: "Gửi lại mail xác nhận thành công",
@@ -312,6 +416,31 @@ class AccessService {
             return {
                 message: "Lấy thông tin công việc thành công",
                 metadata: { ...job }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getListJobOfRecruiter = async ({ slug, name, province, type, levelRequirement, experience, field,
+        genderRequirement, page, limit }) => {
+        try {
+            page = page ? +page : 1;
+            limit = limit ? +limit : 5;
+            const { result, length } = await Job.getListJobOfRecruiter({
+                name, province, type, levelRequirement, experience, field,
+                genderRequirement, page, limit, slug
+            })
+            return {
+                message: "Lấy danh sách công việc thành công",
+                metadata: {
+                    listJob: result,
+                    totalElement: length
+                },
+                options: {
+                    page: page,
+                    limit: limit
+                }
             }
         } catch (error) {
             throw error;
