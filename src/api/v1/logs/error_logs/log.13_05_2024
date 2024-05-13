@@ -1,0 +1,17 @@
+13/05/2024	19:43:31 ::1---/v1/api/candidate/update_avatar---PATCH---"avatar" is required
+13/05/2024	19:45:47 ::1---/v1/api/candidate/update_avatar---PATCH---"avatar" must be a valid uri
+13/05/2024	19:45:52 ::1---/v1/api/candidate/update_avatar---PATCH---"avatar" must be a valid uri
+13/05/2024	19:46:05 ::1---/v1/api/candidate/update_avatar---PATCH---"avatar" is required
+13/05/2024	19:46:20 ::1---/v1/api/candidate/update_avatar---PATCH---"avatar" is required
+13/05/2024	19:50:27 ::1---/v1/api/candidate/update_avatar---PATCH---cloudinary is not defined
+13/05/2024	19:52:11 ::1---/v1/api/candidate/favorite_jobs---GET---Vui lòng đăng nhập
+13/05/2024	19:53:23 ::1---/v1/api/candidate/favorite_jobs/add/12312312---GET---Page not found
+13/05/2024	19:53:31 ::1---/v1/api/candidate/favorite_jobs/add/12312312---POST---Id không hợp lệ
+13/05/2024	19:54:00 ::1---/v1/api/candidate/favorite_jobs/add/664093f99bc3ed7d2ade2b24---POST---Cannot read properties of null (reading 'favoriteJobs')
+13/05/2024	19:54:56 ::1---/v1/api/candidate/favorite_jobs---GET---Không tìm thấy công việc
+13/05/2024	20:01:09 ::1---/v1/api/candidate/favorite_jobs/add/664093f99bc3ed7d2ade2b24---POST---Không tìm thấy công việc này, vui lòng thử lại
+13/05/2024	20:01:35 ::1---/v1/api/candidate/favorite_jobs/add/664093f99bc3ed7d2ade2b25---POST---Cannot read properties of null (reading 'favoriteJobs')
+13/05/2024	20:06:55 ::1---/v1/api/candidate/favorite_jobs/add/662f4f7488a6f0c504c764db---POST---Bạn đã thêm công việc này vào công việc yêu thích rồi.
+13/05/2024	20:10:23 ::1---/v1/api/candidate/favorite_jobs---GET---Assignment to constant variable.
+13/05/2024	20:14:33 ::1---/v1/api/candidate/favorite_jobs/remove/662f4f7488a6f0c504c764db---DELETE---Vui lòng đăng nhập
+13/05/2024	20:15:18 ::1---/v1/api/candidate/favorite_jobs/remove/662f4f7488a6f0c504c764db---DELETE---"page" is required

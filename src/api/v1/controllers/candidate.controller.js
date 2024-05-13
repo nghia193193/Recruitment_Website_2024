@@ -23,6 +23,56 @@ class CandidateController {
             metadata: { ...metadata }
         }).send(res)
     }
+
+    updateAvatar = async (req, res, next) => {
+        const { error, value } = CandidateValidation.validateUpdateAvatar({ ...req.body, ...req.files });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata } = await CandidateService.updateAvatar({ ...req.payload, ...value });
+        new OK({
+            message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
+    getListFavoriteJob = async (req, res, next) => {
+        const { error, value } = CandidateValidation.validatePageLimit(req.query);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata, options } = await CandidateService.getListFavoriteJob({ ...req.payload, ...value });
+        new OK({
+            message,
+            metadata: { ...metadata },
+            options
+        }).send(res)
+    }
+
+    addFavoriteJob = async (req, res, next) => {
+        const { error, value } = CandidateValidation.validateJobId(req.params);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata } = await CandidateService.addFavoriteJob({ ...req.payload, ...value });
+        new OK({
+            message,
+            metadata: { ...metadata },
+        }).send(res)
+    }
+
+    removeFavoriteJob = async (req, res, next) => {
+        const { error, value } = CandidateValidation.validateRemoveFavoriteJob({ ...req.query, ...req.params });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata, options } = await CandidateService.removeFavoriteJob({ ...req.payload, ...value });
+        new OK({
+            message,
+            metadata: { ...metadata },
+            options
+        }).send(res)
+    }
 }
 
 module.exports = new CandidateController();

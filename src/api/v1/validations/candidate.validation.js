@@ -26,6 +26,50 @@ class CandidateValidation {
         })
         return validateSchema.validate(data);
     }
+
+    static validateUpdateAvatar = data => {
+        const validateSchema = joi.object({
+            avatar: joi.alternatives().try(
+                joi.object({
+                    mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg'),
+                }).unknown(true),
+                joi.string().uri() // Cho phép URL hợp lệ
+            ).required(),
+        })
+        return validateSchema.validate(data);
+    }
+
+    static validatePageLimit = data => {
+        const validateSchema = joi.object({
+            page: joi.number().min(1),
+            limit: joi.number().min(1)
+        })
+        return validateSchema.validate(data);
+    }
+
+    static validateJobId = data => {
+        const validateSchema = joi.object({
+            jobId: objectIdJoiSchema.required()
+        })
+        return validateSchema.validate(data);
+    }
+
+    static validateRemoveFavoriteJob = data => {
+        const validateSchema = joi.object({
+            jobId: objectIdJoiSchema.required(),
+            page: joi.number().min(1),
+            limit: joi.number().min(1)
+        })
+        return validateSchema.validate(data);
+    }
 }
+
+const objectIdValidator = (value, helpers) => {
+    if (!mongoose.Types.ObjectId.isValid(value)) {
+        return helpers.error('any.invalid');
+    }
+    return value;
+};
+const objectIdJoiSchema = joi.string().custom(objectIdValidator, 'Custom validation for ObjectId').message("Id không hợp lệ");
 
 module.exports = CandidateValidation;
