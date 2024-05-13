@@ -15,7 +15,7 @@ const fieldOfActivity = [
     "Xuất nhập khẩu", "Xây dựng", "Y tế / Dược", "Điện / Điện tử / Điện lạnh", "Điện tử viễn thông", "Địa chất / Khoáng sản"
 ]
 
-const jobType = ["Toàn thời gian", "Bán thời gian", "Remote"];
+const jobType = ["Toàn thời gian", "Bán thời gian", "Làm từ xa"];
 const levelRequirement = ["Thực tập sinh", "Nhân viên", "Trưởng phòng"];
 const experience = ["Không yêu cầu kinh nghiệm", "Dưới 1 năm", "1 năm", "2 năm", "3 năm", "4 năm", "5 năm", "Trên 5 năm"];
 const genderRequirement = ["Không yêu cầu", "Nam", "Nữ"];

@@ -19,12 +19,12 @@ const favoriteJobSchema = new Schema({
 })
 
 favoriteJobSchema.statics.getListFavoriteJob = async function ({ userId, page, limit }) {
-    const listFavoriteJob = await this.findOne({ candidateId: userId });
-    if (!listFavoriteJob) {
+    const candidate = await this.findOne({ candidateId: userId });
+    if (!candidate) {
         return { length: 0, listFavoriteJob: [] };
     }
     let mappedFavoriteJobs = await Promise.all(
-        listFavoriteJob.favoriteJobs.map(async (jobId) => {
+        candidate.favoriteJobs.map(async (jobId) => {
             const job = await Job.getJobDetail({ jobId });
             if (job.status === "active" && job.acceptanceStatus === "accept") {
                 return job;

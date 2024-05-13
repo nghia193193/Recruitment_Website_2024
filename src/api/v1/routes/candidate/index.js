@@ -16,6 +16,11 @@ router.get('/favorite_jobs', verifyAccessToken, authPageCandidate, asyncHandler(
 router.post('/favorite_jobs/add/:jobId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.addFavoriteJob));
 // remove favorite job
 router.delete('/favorite_jobs/remove/:jobId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.removeFavoriteJob));
+// get list resume
+router.get('/resumes', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.getListResume));
+// add resume
+router.post('/resumes/add', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.addResume));
+
 
 
 module.exports = router;

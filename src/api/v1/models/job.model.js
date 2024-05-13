@@ -497,7 +497,6 @@ jobSchema.statics.getListJobOfRecruiter = async function ({ slug, name, province
                 $limit: limit
             }]
         );
-        console.log(result)
         result = result.map(job => {
             job.companySlug = job.recruiters[0].slug ?? null;
             job.companyName = job.recruiters[0].companyName ?? null;

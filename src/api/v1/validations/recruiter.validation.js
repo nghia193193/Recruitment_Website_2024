@@ -96,7 +96,7 @@ class RecruiterValidation {
                 const cleanAbout = xss(value);
                 return cleanAbout;
             }),
-            employeeNumber: joi.number().min(1).required(),
+            employeeNumber: joi.number().integer().min(1).required(),
             fieldOfActivity: joi.array().items(joi.string().valid(...fieldOfActivity)).required(),
             slug: joi.string().custom((value) => {
                 const slug = xss(value);
@@ -176,7 +176,7 @@ class RecruiterValidation {
                 const cleanAbout = xss(value);
                 return cleanAbout;
             }),
-            employeeNumber: joi.number().min(1),
+            employeeNumber: joi.number().integer().min(1),
             fieldOfActivity: joi.array().items(joi.string().valid(...fieldOfActivity)),
             slug: joi.string().custom((value) => {
                 const slug = xss(value);
@@ -234,7 +234,7 @@ class RecruiterValidation {
                 const cleanBenefit = xss(value); // Loại bỏ XSS
                 return cleanBenefit;
             }).required(),
-            quantity: joi.number().min(1).required(),
+            quantity: joi.number().integer().min(1).required(),
             deadline: joi.date().iso().required(),
             genderRequirement: joi.string().valid(...genderRequirement).required()
         }).messages({
@@ -275,7 +275,7 @@ class RecruiterValidation {
                 const cleanBenefit = xss(value); // Loại bỏ XSS
                 return cleanBenefit;
             }),
-            quantity: joi.number().min(1),
+            quantity: joi.number().integer().min(1),
             deadline: joi.date().iso(),
             genderRequirement: joi.string().valid(...genderRequirement)
         }).messages({
@@ -303,8 +303,8 @@ class RecruiterValidation {
             field: joi.string().valid(...fieldOfActivity),
             levelRequirement: joi.string().valid(...levelRequirement),
             status: joi.string().valid(...["active", "inactive"]),
-            page: joi.number().min(1),
-            limit: joi.number().min(1)
+            page: joi.number().integer().min(1),
+            limit: joi.number().integer().min(1)
         }).messages({
             "any.only": "'{#label}' không hợp lệ"
         })

@@ -28,8 +28,8 @@ class AccessValidation {
             experience: joi.string().valid(...experience),
             field: joi.string().valid(...fieldOfActivity),
             genderRequirement: joi.string().valid(...genderRequirement),
-            page: joi.number().min(1),
-            limit: joi.number().min(1)
+            page: joi.number().integer().min(1),
+            limit: joi.number().integer().min(1)
         }).messages({
             "any.only": "'{#label}' không hợp lệ"
         })
@@ -52,8 +52,8 @@ class AccessValidation {
             experience: joi.string().valid(...experience),
             field: joi.string().valid(...fieldOfActivity),
             genderRequirement: joi.string().valid(...genderRequirement),
-            page: joi.number().min(1),
-            limit: joi.number().min(1)
+            page: joi.number().integer().min(1),
+            limit: joi.number().integer().min(1)
         }).messages({
             "any.only": "'{#label}' không hợp lệ"
         })
@@ -73,8 +73,8 @@ class AccessValidation {
                 const searchText = xss(value);
                 return searchText;
             }),
-            page: joi.number().min(1),
-            limit: joi.number().min(1)
+            page: joi.number().integer().min(1),
+            limit: joi.number().integer().min(1)
         }).messages({
             "any.only": "'{#label}' không hợp lệ"
         })

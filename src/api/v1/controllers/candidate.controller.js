@@ -73,6 +73,31 @@ class CandidateController {
             options
         }).send(res)
     }
+
+    getListResume = async (req, res, next) => {
+        const { error, value } = CandidateValidation.validatePageLimit(req.query);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata, options } = await CandidateService.getListResume({ ...req.payload, ...value });
+        new OK({
+            message,
+            metadata: { ...metadata },
+            options
+        }).send(res)
+    }
+
+    addResume = async (req, res, next) => {
+        const { error, value } = CandidateValidation.validateAddResume({ ...req.body, ...req.files });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata } = await CandidateService.addResume({ ...req.payload, ...value });
+        new OK({
+            message,
+            metadata: { ...metadata },
+        }).send(res)
+    }
 }
 
 module.exports = new CandidateController();

@@ -1,5 +1,6 @@
 const { Candidate } = require("../models/candidate.model");
 const { FavoriteJob } = require("../models/favoriteJob.model");
+const { Resume } = require("../models/resume.model");
 
 class CandidateService {
     static getInformation = async ({ userId }) => {
@@ -74,6 +75,37 @@ class CandidateService {
                 message: "Xóa công việc yêu thích thành công.",
                 metadata: { listFavoriteJob, totalElement: length },
                 options: { page, limit }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getListResume = async ({ userId, page, limit }) => {
+        try {
+            page = page ? +page : 1;
+            limit = limit ? +limit : 5;
+            const { length, listResume } = await Resume.getListResume({ userId, page, limit });
+            return {
+                message: "Lấy danh sách resume thành công.",
+                metadata: { listResume, totalElement: length },
+                options: { page, limit }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static addResume = async ({ userId, name, title, avatar, goal, phone, educationLevel, homeTown,
+        dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories }) => {
+        try {
+            const resume = await Resume.addResume({
+                userId, name, title, avatar, goal, phone, educationLevel, homeTown,
+                dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories
+            });
+            return {
+                message: "Thêm resume thành công.",
+                metadata: { ...resume }
             }
         } catch (error) {
             throw error;

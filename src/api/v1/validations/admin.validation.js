@@ -12,8 +12,8 @@ class AdminValidation {
                 return cleanName;
             }),
             acceptanceStatus: joi.string().valid(...acceptanceStatus),
-            page: joi.number().min(1),
-            limit: joi.number().min(1)
+            page: joi.number().integer().min(1),
+            limit: joi.number().integer().min(1)
         }).messages({
             "any.only": "'{#label}' không hợp lệ"
         })
@@ -50,8 +50,8 @@ class AdminValidation {
             field: joi.string().valid(...fieldOfActivity),
             levelRequirement: joi.string().valid(...levelRequirement),
             acceptanceStatus: joi.string().valid(...acceptanceStatus),
-            page: joi.number().min(1),
-            limit: joi.number().min(1)
+            page: joi.number().integer().min(1),
+            limit: joi.number().integer().min(1)
         }).messages({
             "any.only": "'{#label}' không hợp lệ"
         })
