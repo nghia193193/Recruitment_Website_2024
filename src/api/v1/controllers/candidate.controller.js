@@ -36,6 +36,17 @@ class CandidateController {
         }).send(res)
     }
 
+    changePassword = async (req, res, next) => {
+        const { error, value } = CandidateValidation.validateChangePassword(req.body);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message } = await CandidateService.changePassword({ ...req.payload, ...value })
+        new OK({
+            message: message
+        }).send(res)
+    }
+
     getListFavoriteJob = async (req, res, next) => {
         const { error, value } = CandidateValidation.validatePageLimit(req.query);
         if (error) {
@@ -71,6 +82,14 @@ class CandidateController {
             message,
             metadata: { ...metadata },
             options
+        }).send(res)
+    }
+
+    removeAllFavoriteJob = async (req, res, next) => {
+        const { message, metadata } = await CandidateService.removeAllFavoriteJob({ ...req.payload });
+        new OK({
+            message,
+            metadata: { ...metadata }
         }).send(res)
     }
 

@@ -134,6 +134,24 @@ class CandidateValidation {
         }
         return validateSchema.validate(data);
     }
+
+    static validateChangePassword = data => {
+        const validateSchema = joi.object({
+            currentPassword: joi.string().min(8).max(32).custom((value) => {
+                const cleanPass = xss(value);
+                return cleanPass;
+            }).required(),
+            newPassword: joi.string().min(8).max(32).custom((value) => {
+                const cleanPass = xss(value);
+                return cleanPass;
+            }).required(),
+            confirmNewPassword: joi.string().valid(joi.ref("newPassword")).required().messages({
+                'any.only': 'Mật khẩu xác nhận không khớp',
+                'any.required': 'Vui lòng nhập mật khẩu xác nhận'
+            })
+        })
+        return validateSchema.validate(data);
+    }
 }
 
 const objectIdValidator = (value, helpers) => {

@@ -1,0 +1,11 @@
+14/05/2024	20:06:43 ::1---/v1/api/candidate/favorite_jobs/remove_all---DELETE---page is not defined
+14/05/2024	20:07:21 ::1---/v1/api/candidate/favorite_jobs/remove_all---DELETE---page is not defined
+14/05/2024	20:10:15 ::1---/v1/api/candidate/favorite_jobs/remove_all---DELETE---Không có công việc nào trong danh sách.
+14/05/2024	20:21:29 ::1---/v1/api/candidate/change_password---POST---Vui lòng đăng nhập
+14/05/2024	20:21:46 ::1---/v1/api/candidate/change_password---POST---"currentPassword" is required
+14/05/2024	20:22:09 ::1---/v1/api/candidate/change_password---POST---"currentPassword" is not allowed to be empty
+14/05/2024	20:23:00 ::1---/v1/api/candidate/change_password---POST---"currentPassword" length must be at least 8 characters long
+14/05/2024	20:23:08 ::1---/v1/api/candidate/change_password---POST---"newPassword" is not allowed to be empty
+14/05/2024	20:23:19 ::1---/v1/api/candidate/change_password---POST---"newPassword" length must be at least 8 characters long
+14/05/2024	20:23:25 ::1---/v1/api/candidate/change_password---POST---Mật khẩu xác nhận không khớp
+14/05/2024	20:23:31 ::1---/v1/api/candidate/change_password---POST---Mật khẩu hiện tại không chính xác

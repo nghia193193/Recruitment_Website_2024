@@ -1,6 +1,7 @@
 const { Candidate } = require("../models/candidate.model");
 const { FavoriteJob } = require("../models/favoriteJob.model");
 const { Resume } = require("../models/resume.model");
+const { Login } = require("../models/login.model");
 
 class CandidateService {
     static getInformation = async ({ userId }) => {
@@ -33,6 +34,19 @@ class CandidateService {
             return {
                 message: "Cập nhật ảnh đại diện thành công",
                 metadata: { ...candidate }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static changePassword = async ({ userId, currentPassword, newPassword }) => {
+        try {
+            const email = (await Candidate.findById(userId).lean()).email;
+            
+            const { message } = await Login.changePassword({ email, currentPassword, newPassword });
+            return {
+                message: message
             }
         } catch (error) {
             throw error;
@@ -75,6 +89,18 @@ class CandidateService {
                 message: "Xóa công việc yêu thích thành công.",
                 metadata: { listFavoriteJob, totalElement: length },
                 options: { page, limit }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static removeAllFavoriteJob = async ({ userId }) => {
+        try {
+            const { length, listFavoriteJob } = await FavoriteJob.removeAllFavoriteJob({ userId });
+            return {
+                message: "Xóa toàn bộ công việc yêu thích thành công.",
+                metadata: { listFavoriteJob, totalElement: length },
             }
         } catch (error) {
             throw error;

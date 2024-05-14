@@ -10,12 +10,16 @@ router.get('/information', verifyAccessToken, authPageCandidate, asyncHandler(ca
 router.patch('/update_information', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.updateInformation));
 // update avatar
 router.patch('/update_avatar', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.updateAvatar));
+// change password
+router.post('/change_password', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.changePassword));
 // get list favorite job
 router.get('/favorite_jobs', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.getListFavoriteJob));
 // add favorite job
 router.post('/favorite_jobs/add/:jobId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.addFavoriteJob));
 // remove favorite job
 router.delete('/favorite_jobs/remove/:jobId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.removeFavoriteJob));
+// remove all favorite job
+router.delete('/favorite_jobs/remove_all', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.removeAllFavoriteJob));
 // get list resume
 router.get('/resumes', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.getListResume));
 // add resume

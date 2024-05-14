@@ -35,7 +35,7 @@ favoriteJobSchema.statics.getListFavoriteJob = async function ({ userId, page, l
         return job !== undefined;
     });
     const start = (page - 1) * limit;
-    const end = limit;
+    const end = start + limit;
     return { length: mappedFavoriteJobs.length, listFavoriteJob: mappedFavoriteJobs.slice(start, end) };
 }
 
@@ -85,6 +85,20 @@ favoriteJobSchema.statics.removeFavoriteJob = async function ({ userId, jobId, p
     const start = (page - 1) * limit;
     const end = limit;
     return { length: mappedFavoriteJobs.length, listFavoriteJob: mappedFavoriteJobs.slice(start, end) };
+}
+
+favoriteJobSchema.statics.removeAllFavoriteJob = async function ({ userId }) {
+    // check đã có list chưa
+    const listFavoriteJob = await this.findOne({ candidateId: userId });
+    if (!listFavoriteJob) {
+        throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+    }
+    if (listFavoriteJob.favoriteJobs.length === 0) {
+        throw new BadRequestError("Không có công việc nào trong danh sách.");
+    }
+    listFavoriteJob.favoriteJobs = [];
+    await listFavoriteJob.save();
+    return { length: 0, listFavoriteJob: [] };
 }
 
 module.exports = {
