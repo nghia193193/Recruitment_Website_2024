@@ -47,3 +47,4 @@
 15/05/2024	23:31:05 ::1---/v1/api/candidate/resumes/add---POST---Vui lòng đăng nhập lại
 15/05/2024	23:31:49 ::1---/v1/api/candidate/resumes/add---POST---"avatar" is required
 15/05/2024	23:38:18 ::1---/v1/api/candidate/jobs/apply/664093f99bc3ed7d2ade2b25---POST---Đơn ứng tuyển đã được xử lý rồi.
+15/05/2024	23:47:59 ::1---/v1/api/candidate/jobs/cancel/664093f99bc3ed7d2ade2b25---DELETE---Page not found

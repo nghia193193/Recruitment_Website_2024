@@ -215,6 +215,18 @@ class CandidateController {
             metadata: { ...metadata },
         }).send(res)
     }
+
+    cancelApplication = async (req, res, next) => {
+        const { error, value } = CandidateValidation.validateJobId({ ...req.params });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata } = await CandidateService.cancelApplication({ ...req.payload, ...value });
+        new OK({
+            message,
+            metadata: { ...metadata },
+        }).send(res)
+    }
 }
 
 module.exports = new CandidateController();

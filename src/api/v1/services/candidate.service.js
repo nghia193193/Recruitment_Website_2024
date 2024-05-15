@@ -304,17 +304,17 @@ class CandidateService {
         }
     }
 
-    static cancelApplication = async ({ userId, applicationId }) => {
+    static cancelApplication = async ({ userId, jobId }) => {
         try {
             // check đơn ứng tuyển
-            const application = await Application.findOne({ _id: applicationId, candidateId: userId });
+            const application = await Application.findOne({ jobId: jobId, candidateId: userId });
             if (!application) {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
             }
             if (application.status !== "Đã nộp") {
                 throw new BadRequestError("Đơn ứng tuyển của bạn đã được xử lý, không thể hủy.")
             }
-            const result = await Application.findOneAndDelete({ _id: applicationId, candidateId: userId });
+            const result = await Application.findOneAndDelete({ jobId: jobId, candidateId: userId });
             if (!result) {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
             }

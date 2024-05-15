@@ -40,7 +40,8 @@ router.delete('/resumes/delete_upload_certification/:Id', verifyAccessToken, aut
 router.get('/jobs/check_apply/:jobId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.checkApplyJob));
 // apply job
 router.post('/jobs/apply/:jobId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.applyJob));
-
+// cancel application
+router.delete('/jobs/cancel/:jobId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.cancelApplication));
 
 
 module.exports = router;
