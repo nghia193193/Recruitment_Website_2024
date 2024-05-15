@@ -22,6 +22,8 @@ router.delete('/favorite_jobs/remove/:jobId', verifyAccessToken, authPageCandida
 router.delete('/favorite_jobs/remove_all', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.removeAllFavoriteJob));
 // get list resume
 router.get('/resumes', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.getListResume));
+// get resume detail
+router.get('/resumes/detail/:resumeId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.getResumeDetail));
 // add resume
 router.post('/resumes/add', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.addResume));
 // update resume
@@ -34,6 +36,10 @@ router.patch('/resumes/change_status/:resumeId', verifyAccessToken, authPageCand
 router.post('/resumes/upload_certification', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.uploadCertification));
 // delete upload certification
 router.delete('/resumes/delete_upload_certification/:Id', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.deleteUploadCertification));
+// check apply
+router.get('/jobs/check_apply/:jobId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.checkApplyJob));
+// apply job
+router.post('/jobs/apply/:jobId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.applyJob));
 
 
 

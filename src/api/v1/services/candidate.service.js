@@ -2,8 +2,10 @@ const { Candidate } = require("../models/candidate.model");
 const { FavoriteJob } = require("../models/favoriteJob.model");
 const { Resume } = require("../models/resume.model");
 const { Login } = require("../models/login.model");
-const { InternalServerError } = require("../core/error.response");
+const { InternalServerError, BadRequestError } = require("../core/error.response");
 const { v2: cloudinary } = require('cloudinary');
+const { Application } = require("../models/application.model");
+const { Job } = require("../models/job.model");
 
 class CandidateService {
     static getInformation = async ({ userId }) => {
@@ -124,6 +126,18 @@ class CandidateService {
         }
     }
 
+    static getResumeDetail = async ({ userId, resumeId }) => {
+        try {
+            const resume = await Resume.getResumeDetail({ userId, resumeId });
+            return {
+                message: "Lấy thông tin resume thành công.",
+                metadata: { ...resume }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
     static addResume = async ({ userId, name, title, avatar, goal, phone, educationLevel, homeTown,
         dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories }) => {
         try {
@@ -132,8 +146,7 @@ class CandidateService {
                 dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories
             });
             return {
-                message: "Thêm resume thành công.",
-                metadata: { ...resume }
+                message: "Thêm resume thành công."
             }
         } catch (error) {
             throw error;
@@ -216,6 +229,97 @@ class CandidateService {
             await cloudinary.uploader.destroy(Id);
             return {
                 message: "Xóa file thành công.",
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static checkApplyJob = async ({ userId, jobId }) => {
+        try {
+            //check job
+            const job = await Job.findById(jobId).lean();
+            if (!job) {
+                throw new BadRequestError("Không tìm thấy công việc.");
+            }
+            const application = await Application.findOne({ candidateId: userId, jobId: jobId }).lean();
+            if (application) {
+                return {
+                    message: "Bạn đã ứng tuyển vào công việc này rồi.",
+                    metadata: { apply: true }
+                }
+            }
+            return {
+                message: "Bạn chưa ứng tuyển vào công việc này.",
+                metadata: { apply: false }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static applyJob = async ({ userId, jobId, resumeId }) => {
+        try {
+            // check job
+            const job = await Job.findById(jobId).lean();
+            if (!job) {
+                throw new BadRequestError("Không tìm thấy công việc.");
+            }
+            if (job.status !== "active" || job.acceptanceStatus !== "accept") {
+                throw new BadRequestError("Có lỗi xảy ra vui lòng thử lại.");
+            }
+            // check resume
+            const resume = await Resume.findOne({ _id: resumeId, candidateId: userId }).lean();
+            if (!resume || resume.candidateId.toString() !== userId) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+            }
+            if (resume.status === "inactive") {
+                throw new BadRequestError("Vui lòng kích hoạt resume để ứng tuyển.");
+            }
+            // check apply
+            const application = await Application.findOne({ candidateId: userId, jobId: jobId }).lean();
+            if (application?.status) {
+                if (application.status !== "Đã nộp") {
+                    throw new BadRequestError("Đơn ứng tuyển đã được xử lý rồi.");
+                }
+            }
+            // apply
+            const result = await Application.findOneAndUpdate({ candidateId: userId, jobId: jobId }, {
+                $set: {
+                    resumeId: resumeId,
+                    status: "Đã nộp"
+                }
+            }, {
+                new: true,
+                upsert: true
+            })
+            if (!result) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+            }
+            return {
+                message: "Ứng tuyển thành công."
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static cancelApplication = async ({ userId, applicationId }) => {
+        try {
+            // check đơn ứng tuyển
+            const application = await Application.findOne({ _id: applicationId, candidateId: userId });
+            if (!application) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+            }
+            if (application.status !== "Đã nộp") {
+                throw new BadRequestError("Đơn ứng tuyển của bạn đã được xử lý, không thể hủy.")
+            }
+            const result = await Application.findOneAndDelete({ _id: applicationId, candidateId: userId });
+            if (!result) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+            }
+            return {
+                message: "Hủy ứng tuyển thành công.",
             }
         } catch (error) {
             throw error;

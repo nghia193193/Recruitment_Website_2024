@@ -106,6 +106,18 @@ class CandidateController {
         }).send(res)
     }
 
+    getResumeDetail = async (req, res, next) => {
+        const { error, value } = CandidateValidation.validateResumeId(req.params);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata } = await CandidateService.getResumeDetail({ ...req.payload, ...value });
+        new OK({
+            message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
     addResume = async (req, res, next) => {
         const { error, value } = CandidateValidation.validateAddResume({ ...req.body, ...req.files });
         if (error) {
@@ -174,6 +186,30 @@ class CandidateController {
             throw new BadRequestError(error.details[0].message);
         }
         const { message, metadata } = await CandidateService.deleteUploadCertification({ ...value });
+        new OK({
+            message,
+            metadata: { ...metadata },
+        }).send(res)
+    }
+
+    checkApplyJob = async (req, res, next) => {
+        const { error, value } = CandidateValidation.validateJobId(req.params);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata } = await CandidateService.checkApplyJob({ ...req.payload, ...value });
+        new OK({
+            message,
+            metadata: { ...metadata },
+        }).send(res)
+    }
+
+    applyJob = async (req, res, next) => {
+        const { error, value } = CandidateValidation.validateApplyJob({ ...req.params, ...req.body });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata } = await CandidateService.applyJob({ ...req.payload, ...value });
         new OK({
             message,
             metadata: { ...metadata },

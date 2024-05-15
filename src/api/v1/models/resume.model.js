@@ -3,6 +3,7 @@ const model = mongoose.model;
 const Schema = mongoose.Schema;
 const { v2: cloudinary } = require('cloudinary');
 const { InternalServerError } = require('../core/error.response');
+const { formatInTimeZone } = require('date-fns-tz');
 
 const resumeSchema = new Schema({
     candidateId: {
@@ -90,11 +91,32 @@ resumeSchema.statics.getListResume = async function ({ userId, page, limit, titl
             query["title"] = new RegExp(title, "i");
         }
         const length = await this.find(query).lean().countDocuments();
-        const listResume = await this.find(query).lean().select("-__v")
+        let listResume = await this.find(query).lean().select("title name educationLevel jobType experience avatar updatedAt")
             .skip((page - 1) * limit)
             .limit(limit)
             .sort({ updatedAt: -1 });
+        listResume = listResume.map(resume => {
+            resume.avatar = resume.avatar.url;
+            resume.updatedAt = formatInTimeZone(resume.updatedAt, "Asia/Ho_Chi_Minh", "dd/MM/yyy HH:mm:ss");
+            return resume;
+        })
         return { length, listResume };
+    } catch (error) {
+        throw error;
+    }
+}
+
+resumeSchema.statics.getResumeDetail = async function ({ userId, resumeId }) {
+    try {
+        const resume = await this.findOne({ _id: resumeId, candidateId: userId }).lean().select("-__v");
+        if (!resume) {
+            throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
+        }
+        delete resume.candidateId;
+        resume.avatar = resume.avatar.url;
+        resume.createdAt = formatInTimeZone(resume.createdAt, "Asia/Ho_Chi_Minh", "dd/MM/yyy HH:mm:ss");
+        resume.updatedAt = formatInTimeZone(resume.updatedAt, "Asia/Ho_Chi_Minh", "dd/MM/yyy HH:mm:ss");
+        return resume;
     } catch (error) {
         throw error;
     }
@@ -103,7 +125,6 @@ resumeSchema.statics.getListResume = async function ({ userId, page, limit, titl
 resumeSchema.statics.addResume = async function ({ userId, name, title, avatar, goal, phone, educationLevel, homeTown,
     dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories }) {
     try {
-        console.log(avatar)
         let ava;
         //upload avatar
         if (avatar?.tempFilePath) {
@@ -185,6 +206,9 @@ resumeSchema.statics.updateResume = async function ({ userId, resumeId, name, ti
         if (!result) {
             throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
         }
+        result.avatar = result.avatar.url;
+        result.createdAt = formatInTimeZone(result.createdAt, "Asia/Ho_Chi_Minh", "dd/MM/yyy HH:mm:ss");
+        result.updatedAt = formatInTimeZone(result.updatedAt, "Asia/Ho_Chi_Minh", "dd/MM/yyy HH:mm:ss");
         return result;
     } catch (error) {
         throw error;
