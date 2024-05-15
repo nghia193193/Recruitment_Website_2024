@@ -30,6 +30,10 @@ router.patch('/resumes/update/:resumeId', verifyAccessToken, authPageCandidate, 
 router.delete('/resumes/delete/:resumeId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.deleteResume));
 // change status
 router.patch('/resumes/change_status/:resumeId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.changeResumeStatus));
+// upload certification
+router.post('/resumes/upload_certification', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.uploadCertification));
+// delete upload certification
+router.delete('/resumes/delete_upload_certification/:Id', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.deleteUploadCertification));
 
 
 

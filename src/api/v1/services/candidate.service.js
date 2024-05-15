@@ -193,6 +193,34 @@ class CandidateService {
             throw error;
         }
     }
+
+    static uploadCertification = async ({ uploadFile }) => {
+        try {
+            const result = await cloudinary.uploader.upload(uploadFile.tempFilePath);
+            if (!result) {
+                throw InternalServerError("Upload thất bại");
+            };
+            const publicId = result.public_id;
+            const url = cloudinary.url(publicId);
+            return {
+                message: "Upload thành công.",
+                metadata: { Id: publicId, url }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static deleteUploadCertification = async ({ Id }) => {
+        try {
+            await cloudinary.uploader.destroy(Id);
+            return {
+                message: "Xóa file thành công.",
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 module.exports = CandidateService;

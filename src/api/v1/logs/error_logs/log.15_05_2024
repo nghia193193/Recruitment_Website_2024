@@ -3,3 +3,23 @@
 15/05/2024	17:05:16 ::1---/v1/api/candidate/resumes/update/664483addeb1d9891ea2ef13---PATCH---Vui lòng đăng nhập lại
 15/05/2024	17:05:29 ::1---/v1/api/candidate/resumes/update/664483addeb1d9891ea2ef13---PATCH---Cannot read properties of undefined (reading 'tempFilePath')
 15/05/2024	17:06:48 ::1---/v1/api/candidate/resumes/update/664483addeb1d9891ea2ef13---PATCH---ava is not defined
+15/05/2024	17:18:09 ::1---/v1/api/candidate/resumes/add---POST---Vui lòng đăng nhập lại
+15/05/2024	17:21:24 ::1---/v1/api/candidate/resumes/add---POST---Vui lòng đăng nhập lại
+15/05/2024	17:21:38 ::1---/v1/api/candidate/resumes/add---POST---Vui lòng đăng nhập lại
+15/05/2024	17:21:44 ::1---/v1/api/candidate/information---GET---Vui lòng đăng nhập lại
+15/05/2024	17:22:00 ::1---/v1/api/candidate/resumes/add---POST---Vui lòng đăng nhập lại
+15/05/2024	17:22:19 ::1---/v1/api/candidate/resumes/add---POST---"certifications[0].name" is not allowed
+15/05/2024	17:24:36 ::1---/v1/api/candidate/resumes/add---POST---"certifications[0].name" is not allowed
+15/05/2024	18:05:29 ::1---/v1/api/candidate/resumes/upload_certification---POST---Vui lòng đăng nhập
+15/05/2024	18:05:38 ::1---/v1/api/candidate/resumes/upload_certification---POST---"uploadFile" is required
+15/05/2024	18:06:16 ::1---/v1/api/candidate/resumes/upload_certification---POST---"uploadFile" is required
+15/05/2024	18:07:06 ::1---/v1/api/candidate/resumes/upload_certification---POST---"uploadFile.name" is not allowed
+15/05/2024	18:08:15 ::1---/v1/api/candidate/resumes/upload_certification---POST---"uploadFile.name" is not allowed
+15/05/2024	18:10:28 ::1---/v1/api/candidate/resumes/upload_certification---POST---"name" is required
+15/05/2024	18:10:56 ::1---/v1/api/candidate/resumes/upload_certification---POST---"uploadFile.data" is not allowed
+15/05/2024	18:17:31 ::1---/v1/api/candidate/resumes/delete_upload_certification/123123---DELETE---Vui lòng đăng nhập
+15/05/2024	18:17:56 ::1---/v1/api/candidate/resumes/delete_upload_certification/123123---DELETE---"Id" is required
+15/05/2024	18:24:46 ::1---/v1/api/candidate/resumes/upload_certification---POST---Vui lòng đăng nhập lại
+15/05/2024	18:25:45 ::1---/v1/api/candidate/resumes/add---POST---Vui lòng đăng nhập lại
+15/05/2024	18:26:00 ::1---/v1/api/candidate/resumes/add---POST---"certifications[0].name" is required
+15/05/2024	18:27:16 ::1---/v1/api/candidate/resumes/add---POST---Quá trình học tập không được để trống.

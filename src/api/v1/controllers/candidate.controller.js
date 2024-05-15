@@ -154,6 +154,31 @@ class CandidateController {
             metadata: { ...metadata },
         }).send(res)
     }
+
+    uploadCertification = async (req, res, next) => {
+        console.log(req.files)
+        const { error, value } = CandidateValidation.validateUploadCertification(req.files);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata } = await CandidateService.uploadCertification({ ...value });
+        new OK({
+            message,
+            metadata: { ...metadata },
+        }).send(res)
+    }
+
+    deleteUploadCertification = async (req, res, next) => {
+        const { error, value } = CandidateValidation.validateDeleteUploadCertification(req.params);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata } = await CandidateService.deleteUploadCertification({ ...value });
+        new OK({
+            message,
+            metadata: { ...metadata },
+        }).send(res)
+    }
 }
 
 module.exports = new CandidateController();

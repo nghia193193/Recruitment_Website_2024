@@ -104,11 +104,11 @@ class CandidateValidation {
     static validateAddResume = data => {
         const validateSchema = joi.object({
             name: joi.string().max(50).custom((value) => {
-                const cleanName = xss(value);
+                const cleanName = xss(value.trim());
                 return cleanName;
             }).required(),
             title: joi.string().custom((value) => {
-                const cleanTitle = xss(value);
+                const cleanTitle = xss(value.trim());
                 return cleanTitle;
             }).required(),
             avatar: joi.alternatives().try(
@@ -118,7 +118,7 @@ class CandidateValidation {
                 joi.string().uri()
             ).required(),
             goal: joi.string().custom((value) => {
-                const cleanGoal = xss(value);
+                const cleanGoal = xss(value.trim());
                 return cleanGoal;
             }).required(),
             phone: joi.string().regex(/^(0[2-9]|1[0-9]|2[0-8]|3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5])[0-9]{8}$/).required()
@@ -126,30 +126,32 @@ class CandidateValidation {
                     'string.pattern.base': 'Không phải là số điện thoại Việt Nam hợp lệ'
                 }),
             educationLevel: joi.string().custom((value) => {
-                const cleanEL = xss(value);
+                const cleanEL = xss(value.trim());
                 return cleanEL;
             }).required(),
             homeTown: joi.string().custom((value) => {
-                const cleanHomeTown = xss(value);
+                const cleanHomeTown = xss(value.trim());
                 return cleanHomeTown;
             }).required(),
             dateOfBirth: joi.date().iso().required(),
             english: joi.string().custom((value) => {
-                const cleanEnglish = xss(value);
+                const cleanEnglish = xss(value.trim());
                 return cleanEnglish;
             }),
             jobType: joi.string().valid(...jobType).required(),
             experience: joi.string().custom((value) => {
-                const cleanExperience = xss(value);
+                const cleanExperience = xss(value.trim());
                 return cleanExperience;
             }),
             GPA: joi.number().required(),
             activity: joi.string().custom((value) => {
-                const cleanExperience = xss(value);
+                const cleanExperience = xss(value.trim());
                 return cleanExperience;
             }),
             certifications: joi.array().items(certificationSchema),
-            educations: joi.array().items(educationSchema).required(),
+            educations: joi.array().items(educationSchema).min(1).required().messages({
+                'array.min': 'Quá trình học tập không được để trống.'
+            }),
             workHistories: joi.array().items(workHistorySchema)
         }).messages({
             "any.only": "'{#label}' không hợp lệ",
@@ -251,7 +253,9 @@ class CandidateValidation {
                 return cleanActivity;
             }).optional(),
             certifications: joi.array().items(certificationSchema).optional(),
-            educations: joi.array().items(educationSchema).optional(),
+            educations: joi.array().items(educationSchema).min(1).optional().messages({
+                'array.min': 'Quá trình học tập không được để trống'
+            }),
             workHistories: joi.array().items(workHistorySchema).optional()
         }).messages({
             "any.only": "'{#label}' không hợp lệ"
@@ -277,10 +281,7 @@ class CandidateValidation {
     static validateDeleteResume = data => {
         const validateSchema = joi.object({
             resumeId: objectIdJoiSchema.required(),
-            title: joi.string().custom((value) => {
-                const cleanTitle = xss(value.trim());
-                return cleanTitle;
-            }),
+            
         })
         return validateSchema.validate(data);
     }
@@ -312,6 +313,27 @@ class CandidateValidation {
         })
         return validateSchema.validate(data);
     }
+
+    static validateUploadCertification = data => {
+        const validateSchema = joi.object({
+            uploadFile: joi.object({
+                name: joi.string(),
+                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg', 'application/pdf'),
+                size: joi.number().max(5 * 1024 * 1024)
+            }).unknown(true).required()
+        })
+        return validateSchema.validate(data);
+    }
+
+    static validateDeleteUploadCertification = data => {
+        const validateSchema = joi.object({
+            Id: joi.string().custom((value) => {
+                const cleanPass = xss(value.trim());
+                return cleanPass;
+            }).required()
+        })
+        return validateSchema.validate(data);
+    }
 }
 
 const objectIdValidator = (value, helpers) => {
@@ -322,9 +344,17 @@ const objectIdValidator = (value, helpers) => {
 };
 const objectIdJoiSchema = joi.string().custom(objectIdValidator, 'Custom validation for ObjectId').message("Id không hợp lệ");
 
+const uploadFileSchema = joi.object({
+    Id: joi.string().custom((value) => {
+        const cleanPass = xss(value.trim());
+        return cleanPass;
+    }).required(), 
+    url: joi.string().uri().required()
+});
+
 const certificationSchema = joi.object({
     name: joi.string().required(), 
-    uploadLink: joi.string().uri().required()
+    uploadFile: uploadFileSchema.required()
 });
 
 const educationSchema = joi.object({

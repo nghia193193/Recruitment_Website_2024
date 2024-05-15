@@ -103,6 +103,7 @@ resumeSchema.statics.getListResume = async function ({ userId, page, limit, titl
 resumeSchema.statics.addResume = async function ({ userId, name, title, avatar, goal, phone, educationLevel, homeTown,
     dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories }) {
     try {
+        console.log(avatar)
         let ava;
         //upload avatar
         if (avatar?.tempFilePath) {
