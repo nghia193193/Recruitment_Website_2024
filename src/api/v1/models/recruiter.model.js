@@ -151,12 +151,13 @@ recruiterSchema.statics.updateInformation = async function ({ userId, name, posi
                 await cloudinary.uploader.destroy(oldLogo);
             };
         } else {
-            const oldLogo = (await this.findById(userId)).companyLogo?.publicId;
-            if (oldLogo) {
-                await cloudinary.uploader.destroy(oldLogo);
-            };
-            logo = {
-                url: companyLogo
+            const oldLogo = (await this.findById(userId)).companyLogo;
+            if (oldLogo?.url === companyLogo) {
+                logo = oldLogo
+            } else {
+                logo = {
+                    url: companyLogo
+                }
             }
         }
         //upload cover photo
@@ -176,18 +177,21 @@ recruiterSchema.statics.updateInformation = async function ({ userId, name, posi
                 await cloudinary.uploader.destroy(oldCoverPhoto);
             };
         } else {
-            const oldCoverPhoto = (await this.findById(userId)).companyCoverPhoto?.publicId;
-            if (oldCoverPhoto) {
-                await cloudinary.uploader.destroy(oldCoverPhoto);
-            };
-            coverPhoto = {
-                url: companyCoverPhoto
+            const oldCoverPhoto = (await this.findById(userId)).companyCoverPhoto;
+            if (oldCoverPhoto?.url === companyCoverPhoto) {
+                coverPhoto = oldCoverPhoto
+            } else {
+                coverPhoto = {
+                    url: companyCoverPhoto
+                }
             }
         }
         //check slug
-        const slugData = await this.findOne({ slug }).lean();
-        if (slugData) {
-            throw new BadRequestError("Slug này đã tồn tại. Vui lòng nhập slug khác.");
+        const recruiter = await this.findOne({ slug }).lean();
+        if (recruiter) {
+            if (recruiter._id.toString() !== userId) {
+                throw new BadRequestError("Slug này đã tồn tại. Vui lòng nhập slug khác.");
+            }
         }
         const result = await this.findOneAndUpdate({ _id: userId }, {
             $set: {
@@ -197,7 +201,7 @@ recruiterSchema.statics.updateInformation = async function ({ userId, name, posi
             }
         }, {
             new: true,
-            select: { createdAt: 0, updatedAt: 0, __v: 0 }
+            select: { __v: 0 }
         }).lean().populate('loginId')
         if (!result) {
             throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại');
@@ -235,12 +239,13 @@ recruiterSchema.statics.updateAvatar = async function ({ userId, avatar }) {
                 await cloudinary.uploader.destroy(oldAvatar);
             };
         } else {
-            const oldAvatar = (await this.findById(userId)).companyAvatar?.publicId;
-            if (oldAvatar) {
-                await cloudinary.uploader.destroy(oldAvatar);
-            };
-            ava = {
-                url: avatar
+            const oldAvatar = (await this.findById(userId)).avatar;
+            if (oldAvatar.url === avatar) {
+                ava = oldAvatar
+            } else {
+                ava = {
+                    url: avatar
+                }
             }
         }
         const result = await this.findOneAndUpdate({ _id: userId }, {
@@ -249,7 +254,7 @@ recruiterSchema.statics.updateAvatar = async function ({ userId, avatar }) {
             }
         }, {
             new: true,
-            select: { createdAt: 0, updatedAt: 0, __v: 0 }
+            select: { __v: 0 }
         }).lean().populate('loginId')
         if (!result) {
             throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại');
@@ -314,13 +319,14 @@ recruiterSchema.statics.updateCompany = async function ({ userId, companyName, c
                 await cloudinary.uploader.destroy(oldLogo);
             };
         } else {
-            const oldLogo = (await this.findById(userId)).companyLogo?.publicId;
-            if (oldLogo) {
-                await cloudinary.uploader.destroy(oldLogo);
-            };
-            logo = companyLogo ? {
-                url: companyLogo
-            } : undefined
+            const oldLogo = (await this.findById(userId)).companyLogo;
+            if (oldLogo?.url === companyLogo) {
+                logo = oldLogo
+            } else {
+                logo = {
+                    url: companyLogo
+                }
+            }
         }
         //upload cover photo
         if (companyCoverPhoto?.tempFilePath) {
@@ -339,18 +345,21 @@ recruiterSchema.statics.updateCompany = async function ({ userId, companyName, c
                 await cloudinary.uploader.destroy(oldCoverPhoto);
             };
         } else {
-            const oldCoverPhoto = (await this.findById(userId)).companyCoverPhoto?.publicId;
-            if (oldCoverPhoto) {
-                await cloudinary.uploader.destroy(oldCoverPhoto);
-            };
-            coverPhoto = companyCoverPhoto ? {
-                url: companyCoverPhoto
-            } : undefined
+            const oldCoverPhoto = (await this.findById(userId)).companyCoverPhoto;
+            if (oldCoverPhoto?.url === companyCoverPhoto) {
+                coverPhoto = oldCoverPhoto
+            } else {
+                coverPhoto = {
+                    url: companyCoverPhoto
+                }
+            }
         }
         //check slug
-        const slugData = await this.findOne({ slug }).lean();
-        if (slugData) {
-            throw new BadRequestError("Slug này đã tồn tại. Vui lòng nhập slug khác.");
+        const recruiter = await this.findOne({ slug }).lean();
+        if (recruiter) {
+            if (recruiter._id.toString() !== userId) {
+                throw new BadRequestError("Slug này đã tồn tại. Vui lòng nhập slug khác.");
+            }
         }
         const result = await this.findOneAndUpdate({ _id: userId }, {
             $set: {

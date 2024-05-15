@@ -24,6 +24,12 @@ router.delete('/favorite_jobs/remove_all', verifyAccessToken, authPageCandidate,
 router.get('/resumes', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.getListResume));
 // add resume
 router.post('/resumes/add', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.addResume));
+// update resume
+router.patch('/resumes/update/:resumeId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.updateResume));
+// delete resume
+router.delete('/resumes/delete/:resumeId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.deleteResume));
+// change status
+router.patch('/resumes/change_status/:resumeId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.changeResumeStatus));
 
 
 

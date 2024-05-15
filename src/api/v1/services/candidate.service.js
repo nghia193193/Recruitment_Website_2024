@@ -2,6 +2,8 @@ const { Candidate } = require("../models/candidate.model");
 const { FavoriteJob } = require("../models/favoriteJob.model");
 const { Resume } = require("../models/resume.model");
 const { Login } = require("../models/login.model");
+const { InternalServerError } = require("../core/error.response");
+const { v2: cloudinary } = require('cloudinary');
 
 class CandidateService {
     static getInformation = async ({ userId }) => {
@@ -43,7 +45,7 @@ class CandidateService {
     static changePassword = async ({ userId, currentPassword, newPassword }) => {
         try {
             const email = (await Candidate.findById(userId).lean()).email;
-            
+
             const { message } = await Login.changePassword({ email, currentPassword, newPassword });
             return {
                 message: message
@@ -53,11 +55,11 @@ class CandidateService {
         }
     }
 
-    static getListFavoriteJob = async ({ userId, page, limit }) => {
+    static getListFavoriteJob = async ({ userId, page, limit, name }) => {
         try {
             page = page ? +page : 1;
             limit = limit ? +limit : 5;
-            const { length, listFavoriteJob } = await FavoriteJob.getListFavoriteJob({ userId, page, limit });
+            const { length, listFavoriteJob } = await FavoriteJob.getListFavoriteJob({ userId, page, limit, name });
             return {
                 message: "Lấy danh sách công việc yêu thích thành công.",
                 metadata: { listFavoriteJob, totalElement: length },
@@ -107,11 +109,11 @@ class CandidateService {
         }
     }
 
-    static getListResume = async ({ userId, page, limit }) => {
+    static getListResume = async ({ userId, page, limit, title }) => {
         try {
             page = page ? +page : 1;
             limit = limit ? +limit : 5;
-            const { length, listResume } = await Resume.getListResume({ userId, page, limit });
+            const { length, listResume } = await Resume.getListResume({ userId, page, limit, title });
             return {
                 message: "Lấy danh sách resume thành công.",
                 metadata: { listResume, totalElement: length },
@@ -131,6 +133,60 @@ class CandidateService {
             });
             return {
                 message: "Thêm resume thành công.",
+                metadata: { ...resume }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static updateResume = async ({ userId, resumeId, name, title, avatar, goal, phone, educationLevel, homeTown,
+        dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories }) => {
+        try {
+            const resume = await Resume.updateResume({
+                userId, resumeId, name, title, avatar, goal, phone, educationLevel, homeTown,
+                dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories
+            });
+            return {
+                message: "Cập nhật resume thành công.",
+                metadata: { ...resume }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static deleteResume = async ({ userId, resumeId, page, limit, title }) => {
+        try {
+            page = page ? +page : 1;
+            limit = limit ? +limit : 5;
+            const result = await Resume.findOneAndDelete({ _id: resumeId, candidateId: userId });
+            if (!result) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+            }
+            if (result.avatar?.publicId) {
+                await cloudinary.uploader.destroy(result.avatar.publicId);
+            }
+            const { length, listResume } = await Resume.getListResume({ userId, page, limit, title })
+            return {
+                message: "Xóa resume thành công.",
+                metadata: { listResume, totalElement: length },
+                options: {
+                    page, limit
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static changeResumeStatus = async ({ userId, resumeId, status }) => {
+        try {
+            const resume = await Resume.changeStatus({
+                userId, resumeId, status
+            });
+            return {
+                message: "Thay đổi trạng thái thành công.",
                 metadata: { ...resume }
             }
         } catch (error) {

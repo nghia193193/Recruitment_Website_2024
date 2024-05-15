@@ -48,7 +48,7 @@ class CandidateController {
     }
 
     getListFavoriteJob = async (req, res, next) => {
-        const { error, value } = CandidateValidation.validatePageLimit(req.query);
+        const { error, value } = CandidateValidation.validateGetListFavoriteJob(req.query);
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
@@ -94,7 +94,7 @@ class CandidateController {
     }
 
     getListResume = async (req, res, next) => {
-        const { error, value } = CandidateValidation.validatePageLimit(req.query);
+        const { error, value } = CandidateValidation.validateGetListResume(req.query);
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
@@ -112,6 +112,43 @@ class CandidateController {
             throw new BadRequestError(error.details[0].message);
         }
         const { message, metadata } = await CandidateService.addResume({ ...req.payload, ...value });
+        new OK({
+            message,
+            metadata: { ...metadata },
+        }).send(res)
+    }
+
+    updateResume = async (req, res, next) => {
+        const { error, value } = CandidateValidation.validateUpdateResume({ ...req.body, ...req.params, ...req.files });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata } = await CandidateService.updateResume({ ...req.payload, ...value });
+        new OK({
+            message,
+            metadata: { ...metadata },
+        }).send(res)
+    }
+
+    deleteResume = async (req, res, next) => {
+        const { error, value } = CandidateValidation.validateDeleteResume({ ...req.params, ...req.query });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata, options } = await CandidateService.deleteResume({ ...req.payload, ...value });
+        new OK({
+            message,
+            metadata: { ...metadata },
+            options
+        }).send(res)
+    }
+
+    changeResumeStatus = async (req, res, next) => {
+        const { error, value } = CandidateValidation.validateChangeStatus({ ...req.body, ...req.params });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata } = await CandidateService.changeResumeStatus({ ...req.payload, ...value });
         new OK({
             message,
             metadata: { ...metadata },

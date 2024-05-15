@@ -1,0 +1,5 @@
+15/05/2024	16:18:45 ::1---/v1/api/candidate/resumes/add---POST---Vui lòng đăng nhập lại
+15/05/2024	16:18:57 ::1---/v1/api/candidate/resumes/add---POST---"avatar" is required
+15/05/2024	17:05:16 ::1---/v1/api/candidate/resumes/update/664483addeb1d9891ea2ef13---PATCH---Vui lòng đăng nhập lại
+15/05/2024	17:05:29 ::1---/v1/api/candidate/resumes/update/664483addeb1d9891ea2ef13---PATCH---Cannot read properties of undefined (reading 'tempFilePath')
+15/05/2024	17:06:48 ::1---/v1/api/candidate/resumes/update/664483addeb1d9891ea2ef13---PATCH---ava is not defined

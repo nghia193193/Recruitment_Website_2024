@@ -18,7 +18,7 @@ const favoriteJobSchema = new Schema({
     timestamps: true
 })
 
-favoriteJobSchema.statics.getListFavoriteJob = async function ({ userId, page, limit }) {
+favoriteJobSchema.statics.getListFavoriteJob = async function ({ userId, page, limit, name }) {
     const candidate = await this.findOne({ candidateId: userId });
     if (!candidate) {
         return { length: 0, listFavoriteJob: [] };
@@ -26,9 +26,15 @@ favoriteJobSchema.statics.getListFavoriteJob = async function ({ userId, page, l
     let mappedFavoriteJobs = await Promise.all(
         candidate.favoriteJobs.map(async (jobId) => {
             const job = await Job.getJobDetail({ jobId });
-            if (job.status === "active" && job.acceptanceStatus === "accept") {
-                return job;
-            }
+            if (name) {
+                if (job.status === "active" && job.acceptanceStatus === "accept" && new RegExp(name, "i").test(job.name)) {
+                    return job;
+                }
+            } else {
+                if (job.status === "active" && job.acceptanceStatus === "accept") {
+                    return job;
+                }
+            } 
         })
     )
     mappedFavoriteJobs = mappedFavoriteJobs.filter(job => {
@@ -52,7 +58,7 @@ favoriteJobSchema.statics.addFavoriteJob = async function ({ userId, jobId }) {
     const listFavoriteJob = await this.findOne({ candidateId: userId });
     if (!listFavoriteJob) {
         return await this.create({ candidateId: userId, favoriteJobs: [jobId] });
-    } 
+    }
     // check job đã có trong list chưa
     if (listFavoriteJob.favoriteJobs.includes(jobId)) {
         throw new BadRequestError("Bạn đã thêm công việc này vào công việc yêu thích rồi.");
@@ -61,30 +67,21 @@ favoriteJobSchema.statics.addFavoriteJob = async function ({ userId, jobId }) {
     await listFavoriteJob.save();
 }
 
-favoriteJobSchema.statics.removeFavoriteJob = async function ({ userId, jobId, page, limit }) {
+favoriteJobSchema.statics.removeFavoriteJob = async function ({ userId, jobId, page, limit, name }) {
     // check đã có list chưa
-    const listFavoriteJob = await this.findOne({ candidateId: userId });
-    if (!listFavoriteJob) {
+    const candidate = await this.findOne({ candidateId: userId });
+    if (!candidate) {
         throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
     }
     // check job đã có trong list chưa
-    if (!listFavoriteJob.favoriteJobs.includes(jobId)) {
+    if (!candidate.favoriteJobs.includes(jobId)) {
         throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
     }
-    listFavoriteJob.favoriteJobs = listFavoriteJob.favoriteJobs.filter(job => job !== jobId);
-    await listFavoriteJob.save();
+    candidate.favoriteJobs = candidate.favoriteJobs.filter(job => job !== jobId);
+    await candidate.save();
     // trả về list đã xóa 
-    const mappedFavoriteJobs = await Promise.all(
-        listFavoriteJob.favoriteJobs.map(async (jobId) => {
-            const job = await Job.getJobDetail({ jobId });
-            if (job.status === "active" && job.acceptanceStatus === "accept") {
-                return job;
-            }
-        })
-    )
-    const start = (page - 1) * limit;
-    const end = limit;
-    return { length: mappedFavoriteJobs.length, listFavoriteJob: mappedFavoriteJobs.slice(start, end) };
+    const { length, listFavoriteJob } = await this.getListFavoriteJob({ userId, page, limit, name });
+    return { length, listFavoriteJob };
 }
 
 favoriteJobSchema.statics.removeAllFavoriteJob = async function ({ userId }) {
