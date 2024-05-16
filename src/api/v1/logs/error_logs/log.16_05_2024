@@ -1,0 +1,7 @@
+16/05/2024	20:44:07 ::1---/v1/api/candidate/apply_jobs---GET---Vui lòng đăng nhập
+16/05/2024	20:44:12 ::1---/v1/api/candidate/apply_jobs---GET---unknown argument to $lookup: foreignFeild
+16/05/2024	20:46:04 ::1---/v1/api/candidate/apply_jobs---GET---unknown argument to $lookup: foreignFeild
+16/05/2024	20:46:52 ::1---/v1/api/candidate/apply_jobs---GET---unknown argument to $lookup: foreignFeild
+16/05/2024	20:49:50 ::1---/v1/api/candidate/apply_jobs---GET---unknown argument to $lookup: foreignFeild
+16/05/2024	20:50:46 ::1---/v1/api/candidate/apply_jobs---GET---path option to $unwind stage should be prefixed with a '$': jobs
+16/05/2024	20:51:20 ::1---/v1/api/candidate/apply_jobs---GET---invalid argument to $skip stage: Expected an integer, but found NaN in: $skip: nan.0

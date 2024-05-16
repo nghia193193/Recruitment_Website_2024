@@ -3,8 +3,6 @@ const model = mongoose.model;
 const Schema = mongoose.Schema;
 const { formatInTimeZone } = require('date-fns-tz');
 const { NotFoundRequestError, InternalServerError, BadRequestError } = require('../core/error.response');
-const { acceptanceStatus } = require('../utils');
-const { Recruiter } = require('./recruiter.model');
 
 const jobSchema = new Schema({
     name: { //tên
@@ -346,7 +344,8 @@ jobSchema.statics.getListJob = async function ({ name, province, type, levelRequ
     try {
         const query = {
             status: "active",
-            acceptanceStatus: "accept"
+            acceptanceStatus: "accept",
+            deadline: { $gte: Date.now() }
         };
         if (name) {
             query["name"] = new RegExp(name, "i");
@@ -410,6 +409,7 @@ jobSchema.statics.getListJobOfRecruiter = async function ({ slug, name, province
                     "recruiters.slug": slug,
                     "status": "active",
                     "acceptanceStatus": "accept",
+                    "deadline": { $gte: Date.now() }
                 }
             },
             {

@@ -6,6 +6,9 @@ const { InternalServerError, BadRequestError } = require("../core/error.response
 const { v2: cloudinary } = require('cloudinary');
 const { Application } = require("../models/application.model");
 const { Job } = require("../models/job.model");
+const mongoose = require("mongoose");
+const { formatInTimeZone } = require("date-fns-tz");
+const ObjectId = mongoose.Types.ObjectId;
 
 class CandidateService {
     static getInformation = async ({ userId }) => {
@@ -265,7 +268,7 @@ class CandidateService {
             if (!job) {
                 throw new BadRequestError("Không tìm thấy công việc.");
             }
-            if (job.status !== "active" || job.acceptanceStatus !== "accept") {
+            if (job.status !== "active" || job.acceptanceStatus !== "accept" || new Date(job.deadline) < Date.now()) {
                 throw new BadRequestError("Có lỗi xảy ra vui lòng thử lại.");
             }
             // check resume
@@ -286,8 +289,7 @@ class CandidateService {
             // apply
             const result = await Application.findOneAndUpdate({ candidateId: userId, jobId: jobId }, {
                 $set: {
-                    resumeId: resumeId,
-                    status: "Đã nộp"
+                    resumeId: resumeId
                 }
             }, {
                 new: true,
@@ -320,6 +322,91 @@ class CandidateService {
             }
             return {
                 message: "Hủy ứng tuyển thành công.",
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getListApplyJob = async ({ userId, name, page, limit, status }) => {
+        try {
+            page = page ? +page : 1;
+            limit = limit ? +limit : 5;
+            const pipeline = [
+                {
+                    $lookup: {
+                        from: "jobs",
+                        localField: "jobId",
+                        foreignField: "_id",
+                        as: "jobs"
+                    }
+                },
+                {
+                    $unwind: "$jobs"
+                },
+                {
+                    $lookup: {
+                        from: "recruiters",
+                        localField: "jobs.recruiterId",
+                        foreignField: "_id",
+                        as: "recruiter"
+                    }
+                },
+                {
+                    $unwind: "$recruiter"
+                },
+                {
+                    $match: {
+                        "candidateId": new ObjectId(userId)
+                    }
+                },
+                {
+                    $project: {
+                        "_id": 1,
+                        "jobs.name": 1,
+                        "jobs.levelRequirement": 1,
+                        "jobs.field": 1,
+                        "recruiter.companyName": 1,
+                        "jobs.deadline": 1,
+                        "status": 1
+                    }
+                }
+            ]
+            if (name) {
+                pipeline.push({ $match: { "jobs.name": new RegExp(name, "i") } });
+            }
+            if (status) {
+                pipeline.push({ $match: { "status": status } });
+            }
+            const totalDocument = await Application.aggregate([...pipeline, { $count: "totalDocuments" }]);
+            const totalElement = totalDocument.length > 0 ? totalDocument[0].totalDocuments : 0;
+            let listJobApply = await Application.aggregate(
+                [...pipeline, {
+                    $sort: { updatedAt: -1 }
+                }, {
+                    $skip: (page - 1) * limit
+                }, {
+                    $limit: limit
+                }]
+            )
+            console.log(listJobApply)
+            listJobApply = listJobApply.map((item, index) => {
+                item.jobName = item.jobs.name;
+                item.levelRequirement = item.jobs.levelRequirement;
+                item.field = item.jobs.field,
+                item.deadline = formatInTimeZone(item.jobs.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy"); 
+                item.companyName = item.recruiter.companyName;
+                delete item.jobs;
+                delete item.recruiter;
+                return {
+                    STT: index + 1,
+                    ...item
+                }
+            })
+            return {
+                message: "Lấy danh sách công việc ứng tuyển thành công.",
+                metadata: { listJobApply, totalElement },
+                options: { page, limit }
             }
         } catch (error) {
             throw error;

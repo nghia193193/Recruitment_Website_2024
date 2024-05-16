@@ -227,6 +227,19 @@ class CandidateController {
             metadata: { ...metadata },
         }).send(res)
     }
+
+    getListApplyJob = async (req, res, next) => {
+        const { error, value } = CandidateValidation.validateGetListApplyJob(req.query);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata, options } = await CandidateService.getListApplyJob({ ...req.payload, ...value });
+        new OK({
+            message,
+            metadata: { ...metadata },
+            options
+        }).send(res)
+    }
 }
 
 module.exports = new CandidateController();

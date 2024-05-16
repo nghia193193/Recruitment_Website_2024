@@ -349,6 +349,19 @@ class CandidateValidation {
         })
         return validateSchema.validate(data);
     }
+
+    static validateGetListApplyJob = data => {
+        const validateSchema = joi.object({
+            name: joi.string().custom((value) => {
+                const cleanName = xss(value.trim());
+                return cleanName;
+            }),
+            status: joi.string().valid('Đã nộp','Đã nhận', 'Không nhận'),
+            page: joi.number().integer().min(1),
+            limit: joi.number().integer().min(1)
+        })
+        return validateSchema.validate(data);
+    }
 }
 
 const objectIdValidator = (value, helpers) => {
