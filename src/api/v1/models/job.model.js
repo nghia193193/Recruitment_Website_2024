@@ -3,6 +3,8 @@ const model = mongoose.model;
 const Schema = mongoose.Schema;
 const { formatInTimeZone } = require('date-fns-tz');
 const { NotFoundRequestError, InternalServerError, BadRequestError } = require('../core/error.response');
+const { Application } = require('./application.model');
+const ObjectId = mongoose.Types.ObjectId;
 
 const jobSchema = new Schema({
     name: { //tên
@@ -129,6 +131,46 @@ jobSchema.statics.updateJob = async function ({ userId, jobId, name, location, p
     }
 }
 
+jobSchema.statics.getJobApplicationNumber = async function ({ jobId }) {
+    try {
+        const pipeline = [
+            {
+                $lookup: {
+                    from: "jobs",
+                    localField: "jobId",
+                    foreignField: "_id",
+                    as: "jobs"
+                }
+            },
+            {
+                $unwind: "$jobs"
+            },
+            {
+                $lookup: {
+                    from: "resumes",
+                    localField: "resumeId",
+                    foreignField: "_id",
+                    as: "resume"
+                }
+            },
+            {
+                $unwind: "$resume"
+            },
+            {
+                $match: {
+                    "jobId": new ObjectId(jobId),
+                    "resume.status": "active"
+                }
+            }
+        ]
+        const totalDocument = await Application.aggregate([...pipeline, { $count: "totalDocuments" }]);
+        const totalElement = totalDocument.length > 0 ? totalDocument[0].totalDocuments : 0;
+        return totalElement;
+    } catch (error) {
+        throw error;
+    }
+}
+
 jobSchema.statics.getListWaitingJobByRecruiterId = async function ({ userId, name, field, levelRequirement, status, page, limit }) {
     try {
         const query = {
@@ -153,14 +195,17 @@ jobSchema.statics.getListWaitingJobByRecruiterId = async function ({ userId, nam
             .skip((page - 1) * limit)
             .limit(limit)
             .sort({ updatedAt: -1 })
-        result = result.map(item => {
-            return {
-                ...item,
-                applicationNumber: 0
-            }
-        })
+        let mappedList = await Promise.all(
+            result.map(async (item) => {
+                const applicationNumber = await this.getJobApplicationNumber({ jobId: item._id });
+                return {
+                    ...item,
+                    applicationNumber: applicationNumber
+                }
+            })
+        )
         return {
-            length, result
+            length, mappedList
         }
     } catch (error) {
         throw error;
@@ -186,19 +231,22 @@ jobSchema.statics.getListAcceptedJobByRecruiterId = async function ({ userId, na
             query["status"] = status;
         }
         const length = await this.find(query).lean().countDocuments();
-        let result = await this.find(query).lean()
+        const result = await this.find(query).lean()
             .select("name field type levelRequirement status deadline")
             .skip((page - 1) * limit)
             .limit(limit)
             .sort({ updatedAt: -1 })
-        result = result.map(item => {
-            return {
-                ...item,
-                applicationNumber: 0
-            }
-        })
+        let mappedList = await Promise.all(
+            result.map(async (item) => {
+                const applicationNumber = await this.getJobApplicationNumber({ jobId: item._id });
+                return {
+                    ...item,
+                    applicationNumber: applicationNumber
+                }
+            })
+        )
         return {
-            length, result
+            length, mappedList
         }
     } catch (error) {
         throw error;
@@ -229,14 +277,17 @@ jobSchema.statics.getListDeclinedJobByRecruiterId = async function ({ userId, na
             .skip((page - 1) * limit)
             .limit(limit)
             .sort({ updatedAt: -1 })
-        result = result.map(item => {
-            return {
-                ...item,
-                applicationNumber: 0
-            }
-        })
+        let mappedList = await Promise.all(
+            result.map(async (item) => {
+                const applicationNumber = await this.getJobApplicationNumber({ jobId: item._id });
+                return {
+                    ...item,
+                    applicationNumber: applicationNumber
+                }
+            })
+        )
         return {
-            length, result
+            length, mappedList
         }
     } catch (error) {
         throw error;
@@ -301,11 +352,21 @@ jobSchema.statics.getListJobAdmin = async function ({ companyName, name, field, 
             });
         }
         if (acceptanceStatus) {
-            pipeline.push({
-                $match: {
-                    "acceptanceStatus": acceptanceStatus
-                }
-            });
+            if (acceptanceStatus === "accept") {
+                pipeline.push({
+                    $match: {
+                        "acceptanceStatus": acceptanceStatus,
+                        "deadline": { $gte: Date.now() }
+                    }
+                });
+            } else {
+                pipeline.push({
+                    $match: {
+                        "acceptanceStatus": acceptanceStatus
+                    }
+                });
+            }
+            
         }
         const totalDocument = await this.aggregate([...pipeline, { $count: "totalDocuments" }]);
         const length = totalDocument.length > 0 ? totalDocument[0].totalDocuments : 0;

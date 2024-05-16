@@ -1,4 +1,5 @@
 const { InternalServerError, NotFoundRequestError, ConflictRequestError } = require("../core/error.response");
+const { Application } = require("../models/application.model");
 const { Job } = require("../models/job.model");
 const { Login } = require("../models/login.model");
 const { Recruiter } = require("../models/recruiter.model");
@@ -176,11 +177,11 @@ class RecruiterService {
         try {
             page = page ? +page : 1;
             limit = limit ? +limit : 5;
-            const { result, length } = await Job.getListWaitingJobByRecruiterId({ userId, name, field, levelRequirement, status, page, limit })
+            const { mappedList, length } = await Job.getListWaitingJobByRecruiterId({ userId, name, field, levelRequirement, status, page, limit })
             return {
                 message: "Lấy danh sách công việc thành công",
                 metadata: {
-                    listWaitingJob: result,
+                    listWaitingJob: mappedList,
                     totalElement: length
                 },
                 options: {
@@ -197,11 +198,11 @@ class RecruiterService {
         try {
             page = page ? +page : 1;
             limit = limit ? +limit : 5;
-            const { result, length } = await Job.getListAcceptedJobByRecruiterId({ userId, name, field, levelRequirement, status, page, limit })
+            const { mappedList, length } = await Job.getListAcceptedJobByRecruiterId({ userId, name, field, levelRequirement, status, page, limit })
             return {
                 message: "Lấy danh sách công việc thành công",
                 metadata: {
-                    listAcceptedJob: result,
+                    listAcceptedJob: mappedList,
                     totalElement: length
                 },
                 options: {
@@ -218,17 +219,81 @@ class RecruiterService {
         try {
             page = page ? +page : 1;
             limit = limit ? +limit : 5;
-            const { result, length } = await Job.getListDeclinedJobByRecruiterId({ userId, name, field, levelRequirement, status, page, limit })
+            const { mappedList, length } = await Job.getListDeclinedJobByRecruiterId({ userId, name, field, levelRequirement, status, page, limit })
             return {
                 message: "Lấy danh sách công việc thành công",
                 metadata: {
-                    listDeclinedJob: result,
+                    listDeclinedJob: mappedList,
                     totalElement: length
                 },
                 options: {
                     page: page,
                     limit: limit
                 }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getListJobApplication = async ({ userId, jobId, candidateName, experience, status,
+        page, limit }) => {
+        try {
+            page = page ? +page : 1;
+            limit = limit ? +limit : 5;
+            const { listApplication, totalElement } = await Application.getListJobApplication({
+                userId, jobId, candidateName, experience, status,
+                page, limit
+            })
+            return {
+                message: "Lấy danh sách ứng tuyển thành công",
+                metadata: {
+                    listApplication,
+                    totalElement
+                },
+                options: {
+                    page: page,
+                    limit: limit
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getApplicationDetail = async ({ userId, applicationId }) => {
+        try {
+            const result = await Application.getApplicationDetail({ userId, applicationId });
+            return {
+                message: "Lấy thông tin resume thành công",
+                metadata: {
+                    ...result
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getApplicationDetail = async ({ userId, applicationId }) => {
+        try {
+            const result = await Application.getApplicationDetail({ userId, applicationId });
+            return {
+                message: "Lấy thông tin resume thành công",
+                metadata: {
+                    ...result
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static approveApplication = async ({ userId, applicationId, status }) => {
+        try {
+            await Application.approveApplication({ userId, applicationId, status });
+            return {
+                message: "Duyệt đơn ứng tuyển thành công thành công",
             }
         } catch (error) {
             throw error;

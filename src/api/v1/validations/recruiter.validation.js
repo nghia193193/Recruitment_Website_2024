@@ -458,6 +458,43 @@ class RecruiterValidation {
         })
         return validateSchema.validate(data);
     }
+
+    static validateApplicationId = data => {
+        const validateSchema = joi.object({
+            applicationId: objectIdJoiSchema.required()
+        })
+        return validateSchema.validate(data);
+    }
+
+    static validateGetListJobApplication = data => {
+        const validateSchema = joi.object({
+            jobId: objectIdJoiSchema.required(),
+            candidateName: joi.string().custom((value) => {
+                const cleanName = xss(value.trim());
+                return cleanName;
+            }),
+            experience: joi.string().custom((value) => {
+                const cleanExperience = xss(value.trim());
+                return cleanExperience;
+            }),
+            status: joi.string().valid('Đã nộp','Đã nhận', 'Không nhận'),
+            page: joi.number().integer().min(1),
+            limit: joi.number().integer().min(1)
+        }).messages({
+            "any.only": "'{#label}' không hợp lệ"
+        })
+        return validateSchema.validate(data);
+    }
+
+    static validateApproveApplication = data => {
+        const validateSchema = joi.object({
+            applicationId: objectIdJoiSchema.required(),
+            status: joi.string().valid("Đã nhận", "Không nhận").required()
+        }).messages({
+            "any.only": "'{#label}' không hợp lệ"
+        })
+        return validateSchema.validate(data);
+    }
 }
 
 const objectIdValidator = (value, helpers) => {

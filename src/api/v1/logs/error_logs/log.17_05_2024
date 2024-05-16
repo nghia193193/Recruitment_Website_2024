@@ -1,0 +1,19 @@
+17/05/2024	00:04:18 ::1---/v1/api/recruiter/jobs/applications/approve/6646105b0fecf4288aba1697---PATCH---Vui lòng đăng nhập
+17/05/2024	00:04:22 ::1---/v1/api/recruiter/jobs/applications/approve/6646105b0fecf4288aba1697---PATCH---Vui lòng đăng nhập lại
+17/05/2024	00:04:31 ::1---/v1/api/recruiter/jobs/applications/approve/6646105b0fecf4288aba1697---PATCH---Vui lòng đăng nhập lại
+17/05/2024	00:04:33 ::1---/v1/api/recruiter/jobs/applications/detail/6646105b0fecf4288aba1696---GET---Vui lòng đăng nhập lại
+17/05/2024	00:04:46 ::1---/v1/api/recruiter/jobs/applications/approve/6646105b0fecf4288aba1697---PATCH---"status" is required
+17/05/2024	00:05:03 ::1---/v1/api/recruiter/jobs/applications/approve/6646105b0fecf4288aba1697---PATCH---"status" must be one of [Đã nhận, Không nhận]
+17/05/2024	00:05:57 ::1---/v1/api/recruiter/jobs/applications/approve/6646105b0fecf4288aba1697---PATCH---'"status"' không hợp lệ
+17/05/2024	00:06:06 ::1---/v1/api/recruiter/jobs/applications/approve/6646105b0fecf4288aba1697---PATCH---Cannot read properties of undefined (reading 'resume')
+17/05/2024	00:07:18 ::1---/v1/api/recruiter/jobs/applications/approve/6646105b0fecf4288aba1697---PATCH---Có lỗi xảy ra vui lòng thử lại
+17/05/2024	00:08:39 ::1---/v1/api/recruiter/jobs/applications/approve/6646105b0fecf4288aba1697---PATCH---Bạn cần được chấp thuận để sử dụng chức năng
+17/05/2024	00:09:47 ::1---/v1/api/recruiter/jobs/applications/approve/6646105b0fecf4288aba1697---PATCH---Có lỗi xảy ra vui lòng thử lại
+17/05/2024	00:11:05 ::1---/v1/api/recruiter/jobs/applications/approve/6646105b0fecf4288aba1697---PATCH---Có lỗi xảy ra vui lòng thử lại
+17/05/2024	00:11:20 ::1---/v1/api/recruiter/jobs/applications/approve/6646105b0fecf4288aba1697---PATCH---Có lỗi xảy ra vui lòng thử lại
+17/05/2024	00:11:59 ::1---/v1/api/candidate/applications---GET---Vui lòng đăng nhập lại
+17/05/2024	00:12:08 ::1---/v1/api/candidate/applications---GET---Bạn không có quyền
+17/05/2024	00:12:21 ::1---/v1/api/candidate/applications---GET---Bạn không có quyền
+17/05/2024	00:12:39 ::1---/v1/api/candidate/applications---GET---Bạn không có quyền
+17/05/2024	00:13:20 ::1---/v1/api/candidate/applications---GET---Bạn không có quyền
+17/05/2024	00:13:57 ::1---/v1/api/recruiter/jobs/applications/662f4f7488a6f0c504c764db---GET---Vui lòng đăng nhập lại

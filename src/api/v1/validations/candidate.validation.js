@@ -350,7 +350,7 @@ class CandidateValidation {
         return validateSchema.validate(data);
     }
 
-    static validateGetListApplyJob = data => {
+    static validateGetListApplication = data => {
         const validateSchema = joi.object({
             name: joi.string().custom((value) => {
                 const cleanName = xss(value.trim());

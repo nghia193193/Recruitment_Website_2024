@@ -42,7 +42,7 @@ router.get('/jobs/check_apply/:jobId', verifyAccessToken, authPageCandidate, asy
 router.post('/jobs/apply/:jobId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.applyJob));
 // cancel application
 router.delete('/jobs/cancel/:jobId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.cancelApplication));
-// get list apply job
-router.get('/apply_jobs', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.getListApplyJob));
+// get list application
+router.get('/applications', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.getListApplication));
 
 module.exports = router;

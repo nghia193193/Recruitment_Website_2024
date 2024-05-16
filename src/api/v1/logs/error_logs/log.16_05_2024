@@ -5,3 +5,14 @@
 16/05/2024	20:49:50 ::1---/v1/api/candidate/apply_jobs---GET---unknown argument to $lookup: foreignFeild
 16/05/2024	20:50:46 ::1---/v1/api/candidate/apply_jobs---GET---path option to $unwind stage should be prefixed with a '$': jobs
 16/05/2024	20:51:20 ::1---/v1/api/candidate/apply_jobs---GET---invalid argument to $skip stage: Expected an integer, but found NaN in: $skip: nan.0
+16/05/2024	21:53:58 ::1---/v1/api/recruiter/jobs/accepted_jobs---GET---Bạn cần được chấp thuận để sử dụng chức năng
+16/05/2024	21:54:34 ::1---/v1/api/recruiter/jobs/accepted_jobs---GET---Job is not defined
+16/05/2024	21:55:25 ::1---/v1/api/recruiter/jobs/accepted_jobs---GET---ObjectId is not defined
+16/05/2024	22:51:34 ::1---/v1/api/recruiter/jobs/applications/1232132---GET---Vui lòng đăng nhập
+16/05/2024	22:51:46 ::1---/v1/api/recruiter/jobs/applications/1232132---GET---Id không hợp lệ
+16/05/2024	22:52:07 ::1---/v1/api/recruiter/jobs/applications/662f4f7488a6f0c504c764db---GET---Job.getListJobApplication is not a function
+16/05/2024	22:55:08 ::1---/v1/api/recruiter/jobs/applications/662f4f7488a6f0c504c764db---GET---Vui lòng đăng nhập lại
+16/05/2024	22:55:23 ::1---/v1/api/recruiter/jobs/applications/662f4f7488a6f0c504c764db---GET---avatar is not defined
+16/05/2024	23:01:44 ::1---/v1/api/recruiter/jobs/applications/662f4f7488a6f0c504c764db?status=%C4%90%C3%A3%20n%E1%BB%99pp---GET---"status" must be one of [Đã nộp, Đã nhận, Không nhận]
+16/05/2024	23:32:04 ::1---/v1/api/recruiter/jobs/applications/detail/12312---GET---Id không hợp lệ
+16/05/2024	23:32:10 ::1---/v1/api/candidate/applications---GET---Vui lòng đăng nhập lại

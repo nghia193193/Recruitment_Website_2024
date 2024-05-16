@@ -166,6 +166,43 @@ class RecruiterController {
             options: options
         }).send(res)
     }
+
+    getListJobApplication = async (req, res, next) => {
+        const { error, value } = RecruiterValidation.validateGetListJobApplication({ ...req.params, ...req.query });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { metadata, message, options } = await RecruiterService.getListJobApplication({ ...value, ...req.payload });
+        new OK({
+            message: message,
+            metadata: { ...metadata },
+            options: options
+        }).send(res)
+    }
+
+    getApplicationDetail = async (req, res, next) => {
+        const { error, value } = RecruiterValidation.validateApplicationId(req.params);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { metadata, message } = await RecruiterService.getApplicationDetail({ ...value, ...req.payload });
+        new OK({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
+    approveApplication = async (req, res, next) => {
+        const { error, value } = RecruiterValidation.validateApproveApplication({ ...req.params, ...req.body });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { metadata, message } = await RecruiterService.approveApplication({ ...value, ...req.payload });
+        new OK({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
 }
 
 module.exports = new RecruiterController;

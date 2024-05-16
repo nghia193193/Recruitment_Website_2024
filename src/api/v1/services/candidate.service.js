@@ -328,7 +328,7 @@ class CandidateService {
         }
     }
 
-    static getListApplyJob = async ({ userId, name, page, limit, status }) => {
+    static getListApplication = async ({ userId, name, page, limit, status }) => {
         try {
             page = page ? +page : 1;
             limit = limit ? +limit : 5;
@@ -380,7 +380,7 @@ class CandidateService {
             }
             const totalDocument = await Application.aggregate([...pipeline, { $count: "totalDocuments" }]);
             const totalElement = totalDocument.length > 0 ? totalDocument[0].totalDocuments : 0;
-            let listJobApply = await Application.aggregate(
+            let listApplication = await Application.aggregate(
                 [...pipeline, {
                     $sort: { updatedAt: -1 }
                 }, {
@@ -389,9 +389,8 @@ class CandidateService {
                     $limit: limit
                 }]
             )
-            console.log(listJobApply)
-            listJobApply = listJobApply.map((item, index) => {
-                item.jobName = item.jobs.name;
+            listApplication = listApplication.map((item, index) => {
+                item.name = item.jobs.name;
                 item.levelRequirement = item.jobs.levelRequirement;
                 item.field = item.jobs.field,
                 item.deadline = formatInTimeZone(item.jobs.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy"); 
@@ -405,7 +404,7 @@ class CandidateService {
             })
             return {
                 message: "Lấy danh sách công việc ứng tuyển thành công.",
-                metadata: { listJobApply, totalElement },
+                metadata: { listApplication, totalElement },
                 options: { page, limit }
             }
         } catch (error) {
