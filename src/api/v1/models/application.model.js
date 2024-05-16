@@ -171,7 +171,6 @@ applicationSchema.statics.approveApplication = async function ({ userId, applica
     try {
         // validate recruiter
         const application = await this.getApplicationDetail({ userId, applicationId });
-        console.log(application)
         if (!application) {
             throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
         }

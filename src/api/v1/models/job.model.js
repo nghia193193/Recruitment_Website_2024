@@ -356,7 +356,7 @@ jobSchema.statics.getListJobAdmin = async function ({ companyName, name, field, 
                 pipeline.push({
                     $match: {
                         "acceptanceStatus": acceptanceStatus,
-                        "deadline": { $gte: Date.now() }
+                        "deadline": { $gte: new Date() }
                     }
                 });
             } else {
@@ -470,7 +470,7 @@ jobSchema.statics.getListJobOfRecruiter = async function ({ slug, name, province
                     "recruiters.slug": slug,
                     "status": "active",
                     "acceptanceStatus": "accept",
-                    "deadline": { $gte: Date.now() }
+                    "deadline": { $gte: new Date() }
                 }
             },
             {
