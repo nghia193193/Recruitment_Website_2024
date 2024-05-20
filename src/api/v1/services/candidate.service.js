@@ -153,11 +153,11 @@ class CandidateService {
         }
     }
 
-    static addResume = async ({ userId, name, title, avatar, goal, phone, educationLevel, homeTown,
+    static addResume = async ({ userId, name, title, avatar, goal, phone, educationLevel, homeTown, email, major,
         dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories }) => {
         try {
             const resume = await Resume.addResume({
-                userId, name, title, avatar, goal, phone, educationLevel, homeTown,
+                userId, name, title, avatar, goal, phone, educationLevel, homeTown, email, major,
                 dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories
             });
             return {
@@ -168,17 +168,17 @@ class CandidateService {
         }
     }
 
-    static updateResume = async ({ userId, resumeId, name, title, avatar, goal, phone, educationLevel, homeTown,
+    static updateResume = async ({ userId, resumeId, name, title, avatar, goal, phone, educationLevel, homeTown, email, major,
         dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories }) => {
         try {
             const resume = await Resume.updateResume({
-                userId, resumeId, name, title, avatar, goal, phone, educationLevel, homeTown,
+                userId, resumeId, name, title, avatar, goal, phone, educationLevel, homeTown, email, major,
                 dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories
             });
             return {
                 message: "Cập nhật resume thành công.",
                 metadata: { ...resume }
-            }
+            }   
         } catch (error) {
             throw error;
         }

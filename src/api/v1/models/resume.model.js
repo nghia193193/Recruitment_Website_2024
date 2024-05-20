@@ -61,6 +61,8 @@ const resumeSchema = new Schema({
         type: String,
         required: true
     },
+    email: String,
+    major: String,
     certifications: {
         type: Array,
         default: []
@@ -91,7 +93,7 @@ resumeSchema.statics.getListResume = async function ({ userId, page, limit, titl
             query["title"] = new RegExp(title, "i");
         }
         const length = await this.find(query).lean().countDocuments();
-        let listResume = await this.find(query).lean().select("title name educationLevel jobType experience avatar updatedAt")
+        let listResume = await this.find(query).lean().select("title name educationLevel status email major jobType experience avatar updatedAt")
             .skip((page - 1) * limit)
             .limit(limit)
             .sort({ updatedAt: -1 });
@@ -122,7 +124,7 @@ resumeSchema.statics.getResumeDetail = async function ({ userId, resumeId }) {
     }
 }
 
-resumeSchema.statics.addResume = async function ({ userId, name, title, avatar, goal, phone, educationLevel, homeTown,
+resumeSchema.statics.addResume = async function ({ userId, name, title, avatar, goal, phone, email, major, educationLevel, homeTown,
     dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories }) {
     try {
         let ava;
@@ -144,7 +146,7 @@ resumeSchema.statics.addResume = async function ({ userId, name, title, avatar, 
             }
         }
         const newResume = await this.create({
-            candidateId: userId, name, title, avatar: ava, goal, phone, educationLevel, homeTown,
+            candidateId: userId, name, title, avatar: ava, goal, phone, educationLevel, homeTown, email, major,
             dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories
         });
         return newResume.toObject();
@@ -154,7 +156,7 @@ resumeSchema.statics.addResume = async function ({ userId, name, title, avatar, 
 }
 
 resumeSchema.statics.updateResume = async function ({ userId, resumeId, name, title, avatar, goal, phone, educationLevel, homeTown,
-    dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories }) {
+    dateOfBirth, english, email, major, jobType, experience, GPA, activity, certifications, educations, workHistories }) {
     try {
         // check resume
         const resume = await this.findById(resumeId);
@@ -196,7 +198,7 @@ resumeSchema.statics.updateResume = async function ({ userId, resumeId, name, ti
         }
         const result = await this.findOneAndUpdate({ _id: resumeId }, {
             $set: {
-                name, title, avatar: ava, goal, phone, educationLevel, homeTown,
+                name, title, avatar: ava, goal, phone, educationLevel, homeTown, email, major,
                 dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories
             }
         }, {

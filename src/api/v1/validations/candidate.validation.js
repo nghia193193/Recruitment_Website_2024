@@ -110,7 +110,7 @@ class CandidateValidation {
 
     static validateAddResume = data => {
         const validateSchema = joi.object({
-            name: joi.string().max(50).custom((value) => {
+            name: joi.string().custom((value) => {
                 const cleanName = xss(value.trim());
                 return cleanName;
             }).required(),
@@ -151,6 +151,11 @@ class CandidateValidation {
                 return cleanExperience;
             }),
             GPA: joi.number().required(),
+            email: joi.string().email().lowercase().required(),
+            major: joi.string().custom((value) => {
+                const celanMajor = xss(value.trim());
+                return celanMajor;
+            }).required(),
             activity: joi.string().custom((value) => {
                 const cleanExperience = xss(value.trim());
                 return cleanExperience;
@@ -184,7 +189,7 @@ class CandidateValidation {
     static validateUpdateResume = data => {
         const validateSchema = joi.object({
             resumeId: objectIdJoiSchema.required(),
-            name: joi.string().max(50).custom((value, helpers) => {
+            name: joi.string().custom((value, helpers) => {
                 const cleanName = xss(value.trim());
                 if (cleanName === '') {
                     return helpers.error('any.empty');
@@ -255,6 +260,11 @@ class CandidateValidation {
             GPA: joi.number().optional().messages({
                 'number.base': "'GPA' phải là một số"
             }),
+            email: joi.string().email().lowercase().optional(),
+            major: joi.string().custom((value) => {
+                const celanMajor = xss(value.trim());
+                return celanMajor;
+            }).optional(),
             activity: joi.string().custom((value, helpers) => {
                 const cleanActivity = xss(value.trim());
                 return cleanActivity;
