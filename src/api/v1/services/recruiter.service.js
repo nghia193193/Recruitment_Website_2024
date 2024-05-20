@@ -1,9 +1,9 @@
-const { InternalServerError, NotFoundRequestError, ConflictRequestError } = require("../core/error.response");
+const { InternalServerError, NotFoundRequestError, ConflictRequestError, BadRequestError } = require("../core/error.response");
 const { Application } = require("../models/application.model");
 const { Job } = require("../models/job.model");
 const { Login } = require("../models/login.model");
 const { Recruiter } = require("../models/recruiter.model");
-const { status } = require("../utils");
+const { status, levelRequirement } = require("../utils");
 
 
 class RecruiterService {
@@ -241,6 +241,10 @@ class RecruiterService {
         try {
             page = page ? +page : 1;
             limit = limit ? +limit : 5;
+            const job = await Job.findById(jobId).lean();
+            if (!job) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
+            }
             const { listApplication, totalElement } = await Application.getListJobApplication({
                 userId, jobId, candidateName, experience, status,
                 page, limit
@@ -249,25 +253,13 @@ class RecruiterService {
                 message: "Lấy danh sách ứng tuyển thành công",
                 metadata: {
                     listApplication,
-                    totalElement
+                    totalElement,
+                    name: job.name,
+                    levelRequirement: job.levelRequirement
                 },
                 options: {
                     page: page,
                     limit: limit
-                }
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    static getApplicationDetail = async ({ userId, applicationId }) => {
-        try {
-            const result = await Application.getApplicationDetail({ userId, applicationId });
-            return {
-                message: "Lấy thông tin resume thành công",
-                metadata: {
-                    ...result
                 }
             }
         } catch (error) {

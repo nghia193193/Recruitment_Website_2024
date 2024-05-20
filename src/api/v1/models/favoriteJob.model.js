@@ -34,7 +34,7 @@ favoriteJobSchema.statics.getListFavoriteJob = async function ({ userId, page, l
                 if (job.status === "active" && job.acceptanceStatus === "accept") {
                     return job;
                 }
-            } 
+            }
         })
     )
     mappedFavoriteJobs = mappedFavoriteJobs.filter(job => {
@@ -43,6 +43,36 @@ favoriteJobSchema.statics.getListFavoriteJob = async function ({ userId, page, l
     const start = (page - 1) * limit;
     const end = start + limit;
     return { length: mappedFavoriteJobs.length, listFavoriteJob: mappedFavoriteJobs.slice(start, end) };
+}
+
+favoriteJobSchema.statics.checkFavoriteJob = async function ({ userId, jobId }) {
+    // check có job này không
+    const job = await Job.findById(jobId).lean();
+    if (!job) {
+        throw new BadRequestError("Không tìm thấy công việc này, vui lòng thử lại");
+    }
+    if (job.status !== "active" || job.acceptanceStatus !== "accept") {
+        throw new BadRequestError("Hiện tại không thể thêm công việc này");
+    }
+    // check đã có list chưa
+    const listFavoriteJob = await this.findOne({ candidateId: userId });
+    if (!listFavoriteJob) {
+        return {
+            message: "Chưa thêm công việc vào công việc yêu thích.",
+            exist: false
+        }
+    }
+    // check job đã có trong list chưa
+    if (listFavoriteJob.favoriteJobs.includes(jobId)) {
+        return {
+            message: "Đã thêm công việc vào công việc yêu thích.",
+            exist: true
+        }
+    }
+    return {
+        message: "Chưa thêm công việc vào công việc yêu thích.",
+        exist: false
+    }
 }
 
 favoriteJobSchema.statics.addFavoriteJob = async function ({ userId, jobId }) {

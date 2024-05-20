@@ -75,6 +75,18 @@ class CandidateService {
         }
     }
 
+    static checkFavoriteJob = async ({ userId, jobId }) => {
+        try {
+            const { message, exist } = await FavoriteJob.checkFavoriteJob({ userId, jobId });
+            return {
+                message, 
+                metadata: { exist }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
     static addFavoriteJob = async ({ userId, jobId }) => {
         try {
             await FavoriteJob.addFavoriteJob({ userId, jobId });

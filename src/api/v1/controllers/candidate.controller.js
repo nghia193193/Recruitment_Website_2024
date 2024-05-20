@@ -60,6 +60,18 @@ class CandidateController {
         }).send(res)
     }
 
+    checkFavoriteJob = async (req, res, next) => {
+        const { error, value } = CandidateValidation.validateJobId(req.params);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata } = await CandidateService.checkFavoriteJob({ ...req.payload, ...value });
+        new OK({
+            message,
+            metadata: { ...metadata },
+        }).send(res)
+    }
+
     addFavoriteJob = async (req, res, next) => {
         const { error, value } = CandidateValidation.validateJobId(req.params);
         if (error) {

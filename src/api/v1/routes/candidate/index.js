@@ -14,6 +14,8 @@ router.patch('/update_avatar', verifyAccessToken, authPageCandidate, asyncHandle
 router.post('/change_password', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.changePassword));
 // get list favorite job
 router.get('/favorite_jobs', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.getListFavoriteJob));
+// check favorite job
+router.get('/favorite_jobs/check/:jobId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.checkFavoriteJob));
 // add favorite job
 router.post('/favorite_jobs/add/:jobId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.addFavoriteJob));
 // remove favorite job
