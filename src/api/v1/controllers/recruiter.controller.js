@@ -203,6 +203,14 @@ class RecruiterController {
             metadata: { ...metadata }
         }).send(res)
     }
+
+    getListApplicationStatus = async (req, res, next) => {
+        const { metadata, message } = await RecruiterService.getListApplicationStatus();
+        new OK({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
 }
 
 module.exports = new RecruiterController;

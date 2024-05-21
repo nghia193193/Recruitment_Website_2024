@@ -94,6 +94,7 @@ const mapRolePermission = {
 }
 
 const workStatus = ["Đang tìm việc", "Đã có việc", "Đang tìm nơi thực tập"];
+const applicationStatus = ['Đã nộp', 'Đã nhận', 'Không nhận'];
 
 module.exports = {
     fieldOfActivity,
@@ -105,5 +106,6 @@ module.exports = {
     status,
     provinceOfVietNam,
     mapRolePermission,
-    workStatus
+    workStatus,
+    applicationStatus
 }

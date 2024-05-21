@@ -30,8 +30,7 @@ const applicationSchema = new Schema({
     timestamps: true
 })
 
-applicationSchema.statics.getListJobApplication = async function ({ userId, jobId, candidateName, experience, status,
-    page, limit }) {
+applicationSchema.statics.getJobApplicationNumber = async function ({ jobId }) {
     try {
         const pipeline = [
             {
@@ -39,11 +38,11 @@ applicationSchema.statics.getListJobApplication = async function ({ userId, jobI
                     from: "jobs",
                     localField: "jobId",
                     foreignField: "_id",
-                    as: "job"
+                    as: "jobs"
                 }
             },
             {
-                $unwind: "$job"
+                $unwind: "$jobs"
             },
             {
                 $lookup: {
@@ -59,8 +58,55 @@ applicationSchema.statics.getListJobApplication = async function ({ userId, jobI
             {
                 $match: {
                     "jobId": new ObjectId(jobId),
+                    $or: [
+                        { "resume.status": "active" },
+                        { "status": { $in: ['Đã nhận', 'Không nhận'] } }
+                    ]
+                }
+            }
+        ]
+        const totalDocument = await this.aggregate([...pipeline, { $count: "totalDocuments" }]);
+        const totalElement = totalDocument.length > 0 ? totalDocument[0].totalDocuments : 0;
+        return totalElement;
+    } catch (error) {
+        throw error;
+    }
+}
+
+applicationSchema.statics.getListJobApplication = async function ({ userId, jobId, candidateName, experience, status, 
+    major, goal, page, limit }) {
+    try {
+        const pipeline = [
+            {
+                $lookup: {
+                    from: "jobs",
+                    localField: "jobId",
+                    foreignField: "_id",
+                    as: "job"
+                }
+            },
+            {
+                $unwind: "$job"
+            },
+            {
+                $lookup: {  
+                    from: "resumes",
+                    localField: "resumeId",
+                    foreignField: "_id",
+                    as: "resume"
+                }
+            },
+            {
+                $unwind: "$resume"
+            },
+            {
+                $match: {
+                    "jobId": new ObjectId(jobId),
                     "job.recruiterId": new ObjectId(userId),
-                    "resume.status": "active"
+                    $or: [
+                        { "resume.status": "active" },
+                        { "status": { $in: ['Đã nhận', 'Không nhận'] } }
+                    ]
                 }
             },
             {
@@ -70,6 +116,8 @@ applicationSchema.statics.getListJobApplication = async function ({ userId, jobI
                     "resume.educationLevel": 1,
                     "resume.experience": 1,
                     "resume.avatar": 1,
+                    "resume.major": 1,
+                    "resume.goal": 1,
                     "resume.updatedAt": 1,
                     "status": 1
                 }
@@ -83,6 +131,12 @@ applicationSchema.statics.getListJobApplication = async function ({ userId, jobI
         }
         if (status) {
             pipeline.push({ $match: { "status": status } });
+        }
+        if (major) {
+            pipeline.push({ $match: { "resume.major": new RegExp(major, "i") } });
+        }
+        if (goal) {
+            pipeline.push({ $match: { "resume.goal": new RegExp(goal, "i") } });
         }
         const totalDocument = await this.aggregate([...pipeline, { $count: "totalDocuments" }]);
         const totalElement = totalDocument.length > 0 ? totalDocument[0].totalDocuments : 0;

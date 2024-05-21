@@ -131,46 +131,6 @@ jobSchema.statics.updateJob = async function ({ userId, jobId, name, location, p
     }
 }
 
-jobSchema.statics.getJobApplicationNumber = async function ({ jobId }) {
-    try {
-        const pipeline = [
-            {
-                $lookup: {
-                    from: "jobs",
-                    localField: "jobId",
-                    foreignField: "_id",
-                    as: "jobs"
-                }
-            },
-            {
-                $unwind: "$jobs"
-            },
-            {
-                $lookup: {
-                    from: "resumes",
-                    localField: "resumeId",
-                    foreignField: "_id",
-                    as: "resume"
-                }
-            },
-            {
-                $unwind: "$resume"
-            },
-            {
-                $match: {
-                    "jobId": new ObjectId(jobId),
-                    "resume.status": "active"
-                }
-            }
-        ]
-        const totalDocument = await Application.aggregate([...pipeline, { $count: "totalDocuments" }]);
-        const totalElement = totalDocument.length > 0 ? totalDocument[0].totalDocuments : 0;
-        return totalElement;
-    } catch (error) {
-        throw error;
-    }
-}
-
 jobSchema.statics.getListWaitingJobByRecruiterId = async function ({ userId, name, field, levelRequirement, status, page, limit }) {
     try {
         const query = {
@@ -197,7 +157,7 @@ jobSchema.statics.getListWaitingJobByRecruiterId = async function ({ userId, nam
             .sort({ updatedAt: -1 })
         let mappedList = await Promise.all(
             result.map(async (item) => {
-                const applicationNumber = await this.getJobApplicationNumber({ jobId: item._id });
+                const applicationNumber = await Application.getJobApplicationNumber({ jobId: item._id });
                 return {
                     ...item,
                     applicationNumber: applicationNumber
@@ -238,7 +198,7 @@ jobSchema.statics.getListAcceptedJobByRecruiterId = async function ({ userId, na
             .sort({ updatedAt: -1 })
         let mappedList = await Promise.all(
             result.map(async (item) => {
-                const applicationNumber = await this.getJobApplicationNumber({ jobId: item._id });
+                const applicationNumber = await Application.getJobApplicationNumber({ jobId: item._id });
                 return {
                     ...item,
                     applicationNumber: applicationNumber
@@ -279,7 +239,7 @@ jobSchema.statics.getListDeclinedJobByRecruiterId = async function ({ userId, na
             .sort({ updatedAt: -1 })
         let mappedList = await Promise.all(
             result.map(async (item) => {
-                const applicationNumber = await this.getJobApplicationNumber({ jobId: item._id });
+                const applicationNumber = await Application.getJobApplicationNumber({ jobId: item._id });
                 return {
                     ...item,
                     applicationNumber: applicationNumber

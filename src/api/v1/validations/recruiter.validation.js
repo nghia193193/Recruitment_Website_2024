@@ -477,6 +477,14 @@ class RecruiterValidation {
                 const cleanExperience = xss(value.trim());
                 return cleanExperience;
             }),
+            major: joi.string().custom((value) => {
+                const cleanMajor = xss(value.trim());
+                return cleanMajor;
+            }), 
+            goal: joi.string().custom((value) => {
+                const cleanGoal = xss(value.trim());
+                return cleanGoal;
+            }),
             status: joi.string().valid('Đã nộp','Đã nhận', 'Không nhận'),
             page: joi.number().integer().min(1),
             limit: joi.number().integer().min(1)

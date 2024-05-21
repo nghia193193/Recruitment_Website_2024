@@ -38,5 +38,7 @@ router.get('/jobs/applications/:jobId', verifyAccessToken, authPageRecruiter, ch
 router.get('/jobs/applications/detail/:applicationId', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getApplicationDetail));
 // approve application
 router.patch('/jobs/applications/approve/:applicationId', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.approveApplication));
+// get list application status
+router.get('/application_status', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getListApplicationStatus));
 
 module.exports = router;

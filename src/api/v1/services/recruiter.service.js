@@ -3,7 +3,7 @@ const { Application } = require("../models/application.model");
 const { Job } = require("../models/job.model");
 const { Login } = require("../models/login.model");
 const { Recruiter } = require("../models/recruiter.model");
-const { status, levelRequirement } = require("../utils");
+const { status, levelRequirement, applicationStatus } = require("../utils");
 
 
 class RecruiterService {
@@ -236,7 +236,7 @@ class RecruiterService {
         }
     }
 
-    static getListJobApplication = async ({ userId, jobId, candidateName, experience, status,
+    static getListJobApplication = async ({ userId, jobId, candidateName, experience, status, major, goal,
         page, limit }) => {
         try {
             page = page ? +page : 1;
@@ -246,7 +246,7 @@ class RecruiterService {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
             }
             const { listApplication, totalElement } = await Application.getListJobApplication({
-                userId, jobId, candidateName, experience, status,
+                userId, jobId, candidateName, experience, status, major, goal,
                 page, limit
             })
             return {
@@ -286,6 +286,17 @@ class RecruiterService {
             await Application.approveApplication({ userId, applicationId, status });
             return {
                 message: "Duyệt đơn ứng tuyển thành công thành công",
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getListApplicationStatus = async () => {
+        try {
+            return {
+                message: "Lấy danh sách trạng thái ứng tuyển thành công",
+                metadata: { applicationStatus }
             }
         } catch (error) {
             throw error;
