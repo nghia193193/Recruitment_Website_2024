@@ -370,6 +370,17 @@ class RecruiterService {
         }
     }
 
+    static readNotification = async ({ userId, notificationId }) => {
+        try {
+            await Notification.readNotification({ userId, notificationId })
+            return {
+                message: "Đọc thông báo thành công"
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
     static getListJobApplication = async ({ userId, jobId, candidateName, experience, status, major, goal,
         page, limit }) => {
         try {

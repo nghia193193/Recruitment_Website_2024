@@ -503,6 +503,14 @@ class RecruiterValidation {
         })
         return validateSchema.validate(data);
     }
+
+    static validateReadNotification = data => {
+        const validateSchema = joi.object({
+            notificationId: objectIdJoiSchema.required(),
+            
+        })
+        return validateSchema.validate(data);
+    }
 }
 
 const objectIdValidator = (value, helpers) => {

@@ -1,5 +1,6 @@
 const { formatInTimeZone } = require('date-fns-tz');
 const mongoose = require('mongoose');
+const { InternalServerError } = require('../core/error.response');
 const model = mongoose.model;
 const Schema = mongoose.Schema;
 
@@ -41,6 +42,23 @@ notificationSchema.statics.getListNotification = async function ({ userId }) {
             return item;
         })
         return listNotification;
+    } catch (error) {
+        throw error;
+    }
+}
+
+notificationSchema.statics.readNotification = async function ({ userId, notificationId }) {
+    try {
+        const notification = await this.findOneAndUpdate({ _id: notificationId, receiverId: userId }, {
+            $set: {
+                isRead: true
+            }
+        }, {
+            new: true
+        })
+        if (!notification) {
+            throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
+        }
     } catch (error) {
         throw error;
     }

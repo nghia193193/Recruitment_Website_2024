@@ -246,6 +246,18 @@ class RecruiterController {
             metadata: { ...metadata }
         }).send(res)
     }
+
+    readNotification = async (req, res, next) => {
+        const { error, value } = RecruiterValidation.validateReadNotification(req.params);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { metadata, message } = await RecruiterService.readNotification({ ...req.payload, ...value });
+        new OK({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
 }
 
 module.exports = new RecruiterController;

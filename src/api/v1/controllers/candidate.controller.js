@@ -260,6 +260,18 @@ class CandidateController {
             metadata: { ...metadata }
         }).send(res)
     }
+
+    readNotification = async (req, res, next) => {
+        const { error, value } = CandidateValidation.validateReadNotification(req.params);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { metadata, message } = await CandidateService.readNotification({ ...req.payload, ...value });
+        new OK({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
 }
 
 module.exports = new CandidateController();

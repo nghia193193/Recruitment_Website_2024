@@ -436,6 +436,18 @@ class CandidateService {
             throw error;
         }
     }
+
+    static readNotification = async ({ userId, notificationId }) => {
+        try {
+            await Notification.readNotification({ userId, notificationId })
+            return {
+                message: "Đọc thông báo thành công"
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
 }
 
 module.exports = CandidateService;

@@ -46,5 +46,7 @@ router.patch('/jobs/applications/approve/:applicationId', verifyAccessToken, aut
 router.get('/application_status', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getListApplicationStatus));
 // get list notification
 router.get('/notifications', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListNotification));
+// read notification
+router.patch('/notifications/:notificationId', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.readNotification));
 
 module.exports = router;
