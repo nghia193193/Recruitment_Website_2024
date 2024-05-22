@@ -1,3 +1,4 @@
+const { formatInTimeZone } = require('date-fns-tz');
 const mongoose = require('mongoose');
 const model = mongoose.model;
 const Schema = mongoose.Schema;
@@ -34,7 +35,11 @@ const notificationSchema = new Schema({
 
 notificationSchema.statics.getListNotification = async function ({ userId }) {
     try {
-        const listNotification = await this.find({ receiverId: userId }).lean().select("-__v -updatedAt").sort({ updatedAt: -1 });
+        let listNotification = await this.find({ receiverId: userId }).lean().select("-__v -senderId -receiverId -senderCode -updatedAt").sort({ updatedAt: -1 });
+        listNotification = listNotification.map(item => {
+            item.createdAt = formatInTimeZone(item.createdAt, "Asia/Ho_Chi_Minh", "dd/MM/yyy HH:mm:ss");
+            return item;
+        })
         return listNotification;
     } catch (error) {
         throw error;

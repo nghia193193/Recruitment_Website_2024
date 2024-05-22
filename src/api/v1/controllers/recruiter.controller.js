@@ -223,7 +223,8 @@ class RecruiterController {
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const { metadata, message } = await RecruiterService.approveApplication({ ...value, ...req.payload });
+        const companyName = req.recruiter.companyName;
+        const { metadata, message } = await RecruiterService.approveApplication({ ...value, ...req.payload, companyName });
         new OK({
             message: message,
             metadata: { ...metadata }

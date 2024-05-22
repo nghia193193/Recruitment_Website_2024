@@ -324,21 +324,21 @@ class RecruiterService {
         }
     }
 
-    static approveApplication = async ({ userId, applicationId, status }) => {
+    static approveApplication = async ({ userId, applicationId, status, companyName }) => {
         try {
             const { candidateId, jobName } = await Application.approveApplication({ userId, applicationId, status });
             const notification = await Notification.create({
                 senderId: userId,
                 receiverId: candidateId,
                 senderCode: mapRolePermission["RECRUITER"],
-                link: `${process.env.FE_URL}/candidate/applications/${applicationId}`,
-                title: "Nhà tuyển dụng đã duyệt đơn ứng tuyển của bạn.",
+                link: `${process.env.FE_URL}/profile/submitted-jobs`,
+                title: `${companyName} đã duyệt đơn ứng tuyển của bạn.`,
                 content: `Đơn ứng tuyển công việc '${jobName}' đã được duyệt.`
             })
             if (!notification) {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
             }
-            _io.emit("notification_recruiter_candidate", notification);
+            _io.emit(`notification_candidate_${candidateId}`, notification);
             return {
                 message: "Duyệt đơn ứng tuyển thành công thành công",
             }

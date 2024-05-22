@@ -148,14 +148,14 @@ class AdminService {
                 senderId: userId,
                 receiverId: recruiterId,
                 senderCode: mapRolePermission["ADMIN"],
-                link: `${process.env.FE_URL}/recruiter/jobs/${jobId}`,
+                link: `${process.env.FE_URL}/recruiter/profile/jobsPosted`,
                 title: "Quản trị viên đã duyệt công việc do bạn tạo.",
-                content: `Công việc '${job.name}' đã được duyệt.`
+                content: `Công việc '${job.name}' ${acceptanceStatus === "accept" ? "đã được chấp thuận" : "đã bị từ chối"}`
             })
             if (!notification) {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
             }
-            _io.emit("notification_admin_recruiter", notification);
+            _io.emit(`notification_recruiter_${userId}`, notification);
             return {
                 message: "Duyệt công việc thành công",
                 metadata: { ...job },

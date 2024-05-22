@@ -16,3 +16,6 @@
 22/05/2024	20:45:55 ::1---/v1/api/recruiter/information---GET---Bạn không có quyền
 22/05/2024	20:48:25 ::1---/v1/api/recruiter/application_status---GET---RecruiterService.getListApplicationStatus is not a function
 22/05/2024	20:48:53 ::1---/v1/api/recruiter/application_status---GET---RecruiterService.getListApplicationStatus is not a function
+22/05/2024	21:12:01 ::1---/v1/api/recruiter/notifications---GET---Vui lòng đăng nhập lại
+22/05/2024	21:16:35 ::1---/v1/api/candidate/applications---GET---Vui lòng đăng nhập lại
+22/05/2024	21:16:45 ::1---/v1/api/candidate/notifications---GET---Vui lòng đăng nhập lại
