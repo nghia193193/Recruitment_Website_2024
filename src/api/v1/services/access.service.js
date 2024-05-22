@@ -472,6 +472,31 @@ class AccessService {
         }
     }
 
+    static getListRelatedJobByField = async ({ jobId ,name, province, type, levelRequirement, experience,
+        genderRequirement, page, limit }) => {
+        try {
+            page = page ? +page : 1;
+            limit = limit ? +limit : 5;
+            const { result, length } = await Job.getListRelatedJobByField({
+                jobId ,name, province, type, levelRequirement, experience,
+                genderRequirement, page, limit
+            })
+            return {
+                message: "Lấy danh sách công việc liên quan thành công",
+                metadata: {
+                    listJob: result,
+                    totalElement: length
+                },
+                options: {
+                    page: page,
+                    limit: limit
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
     static getWorkStatus = async () => {
         try {
             return {

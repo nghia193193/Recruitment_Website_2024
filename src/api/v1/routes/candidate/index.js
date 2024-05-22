@@ -46,5 +46,7 @@ router.post('/jobs/apply/:jobId', verifyAccessToken, authPageCandidate, asyncHan
 router.delete('/jobs/cancel/:jobId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.cancelApplication));
 // get list application
 router.get('/applications', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.getListApplication));
+// get list notification
+router.get('/notifications', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.getListNotification));
 
 module.exports = router;

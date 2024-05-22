@@ -167,6 +167,32 @@ class RecruiterController {
         }).send(res)
     }
 
+    getListNearingExpirationdJob = async (req, res, next) => {
+        const { error, value } = RecruiterValidation.validateRecruiterGetListJob({ ...req.body, ...req.query });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { metadata, message, options } = await RecruiterService.getListNearingExpirationdJob({ ...value, ...req.payload });
+        new OK({
+            message: message,
+            metadata: { ...metadata },
+            options: options
+        }).send(res)
+    }
+
+    getListExpiredJob = async (req, res, next) => {
+        const { error, value } = RecruiterValidation.validateRecruiterGetListJob({ ...req.body, ...req.query });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { metadata, message, options } = await RecruiterService.getListExpiredJob({ ...value, ...req.payload });
+        new OK({
+            message: message,
+            metadata: { ...metadata },
+            options: options
+        }).send(res)
+    }
+
     getListJobApplication = async (req, res, next) => {
         const { error, value } = RecruiterValidation.validateGetListJobApplication({ ...req.params, ...req.query });
         if (error) {
@@ -206,6 +232,14 @@ class RecruiterController {
 
     getListApplicationStatus = async (req, res, next) => {
         const { metadata, message } = await RecruiterService.getListApplicationStatus();
+        new OK({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
+    getListNotification = async (req, res, next) => {
+        const { metadata, message } = await RecruiterService.getListNotification(req.payload);
         new OK({
             message: message,
             metadata: { ...metadata }

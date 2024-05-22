@@ -37,6 +37,8 @@ router.post('/refresh_token', asyncHandler(accessController.refreshAccessToken))
 router.delete('/logout', asyncHandler(accessController.logout));
 // get list job
 router.get('/jobs', asyncHandler(accessController.getListJob));
+// get list relevant job by field
+router.get('/jobs/:jobId/related_jobs', asyncHandler(accessController.getListRelatedJobByField));
 // get list job of recruiter
 router.get('/:slug/listjob', asyncHandler(accessController.getListJobOfRecruiter));
 // get job detail

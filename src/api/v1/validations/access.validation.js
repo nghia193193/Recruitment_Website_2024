@@ -9,7 +9,7 @@ class AccessValidation {
         const validateSchema = joi.object({
             email: joi.string().email().lowercase().required(),
             password: joi.string().min(8).max(32).custom((value) => {
-                const cleanPass = xss(value); // Loại bỏ XSS
+                const cleanPass = xss(value.trim());
                 return cleanPass;
             }).required()
         })
@@ -19,7 +19,7 @@ class AccessValidation {
     static validateGetListJob = data => {
         const validateSchema = joi.object({
             name: joi.string().custom((value) => {
-                const cleanName = xss(value); // Loại bỏ XSS
+                const cleanName = xss(value.trim());
                 return cleanName;
             }),
             province: joi.string().valid(...provinceOfVietNam),
@@ -36,14 +36,34 @@ class AccessValidation {
         return validateSchema.validate(data);
     }
 
+    static validateGetListRelatedJobByField = data => {
+        const validateSchema = joi.object({
+            jobId: objectIdJoiSchema.required(),
+            name: joi.string().custom((value) => {
+                const cleanName = xss(value.trim());
+                return cleanName;
+            }),
+            province: joi.string().valid(...provinceOfVietNam),
+            type: joi.string().valid(...jobType),
+            levelRequirement: joi.string().valid(...levelRequirement),
+            experience: joi.string().valid(...experience),
+            genderRequirement: joi.string().valid(...genderRequirement),
+            page: joi.number().integer().min(1),
+            limit: joi.number().integer().min(1)
+        }).messages({
+            "any.only": "'{#label}' không hợp lệ"
+        })
+        return validateSchema.validate(data);
+    }
+
     static validateGetListJobOfRecruiter = data => {
         const validateSchema = joi.object({
             slug: joi.string().custom((value) => {
-                const slug = xss(value);
+                const slug = xss(value.trim());
                 return slug;
             }),
             name: joi.string().custom((value) => {
-                const cleanName = xss(value);
+                const cleanName = xss(value.trim());
                 return cleanName;
             }),
             province: joi.string().valid(...provinceOfVietNam),
@@ -70,7 +90,7 @@ class AccessValidation {
     static validateGetListRecruiter = data => {
         const validateSchema = joi.object({
             searchText: joi.string().custom((value) => {
-                const searchText = xss(value);
+                const searchText = xss(value.trim());
                 return searchText;
             }),
             page: joi.number().integer().min(1),
@@ -84,7 +104,7 @@ class AccessValidation {
     static validateGetRecruiterInformationBySlug = data => {
         const validateSchema = joi.object({
             slug: joi.string().custom((value) => {
-                const slug = xss(value);
+                const slug = xss(value.trim());
                 return slug;
             })
         })

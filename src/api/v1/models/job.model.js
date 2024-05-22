@@ -176,7 +176,8 @@ jobSchema.statics.getListAcceptedJobByRecruiterId = async function ({ userId, na
     try {
         const query = {
             recruiterId: userId,
-            acceptanceStatus: "accept"
+            acceptanceStatus: "accept",
+            deadline: { $gte: Date.now() }
         }
         if (name) {
             query["name"] = new RegExp(name, "i");
@@ -218,6 +219,90 @@ jobSchema.statics.getListDeclinedJobByRecruiterId = async function ({ userId, na
         const query = {
             recruiterId: userId,
             acceptanceStatus: "decline"
+        }
+        if (name) {
+            query["name"] = new RegExp(name, "i");
+        }
+        if (field) {
+            query["field"] = field;
+        }
+        if (levelRequirement) {
+            query["levelRequirement"] = levelRequirement;
+        }
+        if (status) {
+            query["status"] = status;
+        }
+        const length = await this.find(query).lean().countDocuments();
+        let result = await this.find(query).lean()
+            .select("name field type levelRequirement status deadline")
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .sort({ updatedAt: -1 })
+        let mappedList = await Promise.all(
+            result.map(async (item) => {
+                const applicationNumber = await Application.getJobApplicationNumber({ jobId: item._id });
+                return {
+                    ...item,
+                    applicationNumber: applicationNumber
+                }
+            })
+        )
+        return {
+            length, mappedList
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
+jobSchema.statics.getListNearingExpirationdJobByRecruiterId = async function ({ userId, name, field, levelRequirement, status, page, limit }) {
+    try {
+        const now = Date.now();
+        const oneWeekFromNow = now + 7 * 24 * 60 * 60 * 1000;
+        const query = {
+            recruiterId: userId,
+            deadline: { $gte: now, $lte: oneWeekFromNow }
+        }
+        if (name) {
+            query["name"] = new RegExp(name, "i");
+        }
+        if (field) {
+            query["field"] = field;
+        }
+        if (levelRequirement) {
+            query["levelRequirement"] = levelRequirement;
+        }
+        if (status) {
+            query["status"] = status;
+        }
+        const length = await this.find(query).lean().countDocuments();
+        let result = await this.find(query).lean()
+            .select("name field type levelRequirement status deadline")
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .sort({ updatedAt: -1 })
+        let mappedList = await Promise.all(
+            result.map(async (item) => {
+                const applicationNumber = await Application.getJobApplicationNumber({ jobId: item._id });
+                return {
+                    ...item,
+                    applicationNumber: applicationNumber
+                }
+            })
+        )
+        return {
+            length, mappedList
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
+jobSchema.statics.getListExpiredJobByRecruiterId = async function ({ userId, name, field, levelRequirement, status, page, limit }) {
+    try {
+        const query = {
+            recruiterId: userId,
+            deadline: { $lt: Date.now() }
         }
         if (name) {
             query["name"] = new RegExp(name, "i");
@@ -326,7 +411,7 @@ jobSchema.statics.getListJobAdmin = async function ({ companyName, name, field, 
                     }
                 });
             }
-            
+
         }
         const totalDocument = await this.aggregate([...pipeline, { $count: "totalDocuments" }]);
         const length = totalDocument.length > 0 ? totalDocument[0].totalDocuments : 0;
@@ -391,7 +476,7 @@ jobSchema.statics.getListJob = async function ({ name, province, type, levelRequ
         }
         const length = await this.find(query).lean().countDocuments();
         let result = await this.find(query).lean().populate("recruiterId")
-            .select("name field type levelRequirement salary province approvalDate deadline recruiterId createdAt updatedAt")
+            .select("name field type levelRequirement experience salary province approvalDate deadline recruiterId createdAt updatedAt")
             .skip((page - 1) * limit)
             .limit(limit)
             .sort({ updatedAt: -1 })
@@ -441,6 +526,8 @@ jobSchema.statics.getListJobOfRecruiter = async function ({ slug, name, province
                     "salary": 1,
                     "province": 1,
                     "levelRequirement": 1,
+                    "genderRequirement": 1,
+                    "experience": 1,
                     "field": 1,
                     "deadline": 1,
                     "acceptanceStatus": 1,
@@ -561,6 +648,63 @@ jobSchema.statics.getJobDetail = async function ({ jobId }) {
     }
 }
 
+jobSchema.statics.getListRelatedJobByField = async function ({ jobId, name, province, type, levelRequirement, experience,
+    genderRequirement, page, limit }) {
+    try {
+        const job = await this.findById(jobId).lean();
+        if (!job) {
+            throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
+        }
+        const field = job.field;
+        const query = {
+            _id: { $ne: jobId },
+            status: "active",
+            acceptanceStatus: "accept",
+            deadline: { $gte: Date.now() },
+            field: field
+        };
+        if (name) {
+            query["name"] = new RegExp(name, "i");
+        }
+        if (province) {
+            query["province"] = province;
+        }
+        if (type) {
+            query["type"] = type;
+        }
+        if (experience) {
+            query["experience"] = experience;
+        }
+        if (levelRequirement) {
+            query["levelRequirement"] = levelRequirement;
+        }
+        if (genderRequirement) {
+            query["genderRequirement"] = genderRequirement;
+        }
+        const length = await this.find(query).lean().countDocuments();
+        let result = await this.find(query).lean().populate("recruiterId")
+            .select("name field type levelRequirement experience salary province approvalDate deadline recruiterId createdAt updatedAt")
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .sort({ updatedAt: -1 })
+        result = result.map(job => {
+            job.companyName = job.recruiterId.companyName ?? null;
+            job.companyLogo = job.recruiterId.companyLogo?.url ?? null;
+            job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+            job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+            job.approvalDate = job.approvalDate ? formatInTimeZone(job.approvalDate, "Asia/Ho_Chi_Minh", "dd/MM/yyyy") : null;
+            job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
+            delete job.recruiterId;
+            return { ...job };
+        })
+        return {
+            length, result
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
 jobSchema.statics.getJobDetailByRecruiter = async function ({ userId, jobId }) {
     try {
         let job = await this.findOne({ _id: jobId, recruiterId: userId }).lean()
@@ -590,6 +734,7 @@ jobSchema.statics.approveJob = async function ({ jobId, acceptanceStatus }) {
         if (!job) {
             throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
         }
+        const recruiterId = job.recruiterId;
         job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
         job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
@@ -599,7 +744,7 @@ jobSchema.statics.approveJob = async function ({ jobId, acceptanceStatus }) {
         job.employeeNumber = job.recruiterId.employeeNumber;
         job.companyAddress = job.recruiterId.companyAddress;
         delete job.recruiterId;
-        return job;
+        return { job, recruiterId };
     } catch (error) {
         throw error;
     }

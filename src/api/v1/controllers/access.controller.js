@@ -154,6 +154,19 @@ class AccessController {
         }).send(res)
     }
 
+    getListRelatedJobByField = async (req, res, next) => {
+        const { error, value } = AccessValidation.validateGetListRelatedJobByField({ ...req.query, ...req.params });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata, options } = await AccessService.getListRelatedJobByField(value);
+        new OK({
+            message,
+            metadata: { ...metadata },
+            options
+        }).send(res)
+    }
+
     getListJobOfRecruiter = async (req, res, next) => {
         const { error, value } = AccessValidation.validateGetListJobOfRecruiter({ ...req.query, ...req.params });
         if (error) {

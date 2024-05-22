@@ -73,7 +73,7 @@ applicationSchema.statics.getJobApplicationNumber = async function ({ jobId }) {
     }
 }
 
-applicationSchema.statics.getListJobApplication = async function ({ userId, jobId, candidateName, experience, status, 
+applicationSchema.statics.getListJobApplication = async function ({ userId, jobId, candidateName, experience, status,
     major, goal, page, limit }) {
     try {
         const pipeline = [
@@ -89,7 +89,7 @@ applicationSchema.statics.getListJobApplication = async function ({ userId, jobI
                 $unwind: "$job"
             },
             {
-                $lookup: {  
+                $lookup: {
                     from: "resumes",
                     localField: "resumeId",
                     foreignField: "_id",
@@ -193,12 +193,16 @@ applicationSchema.statics.getApplicationDetail = async function ({ userId, appli
                 $match: {
                     "_id": new ObjectId(applicationId),
                     "job.recruiterId": new ObjectId(userId),
-                    "resume.status": "active"
+                    $or: [
+                        { "resume.status": "active" },
+                        { "status": { $in: ['Đã nhận', 'Không nhận'] } }
+                    ]
                 }
             },
             {
                 $project: {
-                    "resume": 1
+                    "resume": 1,
+                    "job.name": 1
                 }
             }
         ]
@@ -208,6 +212,7 @@ applicationSchema.statics.getApplicationDetail = async function ({ userId, appli
             throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
         }
         let listApplication = await this.aggregate(pipeline);
+        let jobName = listApplication[0].job.name;
         let result = listApplication[0].resume;
         result._id = listApplication[0]._id;
         delete result.__v;
@@ -215,7 +220,7 @@ applicationSchema.statics.getApplicationDetail = async function ({ userId, appli
         result.avatar = result.avatar.url;
         result.createdAt = formatInTimeZone(result.createdAt, "Asia/Ho_Chi_Minh", "dd/MM/yyy HH:mm:ss");
         result.updatedAt = formatInTimeZone(result.updatedAt, "Asia/Ho_Chi_Minh", "dd/MM/yyy HH:mm:ss");
-        return result;
+        return { result, jobName };
     } catch (error) {
         throw error;
     }
@@ -224,20 +229,21 @@ applicationSchema.statics.getApplicationDetail = async function ({ userId, appli
 applicationSchema.statics.approveApplication = async function ({ userId, applicationId, status }) {
     try {
         // validate recruiter
-        const application = await this.getApplicationDetail({ userId, applicationId });
-        if (!application) {
+        const { result, jobName } = await this.getApplicationDetail({ userId, applicationId });
+        if (!result) {
             throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
         }
-        const result = await this.findOneAndUpdate({ _id: applicationId}, {
+        const application = await this.findOneAndUpdate({ _id: applicationId }, {
             $set: {
                 status
             }
         }, {
             new: true
         }).lean()
-        if (!result) {
+        if (!application) {
             throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
         }
+        return { candidateId: application.candidateId, jobName };
     } catch (error) {
         throw error;
     }

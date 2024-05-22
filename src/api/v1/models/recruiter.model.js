@@ -31,6 +31,10 @@ const recruiterSchema = new Schema({
         enum: ["waiting", "accept", "decline"],
         default: "waiting"
     },
+    firstApproval: {
+        type: Schema.Types.Boolean,
+        default: true
+    },
     verifyEmail: {
         type: Schema.Types.Boolean,
         default: false
@@ -450,7 +454,7 @@ recruiterSchema.statics.approveRecruiter = async function ({ recruiterId, accept
     try {
         const result = await this.findOneAndUpdate({ _id: recruiterId }, {
             $set: {
-                acceptanceStatus: acceptanceStatus
+                acceptanceStatus: acceptanceStatus, firstApproval: false
             }
         }, {
             new: true,

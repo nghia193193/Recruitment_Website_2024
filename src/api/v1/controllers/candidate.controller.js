@@ -252,6 +252,14 @@ class CandidateController {
             options
         }).send(res)
     }
+
+    getListNotification = async (req, res, next) => {
+        const { metadata, message } = await CandidateService.getListNotification(req.payload);
+        new OK({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
 }
 
 module.exports = new CandidateController();

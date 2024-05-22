@@ -1,8 +1,9 @@
 const { NotFoundRequestError, BadRequestError, InternalServerError } = require('../core/error.response');
 const { Admin } = require('../models/admin.model');
 const { Job } = require('../models/job.model');
+const { Notification } = require('../models/notification.model');
 const { Recruiter } = require('../models/recruiter.model');
-const { acceptanceStatus } = require('../utils');
+const { acceptanceStatus, mapRolePermission } = require('../utils');
 const { createTransporter } = require('../utils/sendMails');
 
 class AdminService {
@@ -140,12 +141,23 @@ class AdminService {
         }
     }
 
-    static approveJob = async ({ jobId, acceptanceStatus }) => {
+    static approveJob = async ({ userId, jobId, acceptanceStatus }) => {
         try {
-            const result = await Job.approveJob({ jobId, acceptanceStatus });
+            const { job, recruiterId } = await Job.approveJob({ jobId, acceptanceStatus });
+            const notification = await Notification.create({
+                senderId: userId,
+                receiverId: recruiterId,
+                senderCode: mapRolePermission["ADMIN"],
+                link: `${process.env.FE_URL}/recruiter/jobs/${jobId}`,
+                content: `Công việc "${job.name}" đã được duyệt.`
+            })
+            if (!notification) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+            }
+            _io.emit("notification_admin_recruiter", notification);
             return {
                 message: "Duyệt công việc thành công",
-                metadata: { ...result },
+                metadata: { ...job },
             }
         } catch (error) {
             throw error;

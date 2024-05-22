@@ -8,6 +8,7 @@ const { Application } = require("../models/application.model");
 const { Job } = require("../models/job.model");
 const mongoose = require("mongoose");
 const { formatInTimeZone } = require("date-fns-tz");
+const { Notification } = require("../models/notification.model");
 const ObjectId = mongoose.Types.ObjectId;
 
 class CandidateService {
@@ -418,6 +419,18 @@ class CandidateService {
                 message: "Lấy danh sách công việc ứng tuyển thành công.",
                 metadata: { listApplication, totalElement },
                 options: { page, limit }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getListNotification = async ({ userId }) => {
+        try {
+            const listNotification = await Notification.getListNotification({ userId })
+            return {
+                message: "Lấy danh sách thông báo thành công",
+                metadata: { listNotification }
             }
         } catch (error) {
             throw error;

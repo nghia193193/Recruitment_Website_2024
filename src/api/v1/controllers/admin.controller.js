@@ -87,7 +87,7 @@ class AdminController {
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const { metadata, message } = await AdminService.approveJob({ ...value });
+        const { metadata, message } = await AdminService.approveJob({ ...req.payload, ...value });
         new OK({
             message: message,
             metadata: { ...metadata },

@@ -2,8 +2,9 @@ const { InternalServerError, NotFoundRequestError, ConflictRequestError, BadRequ
 const { Application } = require("../models/application.model");
 const { Job } = require("../models/job.model");
 const { Login } = require("../models/login.model");
+const { Notification } = require("../models/notification.model");
 const { Recruiter } = require("../models/recruiter.model");
-const { status, levelRequirement, applicationStatus } = require("../utils");
+const { status, levelRequirement, applicationStatus, mapRolePermission } = require("../utils");
 
 
 class RecruiterService {
@@ -236,6 +237,48 @@ class RecruiterService {
         }
     }
 
+    static getListNearingExpirationdJob = async ({ userId, name, field, levelRequirement, status, page, limit }) => {
+        try {
+            page = page ? +page : 1;
+            limit = limit ? +limit : 5;
+            const { mappedList, length } = await Job.getListNearingExpirationdJobByRecruiterId({ userId, name, field, levelRequirement, status, page, limit })
+            return {
+                message: "Lấy danh sách công việc sắp hết hạn thành công",
+                metadata: {
+                    listNearingExpirationJob: mappedList,
+                    totalElement: length
+                },
+                options: {
+                    page: page,
+                    limit: limit
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getListExpiredJob = async ({ userId, name, field, levelRequirement, status, page, limit }) => {
+        try {
+            page = page ? +page : 1;
+            limit = limit ? +limit : 5;
+            const { mappedList, length } = await Job.getListExpiredJobByRecruiterId({ userId, name, field, levelRequirement, status, page, limit })
+            return {
+                message: "Lấy danh sách công việc đã hết hạn thành công",
+                metadata: {
+                    listExpiredJob: mappedList,
+                    totalElement: length
+                },
+                options: {
+                    page: page,
+                    limit: limit
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
     static getListJobApplication = async ({ userId, jobId, candidateName, experience, status, major, goal,
         page, limit }) => {
         try {
@@ -269,7 +312,7 @@ class RecruiterService {
 
     static getApplicationDetail = async ({ userId, applicationId }) => {
         try {
-            const result = await Application.getApplicationDetail({ userId, applicationId });
+            const { result } = await Application.getApplicationDetail({ userId, applicationId });
             return {
                 message: "Lấy thông tin resume thành công",
                 metadata: {
@@ -283,7 +326,18 @@ class RecruiterService {
 
     static approveApplication = async ({ userId, applicationId, status }) => {
         try {
-            await Application.approveApplication({ userId, applicationId, status });
+            const { candidateId, jobName } = await Application.approveApplication({ userId, applicationId, status });
+            const notification = await Notification.create({
+                senderId: userId,
+                receiverId: candidateId,
+                senderCode: mapRolePermission["RECRUITER"],
+                link: `${process.env.FE_URL}/candidate/applications/${applicationId}`,
+                content: `Đơn ứng tuyển công việc "${jobName}" đã được duyệt.`
+            })
+            if (!notification) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+            }
+            _io.emit("notification_recruiter_candidate", notification);
             return {
                 message: "Duyệt đơn ứng tuyển thành công thành công",
             }
@@ -292,11 +346,43 @@ class RecruiterService {
         }
     }
 
-    static getListApplicationStatus = async () => {
+    static getListNotification = async ({ userId }) => {
         try {
+            const listNotification = await Notification.getListNotification({ userId })
             return {
-                message: "Lấy danh sách trạng thái ứng tuyển thành công",
-                metadata: { applicationStatus }
+                message: "Lấy danh sách thông báo thành công",
+                metadata: { listNotification }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getListJobApplication = async ({ userId, jobId, candidateName, experience, status, major, goal,
+        page, limit }) => {
+        try {
+            page = page ? +page : 1;
+            limit = limit ? +limit : 5;
+            const job = await Job.findById(jobId).lean();
+            if (!job) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
+            }
+            const { listApplication, totalElement } = await Application.getListJobApplication({
+                userId, jobId, candidateName, experience, status, major, goal,
+                page, limit
+            })
+            return {
+                message: "Lấy danh sách ứng tuyển thành công",
+                metadata: {
+                    listApplication,
+                    totalElement,
+                    name: job.name,
+                    levelRequirement: job.levelRequirement
+                },
+                options: {
+                    page: page,
+                    limit: limit
+                }
             }
         } catch (error) {
             throw error;

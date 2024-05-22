@@ -24,6 +24,10 @@ router.get('/jobs/waiting_jobs', verifyAccessToken, authPageRecruiter, checkAcce
 router.get('/jobs/accepted_jobs', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getListAcceptedJob));
 // get list declined job
 router.get('/jobs/declined_jobs', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getListDeclinedJob));
+// get list nearing expiration job
+router.get('/jobs/nearing_expiration_jobs', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getListNearingExpirationdJob));
+// get list expired job
+router.get('/jobs/expired_jobs', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getListExpiredJob));
 // get job status
 router.get('/jobs/status', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getJobStatus));
 // get job detail
@@ -40,5 +44,7 @@ router.get('/jobs/applications/detail/:applicationId', verifyAccessToken, authPa
 router.patch('/jobs/applications/approve/:applicationId', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.approveApplication));
 // get list application status
 router.get('/application_status', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getListApplicationStatus));
+// get list notification
+router.get('/notifications', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListNotification));
 
 module.exports = router;
