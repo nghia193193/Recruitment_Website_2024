@@ -15,6 +15,10 @@ const notificationSchema = new Schema({
         type: String,
         required: true
     },
+    title: {
+        type: String,
+        required: true
+    },
     content: {
         type: String,
         required: true
@@ -30,7 +34,7 @@ const notificationSchema = new Schema({
 
 notificationSchema.statics.getListNotification = async function ({ userId }) {
     try {
-        const listNotification = await this.find({ receiverId: userId }).lean().select("-__v").sort({ updatedAt: -1 });
+        const listNotification = await this.find({ receiverId: userId }).lean().select("-__v -updatedAt").sort({ updatedAt: -1 });
         return listNotification;
     } catch (error) {
         throw error;

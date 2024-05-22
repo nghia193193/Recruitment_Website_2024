@@ -55,7 +55,7 @@ const authPageRecruiter = async (req, res, next) => {
         if (!recruiter) {
             throw new ForbiddenRequestError("Bạn không có quyền");
         }
-        req.recruiterStatus = recruiter.acceptanceStatus;
+        req.recruiter = recruiter;
         next();
     } catch (error) {
         next(error)
@@ -64,7 +64,8 @@ const authPageRecruiter = async (req, res, next) => {
 
 const checkAcceptedRecruiter = async (req, res, next) => {
     try {
-        const status = req.recruiterStatus;
+        const status = req.recruiter.acceptanceStatus;
+        console.log(status)
         if (status !== "accept") {
             throw new ForbiddenRequestError("Bạn cần được chấp thuận để sử dụng chức năng");
         }

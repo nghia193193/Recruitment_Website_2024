@@ -332,7 +332,8 @@ class RecruiterService {
                 receiverId: candidateId,
                 senderCode: mapRolePermission["RECRUITER"],
                 link: `${process.env.FE_URL}/candidate/applications/${applicationId}`,
-                content: `Đơn ứng tuyển công việc "${jobName}" đã được duyệt.`
+                title: "Nhà tuyển dụng đã duyệt đơn ứng tuyển của bạn.",
+                content: `Đơn ứng tuyển công việc '${jobName}' đã được duyệt.`
             })
             if (!notification) {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
@@ -340,6 +341,17 @@ class RecruiterService {
             _io.emit("notification_recruiter_candidate", notification);
             return {
                 message: "Duyệt đơn ứng tuyển thành công thành công",
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getListApplicationStatus = async () => {
+        try {
+            return {
+                message: "Lấy danh sách trạng thái ứng tuyển thành công",
+                metadata: { applicationStatus }
             }
         } catch (error) {
             throw error;

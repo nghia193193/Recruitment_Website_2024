@@ -149,7 +149,8 @@ class AdminService {
                 receiverId: recruiterId,
                 senderCode: mapRolePermission["ADMIN"],
                 link: `${process.env.FE_URL}/recruiter/jobs/${jobId}`,
-                content: `Công việc "${job.name}" đã được duyệt.`
+                title: "Quản trị viên đã duyệt công việc do bạn tạo.",
+                content: `Công việc '${job.name}' đã được duyệt.`
             })
             if (!notification) {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
