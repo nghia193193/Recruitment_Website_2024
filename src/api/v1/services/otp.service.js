@@ -1,3 +1,4 @@
+const { InternalServerError } = require("../core/error.response");
 const { OTP } = require("../models/otp.model");
 const bcrypt = require('bcryptjs');
 
@@ -18,6 +19,9 @@ module.exports = {
                 email,
                 otp: hashOtp
             })
+            if (!Otp) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
+            }
             return Otp ? 1 : 0
         } catch (error) {
             throw error;

@@ -68,10 +68,7 @@ const recruiterSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Login"
     },
-    slug: {
-        type: String,
-        unique: true
-    }
+    slug: String
 }, {
     timestamps: true
 })
