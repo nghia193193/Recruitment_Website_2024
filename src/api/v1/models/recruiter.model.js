@@ -303,55 +303,59 @@ recruiterSchema.statics.updateCompany = async function ({ userId, companyName, c
     try {
         let logo, coverPhoto;
         //upload logo
-        if (companyLogo?.tempFilePath) {
-            const resultLogo = await cloudinary.uploader.upload(companyLogo.tempFilePath);
-            if (!resultLogo) {
-                throw InternalServerError("Upload logo thất bại");
-            };
-            const logoPublicId = resultLogo.public_id;
-            const logoUrl = cloudinary.url(logoPublicId);
-            logo = {
-                publicId: logoPublicId,
-                url: logoUrl
-            }
-            //check oldLogo
-            const oldLogo = (await this.findById(userId)).companyLogo?.publicId;
-            if (oldLogo) {
-                await cloudinary.uploader.destroy(oldLogo);
-            };
-        } else {
-            const oldLogo = (await this.findById(userId)).companyLogo;
-            if (oldLogo?.url === companyLogo) {
-                logo = oldLogo
-            } else {
+        if (companyLogo) {
+            if (companyLogo?.tempFilePath) {
+                const resultLogo = await cloudinary.uploader.upload(companyLogo.tempFilePath);
+                if (!resultLogo) {
+                    throw InternalServerError("Upload logo thất bại");
+                };
+                const logoPublicId = resultLogo.public_id;
+                const logoUrl = cloudinary.url(logoPublicId);
                 logo = {
-                    url: companyLogo
+                    publicId: logoPublicId,
+                    url: logoUrl
+                }
+                //check oldLogo
+                const oldLogo = (await this.findById(userId)).companyLogo?.publicId;
+                if (oldLogo) {
+                    await cloudinary.uploader.destroy(oldLogo);
+                };
+            } else {
+                const oldLogo = (await this.findById(userId)).companyLogo;
+                if (oldLogo?.url === companyLogo) {
+                    logo = oldLogo
+                } else {
+                    logo = {
+                        url: companyLogo
+                    }
                 }
             }
         }
         //upload cover photo
-        if (companyCoverPhoto?.tempFilePath) {
-            const resultCoverPhoto = await cloudinary.uploader.upload(companyCoverPhoto?.tempFilePath);
-            if (!resultCoverPhoto) {
-                throw InternalServerError("Upload logo thất bại");
-            };
-            const coverPhotoPublicId = resultCoverPhoto.public_id;
-            const coverPhotoUrl = cloudinary.url(coverPhotoPublicId);
-            coverPhoto = {
-                publicId: coverPhotoPublicId,
-                url: coverPhotoUrl
-            }
-            const oldCoverPhoto = (await this.findById(userId)).companyCoverPhoto?.publicId;
-            if (oldCoverPhoto) {
-                await cloudinary.uploader.destroy(oldCoverPhoto);
-            };
-        } else {
-            const oldCoverPhoto = (await this.findById(userId)).companyCoverPhoto;
-            if (oldCoverPhoto?.url === companyCoverPhoto) {
-                coverPhoto = oldCoverPhoto
-            } else {
+        if (companyCoverPhoto) {
+            if (companyCoverPhoto?.tempFilePath) {
+                const resultCoverPhoto = await cloudinary.uploader.upload(companyCoverPhoto?.tempFilePath);
+                if (!resultCoverPhoto) {
+                    throw InternalServerError("Upload logo thất bại");
+                };
+                const coverPhotoPublicId = resultCoverPhoto.public_id;
+                const coverPhotoUrl = cloudinary.url(coverPhotoPublicId);
                 coverPhoto = {
-                    url: companyCoverPhoto
+                    publicId: coverPhotoPublicId,
+                    url: coverPhotoUrl
+                }
+                const oldCoverPhoto = (await this.findById(userId)).companyCoverPhoto?.publicId;
+                if (oldCoverPhoto) {
+                    await cloudinary.uploader.destroy(oldCoverPhoto);
+                };
+            } else {
+                const oldCoverPhoto = (await this.findById(userId)).companyCoverPhoto;
+                if (oldCoverPhoto?.url === companyCoverPhoto) {
+                    coverPhoto = oldCoverPhoto
+                } else {
+                    coverPhoto = {
+                        url: companyCoverPhoto
+                    }
                 }
             }
         }

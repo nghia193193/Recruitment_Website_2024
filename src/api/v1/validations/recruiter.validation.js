@@ -58,28 +58,50 @@ class RecruiterValidation {
 
     static validateUpdateInformation = data => {
         const validateSchema = joi.object({
-            name: joi.string().max(50).custom((value) => {
-                const cleanName = xss(value);
+            name: joi.string().max(50).custom((value, helpers) => {
+                const cleanName = xss(value.trim());
+                if (cleanName === '') {
+                    return helpers.error('any.empty');
+                }
                 return cleanName;
-            }).required(),
-            position: joi.string().max(100).custom((value) => {
-                const cleanPos = xss(value);
+            }).required().messages({
+                'any.empty': "Tên không được để trống",
+                'string.max': "Tên không được vượt quá 50 ký tự"
+            }),
+            position: joi.string().max(100).custom((value, helpers) => {
+                const cleanPos = xss(value.trim());
+                if (cleanPos === '') {
+                    return helpers.error('any.empty');
+                }
                 return cleanPos;
-            }).required(),
+            }).required().messages({
+                'any.empty': "Vị trí trong công ty không được để trống",
+                'string.max': "Vị trí trong công ty không được vượt quá 50 ký tự"
+            }),
             phone: joi.string().regex(/^(0[2-9]|1[0-9]|2[0-8]|3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5])[0-9]{8}$/).required()
                 .messages({
                     'string.pattern.base': 'Không phải là số điện thoại Việt Nam hợp lệ'
                 }),
             contactEmail: joi.string().email().lowercase().required(),
-            companyName: joi.string().max(150).custom((value) => {
-                const cleanCN = xss(value);
+            companyName: joi.string().max(150).custom((value, helpers) => {
+                const cleanCN = xss(value.trim());
+                if (cleanCN === '') {
+                    return helpers.error('any.empty');
+                }
                 return cleanCN;
-            }).required(),
+            }).required().messages({
+                'any.empty': "Tên công ty không được để trống",
+            }),
             companyWebsite: joi.string().uri().required(),
-            companyAddress: joi.string().max(200).custom((value) => {
-                const cleanCA = xss(value);
+            companyAddress: joi.string().max(200).custom((value, helpers) => {
+                const cleanCA = xss(value.trim());
+                if (cleanCA === '') {
+                    return helpers.error('any.empty');
+                }
                 return cleanCA;
-            }).required(),
+            }).required().messages({
+                'any.empty': "Địa chỉ công ty không được để trống",
+            }),
             companyLogo: joi.alternatives().try(
                 joi.object({
                     mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg'),
@@ -93,23 +115,30 @@ class RecruiterValidation {
                 joi.string().uri()
             ).required(),
             about: joi.string().custom((value) => {
-                const cleanAbout = xss(value);
+                const cleanAbout = xss(value.trim());
                 return cleanAbout;
             }),
             employeeNumber: joi.number().integer().min(1).required(),
             fieldOfActivity: joi.array().items(joi.string().valid(...fieldOfActivity)).required(),
-            slug: joi.string().custom((value) => {
-                const slug = xss(value);
+            slug: joi.string().custom((value, helpers) => {
+                const slug = xss(value.trim());
+                if (slug === '') {
+                    return helpers.error('any.empty');
+                }
                 return slug;
-            }).required()
+            }).required().messages({
+                'any.empty': "Địa chỉ công ty không được để trống",
+            }),
         }).messages({
             "any.only": "'{#label}' không hợp lệ",
         });
         let fieldOA = data?.fieldOfActivity;
-        if (Array.isArray(fieldOA)) {
-            fieldOA = fieldOA;
-        } else {
-            fieldOA = fieldOA.split(',').map(item => item.trim())
+        if (fieldOA) {
+            if (Array.isArray(fieldOA)) {
+                fieldOA = fieldOA;
+            } else {
+                fieldOA = fieldOA.split(',').map(item => item.trim())
+            }
         }
         const processData = {
             ...data,
@@ -139,8 +168,8 @@ class RecruiterValidation {
                 }
                 return cleanName;
             }).optional().messages({
-                'any.empty': "'name' không được để trống",
-                'string.max': "'name' không được vượt quá 50 ký tự"
+                'any.empty': "Tên không được để trống",
+                'string.max': "Tên không được vượt quá 50 ký tự"
             }),
             position: joi.string().custom((value, helpers) => {
                 const cleanPos = xss(value.trim());
@@ -149,13 +178,13 @@ class RecruiterValidation {
                 }
                 return cleanPos;
             }).optional().messages({
-                'any.empty': "'position' không được để trống"
+                'any.empty': "Vị trí không được để trống"
             }),
             phone: joi.string().regex(/^(0[2-9]|1[0-9]|2[0-8]|3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5])[0-9]{8}$/).optional().messages({
                 'string.pattern.base': 'Không phải là số điện thoại Việt Nam hợp lệ'
             }),
             contactEmail: joi.string().email().lowercase().optional().messages({
-                'string.email': "'contactEmail' phải là một email hợp lệ"
+                'string.email': "Email liên hệ phải là một email hợp lệ"
             })
         }).or(
             'name', 
