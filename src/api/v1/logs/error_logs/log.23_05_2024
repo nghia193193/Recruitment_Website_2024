@@ -1,0 +1,12 @@
+23/05/2024	16:29:45 ::1---/v1/api/candidate/favorite_recruiters---GET---Vui lòng đăng nhập
+23/05/2024	16:31:17 ::1---/v1/api/candidate/favorite_recruiters/check/662f4f7488a6f0c504c764db---GET---Vui lòng đăng nhập
+23/05/2024	16:31:24 ::1---/v1/api/candidate/favorite_recruiters/check/662f4f7488a6f0c504c764db---GET---BadRequestError is not defined
+23/05/2024	16:32:21 ::1---/v1/api/candidate/favorite_recruiters/check/662f4f7488a6f0c504c764db---GET---Không tìm thấy nhà tuyển dụng này, vui lòng thử lại
+23/05/2024	16:35:36 ::1---/v1/api/candidate/favorite_recruiters/add/6634399b7e09cd1bcf5039b4---POST---Vui lòng đăng nhập
+23/05/2024	16:35:41 ::1---/v1/api/candidate/favorite_recruiters/add/6634399b7e09cd1bcf5039b4---POST---Không tìm thấy nhà tuyển dụng này, vui lòng thử lại
+23/05/2024	16:36:25 ::1---/v1/api/candidate/favorite_recruiters/add/662f489df9935d12abe2c12b---POST---Bạn đã thêm nhà tuyển dụng vào nhà tuyển dụng yêu thích.
+23/05/2024	16:37:41 ::1---/v1/api/candidate/favorite_recruiters/remove/662f4f7488a6f0c504c764db---DELETE---Vui lòng đăng nhập
+23/05/2024	16:37:44 ::1---/v1/api/candidate/favorite_recruiters/remove/662f4f7488a6f0c504c764db---DELETE---Có lỗi xảy ra vui lòng thử lại.
+23/05/2024	16:38:53 ::1---/v1/api/candidate/favorite_recruiters/remove/662f4f7488a6f0c504c764d---DELETE---Id không hợp lệ
+23/05/2024	16:39:48 ::1---/v1/api/candidate/favorite_recruiters/remove_all---DELETE---Vui lòng đăng nhập
+23/05/2024	16:41:04 ::1---/v1/api/candidate/favorite_recruiters/add/6634399b7e09cd1bcf5039b4---POST---Không tìm thấy nhà tuyển dụng này, vui lòng thử lại

@@ -3,6 +3,7 @@ const { Admin } = require('../models/admin.model');
 const { Job } = require('../models/job.model');
 const { Notification } = require('../models/notification.model');
 const { Recruiter } = require('../models/recruiter.model');
+const { FavoriteRecruiter } = require('../models/favoriteRecruiter.model');
 const { acceptanceStatus, mapRolePermission } = require('../utils');
 const { createTransporter } = require('../utils/sendMails');
 
@@ -143,7 +144,8 @@ class AdminService {
 
     static approveJob = async ({ userId, jobId, acceptanceStatus }) => {
         try {
-            const { job, recruiterId } = await Job.approveJob({ jobId, acceptanceStatus });
+            const { job, recruiterId, companyName } = await Job.approveJob({ jobId, acceptanceStatus });
+            // thông báo tới nhà tuyển dụng
             const notification = await Notification.create({
                 senderId: userId,
                 receiverId: recruiterId,
@@ -154,6 +156,26 @@ class AdminService {
             })
             if (!notification) {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+            }
+            // thông báo tới ứng viên yêu thích nhà tuyển dụng
+            if (acceptanceStatus === "accept") {
+                const listCandidate = await FavoriteRecruiter.find({ favoriteRecruiters: recruiterId.toString() }).lean();
+                if (listCandidate.length !== 0) {
+                    for (let i = 0; i < listCandidate.length; i++) {
+                        const notificationCandidate = await Notification.create({
+                            senderId: recruiterId,
+                            receiverId: listCandidate[i].candidateId,
+                            senderCode: mapRolePermission["RECRUITER"],
+                            link: `${process.env.FE_URL}/jobs/${jobId}`,
+                            title: "Nhà tuyển dụng đã đăng việc làm mới.",
+                            content: `${companyName} vừa đăng tải tin tuyển dụng mới. Vào xem ngay!`
+                        })
+                        if (!notificationCandidate) {
+                            throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+                        }
+                        _io.emit(`notification_candidate_${listCandidate[i].candidateId}`, notificationCandidate);
+                    }
+                }
             }
             _io.emit(`notification_recruiter_${userId}`, notification);
             return {

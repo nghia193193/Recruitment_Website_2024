@@ -73,6 +73,18 @@ class CandidateValidation {
         return validateSchema.validate(data);
     }
 
+    static validateGetListFavoriteRecruiter = data => {
+        const validateSchema = joi.object({
+            searchText: joi.string().custom((value) => {
+                const cleanST = xss(value.trim());
+                return cleanST;
+            }),
+            page: joi.number().integer().min(1),
+            limit: joi.number().integer().min(1)
+        })
+        return validateSchema.validate(data);
+    }
+
     static validateGetListResume = data => {
         const validateSchema = joi.object({
             title: joi.string().custom((value) => {
@@ -92,6 +104,13 @@ class CandidateValidation {
         return validateSchema.validate(data);
     }
 
+    static validateRecruiterId = data => {
+        const validateSchema = joi.object({
+            recruiterId: objectIdJoiSchema.required()
+        })
+        return validateSchema.validate(data);
+    }
+
     static validateResumeId = data => {
         const validateSchema = joi.object({
             resumeId: objectIdJoiSchema.required()
@@ -102,6 +121,23 @@ class CandidateValidation {
     static validateRemoveFavoriteJob = data => {
         const validateSchema = joi.object({
             jobId: objectIdJoiSchema.required(),
+            name: joi.string().custom((value) => {
+                const cleanName = xss(value.trim());
+                return cleanName;
+            }),
+            page: joi.number().integer().min(1),
+            limit: joi.number().integer().min(1)
+        })
+        return validateSchema.validate(data);
+    }
+
+    static validateRemoveFavoriteRecruiter = data => {
+        const validateSchema = joi.object({
+            recruiterId: objectIdJoiSchema.required(),
+            searchText: joi.string().custom((value) => {
+                const cleanST = xss(value.trim());
+                return cleanST;
+            }),
             page: joi.number().integer().min(1),
             limit: joi.number().integer().min(1)
         })

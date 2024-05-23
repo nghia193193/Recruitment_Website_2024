@@ -14,14 +14,24 @@ router.patch('/update_avatar', verifyAccessToken, authPageCandidate, asyncHandle
 router.post('/change_password', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.changePassword));
 // get list favorite job
 router.get('/favorite_jobs', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.getListFavoriteJob));
+// get list favorite recruiter
+router.get('/favorite_recruiters', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.getListFavoriteRecruiter));
 // check favorite job
 router.get('/favorite_jobs/check/:jobId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.checkFavoriteJob));
+// check favorite recruiter
+router.get('/favorite_recruiters/check/:recruiterId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.checkFavoriteRecruiter));
 // add favorite job
 router.post('/favorite_jobs/add/:jobId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.addFavoriteJob));
+// add favorite recruiter
+router.post('/favorite_recruiters/add/:recruiterId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.addFavoriteRecruiter));
 // remove favorite job
 router.delete('/favorite_jobs/remove/:jobId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.removeFavoriteJob));
+// remove favorite recruiter
+router.delete('/favorite_recruiters/remove/:recruiterId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.removeFavoriteRecruiter));
 // remove all favorite job
 router.delete('/favorite_jobs/remove_all', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.removeAllFavoriteJob));
+// remove all favorite recruiter
+router.delete('/favorite_recruiters/remove_all', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.removeAllFavoriteRecruiter));
 // get list resume
 router.get('/resumes', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.getListResume));
 // get resume detail

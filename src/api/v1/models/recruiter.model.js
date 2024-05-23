@@ -115,15 +115,12 @@ recruiterSchema.statics.getInformation = async function (userId) {
 
 recruiterSchema.statics.getInformationBySlug = async function ({ slug }) {
     try {
-        const recruiterInfor = await this.findOne({ slug }).populate("loginId").lean().select(
-            '-roles -createdAt -updatedAt -__v'
+        const recruiterInfor = await this.findOne({ slug }).lean().select(
+            '-roles -createdAt -updatedAt -__v -acceptanceStatus -verifyEmail -firstApproval -loginId -avatar'
         );
         if (!recruiterInfor) {
             throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
         }
-        recruiterInfor.role = recruiterInfor.loginId?.role;
-        delete recruiterInfor.loginId;
-        recruiterInfor.avatar = recruiterInfor.avatar?.url ?? null;
         recruiterInfor.companyLogo = recruiterInfor.companyLogo?.url ?? null;
         recruiterInfor.companyCoverPhoto = recruiterInfor.companyCoverPhoto?.url ?? null;
         recruiterInfor.slug = recruiterInfor.slug ?? null;
@@ -393,11 +390,13 @@ recruiterSchema.statics.updateCompany = async function ({ userId, companyName, c
 recruiterSchema.statics.getListRecruiterByAdmin = async function ({ searchText, field, acceptanceStatus, page, limit }) {
     try {
         let query = {};
-        if (acceptanceStatus) {
+        if (searchText) {{
             query["$or"] = [
                 { "companyName": new RegExp(searchText, "i") },
                 { "slug": new RegExp(searchText, "i") }
             ];
+        }}
+        if (acceptanceStatus) {
             query["acceptanceStatus"] = acceptanceStatus;
         }
         if (field) {

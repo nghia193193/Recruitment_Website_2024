@@ -734,17 +734,18 @@ jobSchema.statics.approveJob = async function ({ jobId, acceptanceStatus }) {
         if (!job) {
             throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
         }
-        const recruiterId = job.recruiterId;
+        const recruiterId = job.recruiterId._id;
         job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
         job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         job.approvalDate = formatInTimeZone(job.approvalDate, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         job.companyName = job.recruiterId.companyName ?? null;
+        const companyName = job.companyName;
         job.companyLogo = job.recruiterId.companyLogo?.url ?? null;
         job.employeeNumber = job.recruiterId.employeeNumber;
         job.companyAddress = job.recruiterId.companyAddress;
         delete job.recruiterId;
-        return { job, recruiterId };
+        return { job, recruiterId, companyName };
     } catch (error) {
         throw error;
     }

@@ -60,6 +60,19 @@ class CandidateController {
         }).send(res)
     }
 
+    getListFavoriteRecruiter = async (req, res, next) => {
+        const { error, value } = CandidateValidation.validateGetListFavoriteRecruiter(req.query);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata, options } = await CandidateService.getListFavoriteRecruiter({ ...req.payload, ...value });
+        new OK({
+            message,
+            metadata: { ...metadata },
+            options
+        }).send(res)
+    }
+
     checkFavoriteJob = async (req, res, next) => {
         const { error, value } = CandidateValidation.validateJobId(req.params);
         if (error) {
@@ -72,12 +85,36 @@ class CandidateController {
         }).send(res)
     }
 
+    checkFavoriteRecruiter = async (req, res, next) => {
+        const { error, value } = CandidateValidation.validateRecruiterId(req.params);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata } = await CandidateService.checkFavoriteRecruiter({ ...req.payload, ...value });
+        new OK({
+            message,
+            metadata: { ...metadata },
+        }).send(res)
+    }
+
     addFavoriteJob = async (req, res, next) => {
         const { error, value } = CandidateValidation.validateJobId(req.params);
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
         const { message, metadata } = await CandidateService.addFavoriteJob({ ...req.payload, ...value });
+        new OK({
+            message,
+            metadata: { ...metadata },
+        }).send(res)
+    }
+
+    addFavoriteRecruiter = async (req, res, next) => {
+        const { error, value } = CandidateValidation.validateRecruiterId(req.params);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata } = await CandidateService.addFavoriteRecruiter({ ...req.payload, ...value });
         new OK({
             message,
             metadata: { ...metadata },
@@ -97,8 +134,29 @@ class CandidateController {
         }).send(res)
     }
 
+    removeFavoriteRecruiter = async (req, res, next) => {
+        const { error, value } = CandidateValidation.validateRemoveFavoriteRecruiter({ ...req.query, ...req.params });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata, options } = await CandidateService.removeFavoriteRecruiter({ ...req.payload, ...value });
+        new OK({
+            message,
+            metadata: { ...metadata },
+            options
+        }).send(res)
+    }
+
     removeAllFavoriteJob = async (req, res, next) => {
         const { message, metadata } = await CandidateService.removeAllFavoriteJob({ ...req.payload });
+        new OK({
+            message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
+    removeAllFavoriteRecruiter = async (req, res, next) => {
+        const { message, metadata } = await CandidateService.removeAllFavoriteRecruiter({ ...req.payload });
         new OK({
             message,
             metadata: { ...metadata }

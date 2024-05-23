@@ -9,6 +9,7 @@ const { Job } = require("../models/job.model");
 const mongoose = require("mongoose");
 const { formatInTimeZone } = require("date-fns-tz");
 const { Notification } = require("../models/notification.model");
+const { FavoriteRecruiter } = require("../models/favoriteRecruiter.model");
 const ObjectId = mongoose.Types.ObjectId;
 
 class CandidateService {
@@ -76,9 +77,36 @@ class CandidateService {
         }
     }
 
+    static getListFavoriteRecruiter = async ({ userId, page, limit, searchText }) => {
+        try {
+            page = page ? +page : 1;
+            limit = limit ? +limit : 5;
+            const { length, listFavoriteRecruiter } = await FavoriteRecruiter.getListFavoriteRecruiter({ userId, page, limit, searchText });
+            return {
+                message: "Lấy danh sách nhà tuyển dụng yêu thích thành công.",
+                metadata: { listFavoriteRecruiter, totalElement: length },
+                options: { page, limit }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
     static checkFavoriteJob = async ({ userId, jobId }) => {
         try {
             const { message, exist } = await FavoriteJob.checkFavoriteJob({ userId, jobId });
+            return {
+                message, 
+                metadata: { exist }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static checkFavoriteRecruiter = async ({ userId, recruiterId }) => {
+        try {
+            const { message, exist } = await FavoriteRecruiter.checkFavoriteRecruiter({ userId, recruiterId });
             return {
                 message, 
                 metadata: { exist }
@@ -100,14 +128,41 @@ class CandidateService {
         }
     }
 
-    static removeFavoriteJob = async ({ userId, jobId, page, limit }) => {
+    static addFavoriteRecruiter = async ({ userId, recruiterId }) => {
+        try {
+            await FavoriteRecruiter.addFavoriteRecruiter({ userId, recruiterId });
+            return {
+                message: "Thêm nhà tuyển dụng yêu thích thành công.",
+                metadata: {}
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static removeFavoriteJob = async ({ userId, jobId, page, limit, name }) => {
         try {
             page = page ? +page : 1;
             limit = limit ? +limit : 5;
-            const { length, listFavoriteJob } = await FavoriteJob.removeFavoriteJob({ userId, jobId, page, limit });
+            const { length, listFavoriteJob } = await FavoriteJob.removeFavoriteJob({ userId, jobId, page, limit, name });
             return {
                 message: "Xóa công việc yêu thích thành công.",
                 metadata: { listFavoriteJob, totalElement: length },
+                options: { page, limit }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static removeFavoriteRecruiter = async ({ userId, recruiterId, page, limit, searchText }) => {
+        try {
+            page = page ? +page : 1;
+            limit = limit ? +limit : 5;
+            const { length, listFavoriteRecruiter } = await FavoriteRecruiter.removeFavoriteRecruiter({ userId, recruiterId, page, limit, searchText });
+            return {
+                message: "Xóa nhà tuyển dụng yêu thích thành công.",
+                metadata: { listFavoriteRecruiter, totalElement: length },
                 options: { page, limit }
             }
         } catch (error) {
@@ -121,6 +176,18 @@ class CandidateService {
             return {
                 message: "Xóa toàn bộ công việc yêu thích thành công.",
                 metadata: { listFavoriteJob, totalElement: length },
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static removeAllFavoriteRecruiter = async ({ userId }) => {
+        try {
+            const { length, listFavoriteRecruiter } = await FavoriteRecruiter.removeAllFavoriteRecruiter({ userId });
+            return {
+                message: "Xóa toàn bộ nhà tuyển dụng yêu thích thành công.",
+                metadata: { listFavoriteRecruiter, totalElement: length },
             }
         } catch (error) {
             throw error;

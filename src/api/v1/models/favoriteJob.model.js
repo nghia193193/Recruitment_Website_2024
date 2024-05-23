@@ -38,7 +38,9 @@ favoriteJobSchema.statics.getListFavoriteJob = async function ({ userId, page, l
         })
     )
     mappedFavoriteJobs = mappedFavoriteJobs.filter(job => {
-        return job !== undefined;
+        if (job) {
+            return job;
+        }
     });
     const start = (page - 1) * limit;
     const end = start + limit;
