@@ -193,6 +193,19 @@ class RecruiterController {
         }).send(res)
     }
 
+    getListJobApplicationExperience = async (req, res, next) => {
+        const { error, value } = RecruiterValidation.validateJobId(req.params);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { metadata, message, options } = await RecruiterService.getListJobApplicationExperience({ ...value, ...req.payload });
+        new OK({
+            message: message,
+            metadata: { ...metadata },
+            options: options
+        }).send(res)
+    }
+
     getListJobApplication = async (req, res, next) => {
         const { error, value } = RecruiterValidation.validateGetListJobApplication({ ...req.params, ...req.query });
         if (error) {

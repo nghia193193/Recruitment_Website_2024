@@ -74,6 +74,8 @@ const recruiterSchema = new Schema({
     timestamps: true
 })
 
+recruiterSchema.index({ companyName: 'text', slug: 'text' }, { default_language: 'none' });
+
 recruiterSchema.statics.verifyEmail = async function (email) {
     try {
         const result = await this.findOneAndUpdate({ email }, {
@@ -393,12 +395,9 @@ recruiterSchema.statics.updateCompany = async function ({ userId, companyName, c
 recruiterSchema.statics.getListRecruiterByAdmin = async function ({ searchText, field, acceptanceStatus, page, limit }) {
     try {
         let query = {};
-        if (searchText) {{
-            query["$or"] = [
-                { "companyName": new RegExp(searchText, "i") },
-                { "slug": new RegExp(searchText, "i") }
-            ];
-        }}
+        if (searchText) {
+            query["$text"] = { $search: searchText };
+        }
         if (acceptanceStatus) {
             query["acceptanceStatus"] = acceptanceStatus;
         }
@@ -406,7 +405,12 @@ recruiterSchema.statics.getListRecruiterByAdmin = async function ({ searchText, 
             query["fieldOfActivity"] = { "$in": field };
         }
         const totalElement = await this.find(query).lean().countDocuments();
-        let listRecruiter = await this.find(query).lean().select("-createdAt -updatedAt -__v -loginId").skip((page - 1) * limit).limit(limit);
+        let listRecruiter = await this.find(query, { score: { $meta: "textScore" } })
+            .lean()
+            .select("-createdAt -updatedAt -__v -loginId")
+            .sort({ score: { $meta: "textScore" } })
+            .skip((page - 1) * limit)
+            .limit(limit);
         if (listRecruiter.length !== 0) {
             listRecruiter = listRecruiter.map(recruiter => {
                 return {
@@ -428,13 +432,15 @@ recruiterSchema.statics.getListRecruiter = async function ({ searchText, page, l
     try {
         let query = {};
         if (searchText) {
-            query["$or"] = [
-                { "companyName": new RegExp(searchText, "i") },
-                { "slug": new RegExp(searchText, "i") }
-            ];
+            query["$text"] = { $search: searchText };
         }
         const totalElement = await this.find(query).lean().countDocuments();
-        let listRecruiter = await this.find(query).lean().select("-createdAt -updatedAt -__v -loginId").skip((page - 1) * limit).limit(limit);
+        let listRecruiter = await this.find(query, { score: { $meta: "textScore" } })
+            .lean()
+            .select("-createdAt -updatedAt -__v -loginId")
+            .sort({ score: { $meta: "textScore" } })
+            .skip((page - 1) * limit)
+            .limit(limit);
         if (listRecruiter.length !== 0) {
             listRecruiter = listRecruiter.map(recruiter => {
                 return {

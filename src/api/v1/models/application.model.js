@@ -74,6 +74,55 @@ applicationSchema.statics.getJobApplicationNumber = async function ({ jobId }) {
     }
 }
 
+applicationSchema.statics.getListJobApplicationExperience = async function ({ userId, jobId}) {
+    try {
+        const pipeline = [
+            {
+                $lookup: {
+                    from: "jobs",
+                    localField: "jobId",
+                    foreignField: "_id",
+                    as: "job"
+                }
+            },
+            {
+                $unwind: "$job"
+            },
+            {
+                $lookup: {
+                    from: "resumes",
+                    localField: "resumeId",
+                    foreignField: "_id",
+                    as: "resume"
+                }
+            },
+            {
+                $unwind: "$resume"
+            },
+            {
+                $match: {
+                    "jobId": new ObjectId(jobId),
+                    "job.recruiterId": new ObjectId(userId),
+                    $or: [
+                        { "resume.status": "active" },
+                        { "status": { $in: ['Đã nhận', 'Không nhận'] } }
+                    ]
+                }
+            },
+            {
+                $project: {
+                    "resume.experience": 1
+                }
+            }
+        ]
+        let listExperience = await this.aggregate(pipeline);
+        listExperience = listExperience.map(item => item.resume.experience);
+        return listExperience;
+    } catch (error) {
+        throw error;
+    }
+}
+
 applicationSchema.statics.getListJobApplication = async function ({ userId, jobId, candidateName, experience, status,
     major, goal, page, limit }) {
     try {

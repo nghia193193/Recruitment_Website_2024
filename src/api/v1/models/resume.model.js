@@ -84,13 +84,15 @@ const resumeSchema = new Schema({
     timestamps: true
 })
 
+resumeSchema.index({ title: 'text' }, { default_language: 'none' });
+
 resumeSchema.statics.getListResume = async function ({ userId, page, limit, title, status }) {
     try {
         const query = {
             candidateId: userId
         }
         if (title) {
-            query["title"] = new RegExp(title, "i");
+            query["$text"] = { $search: title }
         }
         if (status) {
             query["status"] = status;

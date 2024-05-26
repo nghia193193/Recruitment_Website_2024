@@ -88,6 +88,8 @@ const jobSchema = new Schema({
     timestamps: true
 })
 
+jobSchema.index({ name: 'text' }, { default_language: 'none' });
+
 jobSchema.statics.changeJobStatus = async function ({ userId, jobId, status }) {
     try {
         const job = await this.findOneAndUpdate({ _id: jobId, recruiterId: userId }, {
@@ -380,7 +382,7 @@ jobSchema.statics.getListJobAdmin = async function ({ companyName, name, field, 
         if (name) {
             pipeline.push({
                 $match: {
-                    "name": new RegExp(name, "i")
+                    $text: { $search: name }
                 }
             });
         }
@@ -457,7 +459,7 @@ jobSchema.statics.getListJob = async function ({ name, province, type, levelRequ
             deadline: { $gte: Date.now() }
         };
         if (name) {
-            query["name"] = new RegExp(name, "i");
+            query["$text"] = { $search: name };
         }
         if (province) {
             query["province"] = province;
@@ -478,11 +480,11 @@ jobSchema.statics.getListJob = async function ({ name, province, type, levelRequ
             query["genderRequirement"] = genderRequirement;
         }
         const length = await this.find(query).lean().countDocuments();
-        let result = await this.find(query).lean().populate("recruiterId")
+        let result = await this.find(query, { score: { $meta: "textScore" } }).lean().populate("recruiterId")
             .select("name field type levelRequirement experience salary province approvalDate deadline recruiterId createdAt updatedAt")
+            .sort({ score: { $meta: "textScore" }, updatedAt: -1 })
             .skip((page - 1) * limit)
             .limit(limit)
-            .sort({ updatedAt: -1 })
         result = result.map(job => {
             job.companyName = job.recruiterId.companyName ?? null;
             job.companyLogo = job.recruiterId.companyLogo?.url ?? null;

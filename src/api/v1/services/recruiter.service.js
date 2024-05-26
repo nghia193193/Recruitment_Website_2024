@@ -274,6 +274,24 @@ class RecruiterService {
         }
     }
 
+    static getListJobApplicationExperience = async ({ userId, jobId }) => {
+        try {
+            const job = await Job.findById(jobId).lean();
+            if (!job) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
+            }
+            const listExperience = await Application.getListJobApplicationExperience({ userId, jobId })
+            return {
+                message: "Lấy danh sách kinh nghiệm thành công",
+                metadata: {
+                    listExperience
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
     static getListJobApplication = async ({ userId, jobId, candidateName, experience, status, major, goal,
         page, limit }) => {
         try {
