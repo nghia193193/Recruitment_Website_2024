@@ -4,7 +4,7 @@ const { Recruiter } = require("../models/recruiter.model");
 const { validOtp, insertOtp } = require("./otp.service");
 const OTPGenerator = require('otp-generator');
 const bcrypt = require('bcryptjs');
-const { createTransporter, sendSignUpMail } = require('../utils/sendMails');
+const { createTransporter, sendSignUpMail, sendForgetPasswordMail } = require('../utils/sendMails');
 const { Login } = require("../models/login.model");
 const RedisService = require("./redis.service");
 const JWTService = require("./jwt.service");
@@ -13,7 +13,7 @@ const { findUserByRole } = require("../utils/findUser");
 const { fieldOfActivity, jobType, levelRequirement, experience, genderRequirement, provinceOfVietNam, mapRolePermission, workStatus } = require('../utils');
 const client = require('../dbs/init.redis');
 const { Job } = require("../models/job.model");
-
+const { randomBytes } = require('crypto');
 
 class AccessService {
 
@@ -109,7 +109,10 @@ class AccessService {
             // verify Email
             await Recruiter.verifyEmail(email);
             // add recruiter to login
-            const hashPassword = await RedisService.getPassword(email);
+            const hashPassword = await RedisService.getEmailKey(email);
+            if (!hashPassword) {
+                throw new BadRequestError("Quá thời hạn 24 giờ kể từ lúc đăng ký vui lòng đăng ký lại.");
+            }
             const login = await Login.create({
                 email,
                 password: hashPassword,
@@ -122,7 +125,7 @@ class AccessService {
                 }
             })
             // delete redis password
-            await RedisService.deletePassword(email);
+            await RedisService.deleteEmailKey(email);
             // delete all otp verify in db
             await OTP.deleteMany({ email });
             //return 200
@@ -150,7 +153,10 @@ class AccessService {
             // verify Email
             await Candidate.verifyEmail(email);
             // add recruiter to login
-            const hashPassword = await RedisService.getPassword(email);
+            const hashPassword = await RedisService.getEmailKey(email);
+            if (!hashPassword) {
+                throw new BadRequestError("Quá thời hạn 24 giờ kể từ lúc đăng ký vui lòng đăng ký lại.");
+            }
             const login = await Login.create({
                 email,
                 password: hashPassword,
@@ -163,7 +169,7 @@ class AccessService {
                 }
             })
             // delete redis password
-            await RedisService.deletePassword(email);
+            await RedisService.deleteEmailKey(email);
             // delete all otp verify in db
             await OTP.deleteMany({ email });
             //return 200
@@ -186,7 +192,10 @@ class AccessService {
                 throw new BadRequestError('Email của bạn đã được xác nhận');
             }
             // refresh ttl redis password
-            const password = await RedisService.getPassword(email);
+            const password = await RedisService.getEmailKey(email);
+            if (!password) {
+                throw new BadRequestError("Quá thời hạn 24 giờ kể từ lúc đăng ký vui lòng đăng ký lại.");
+            }
             await RedisService.setPassword(email, password);
             await sendSignUpMail({ toEmail: email, userName: recruiter.name });
             // return 200
@@ -212,7 +221,10 @@ class AccessService {
                 throw new BadRequestError('Email của bạn đã được xác nhận');
             }
             // refresh ttl redis password
-            const password = await RedisService.getPassword(email);
+            const password = await RedisService.getEmailKey(email);
+            if (!password) {
+                throw new BadRequestError("Quá thời hạn 24 giờ kể từ lúc đăng ký vui lòng đăng ký lại.");
+            }
             await RedisService.setPassword(email, password);
             await sendSignUpMail({ toEmail: email, userName: candidate.name });
             // return 200
@@ -257,6 +269,56 @@ class AccessService {
                         refreshToken
                     }
                 }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static forgetPassword = async ({ email }) => {
+        try {
+            //check Exist
+            const user = await Login.findOne({ email }).lean();
+            if (!user) {
+                throw new BadRequestError('Tài khoản không tồn tại!')
+            }
+            const account = await findUserByRole(user.role, email);
+            const token = randomBytes(32).toString('hex');
+            await RedisService.setToken(email, token);
+            await sendForgetPasswordMail({ toEmail: email, userName: account.name, token: token });
+            //return 200
+            return {
+                message: "Gửi email thành công, vui lòng truy cập email để đổi mật khẩu."
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static resetPassword = async ({ newPassword, email, token }) => {
+        try {
+            //check token
+            const redisToken = await RedisService.getEmailKey(email);
+            if (!redisToken) {
+                throw new BadRequestError("Đã hết thời hạn 60 phút kể từ lúc gửi yêu cầu. Vui lòng thực hiện lại yêu cầu.");
+            }
+            if (redisToken !== token) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+            }
+            //update password
+            const hashNewPassword = await bcrypt.hash(newPassword, 10);
+            const result = await Login.findOneAndUpdate({ email }, {
+                $set: {
+                    password: hashNewPassword
+                }
+            }, {
+                new: true
+            })
+            if (!result) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+            }
+            return {
+                message: "Cập nhật mật khẩu thành công."
             }
         } catch (error) {
             throw error;
@@ -472,13 +534,13 @@ class AccessService {
         }
     }
 
-    static getListRelatedJobByField = async ({ jobId ,name, province, type, levelRequirement, experience,
+    static getListRelatedJobByField = async ({ jobId, name, province, type, levelRequirement, experience,
         genderRequirement, page, limit }) => {
         try {
             page = page ? +page : 1;
             limit = limit ? +limit : 5;
             const { result, length } = await Job.getListRelatedJobByField({
-                jobId ,name, province, type, levelRequirement, experience,
+                jobId, name, province, type, levelRequirement, experience,
                 genderRequirement, page, limit
             })
             return {

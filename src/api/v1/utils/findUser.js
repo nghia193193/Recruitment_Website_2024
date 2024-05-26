@@ -18,13 +18,10 @@ async function findUserByRole(role, email) {
     switch (role) {
         case "ADMIN":
             return await findAdminUser(email);
-            break;
         case "RECRUITER":
             return await findRecruiterUser(email);
-            break;
         case "CANDIDATE":
             return await findCandidateUser(email);
-            break;
     }
 }
 

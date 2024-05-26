@@ -84,13 +84,16 @@ const resumeSchema = new Schema({
     timestamps: true
 })
 
-resumeSchema.statics.getListResume = async function ({ userId, page, limit, title }) {
+resumeSchema.statics.getListResume = async function ({ userId, page, limit, title, status }) {
     try {
         const query = {
             candidateId: userId
         }
         if (title) {
             query["title"] = new RegExp(title, "i");
+        }
+        if (status) {
+            query["status"] = status;
         }
         const length = await this.find(query).lean().countDocuments();
         let listResume = await this.find(query).lean().select("title name educationLevel status email major jobType experience avatar updatedAt")

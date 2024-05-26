@@ -24,6 +24,10 @@ class AdminValidation {
         const validateSchema = joi.object({
             recruiterId: objectIdJoiSchema.required(),
             acceptanceStatus: joi.string().valid(...["accept", "decline"]).required(),
+            reasonDecline: joi.string().custom((value) => {
+                const cleanRD = xss(value.trim());
+                return cleanRD;
+            })
         }).messages({
             "any.only": "'{#label}' không hợp lệ"
         })
@@ -68,7 +72,11 @@ class AdminValidation {
     static validateApproveJob = data => {
         const validateSchema = joi.object({
             jobId: objectIdJoiSchema.required(),
-            acceptanceStatus: joi.string().valid(...["accept", "decline"])
+            acceptanceStatus: joi.string().valid(...["accept", "decline"]).required(),
+            reasonDecline: joi.string().custom((value) => {
+                const cleanRD = xss(value.trim());
+                return cleanRD;
+            })
         }).messages({
             "any.only": "'{#label}' không hợp lệ"
         })

@@ -37,3 +37,5 @@
 23/05/2024	23:09:40 ::1---/v1/api/recruiter/signup---POST---Email này đã được đăng ký, vui lòng truy cập email để xác nhận tài khoản
 23/05/2024	23:09:46 ::1---/v1/api/recruiter/signup---POST---E11000 duplicate key error collection: Recruiment_Website.recruiters index: slug_1 dup key: { slug: null }
 23/05/2024	23:10:39 ::1---/v1/api/recruiter/signup---POST---E11000 duplicate key error collection: Recruiment_Website.recruiters index: slug_1 dup key: { slug: null }
+23/05/2024	23:26:55 ::1---/v1/api/recruiter/signup---POST---Email này đã được đăng ký, vui lòng truy cập email để xác nhận tài khoản
+23/05/2024	23:31:53 ::1---/v1/api/recruiter/verify?email=vietnampro193913@gmail.com---POST---OTP không chính xác

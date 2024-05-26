@@ -82,7 +82,8 @@ const jobSchema = new Schema({
         enum: ["waiting", "accept", "decline"],
         default: "waiting"
     },
-    approvalDate: Date
+    approvalDate: Date,
+    reasonDecline: String
 }, {
     timestamps: true
 })
@@ -361,6 +362,7 @@ jobSchema.statics.getListJobAdmin = async function ({ companyName, name, field, 
                     "field": 1,
                     "deadline": 1,
                     "acceptanceStatus": 1,
+                    "reasonDecline": 1,
                     "recruiters.companyName": 1,
                     "recruiters.slug": 1,
                     "recruiters.employeeNumber": 1,
@@ -429,6 +431,7 @@ jobSchema.statics.getListJobAdmin = async function ({ companyName, name, field, 
             }]
         );
         result = result.map(job => {
+            job.reasonDecline = job.reasonDecline ?? null;
             job.companySlug = job.recruiters[0].slug ?? null;
             job.companyName = job.recruiters[0].companyName ?? null;
             job.companyLogo = job.recruiters[0].companyLogo?.url ?? null;
@@ -628,10 +631,11 @@ jobSchema.statics.getListJobOfRecruiter = async function ({ slug, name, province
 jobSchema.statics.getJobDetail = async function ({ jobId }) {
     try {
         let job = await this.findById(jobId).lean().populate("recruiterId")
-            .select("-__v ")
+            .select("-__v -reasonDecline")
         if (!job) {
             throw new NotFoundRequestError("Không tìm thấy công việc");
         }
+        const acceptedNumber = await Application.getJobAcceptedApplicationNumber({ jobId });
         job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
         job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
@@ -641,6 +645,7 @@ jobSchema.statics.getJobDetail = async function ({ jobId }) {
         job.companyLogo = job.recruiterId.companyLogo?.url ?? null;
         job.employeeNumber = job.recruiterId.employeeNumber;
         job.companyAddress = job.recruiterId.companyAddress;
+        job.acceptedNumber = acceptedNumber;
         delete job.recruiterId;
         return job;
     } catch (error) {
@@ -712,6 +717,7 @@ jobSchema.statics.getJobDetailByRecruiter = async function ({ userId, jobId }) {
         if (!job) {
             throw new NotFoundRequestError("Không tìm thấy công việc");
         }
+        job.reasonDecline = job.reasonDecline ?? null;
         job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         return job;
@@ -720,17 +726,32 @@ jobSchema.statics.getJobDetailByRecruiter = async function ({ userId, jobId }) {
     }
 }
 
-jobSchema.statics.approveJob = async function ({ jobId, acceptanceStatus }) {
+jobSchema.statics.approveJob = async function ({ jobId, acceptanceStatus, reasonDecline }) {
     try {
-        const job = await this.findOneAndUpdate({ _id: jobId }, {
-            $set: {
-                acceptanceStatus: acceptanceStatus,
-                approvalDate: formatInTimeZone(new Date(), "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
-            }
-        }, {
-            new: true,
-            select: { __v: 0 }
-        }).lean().populate("recruiterId")
+        let job;
+        if (acceptanceStatus === "accept") {
+            job = await this.findOneAndUpdate({ _id: jobId }, {
+                $set: {
+                    acceptanceStatus: acceptanceStatus,
+                    approvalDate: formatInTimeZone(new Date(), "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
+                    reasonDecline: null
+                }
+            }, {
+                new: true,
+                select: { __v: 0 }
+            }).lean().populate("recruiterId")
+        } else {
+            job = await this.findOneAndUpdate({ _id: jobId }, {
+                $set: {
+                    acceptanceStatus: acceptanceStatus,
+                    approvalDate: formatInTimeZone(new Date(), "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
+                    reasonDecline
+                }
+            }, {
+                new: true,
+                select: { __v: 0 }
+            }).lean().populate("recruiterId")
+        }
         if (!job) {
             throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
         }
@@ -744,6 +765,7 @@ jobSchema.statics.approveJob = async function ({ jobId, acceptanceStatus }) {
         job.companyLogo = job.recruiterId.companyLogo?.url ?? null;
         job.employeeNumber = job.recruiterId.employeeNumber;
         job.companyAddress = job.recruiterId.companyAddress;
+        job.reasonDecline = job.reasonDecline ?? null;
         delete job.recruiterId;
         return { job, recruiterId, companyName };
     } catch (error) {

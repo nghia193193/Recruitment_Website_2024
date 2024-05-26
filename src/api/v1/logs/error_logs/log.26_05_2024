@@ -1,0 +1,16 @@
+26/05/2024	14:30:06 ::1---/v1/api/candidate/resumes?status=in---GET---"status" must be one of [active, inactive]
+26/05/2024	14:31:08 ::1---/v1/api/candidate/resumes?status=inactives---GET---'"status"' không hợp lệ
+26/05/2024	14:39:49 ::1---/v1/api/login---POST---Tài khoản không tồn tại
+26/05/2024	16:17:15 ::1---/v1/api/forget_password---POST---"email" is required
+26/05/2024	16:39:06 ::1---/v1/api/forget_password---POST---code is not defined
+26/05/2024	16:49:11 ::1---/v1/api/reset_password---POST---"email" is required
+26/05/2024	16:50:06 ::1---/v1/api/reset_password?email=20110683@student.hcmute.edu.vn&token=4ddb6e57103d5e40d4e8dd76c8855658fb4e10cfe96ddd0a4dbe72f6a6ef1957---POST---Mật khẩu xác nhận không khớp
+26/05/2024	16:50:18 ::1---/v1/api/reset_password?email=20110683@student.hcmute.edu.vn&token=4ddb6e57103d5e40d4e8dd76c8855658fb4e10cfe96ddd0a4dbe72f6a6ef1957---POST---Mật khẩu xác nhận không khớp
+26/05/2024	16:50:30 ::1---/v1/api/reset_password?email=20110683@student.hcmute.edu.vn&token=4ddb6e57103d5e40d4e8dd76c8855658fb4e10cfe96ddd0a4dbe72f6a6ef1957---POST---Mật khẩu xác nhận không khớp
+26/05/2024	16:50:48 ::1---/v1/api/reset_password?email=20110683@student.hcmute.edu.vn&token=4ddb6e57103d5e40d4e8dd76c8855658fb4e10cfe96ddd0a4dbe72f6a6ef1957---POST---Mật khẩu xác nhận không khớp
+26/05/2024	16:51:01 ::1---/v1/api/reset_password?email=20110683@student.hcmute.edu.vn&token=4ddb6e57103d5e40d4e8dd76c8855658fb4e10cfe96ddd0a4dbe72f6a6ef1957---POST---Mật khẩu xác nhận không khớp
+26/05/2024	16:51:48 ::1---/v1/api/reset_password?email=20110683@student.hcmute.edu.vn&token=4ddb6e57103d5e40d4e8dd76c8855658fb4e10cfe96ddd0a4dbe72f6a6ef1957---POST---Mật khẩu xác nhận không khớp
+26/05/2024	16:52:39 ::1---/v1/api/login---POST---Tài khoản không tồn tại
+26/05/2024	16:52:53 ::1---/v1/api/login---POST---Mật khẩu không chính xác
+26/05/2024	16:53:53 ::1---/v1/api/login---POST---Tài khoản không tồn tại
+26/05/2024	16:58:24 ::1---/v1/api/recruiter/verify?email=vietnampro193913@gmail.com---POST---RedisService.deletePassword is not a function

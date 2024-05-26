@@ -86,6 +86,31 @@ class AccessController {
         }).send(res)
     }
 
+    forgetPassword = async (req, res, next) => {
+        const { error, value } = AccessValidation.validateForgetPassword(req.body);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata } = await AccessService.forgetPassword(value);
+        new OK({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
+    resetPassword = async (req, res, next) => {
+        const { error, value } = AccessValidation.validateResetPassword({...req.body, ...req.query});
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata } = await AccessService.resetPassword(value);
+        new OK({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
+
     logout = async (req, res, next) => {
         const { message } = await AccessService.logout(req.body);
         new OK({

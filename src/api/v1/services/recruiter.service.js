@@ -96,11 +96,6 @@ class RecruiterService {
     static createJob = async ({ userId, name, location, province, type, levelRequirement, experience, salary,
         field, description, requirement, benefit, quantity, deadline, gender }) => {
         try {
-            //check exist 
-            const isExist = await Job.findOne({ name, recruiterId: userId });
-            if (isExist) {
-                throw new ConflictRequestError("Tên công việc đã được sử dụng");
-            }
             const result = await Job.create({
                 userId, name, location, province, type, levelRequirement, experience, salary, field, description,
                 requirement, benefit, quantity, deadline, gender, recruiterId: userId
@@ -324,9 +319,9 @@ class RecruiterService {
         }
     }
 
-    static approveApplication = async ({ userId, applicationId, status, companyName }) => {
+    static approveApplication = async ({ userId, applicationId, status, companyName, reasonDecline }) => {
         try {
-            const { candidateId, jobName } = await Application.approveApplication({ userId, applicationId, status });
+            const { candidateId, jobName } = await Application.approveApplication({ userId, applicationId, status, reasonDecline });
             const notification = await Notification.create({
                 senderId: userId,
                 receiverId: candidateId,

@@ -526,7 +526,11 @@ class RecruiterValidation {
     static validateApproveApplication = data => {
         const validateSchema = joi.object({
             applicationId: objectIdJoiSchema.required(),
-            status: joi.string().valid("Đã nhận", "Không nhận").required()
+            status: joi.string().valid("Đã nhận", "Không nhận").required(),
+            reasonDecline: joi.string().custom((value) => {
+                const cleanRD = xss(value.trim());
+                return cleanRD;
+            })
         }).messages({
             "any.only": "'{#label}' không hợp lệ"
         })

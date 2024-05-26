@@ -1,6 +1,6 @@
 const { formatInTimeZone } = require('date-fns-tz');
 const mongoose = require('mongoose');
-const { InternalServerError } = require('../core/error.response');
+const { InternalServerError, BadRequestError } = require('../core/error.response');
 const model = mongoose.model;
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Types.ObjectId;
@@ -25,7 +25,8 @@ const applicationSchema = new Schema({
         type: String,
         enum: ['Đã nộp', 'Đã nhận', 'Không nhận'],
         default: 'Đã nộp'
-    }
+    },
+    reasonDecline: String
 }, {
     timestamps: true
 })
@@ -113,6 +114,8 @@ applicationSchema.statics.getListJobApplication = async function ({ userId, jobI
                 $project: {
                     "_id": 1,
                     "resume.name": 1,
+                    "resume.email": 1,
+                    "resume.phone": 1,
                     "resume.educationLevel": 1,
                     "resume.experience": 1,
                     "resume.avatar": 1,
@@ -202,7 +205,9 @@ applicationSchema.statics.getApplicationDetail = async function ({ userId, appli
             {
                 $project: {
                     "resume": 1,
-                    "job.name": 1
+                    "job.name": 1,
+                    "job.quantity": 1,
+                    "jobId": 1
                 }
             }
         ]
@@ -213,6 +218,8 @@ applicationSchema.statics.getApplicationDetail = async function ({ userId, appli
         }
         let listApplication = await this.aggregate(pipeline);
         let jobName = listApplication[0].job.name;
+        let quantity = listApplication[0].job.quantity;
+        let jobId = listApplication[0].jobId;
         let result = listApplication[0].resume;
         result._id = listApplication[0]._id;
         delete result.__v;
@@ -220,26 +227,51 @@ applicationSchema.statics.getApplicationDetail = async function ({ userId, appli
         result.avatar = result.avatar.url;
         result.createdAt = formatInTimeZone(result.createdAt, "Asia/Ho_Chi_Minh", "dd/MM/yyy HH:mm:ss");
         result.updatedAt = formatInTimeZone(result.updatedAt, "Asia/Ho_Chi_Minh", "dd/MM/yyy HH:mm:ss");
-        return { result, jobName };
+        return { result, jobId, jobName, quantity };
     } catch (error) {
         throw error;
     }
 }
 
-applicationSchema.statics.approveApplication = async function ({ userId, applicationId, status }) {
+applicationSchema.statics.getJobAcceptedApplicationNumber = async function ({ jobId }) {
+    try {
+        const totalElement = await this.find({ jobId, status: "Đã nhận" }).lean().countDocuments();
+        return totalElement;
+    } catch (error) {
+        throw error;
+    }
+}
+
+applicationSchema.statics.approveApplication = async function ({ userId, applicationId, status, reasonDecline }) {
     try {
         // validate recruiter
-        const { result, jobName } = await this.getApplicationDetail({ userId, applicationId });
+        const { result, jobId, jobName, quantity } = await this.getApplicationDetail({ userId, applicationId });
         if (!result) {
             throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
         }
-        const application = await this.findOneAndUpdate({ _id: applicationId }, {
-            $set: {
-                status
+        // validate quantity
+        let application;
+        const acceptedNumber = await this.getJobAcceptedApplicationNumber({ jobId });
+        if (status === "Đã nhận") {
+            if (acceptedNumber >= quantity) {
+                throw new BadRequestError("Đã đủ số lượng cần tuyển, không thể nhận thêm!");
             }
-        }, {
-            new: true
-        }).lean()
+            application = await this.findOneAndUpdate({ _id: applicationId }, {
+                $set: {
+                    status, reasonDecline: null
+                }
+            }, {
+                new: true
+            }).lean()
+        } else {
+            application = await this.findOneAndUpdate({ _id: applicationId }, {
+                $set: {
+                    status, reasonDecline
+                }
+            }, {
+                new: true
+            }).lean()
+        }
         if (!application) {
             throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
         }

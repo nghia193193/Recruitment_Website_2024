@@ -91,9 +91,12 @@ class CandidateValidation {
                 const cleanTitle = xss(value.trim());
                 return cleanTitle;
             }),
+            status: joi.string().valid("active", "inactive"),
             page: joi.number().integer().min(1),
             limit: joi.number().integer().min(1)
-        })
+        }).messages({
+            "any.only": "'{#label}' không hợp lệ",
+        });
         return validateSchema.validate(data);
     }
 

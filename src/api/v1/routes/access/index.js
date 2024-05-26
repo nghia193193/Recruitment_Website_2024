@@ -15,8 +15,12 @@ router.post('/candidate/signup', asyncHandler(accessController.candidateSignUp))
 router.post('/candidate/verify', asyncHandler(accessController.candidateVerifyEmail));
 // Candidate resend email
 router.post('/candidate/signup/resend_mail', asyncHandler(accessController.candidateResendVerifyEmail));
-//login
+// login
 router.post('/login', asyncHandler(accessController.login));
+// forget password
+router.post('/forget_password', asyncHandler(accessController.forgetPassword));
+// reset password
+router.post('/reset_password', asyncHandler(accessController.resetPassword));
 // get field of activity
 router.get('/field_of_activity', asyncHandler(accessController.getFieldOfActivity));
 // get list jobType

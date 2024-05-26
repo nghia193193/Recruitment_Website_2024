@@ -9,7 +9,15 @@ class RedisService {
         }
     }
 
-    static getPassword = async (email) => {
+    static setToken = async (email, token ) => {
+        try {
+            await client.set(email, token, { EX: 60 * 60 }) //expire after 1h
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getEmailKey = async (email) => {
         try {
             return client.get(email);
         } catch (error) {
@@ -17,7 +25,7 @@ class RedisService {
         }
     }
 
-    static deletePassword = async (email) => {
+    static deleteEmailKey = async (email) => {
         try {
             return client.del(email)
         } catch (error) {

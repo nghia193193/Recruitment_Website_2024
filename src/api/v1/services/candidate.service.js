@@ -194,11 +194,11 @@ class CandidateService {
         }
     }
 
-    static getListResume = async ({ userId, page, limit, title }) => {
+    static getListResume = async ({ userId, page, limit, title, status }) => {
         try {
             page = page ? +page : 1;
             limit = limit ? +limit : 5;
-            const { length, listResume } = await Resume.getListResume({ userId, page, limit, title });
+            const { length, listResume } = await Resume.getListResume({ userId, page, limit, title, status });
             return {
                 message: "Lấy danh sách resume thành công.",
                 metadata: { listResume, totalElement: length },
@@ -462,7 +462,7 @@ class CandidateService {
             const totalElement = totalDocument.length > 0 ? totalDocument[0].totalDocuments : 0;
             let listApplication = await Application.aggregate(
                 [...pipeline, {
-                    $sort: { updatedAt: -1 }
+                    $sort: { createdAt: -1 }
                 }, {
                     $skip: (page - 1) * limit
                 }, {

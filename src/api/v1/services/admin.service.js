@@ -53,9 +53,9 @@ class AdminService {
 
     }
 
-    static approveRecruiter = async ({ recruiterId, acceptanceStatus }) => {
+    static approveRecruiter = async ({ recruiterId, acceptanceStatus, reasonDecline }) => {
         try {
-            const result = await Recruiter.approveRecruiter({ recruiterId, acceptanceStatus });
+            const result = await Recruiter.approveRecruiter({ recruiterId, acceptanceStatus, reasonDecline });
             let mailDetails;
             if (result.acceptanceStatus === "accept") {
                 mailDetails = {
@@ -142,9 +142,9 @@ class AdminService {
         }
     }
 
-    static approveJob = async ({ userId, jobId, acceptanceStatus }) => {
+    static approveJob = async ({ userId, jobId, acceptanceStatus, reasonDecline }) => {
         try {
-            const { job, recruiterId, companyName } = await Job.approveJob({ jobId, acceptanceStatus });
+            const { job, recruiterId, companyName } = await Job.approveJob({ jobId, acceptanceStatus, reasonDecline });
             // thông báo tới nhà tuyển dụng
             const notification = await Notification.create({
                 senderId: userId,

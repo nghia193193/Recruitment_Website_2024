@@ -68,7 +68,8 @@ const recruiterSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Login"
     },
-    slug: String
+    slug: String,
+    reasonDecline: String
 }, {
     timestamps: true
 })
@@ -104,6 +105,7 @@ recruiterSchema.statics.getInformation = async function (userId) {
         recruiterInfor.companyLogo = recruiterInfor.companyLogo?.url ?? null;
         recruiterInfor.companyCoverPhoto = recruiterInfor.companyCoverPhoto?.url ?? null;
         recruiterInfor.slug = recruiterInfor.slug ?? null;
+        recruiterInfor.reasonDecline = recruiterInfor.reasonDecline ?? null;
         return recruiterInfor;
     } catch (error) {
         throw error;
@@ -450,16 +452,28 @@ recruiterSchema.statics.getListRecruiter = async function ({ searchText, page, l
     }
 }
 
-recruiterSchema.statics.approveRecruiter = async function ({ recruiterId, acceptanceStatus }) {
+recruiterSchema.statics.approveRecruiter = async function ({ recruiterId, acceptanceStatus, reasonDecline }) {
     try {
-        const result = await this.findOneAndUpdate({ _id: recruiterId }, {
-            $set: {
-                acceptanceStatus: acceptanceStatus, firstApproval: false
-            }
-        }, {
-            new: true,
-            select: { __v: 0, createdAt: 0, udatedAt: 0 }
-        }).lean().populate('loginId')
+        let result;
+        if (acceptanceStatus === "accept") {
+            result = await this.findOneAndUpdate({ _id: recruiterId }, {
+                $set: {
+                    acceptanceStatus: acceptanceStatus, firstApproval: false
+                }
+            }, {
+                new: true,
+                select: { __v: 0, createdAt: 0, udatedAt: 0 }
+            }).lean().populate('loginId')
+        } else {
+            result = await this.findOneAndUpdate({ _id: recruiterId }, {
+                $set: {
+                    acceptanceStatus: acceptanceStatus, reasonDecline, firstApproval: false
+                }
+            }, {
+                new: true,
+                select: { __v: 0, createdAt: 0, udatedAt: 0 }
+            }).lean().populate('loginId')
+        }
         if (!result) {
             throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
         }
@@ -468,6 +482,7 @@ recruiterSchema.statics.approveRecruiter = async function ({ recruiterId, accept
         result.avatar = result.avatar?.url ?? null;
         result.companyLogo = result.companyLogo?.url ?? null;
         result.companyCoverPhoto = result.companyCoverPhoto?.url ?? null;
+        result.reasonDecline = result.reasonDecline ?? null;
         return result;
     } catch (error) {
         throw error;
