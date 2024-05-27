@@ -395,22 +395,30 @@ recruiterSchema.statics.updateCompany = async function ({ userId, companyName, c
 recruiterSchema.statics.getListRecruiterByAdmin = async function ({ searchText, field, acceptanceStatus, page, limit }) {
     try {
         let query = {};
-        if (searchText) {
-            query["$text"] = { $search: searchText };
-        }
+        let listRecruiter;
         if (acceptanceStatus) {
             query["acceptanceStatus"] = acceptanceStatus;
         }
         if (field) {
             query["fieldOfActivity"] = { "$in": field };
         }
+        if (searchText) {
+            query["$text"] = { $search: searchText };
+            listRecruiter = await this.find(query, { score: { $meta: "textScore" } })
+                .lean()
+                .select("-createdAt -updatedAt -__v -loginId")
+                .sort({ score: { $meta: "textScore" }, updatedAt: -1 })
+                .skip((page - 1) * limit)
+                .limit(limit);
+        } else {
+            listRecruiter = await this.find(query)
+                .lean()
+                .select("-createdAt -updatedAt -__v -loginId")
+                .sort({ updatedAt: -1 })
+                .skip((page - 1) * limit)
+                .limit(limit);
+        }
         const totalElement = await this.find(query).lean().countDocuments();
-        let listRecruiter = await this.find(query, { score: { $meta: "textScore" } })
-            .lean()
-            .select("-createdAt -updatedAt -__v -loginId")
-            .sort({ score: { $meta: "textScore" } })
-            .skip((page - 1) * limit)
-            .limit(limit);
         if (listRecruiter.length !== 0) {
             listRecruiter = listRecruiter.map(recruiter => {
                 return {
@@ -431,16 +439,24 @@ recruiterSchema.statics.getListRecruiterByAdmin = async function ({ searchText, 
 recruiterSchema.statics.getListRecruiter = async function ({ searchText, page, limit }) {
     try {
         let query = {};
+        let listRecruiter;
         if (searchText) {
             query["$text"] = { $search: searchText };
+            listRecruiter = await this.find(query, { score: { $meta: "textScore" } })
+                .lean()
+                .select("-createdAt -updatedAt -__v -loginId")
+                .sort({ score: { $meta: "textScore" } })
+                .skip((page - 1) * limit)
+                .limit(limit);
+        } else {
+            listRecruiter = await this.find(query)
+                .lean()
+                .select("-createdAt -updatedAt -__v -loginId")
+                .sort({ updatedAt: -1 })
+                .skip((page - 1) * limit)
+                .limit(limit);
         }
         const totalElement = await this.find(query).lean().countDocuments();
-        let listRecruiter = await this.find(query, { score: { $meta: "textScore" } })
-            .lean()
-            .select("-createdAt -updatedAt -__v -loginId")
-            .sort({ score: { $meta: "textScore" } })
-            .skip((page - 1) * limit)
-            .limit(limit);
         if (listRecruiter.length !== 0) {
             listRecruiter = listRecruiter.map(recruiter => {
                 return {

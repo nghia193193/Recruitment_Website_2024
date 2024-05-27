@@ -3,6 +3,8 @@ const model = mongoose.model;
 const Schema = mongoose.Schema;
 const { Job } = require('../models/job.model');
 const { BadRequestError, InternalServerError } = require('../core/error.response');
+const { Application } = require('./application.model');
+const { formatInTimeZone } = require('date-fns-tz');
 
 const favoriteJobSchema = new Schema({
     candidateId: {
@@ -23,28 +25,39 @@ favoriteJobSchema.statics.getListFavoriteJob = async function ({ userId, page, l
     if (!candidate) {
         return { length: 0, listFavoriteJob: [] };
     }
-    let mappedFavoriteJobs = await Promise.all(
-        candidate.favoriteJobs.map(async (jobId) => {
-            const job = await Job.getJobDetail({ jobId });
-            if (name) {
-                if (job.status === "active" && job.acceptanceStatus === "accept" && new RegExp(name, "i").test(job.name)) {
-                    return job;
-                }
-            } else {
-                if (job.status === "active" && job.acceptanceStatus === "accept") {
-                    return job;
-                }
-            }
+    let query = {
+        _id: { $in: candidate.favoriteJobs },
+        status: "active",
+        acceptanceStatus: "accept"
+    }
+    if (name) {
+        query.$text = { $search: name };
+    }
+    let length = await Job.find(query).lean().countDocuments();
+    let result = await Job.find(query)
+            .lean().populate("recruiterId")
+            .select("-__v -reasonDecline")
+            .sort({ approvalDate: -1 })
+            .skip((page - 1) * limit)
+            .limit(limit)
+    let listFavoriteJob = await Promise.all(
+        result.map(async (job) => {
+            const acceptedNumber = await Application.getJobAcceptedApplicationNumber({ jobId: job._id });
+            job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
+            job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+            job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+            job.approvalDate = job.approvalDate ? formatInTimeZone(job.approvalDate, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX") : undefined;
+            job.companyName = job.recruiterId.companyName ?? null;
+            job.companySlug = job.recruiterId.slug ?? null;
+            job.companyLogo = job.recruiterId.companyLogo?.url ?? null;
+            job.employeeNumber = job.recruiterId.employeeNumber;
+            job.companyAddress = job.recruiterId.companyAddress;
+            job.acceptedNumber = acceptedNumber;
+            delete job.recruiterId;
+            return job;
         })
     )
-    mappedFavoriteJobs = mappedFavoriteJobs.filter(job => {
-        if (job) {
-            return job;
-        }
-    });
-    const start = (page - 1) * limit;
-    const end = start + limit;
-    return { length: mappedFavoriteJobs.length, listFavoriteJob: mappedFavoriteJobs.slice(start, end) };
+    return { length, listFavoriteJob };
 }
 
 favoriteJobSchema.statics.checkFavoriteJob = async function ({ userId, jobId }) {

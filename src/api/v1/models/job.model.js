@@ -141,7 +141,7 @@ jobSchema.statics.getListWaitingJobByRecruiterId = async function ({ userId, nam
             acceptanceStatus: "waiting"
         }
         if (name) {
-            query["name"] = new RegExp(name, "i");
+            query["$text"] = { $search: name };
         }
         if (field) {
             query["field"] = field;
@@ -183,7 +183,7 @@ jobSchema.statics.getListAcceptedJobByRecruiterId = async function ({ userId, na
             deadline: { $gte: Date.now() }
         }
         if (name) {
-            query["name"] = new RegExp(name, "i");
+            query["$text"] = { $search: name };
         }
         if (field) {
             query["field"] = field;
@@ -224,7 +224,7 @@ jobSchema.statics.getListDeclinedJobByRecruiterId = async function ({ userId, na
             acceptanceStatus: "decline"
         }
         if (name) {
-            query["name"] = new RegExp(name, "i");
+            query["$text"] = { $search: name };
         }
         if (field) {
             query["field"] = field;
@@ -267,7 +267,7 @@ jobSchema.statics.getListNearingExpirationdJobByRecruiterId = async function ({ 
             deadline: { $gte: now, $lte: oneWeekFromNow }
         }
         if (name) {
-            query["name"] = new RegExp(name, "i");
+            query["$text"] = { $search: name };
         }
         if (field) {
             query["field"] = field;
@@ -308,7 +308,7 @@ jobSchema.statics.getListExpiredJobByRecruiterId = async function ({ userId, nam
             deadline: { $lt: Date.now() }
         }
         if (name) {
-            query["name"] = new RegExp(name, "i");
+            query["$text"] = { $search: name };
         }
         if (field) {
             query["field"] = field;
@@ -458,9 +458,7 @@ jobSchema.statics.getListJob = async function ({ name, province, type, levelRequ
             acceptanceStatus: "accept",
             deadline: { $gte: Date.now() }
         };
-        if (name) {
-            query["$text"] = { $search: name };
-        }
+        let result;
         if (province) {
             query["province"] = province;
         }
@@ -479,12 +477,22 @@ jobSchema.statics.getListJob = async function ({ name, province, type, levelRequ
         if (genderRequirement) {
             query["genderRequirement"] = genderRequirement;
         }
+        if (name) {
+            query["$text"] = { $search: name };
+            result = await this.find(query, { score: { $meta: "textScore" } }).lean().populate("recruiterId")
+                .select("name field type levelRequirement experience salary province approvalDate deadline recruiterId createdAt updatedAt")
+                .sort({ score: { $meta: "textScore" }, approvalDate: -1 })
+                .skip((page - 1) * limit)
+                .limit(limit)
+        } else {
+            result = await this.find(query).lean().populate("recruiterId")
+                .select("name field type levelRequirement experience salary province approvalDate deadline recruiterId createdAt updatedAt")
+                .sort({ approvalDate: -1 })
+                .skip((page - 1) * limit)
+                .limit(limit)
+        }
         const length = await this.find(query).lean().countDocuments();
-        let result = await this.find(query, { score: { $meta: "textScore" } }).lean().populate("recruiterId")
-            .select("name field type levelRequirement experience salary province approvalDate deadline recruiterId createdAt updatedAt")
-            .sort({ score: { $meta: "textScore" }, updatedAt: -1 })
-            .skip((page - 1) * limit)
-            .limit(limit)
+
         result = result.map(job => {
             job.companyName = job.recruiterId.companyName ?? null;
             job.companyLogo = job.recruiterId.companyLogo?.url ?? null;
@@ -549,7 +557,7 @@ jobSchema.statics.getListJobOfRecruiter = async function ({ slug, name, province
         if (name) {
             pipeline.push({
                 $match: {
-                    "name": new RegExp(name, "i")
+                    $text: { $search: name }
                 }
             });
         }
@@ -671,7 +679,7 @@ jobSchema.statics.getListRelatedJobByField = async function ({ jobId, name, prov
             field: field
         };
         if (name) {
-            query["name"] = new RegExp(name, "i");
+            query["$text"] = { $search: name };
         }
         if (province) {
             query["province"] = province;

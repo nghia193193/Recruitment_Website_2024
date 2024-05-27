@@ -84,7 +84,7 @@ const sendForgetPasswordMail = async ({ toEmail, userName, token }) => {
                 <span style="margin: 5px 2px"><b>Xin chào</b> <b style="color: red">${userName}</b>,</span>
                 <p style="margin: 5px 2px">Gần đây bạn đã yêu cầu đặt lại mật khẩu. Vui lòng kích vào nút bên dưới để tiến hành đặt lại mật khẩu.</p>
                 <div style="display: flex; margin: 30px">
-                    <button style="background-color: #008000; padding: 10px 20px; margin: 0px auto; border-radius: 20px; border-style: none"><a href="${process.env.FE_URL}/forgot-password?email=${toEmail}&token=${token}" style="font-size: 15px; color: white; text-decoration: none">Đặt lại mật khẩu</a></button>
+                    <button style="background-color: #008000; padding: 10px 20px; margin: 0px auto; border-radius: 20px; border-style: none"><a href="${process.env.FE_URL}/forgot-password/confirm-password?email=${toEmail}&token=${token}" style="font-size: 15px; color: white; text-decoration: none">Đặt lại mật khẩu</a></button>
                 </div>
                 <p style="margin: 5px 2px">Xin lưu ý rằng nếu tài khoản chưa cập nhật mật khẩu trong vòng <b style="color: red">60 phút</b> vui lòng gửi lại yêu cầu.</p>
                 <p style="margin: 5px 2px">Nếu bạn không yêu cầu vui lòng bỏ qua email này.</p>
