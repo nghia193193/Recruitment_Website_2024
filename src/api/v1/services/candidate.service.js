@@ -443,6 +443,7 @@ class CandidateService {
                 {
                     $project: {
                         "_id": 1,
+                        "jobId": 1,
                         "jobs.name": 1,
                         "jobs.levelRequirement": 1,
                         "jobs.field": 1,
