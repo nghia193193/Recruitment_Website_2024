@@ -25,9 +25,11 @@ class CandidateService {
         }
     }
 
-    static updateInformation = async ({ userId, name, phone, gender, homeTown, workStatus, dateOfBirth }) => {
+    static updateInformation = async ({ userId, name, phone, gender, homeTown, workStatus, dateOfBirth, 
+        allowSearch, listResume }) => {
         try {
-            const candidate = await Candidate.updateInformation({ userId, name, phone, gender, homeTown, workStatus, dateOfBirth });
+            const candidate = await Candidate.updateInformation({ userId, name, phone, gender, homeTown, workStatus, 
+                dateOfBirth, allowSearch, listResume });
             return {
                 message: "Cập nhật thông tin thành công",
                 metadata: { ...candidate }

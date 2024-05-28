@@ -79,6 +79,10 @@ const resumeSchema = new Schema({
         type: String,
         enum: ["active", "inactive"],
         default: "active"
+    },
+    allowSearch: {
+        type: Schema.Types.Boolean,
+        default: false
     }
 }, {
     timestamps: true
@@ -240,6 +244,8 @@ resumeSchema.statics.changeStatus = async function ({ userId, resumeId, status }
         throw error;
     }
 }
+
+
 
 module.exports = {
     Resume: model('Resume', resumeSchema)

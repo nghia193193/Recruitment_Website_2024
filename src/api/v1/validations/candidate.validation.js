@@ -12,13 +12,13 @@ class CandidateValidation {
                     return helpers.error('any.empty');
                 }
                 return cleanName;
-            }).optional().messages({
+            }).messages({
                 'any.empty': "Tên không được để trống"
             }),
-            phone: joi.string().regex(/^(0[2-9]|1[0-9]|2[0-8]|3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5])[0-9]{8}$/).optional().messages({
+            phone: joi.string().regex(/^(0[2-9]|1[0-9]|2[0-8]|3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5])[0-9]{8}$/).messages({
                 'string.pattern.base': 'Không phải là số điện thoại Việt Nam hợp lệ'
             }),
-            gender: joi.string().valid("Nam", "Nữ").optional().messages({
+            gender: joi.string().valid("Nam", "Nữ").messages({
                 'any.only': "Giới tính không hợp lệ"
             }),
             homeTown: joi.string().custom((value, helpers) => {
@@ -27,25 +27,23 @@ class CandidateValidation {
                     return helpers.error('any.empty');
                 }
                 return cleanHomeTown;
-            }).optional().messages({
+            }).messages({
                 'any.empty': "Quê quán không được để trống"
             }),
-            workStatus: joi.string().valid(...workStatus).optional().messages({
+            workStatus: joi.string().valid(...workStatus).messages({
                 'any.only': "Trạng thái công việc không hợp lệ"
             }),
-            dateOfBirth: joi.date().iso().optional().messages({
+            dateOfBirth: joi.date().iso().messages({
                 'date.format': "Ngày sinh phải là một ngày hợp lệ theo định dạng ISO"
-            })
-        }).or(
-            'name',
-            'phone',
-            'gender',
-            'homeTown',
-            'workStatus',
-            'dateOfBirth'
-        ).messages({
-            'object.missing': "Phải có ít nhất một trường được cung cấp để cập nhật"
-        });
+            }),
+            allowSearch: joi.string().valid("true", "false"),
+            listResume: joi.array().items(objectIdJoiSchema)
+        })
+        if (data.listResume) {
+            if (typeof(data.listResume) === "string") {
+                data.listResume = JSON.parse(data.listResume);
+            }
+        }
         return validateSchema.validate(data);
     }
 
@@ -234,7 +232,7 @@ class CandidateValidation {
                     return helpers.error('any.empty');
                 }
                 return cleanName;
-            }).optional().messages({
+            }).messages({
                 'any.empty': "Tên không được để trống"
             }),
             title: joi.string().custom((value, helpers) => {
@@ -243,7 +241,7 @@ class CandidateValidation {
                     return helpers.error('any.empty');
                 }
                 return cleanTitle;
-            }).optional().messages({
+            }).messages({
                 'any.empty': "Tiêu đề không được để trống"
             }),
             avatar: joi.alternatives().try(
@@ -251,17 +249,17 @@ class CandidateValidation {
                     mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg'),
                 }).unknown(true),
                 joi.string().uri()
-            ).optional(),
+            ),
             goal: joi.string().custom((value, helpers) => {
                 const cleanGoal = xss(value.trim());
                 if (cleanGoal === '') {
                     return helpers.error('any.empty');
                 }
                 return cleanGoal;
-            }).optional().messages({
+            }).messages({
                 'any.empty': "Mục tiêu không được để trống"
             }),
-            phone: joi.string().regex(/^(0[2-9]|1[0-9]|2[0-8]|3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5])[0-9]{8}$/).optional().messages({
+            phone: joi.string().regex(/^(0[2-9]|1[0-9]|2[0-8]|3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5])[0-9]{8}$/).messages({
                 'string.pattern.base': 'Không phải là số điện thoại Việt Nam hợp lệ'
             }),
             educationLevel: joi.string().custom((value, helpers) => {
@@ -270,7 +268,7 @@ class CandidateValidation {
                     return helpers.error('any.empty');
                 }
                 return cleanEL;
-            }).optional().messages({
+            }).messages({
                 'any.empty': "Trình độ học vấn không được để trống"
             }),
             homeTown: joi.string().custom((value, helpers) => {
@@ -279,40 +277,40 @@ class CandidateValidation {
                     return helpers.error('any.empty');
                 }
                 return cleanHomeTown;
-            }).optional().messages({
+            }).messages({
                 'any.empty': "Quê quán không được để trống"
             }),
-            dateOfBirth: joi.date().iso().optional().messages({
+            dateOfBirth: joi.date().iso().messages({
                 'date.format': "Ngày sinh phải là một ngày hợp lệ theo định dạng ISO"
             }),
             english: joi.string().custom((value, helpers) => {
                 const cleanEnglish = xss(value.trim());
                 return cleanEnglish;
-            }).optional(),
-            jobType: joi.string().valid(...jobType).optional().messages({
+            }),
+            jobType: joi.string().valid(...jobType).messages({
                 'any.only': "Loại hình công việc không hợp lệ"
             }),
             experience: joi.string().custom((value, helpers) => {
                 const cleanExperience = xss(value.trim());
                 return cleanExperience;
-            }).optional(),
-            GPA: joi.number().optional().messages({
+            }),
+            GPA: joi.number().messages({
                 'number.base': "'GPA' phải là một số"
             }),
-            email: joi.string().email().lowercase().optional(),
+            email: joi.string().email().lowercase(),
             major: joi.string().custom((value) => {
                 const celanMajor = xss(value.trim());
                 return celanMajor;
-            }).optional(),
+            }),
             activity: joi.string().custom((value, helpers) => {
                 const cleanActivity = xss(value.trim());
                 return cleanActivity;
-            }).optional(),
-            certifications: joi.array().items(certificationSchema).optional(),
-            educations: joi.array().items(educationSchema).min(1).optional().messages({
+            }),
+            certifications: joi.array().items(certificationSchema),
+            educations: joi.array().items(educationSchema).min(1).messages({
                 'array.min': 'Quá trình học tập không được để trống'
             }),
-            workHistories: joi.array().items(workHistorySchema).optional()
+            workHistories: joi.array().items(workHistorySchema)
         }).messages({
             "any.only": "'{#label}' không hợp lệ"
         });

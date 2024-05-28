@@ -167,7 +167,7 @@ class RecruiterValidation {
                     return helpers.error('any.empty');
                 }
                 return cleanName;
-            }).optional().messages({
+            }).messages({
                 'any.empty': "Tên không được để trống",
                 'string.max': "Tên không được vượt quá 50 ký tự"
             }),
@@ -177,23 +177,16 @@ class RecruiterValidation {
                     return helpers.error('any.empty');
                 }
                 return cleanPos;
-            }).optional().messages({
+            }).messages({
                 'any.empty': "Vị trí không được để trống"
             }),
-            phone: joi.string().regex(/^(0[2-9]|1[0-9]|2[0-8]|3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5])[0-9]{8}$/).optional().messages({
+            phone: joi.string().regex(/^(0[2-9]|1[0-9]|2[0-8]|3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5])[0-9]{8}$/).messages({
                 'string.pattern.base': 'Không phải là số điện thoại Việt Nam hợp lệ'
             }),
-            contactEmail: joi.string().email().lowercase().optional().messages({
+            contactEmail: joi.string().email().lowercase().messages({
                 'string.email': "Email liên hệ phải là một email hợp lệ"
             })
-        }).or(
-            'name', 
-            'position', 
-            'phone', 
-            'contactEmail'
-        ).messages({
-            'object.missing': "Phải có ít nhất một trường được cung cấp để cập nhật"
-        });
+        })
         return validateSchema.validate(data);
     }
 
@@ -205,11 +198,11 @@ class RecruiterValidation {
                     return helpers.error('any.empty');
                 }
                 return cleanCN;
-            }).optional().messages({
+            }).messages({
                 'any.empty': "Tên công ty không được để trống",
                 'string.max': "Tên công ty không được vượt quá 150 ký tự"
             }),
-            companyWebsite: joi.string().uri().optional().messages({
+            companyWebsite: joi.string().uri().messages({
                 'string.uri': "Website phải là một URL hợp lệ"
             }),
             companyAddress: joi.string().max(200).custom((value, helpers) => {
@@ -218,7 +211,7 @@ class RecruiterValidation {
                     return helpers.error('any.empty');
                 }
                 return cleanCA;
-            }).optional().messages({
+            }).messages({
                 'any.empty': "Địa chỉ không được để trống",
                 'string.max': "Địa chỉ không được vượt quá 200 ký tự"
             }),
@@ -227,7 +220,7 @@ class RecruiterValidation {
                     mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
                 }).unknown(true),
                 joi.string().uri() // Cho phép URL hợp lệ
-            ).optional().messages({
+            ).messages({
                 'string.uri': "Logo phải là một URL hợp lệ",
                 'object.mimetype': "Logo phải là tệp hình ảnh có định dạng hợp lệ"
             }),
@@ -236,7 +229,7 @@ class RecruiterValidation {
                     mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
                 }).unknown(true),
                 joi.string().uri() // Cho phép URL hợp lệ
-            ).optional().messages({
+            ).messages({
                 'string.uri': "Ảnh bìa phải là một URL hợp lệ",
                 'object.mimetype': "Ảnh bìa phải là tệp hình ảnh có định dạng hợp lệ"
             }),
@@ -246,14 +239,14 @@ class RecruiterValidation {
                     return helpers.error('any.empty');
                 }
                 return cleanAbout;
-            }).optional().messages({
+            }).messages({
                 'any.empty': "Giới thiệu không được để trống"
             }),
-            employeeNumber: joi.number().integer().min(1).optional().messages({
+            employeeNumber: joi.number().integer().min(1).messages({
                 'number.base': "Số lượng nhân viên phải là số nguyên",
                 'number.min': "Số lượng nhân viên phải lớn hơn hoặc bằng 1"
             }),
-            fieldOfActivity: joi.array().items(joi.string().valid(...fieldOfActivity)).optional().messages({
+            fieldOfActivity: joi.array().items(joi.string().valid(...fieldOfActivity)).messages({
                 'array.includes': "Lĩnh vực chứa giá trị không hợp lệ"
             }),
             slug: joi.string().custom((value, helpers) => {
@@ -262,22 +255,11 @@ class RecruiterValidation {
                     return helpers.error('any.empty');
                 }
                 return slug;
-            }).optional().messages({
+            }).messages({
                 'any.empty': "Slug không được để trống"
             })
-        }).or(
-            'companyName',
-            'companyWebsite',
-            'companyAddress',
-            'companyLogo',
-            'companyCoverPhoto',
-            'about',
-            'employeeNumber',
-            'fieldOfActivity',
-            'slug'
-        ).messages({
-            'any.only': "'{#label}' không hợp lệ",
-            'object.missing': "Phải có ít nhất một trường được cung cấp để cập nhật"
+        }).messages({
+            'any.only': "'{#label}' không hợp lệ"
         });
         let processData;
         let fieldOA = data.fieldOfActivity;
@@ -342,7 +324,7 @@ class RecruiterValidation {
                     return helpers.error('any.empty');
                 }
                 return cleanName;
-            }).optional().messages({
+            }).messages({
                 'any.empty': "Tên không được để trống"
             }),
             location: joi.string().custom((value, helpers) => {
@@ -351,19 +333,19 @@ class RecruiterValidation {
                     return helpers.error('any.empty');
                 }
                 return cleanLocation;
-            }).optional().messages({
+            }).messages({
                 'any.empty': "Địa điểm công việc không được để trống"
             }),
-            province: joi.string().valid(...provinceOfVietNam).optional().messages({
+            province: joi.string().valid(...provinceOfVietNam).messages({
                 'any.only': "Tỉnh thành không hợp lệ"
             }),
-            type: joi.string().valid(...jobType).optional().messages({
+            type: joi.string().valid(...jobType).messages({
                 'any.only': "Loại công việc không hợp lệ"
             }),
-            levelRequirement: joi.string().valid(...levelRequirement).optional().messages({
+            levelRequirement: joi.string().valid(...levelRequirement).messages({
                 'any.only': "Vị trí không hợp lệ"
             }),
-            experience: joi.string().valid(...experience).optional().messages({
+            experience: joi.string().valid(...experience).messages({
                 'any.only': "Kinh nghiệm không hợp lệ"
             }),
             salary: joi.string().custom((value, helpers) => {
@@ -372,10 +354,10 @@ class RecruiterValidation {
                     return helpers.error('any.empty');
                 }
                 return cleanSalary;
-            }).optional().messages({
+            }).messages({
                 'any.empty': "Lương không được để trống"
             }),
-            field: joi.string().valid(...fieldOfActivity).optional().messages({
+            field: joi.string().valid(...fieldOfActivity).messages({
                 'any.only': "Lĩnh vực không hợp lệ"
             }),
             description: joi.string().custom((value, helpers) => {
@@ -384,7 +366,7 @@ class RecruiterValidation {
                     return helpers.error('any.empty');
                 }
                 return cleanDescription;
-            }).optional().messages({
+            }).messages({
                 'any.empty': "Mô tả không được để trống"
             }),
             requirement: joi.string().custom((value, helpers) => {
@@ -393,7 +375,7 @@ class RecruiterValidation {
                     return helpers.error('any.empty');
                 }
                 return cleanRequirement;
-            }).optional().messages({
+            }).messages({
                 'any.empty': "Yêu cầu công việc không được để trống"
             }),
             benefit: joi.string().custom((value, helpers) => {
@@ -402,37 +384,20 @@ class RecruiterValidation {
                     return helpers.error('any.empty');
                 }
                 return cleanBenefit;
-            }).optional().messages({
+            }).messages({
                 'any.empty': "Lợi ích không được để trống"
             }),
-            quantity: joi.number().integer().min(1).optional().messages({
+            quantity: joi.number().integer().min(1).messages({
                 'number.base': "Số lượng phải là số nguyên",
                 'number.min': "Số lượng phải lớn hơn hoặc bằng 1"
             }),
-            deadline: joi.date().iso().optional().messages({
+            deadline: joi.date().iso().messages({
                 'date.format': "'deadline' phải là một ngày hợp lệ theo định dạng ISO"
             }),
-            genderRequirement: joi.string().valid(...genderRequirement).optional().messages({
+            genderRequirement: joi.string().valid(...genderRequirement).messages({
                 'any.only': "Yêu cầu giới tính không hợp lệ"
             })
-        }).or(
-            'name', 
-            'location', 
-            'province', 
-            'type', 
-            'levelRequirement', 
-            'experience', 
-            'salary', 
-            'field', 
-            'description', 
-            'requirement', 
-            'benefit', 
-            'quantity', 
-            'deadline', 
-            'genderRequirement'
-        ).messages({
-            'object.missing': "Phải có ít nhất một trường được cung cấp để cập nhật"
-        });
+        })
         return validateSchema.validate(data);
     }
 
