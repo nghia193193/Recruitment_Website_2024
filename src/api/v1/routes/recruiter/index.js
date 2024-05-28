@@ -51,6 +51,6 @@ router.get('/notifications', verifyAccessToken, authPageRecruiter, asyncHandler(
 // read notification
 router.patch('/notifications/:notificationId', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.readNotification));
 // check out
-router.post('/create_payment_url', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.checkOut))
+router.post('/create_payment_url', verifyAccessToken, authPageRecruiter, recruiterController.checkOut);
 
 module.exports = router;

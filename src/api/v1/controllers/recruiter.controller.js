@@ -328,7 +328,9 @@ class RecruiterController {
             vnp_Params['vnp_SecureHash'] = signed;
             vnpUrl += '?' + querystring.stringify(vnp_Params, { encode: false });
             console.log(vnpUrl)
-            res.redirect(vnpUrl)
+            return res.status(200).json({
+                vnpUrl
+            })
         } catch (error) {
             throw error;
         }

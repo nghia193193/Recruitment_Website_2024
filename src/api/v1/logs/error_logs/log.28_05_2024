@@ -27,3 +27,4 @@ Require stack:
 28/05/2024	17:48:39 ::1---/v1/api/recruiter/create_payment_url---POST---Vui lòng đăng nhập lại
 28/05/2024	17:59:35 ::1---/v1/api/recruiter/create_payment_url---POST---Use `yyyy` instead of `YYYY` (in `YYYYMMDDHHmmss`) for formatting years to the input `Tue May 28 2024 17:59:35 GMT+0700 (Indochina Time)`; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md
 28/05/2024	19:07:00 ::1---/v1/api/recruiter/create_payment_url---POST---Vui lòng đăng nhập lại
+28/05/2024	20:32:46 ::1---/v1/api/recruiter/create_payment_url---POST---Vui lòng đăng nhập lại
