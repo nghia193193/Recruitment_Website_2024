@@ -463,7 +463,7 @@ class CandidateService {
             const totalElement = totalDocument.length > 0 ? totalDocument[0].totalDocuments : 0;
             let listApplication = await Application.aggregate(
                 [...pipeline, {
-                    $sort: { createdAt: -1 }
+                    $sort: { updatedAt: -1 }
                 }, {
                     $skip: (page - 1) * limit
                 }, {
