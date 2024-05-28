@@ -474,6 +474,52 @@ recruiterSchema.statics.getListRecruiter = async function ({ searchText, page, l
     }
 }
 
+recruiterSchema.statics.getListRelatedRecruiter = async function ({ recruiterId, searchText, page, limit }) {
+    try {
+        const recruiter = await this.findById(recruiterId).lean();
+        if (!recruiter) {
+            throw new BadRequestError("Có lỗi xảy ra vui lòng thử lại.");
+        }
+        const field = recruiter.fieldOfActivity;
+        let query = {
+            _id: { $ne: recruiterId },
+            fieldOfActivity: { $in: field }
+        };
+        let listRecruiter;
+        if (searchText) {
+            query["$text"] = { $search: searchText };
+            listRecruiter = await this.find(query, { score: { $meta: "textScore" } })
+                .lean()
+                .select("-createdAt -updatedAt -__v -loginId")
+                .sort({ score: { $meta: "textScore" } })
+                .skip((page - 1) * limit)
+                .limit(limit);
+        } else {
+            listRecruiter = await this.find(query)
+                .lean()
+                .select("-createdAt -updatedAt -__v -loginId")
+                .sort({ updatedAt: -1 })
+                .skip((page - 1) * limit)
+                .limit(limit);
+        }
+        const totalElement = await this.find(query).lean().countDocuments();
+        if (listRecruiter.length !== 0) {
+            listRecruiter = listRecruiter.map(recruiter => {
+                return {
+                    ...recruiter,
+                    companyLogo: recruiter.companyLogo?.url,
+                    companyCoverPhoto: recruiter.companyCoverPhoto?.url
+                }
+            })
+        }
+        return {
+            totalElement, listRecruiter
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
 recruiterSchema.statics.approveRecruiter = async function ({ recruiterId, acceptanceStatus, reasonDecline }) {
     try {
         let result;

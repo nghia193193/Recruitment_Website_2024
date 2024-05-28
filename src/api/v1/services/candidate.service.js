@@ -449,6 +449,7 @@ class CandidateService {
                         "jobs.field": 1,
                         "recruiter.companyName": 1,
                         "jobs.deadline": 1,
+                        "updatedAt": 1,
                         "status": 1
                     }
                 }

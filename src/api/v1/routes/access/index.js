@@ -51,5 +51,7 @@ router.get('/jobs/:jobId', asyncHandler(accessController.getJobDetail));
 router.get('/recruiters', asyncHandler(accessController.getListRecruiter));
 // get recruiter information
 router.get('/recruiters/:slug', asyncHandler(accessController.getRecruiterInformation));
+// get list recruiter
+router.get('/recruiters/:recruiterId/related_recruiter', asyncHandler(accessController.getListRelatedRecruiter));
 
 module.exports = router;

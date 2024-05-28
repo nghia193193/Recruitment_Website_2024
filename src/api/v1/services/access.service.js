@@ -472,6 +472,20 @@ class AccessService {
         }
     }
 
+    static getListRelatedRecruiter = async ({ recruiterId, searchText, page, limit }) => {
+        try {
+            const { totalElement, listRecruiter } = await Recruiter.getListRelatedRecruiter({ recruiterId, searchText, page, limit });
+            return {
+                message: "Lấy danh sách nhà tuyển dụng liên quan thành công",
+                metadata: {
+                    listRecruiter, totalElement
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
     static getJobDetail = async ({ jobId }) => {
         try {
             const job = await Job.getJobDetail({ jobId })

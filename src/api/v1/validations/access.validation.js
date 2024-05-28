@@ -137,6 +137,21 @@ class AccessValidation {
         return validateSchema.validate(data);
     }
 
+    static validateGetListRelatedRecruiter = data => {
+        const validateSchema = joi.object({
+            recruiterId: objectIdJoiSchema.required(),
+            searchText: joi.string().custom((value) => {
+                const searchText = xss(value.trim());
+                return searchText;
+            }),
+            page: joi.number().integer().min(1),
+            limit: joi.number().integer().min(1)
+        }).messages({
+            "any.only": "'{#label}' không hợp lệ"
+        })
+        return validateSchema.validate(data);
+    }
+
 }
 
 const objectIdValidator = (value, helpers) => {

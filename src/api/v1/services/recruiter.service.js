@@ -407,12 +407,15 @@ class RecruiterService {
                 userId, jobId, candidateName, experience, status, major, goal,
                 page, limit
             })
+            const acceptedNumber = await Application.getJobAcceptedApplicationNumber({ jobId });
             return {
                 message: "Lấy danh sách ứng tuyển thành công",
                 metadata: {
                     listApplication,
                     totalElement,
                     name: job.name,
+                    quantity: job.quantity,
+                    acceptedNumber,
                     levelRequirement: job.levelRequirement
                 },
                 options: {

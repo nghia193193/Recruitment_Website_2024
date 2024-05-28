@@ -162,6 +162,7 @@ applicationSchema.statics.getListJobApplication = async function ({ userId, jobI
             {
                 $project: {
                     "_id": 1,
+                    "job.quantity": 1,
                     "resume.name": 1,
                     "resume.email": 1,
                     "resume.phone": 1,
@@ -194,8 +195,6 @@ applicationSchema.statics.getListJobApplication = async function ({ userId, jobI
         const totalElement = totalDocument.length > 0 ? totalDocument[0].totalDocuments : 0;
         let listApplication = await this.aggregate(
             [...pipeline, {
-                $sort: { updatedAt: 1 }
-            }, {
                 $skip: (page - 1) * limit
             }, {
                 $limit: limit
@@ -256,6 +255,8 @@ applicationSchema.statics.getApplicationDetail = async function ({ userId, appli
                     "resume": 1,
                     "job.name": 1,
                     "job.quantity": 1,
+                    "status": 1,
+                    "reasonDecline": 1,
                     "jobId": 1
                 }
             }
@@ -273,6 +274,8 @@ applicationSchema.statics.getApplicationDetail = async function ({ userId, appli
         result._id = listApplication[0]._id;
         delete result.__v;
         delete result.candidateId;
+        result.status = listApplication[0].status;
+        result.reasonDecline = listApplication[0].reasonDecline ?? null;
         result.avatar = result.avatar.url;
         result.createdAt = formatInTimeZone(result.createdAt, "Asia/Ho_Chi_Minh", "dd/MM/yyy HH:mm:ss");
         result.updatedAt = formatInTimeZone(result.updatedAt, "Asia/Ho_Chi_Minh", "dd/MM/yyy HH:mm:ss");
