@@ -36,3 +36,4 @@ Require stack:
 28/05/2024	22:21:55 ::1---/v1/api/candidate/update_information---PATCH---Id không hợp lệ
 28/05/2024	22:28:15 ::1---/v1/api/candidate/update_information---PATCH---Resume "DEMOCV" cần được kích hoạt.
 28/05/2024	22:28:56 ::1---/v1/api/candidate/update_information---PATCH---Resume 'DEMOCV' cần được kích hoạt.
+28/05/2024	23:26:29 ::1---/v1/api/candidate/information---GET---Vui lòng đăng nhập lại

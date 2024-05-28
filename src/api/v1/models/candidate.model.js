@@ -72,6 +72,8 @@ candidateSchema.statics.getInformation = async function (userId) {
         if (!candidateInfor) {
             throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
         }
+        const list = await Resume.find({candidateId: userId, allowSearch: true}).lean().select("_id");
+        const listAllowSearchResume = list.map(resume => resume._id);
         candidateInfor.role = candidateInfor.loginId?.role;
         delete candidateInfor.loginId;
         candidateInfor.avatar = candidateInfor.avatar?.url ?? null;
@@ -80,6 +82,7 @@ candidateSchema.statics.getInformation = async function (userId) {
         candidateInfor.homeTown = candidateInfor.homeTown ?? null;
         candidateInfor.workStatus = candidateInfor.workStatus ?? null;
         candidateInfor.dateOfBirth = candidateInfor.dateOfBirth ?? null;
+        candidateInfor.listAllowSearchResume = listAllowSearchResume;
         return candidateInfor;
     } catch (error) {
         throw error;
