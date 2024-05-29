@@ -3,8 +3,11 @@ const { Application } = require("../models/application.model");
 const { Job } = require("../models/job.model");
 const { Login } = require("../models/login.model");
 const { Notification } = require("../models/notification.model");
+const { Order } = require("../models/order.model");
 const { Recruiter } = require("../models/recruiter.model");
 const { status, levelRequirement, applicationStatus, mapRolePermission } = require("../utils");
+const OrderService = require("./order.service");
+const VNPayService = require("./vnpay.service");
 
 
 class RecruiterService {
@@ -427,6 +430,47 @@ class RecruiterService {
             throw error;
         }
     }
+
+    static createPayment = async ({ userId, orderType, language, ipAddr }) => {
+        try {
+            const order = await OrderService.createOrder({ userId, price: 600000 });
+            console.log(order._id.toString())
+            const vpnUrl = await VNPayService.createPaymentURL({ ipAddr, orderId: order._id.toString(), amount: 600000, orderType, language });
+            return {
+                message: "Tạo đơn thanh toán thành công",
+                metadata: { vpnUrl }
+            };
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getVNPayIPN = async ({ reqQuery }) => {
+        try {
+            const { message, code, result } = await VNPayService.getVNPayIPN({ reqQuery });
+            return {
+                message,
+                metadata: { code, result }
+            };
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static checkPremiumAccount = async ({ userId }) => {
+        try {
+            const premiumAccount = await Order.checkPremiumAccount({ recruiterId: userId });
+            return {
+                message: "Kiểm tra tài khoản thành công",
+                metadata: {
+                    premiumAccount
+                }
+            };
+        } catch (error) {
+            throw error;
+        }
+    }
+
 }
 
 module.exports = RecruiterService;

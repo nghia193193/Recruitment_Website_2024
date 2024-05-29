@@ -127,6 +127,11 @@ favoriteRecruiterSchema.statics.removeAllFavoriteRecruiter = async function ({ u
     return { length: 0, listFavoriteRecruiter: [] };
 }
 
+favoriteRecruiterSchema.statics.getLikeNumber = async function ({ recruiterId }) {
+    const likeNumber = await this.find({favoriteRecruiters: recruiterId}).countDocuments();
+    return likeNumber;
+}
+
 module.exports = {
     FavoriteRecruiter: model('FavoriteRecruiter', favoriteRecruiterSchema)
 };

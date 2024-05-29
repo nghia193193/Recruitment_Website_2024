@@ -50,7 +50,11 @@ router.get('/application_status', verifyAccessToken, authPageRecruiter, checkAcc
 router.get('/notifications', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListNotification));
 // read notification
 router.patch('/notifications/:notificationId', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.readNotification));
-// check out
-router.post('/create_payment_url', verifyAccessToken, authPageRecruiter, recruiterController.checkOut);
+// create payment
+router.post('/create_payment_url', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, recruiterController.createPayment);
+// get vnpay ipn
+router.get('/vnpay_ipn', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, recruiterController.getVNPayIPN);
+// check premium Account
+router.get('/check_premium_account', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, recruiterController.checkPremiumAccount)
 
 module.exports = router;

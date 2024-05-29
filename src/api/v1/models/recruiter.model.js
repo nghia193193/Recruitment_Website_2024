@@ -101,12 +101,15 @@ recruiterSchema.statics.getInformation = async function (userId) {
         if (!recruiterInfor) {
             throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
         }
+        const { FavoriteRecruiter } = require('./favoriteRecruiter.model');
+        const likeNumber = await FavoriteRecruiter.getLikeNumber({ recruiterId: userId });
         recruiterInfor.role = recruiterInfor.loginId?.role;
         delete recruiterInfor.loginId;
         recruiterInfor.avatar = recruiterInfor.avatar?.url ?? null;
         recruiterInfor.companyLogo = recruiterInfor.companyLogo?.url ?? null;
         recruiterInfor.companyCoverPhoto = recruiterInfor.companyCoverPhoto?.url ?? null;
         recruiterInfor.slug = recruiterInfor.slug ?? null;
+        recruiterInfor.likeNumber = likeNumber;
         recruiterInfor.reasonDecline = recruiterInfor.reasonDecline ?? null;
         return recruiterInfor;
     } catch (error) {
@@ -122,9 +125,12 @@ recruiterSchema.statics.getInformationBySlug = async function ({ slug }) {
         if (!recruiterInfor) {
             throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
         }
+        const { FavoriteRecruiter } = require('./favoriteRecruiter.model');
+        const likeNumber = await FavoriteRecruiter.getLikeNumber({ recruiterId: recruiterInfor._id.toString() });
         recruiterInfor.companyLogo = recruiterInfor.companyLogo?.url ?? null;
         recruiterInfor.companyCoverPhoto = recruiterInfor.companyCoverPhoto?.url ?? null;
         recruiterInfor.slug = recruiterInfor.slug ?? null;
+        recruiterInfor.likeNumber = likeNumber;
         return recruiterInfor;
     } catch (error) {
         throw error;
