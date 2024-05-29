@@ -72,7 +72,7 @@ candidateSchema.statics.getInformation = async function (userId) {
         if (!candidateInfor) {
             throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
         }
-        const list = await Resume.find({candidateId: userId, allowSearch: true}).lean().select("_id");
+        const list = await Resume.find({ candidateId: userId, allowSearch: true }).lean().select("_id");
         const listAllowSearchResume = list.map(resume => resume._id);
         candidateInfor.role = candidateInfor.loginId?.role;
         delete candidateInfor.loginId;
@@ -109,6 +109,13 @@ candidateSchema.statics.updateInformation = async function ({ userId, name, phon
         if (allowSearch) {
             if (allowSearch === "true") {
                 if (listResume.length !== 0) {
+                    await Resume.updateMany({ candidateId: userId }, {
+                        $set: {
+                            allowSearch: false
+                        }
+                    }, {
+                        session
+                    })
                     for (let i = 0; i < listResume.length; i++) {
                         const result = await Resume.findByIdAndUpdate(listResume[i], {
                             $set: {
@@ -127,27 +134,16 @@ candidateSchema.statics.updateInformation = async function ({ userId, name, phon
                     }
                 }
             } else {
-                if (listResume.length !== 0) {
-                    for (let i = 0; i < listResume.length; i++) {
-                        const result = await Resume.findByIdAndUpdate(listResume[i], {
-                            $set: {
-                                allowSearch: false
-                            }
-                        }, {
-                            session,
-                            new: true
-                        })
-                        if (!result) {
-                            throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
-                        }
-                        if (result.status !== "active") {
-                            throw new BadRequestError(`Resume "${result.title}" cần được kích hoạt.`);
-                        }
+                await Resume.updateMany({ candidateId: userId }, {
+                    $set: {
+                        allowSearch: false
                     }
-                }
+                }, {
+                    session
+                })
+                listResume = [];
             }
         }
-
         result.role = result.loginId?.role;
         delete result.loginId;
         result.avatar = result.avatar?.url ?? null;
@@ -156,7 +152,7 @@ candidateSchema.statics.updateInformation = async function ({ userId, name, phon
         result.homeTown = result.homeTown ?? null;
         result.workStatus = result.workStatus ?? null;
         result.dateOfBirth = result.dateOfBirth ?? null;
-
+        result.listAllowSearchResume = listResume;
         await session.commitTransaction();
         session.endSession();
         return result;
