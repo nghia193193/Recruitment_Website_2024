@@ -6,6 +6,7 @@ const { Recruiter } = require('../models/recruiter.model');
 const { FavoriteRecruiter } = require('../models/favoriteRecruiter.model');
 const { acceptanceStatus, mapRolePermission } = require('../utils');
 const { createTransporter } = require('../utils/sendMails');
+const JobService = require('./job.service');
 
 class AdminService {
 
@@ -132,7 +133,7 @@ class AdminService {
 
     static getJobDetail = async ({ jobId }) => {
         try {
-            const job = await Job.getJobDetail({ jobId });
+            const job = await JobService.getJobDetail({ jobId });
             return {
                 message: "Lấy thông tin công việc thành công",
                 metadata: { ...job },

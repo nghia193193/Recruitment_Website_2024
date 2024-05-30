@@ -35,6 +35,10 @@ const recruiterSchema = new Schema({
         type: Schema.Types.Boolean,
         default: true
     },
+    firstUpdate: {
+        type: Schema.Types.Boolean,
+        default: true
+    },
     verifyEmail: {
         type: Schema.Types.Boolean,
         default: false
@@ -185,7 +189,7 @@ recruiterSchema.statics.updateInformation = async function ({ userId, name, posi
             $set: {
                 name, position, phone, contactEmail, companyName, companyWebsite, companyAddress,
                 about, employeeNumber, fieldOfActivity, companyLogo: logo, companyCoverPhoto: coverPhoto, slug,
-                acceptanceStatus: "waiting"
+                acceptanceStatus: "waiting", firstUpdate: false
             }
         }, {
             new: true,
@@ -385,7 +389,9 @@ recruiterSchema.statics.updateCompany = async function ({ userId, companyName, c
 
 recruiterSchema.statics.getListRecruiterByAdmin = async function ({ searchText, field, acceptanceStatus, page, limit }) {
     try {
-        let query = {};
+        let query = {
+            firstUpdate: false
+        };
         let listRecruiter;
         if (acceptanceStatus) {
             query["acceptanceStatus"] = acceptanceStatus;

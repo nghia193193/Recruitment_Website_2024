@@ -1,6 +1,7 @@
 const { formatInTimeZone } = require("date-fns-tz");
 const { Application } = require("../models/application.model");
 const { Job } = require("../models/job.model");
+const { Order } = require("../models/order.model");
 
 class JobService {
     static getListJob = async ({ name, province, type, levelRequirement, experience, field,
@@ -49,21 +50,23 @@ class JobService {
             }
             const length = await Job.find(query).lean().countDocuments();
             // format data
-            result = result.map(job => {
-                job.companyName = job.recruiterId.companyName ?? null;
-                job.companyLogo = job.recruiterId.companyLogo?.url ?? null;
-                job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-                job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-                job.approvalDate = job.approvalDate ? formatInTimeZone(job.approvalDate, "Asia/Ho_Chi_Minh", "dd/MM/yyyy") : null;
-                job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
-                delete job.recruiterId;
-                return { ...job };
-            })
-
+            let mappedJobs = await Promise.all(
+                result.map(async (job) => {
+                    job.premiumAccount = await Order.checkPremiumAccount({ recruiterId: job.recruiterId._id.toString() });
+                    job.companyName = job.recruiterId.companyName ?? null;
+                    job.companyLogo = job.recruiterId.companyLogo?.url ?? null;
+                    job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+                    job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+                    job.approvalDate = job.approvalDate ? formatInTimeZone(job.approvalDate, "Asia/Ho_Chi_Minh", "dd/MM/yyyy") : null;
+                    job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
+                    delete job.recruiterId;
+                    return { ...job };
+                })
+            )
             return {
                 message: "Lấy danh sách công việc thành công",
                 metadata: {
-                    listJob: result,
+                    listJob: mappedJobs,
                     totalElement: length
                 },
                 options: {
