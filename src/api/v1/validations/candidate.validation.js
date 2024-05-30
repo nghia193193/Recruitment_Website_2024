@@ -4,6 +4,25 @@ const xss = require('xss');
 const { workStatus, jobType } = require('../utils');
 
 class CandidateValidation {
+    static validateSignUp = data => {
+        const validateSchema = joi.object({
+            name: joi.string().max(50).custom((value) => {
+                const cleanName = xss(value);
+                return cleanName;
+            }).required(),
+            email: joi.string().email().lowercase().required(),
+            password: joi.string().min(8).max(32).custom((value) => {
+                const cleanPassword = xss(value);
+                return cleanPassword;
+            }).required(),
+            confirmPassword: joi.string().valid(joi.ref("password")).required().messages({
+                'any.only': 'Mật khẩu xác nhận không khớp',
+                'any.required': 'Vui lòng nhập mật khẩu xác nhận'
+            })
+        })
+        return validateSchema.validate(data);
+    }
+
     static validateUpdateInformation = data => {
         const validateSchema = joi.object({
             name: joi.string().max(50).custom((value, helpers) => {
@@ -39,7 +58,7 @@ class CandidateValidation {
             allowSearch: joi.string().valid("true", "false"),
             listResume: joi.array().items(objectIdJoiSchema)
         })
-        if (data.listResume) {
+        if (data?.listResume) {
             if (typeof(data.listResume) === "string") {
                 data.listResume = JSON.parse(data.listResume);
             }
@@ -205,17 +224,17 @@ class CandidateValidation {
         }).messages({
             "any.only": "'{#label}' không hợp lệ",
         });
-        if (data.certifications) {
+        if (data?.certifications) {
             if (typeof(data.certifications) === "string") {
                 data.certifications = JSON.parse(data.certifications);
             }
         }
-        if (data.educations) {
+        if (data?.educations) {
             if (typeof(data.educations) === "string") {
                 data.educations = JSON.parse(data.educations);
             }
         }
-        if (data.workHistories) {
+        if (data?.workHistories) {
             if (typeof(data.workHistories) === "string") {
                 data.workHistories = JSON.parse(data.workHistories);
             }
@@ -314,17 +333,17 @@ class CandidateValidation {
         }).messages({
             "any.only": "'{#label}' không hợp lệ"
         });
-        if (data.certifications) {
+        if (data?.certifications) {
             if (typeof(data.certifications) === "string") {
                 data.certifications = JSON.parse(data.certifications);
             }
         }
-        if (data.educations) {
+        if (data?.educations) {
             if (typeof(data.educations) === "string") {
                 data.educations = JSON.parse(data.educations);
             }
         }
-        if (data.workHistories) {
+        if (data?.workHistories) {
             if (typeof(data.workHistories) === "string") {
                 data.workHistories = JSON.parse(data.workHistories);
             }

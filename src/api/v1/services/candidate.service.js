@@ -2,17 +2,133 @@ const { Candidate } = require("../models/candidate.model");
 const { FavoriteJob } = require("../models/favoriteJob.model");
 const { Resume } = require("../models/resume.model");
 const { Login } = require("../models/login.model");
-const { InternalServerError, BadRequestError } = require("../core/error.response");
+const { InternalServerError, BadRequestError, ConflictRequestError, NotFoundRequestError } = require("../core/error.response");
 const { v2: cloudinary } = require('cloudinary');
 const { Application } = require("../models/application.model");
 const { Job } = require("../models/job.model");
 const mongoose = require("mongoose");
+const bcrypt = require('bcryptjs');
 const { formatInTimeZone } = require("date-fns-tz");
 const { Notification } = require("../models/notification.model");
 const { FavoriteRecruiter } = require("../models/favoriteRecruiter.model");
+const { OTP } = require("../models/otp.model");
+const RedisService = require("./redis.service");
+const OTPService = require("./otp.service");
+const EmailService = require("./email.service");
+const { mapRolePermission } = require("../utils");
 const ObjectId = mongoose.Types.ObjectId;
 
 class CandidateService {
+    static signUp = async ({ name, email, password }) => {
+        try {
+            // check user exist by mail
+            const isExist = await Login.findOne({ email });
+            if (isExist) {
+                throw new ConflictRequestError('Email này đã được sử dụng vui lòng nhập email khác');
+            }
+            // check sign up but not verify
+            const candidate = await Candidate.findOne({ email }).lean();
+            if (candidate) {
+                // check otp
+                const otpHolder = await OTP.find({ email });
+                if (otpHolder.length) {
+                    throw new BadRequestError('Email này đã được đăng ký, vui lòng truy cập email để xác nhận tài khoản');
+                }
+                // otp expired allowed user to Resignup
+                await Candidate.findOneAndDelete({ email });
+            }
+            // user not exist create new user
+            // hash password
+            const hashPassword = await bcrypt.hash(password, 10);
+            await RedisService.setPassword(email, hashPassword);
+            // create recruiter
+            const newCandidate = await Candidate.create({ name, email })
+            await EmailService.sendSignUpMail({ toEmail: email, userName: newCandidate.name, code: mapRolePermission["CANDIDATE"] });
+            // return 201
+            return {
+                message: "Đăng ký tài khoản thành công",
+                metadata: {
+                    sender: process.env.MAIL_SEND
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static verifyEmail = async (email, otp) => {
+        try {
+            // get last otp
+            const otpHolder = await OTP.find({ email });
+            if (!otpHolder.length) {
+                throw new NotFoundRequestError('OTP hết hạn vui lòng làm mới');
+            }
+            const lastOtp = otpHolder[otpHolder.length - 1].otp;
+            // verify otp
+            const isValid = await OTPService.validOtp(otp, lastOtp);
+            if (!isValid) {
+                throw new BadRequestError('OTP không chính xác')
+            }
+            // verify Email
+            await Candidate.verifyEmail(email);
+            // add recruiter to login
+            const hashPassword = await RedisService.getEmailKey(email);
+            if (!hashPassword) {
+                throw new BadRequestError("Quá thời hạn 24 giờ kể từ lúc đăng ký vui lòng đăng ký lại.");
+            }
+            const login = await Login.create({
+                email,
+                password: hashPassword,
+                role: "CANDIDATE",
+            })
+            // Reference Candidate, Login
+            await Candidate.findOneAndUpdate({ email }, {
+                $set: {
+                    loginId: login._id
+                }
+            })
+            // delete redis password
+            await RedisService.deleteEmailKey(email);
+            // delete all otp verify in db
+            await OTP.deleteMany({ email });
+            //return 200
+            return {
+                message: "Xác nhận email thành công",
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static resendVerifyEmail = async ({ email }) => {
+        try {
+            // check user exist
+            const candidate = await Candidate.findOne({ email }).lean();
+            if (!candidate) {
+                throw new BadRequestError('Email không tồn tại');
+            }
+            if (candidate.verifyEmail === true) {
+                throw new BadRequestError('Email của bạn đã được xác nhận');
+            }
+            // refresh ttl redis password
+            const password = await RedisService.getEmailKey(email);
+            if (!password) {
+                throw new BadRequestError("Quá thời hạn 24 giờ kể từ lúc đăng ký vui lòng đăng ký lại.");
+            }
+            await RedisService.setPassword(email, password);
+            await EmailService.sendSignUpMail({ toEmail: email, userName: candidate.name });
+            // return 200
+            return {
+                message: "Gửi lại mail xác nhận thành công",
+                metadata: {
+                    sender: process.env.MAIL_SEND
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
     static getInformation = async ({ userId }) => {
         try {
             const candidate = await Candidate.getInformation(userId);

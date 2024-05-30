@@ -4,6 +4,12 @@ const { verifyAccessToken, authPageCandidate } = require('../../middlewares');
 const candidateController = require('../../controllers/candidate.controller');
 const router = express.Router();
 
+// signup
+router.post('/signup', asyncHandler(candidateController.signUp));
+// verify email
+router.post('/verify', asyncHandler(candidateController.verifyEmail));
+// resend email
+router.post('/signup/resend_mail', asyncHandler(candidateController.resendVerifyEmail));
 // get information
 router.get('/information', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.getInformation));
 // update information

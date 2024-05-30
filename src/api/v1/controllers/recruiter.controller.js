@@ -2,11 +2,36 @@ const RecruiterService = require("../services/recruiter.service");
 const RecruiterValidation = require("../validations/recruiter.validation");
 const { CREATED, OK } = require('../core/success.response');
 const { BadRequestError } = require('../core/error.response');
-const { formatInTimeZone } = require("date-fns-tz");
-const { config } = require('../configs/config.vnpayment');
-const { sortObject } = require("../utils");
 
 class RecruiterController {
+    signUp = async (req, res, next) => {
+        const { error, value } = RecruiterValidation.validateSignUp(req.body);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { metadata, message } = await RecruiterService.signUp(value);
+        new CREATED({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
+    verifyEmail = async (req, res, next) => {
+        const email = req.query.email;
+        const { otp } = req.body;
+        const { message } = await RecruiterService.verifyEmail(email, otp);
+        new OK({
+            message: message
+        }).send(res)
+    }
+
+    resendVerifyEmail = async (req, res, next) => {
+        const { message, metadata } = await RecruiterService.resendVerifyEmail(req.body);
+        new OK({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
 
     getInformation = async (req, res, next) => {
         const { metadata, message } = await RecruiterService.getInformation(req.payload);
@@ -72,6 +97,44 @@ class RecruiterController {
         const { message } = await RecruiterService.changePassword({ ...req.payload, ...value })
         new OK({
             message: message
+        }).send(res)
+    }
+
+    getListRecruiterHomePage = async (req, res, next) => {
+        const { error, value } = RecruiterValidation.validateGetListRecruiterHomePage(req.query);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata, options } = await RecruiterService.getListRecruiterHomePage(value);
+        new OK({
+            message,
+            metadata: { ...metadata },
+            options
+        }).send(res)
+    }
+
+    getInformationBySlug = async (req, res, next) => {
+        const { error, value } = RecruiterValidation.validateGetRecruiterInformationBySlug(req.params);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata } = await RecruiterService.getInformationBySlug(value);
+        new OK({
+            message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
+    getListRelatedRecruiter = async (req, res, next) => {
+        const { error, value } = RecruiterValidation.validateGetListRelatedRecruiter({ ...req.query, ...req.params });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata, options } = await RecruiterService.getListRelatedRecruiter(value);
+        new OK({
+            message,
+            metadata: { ...metadata },
+            options
         }).send(res)
     }
 

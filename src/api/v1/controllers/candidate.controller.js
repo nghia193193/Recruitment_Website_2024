@@ -1,9 +1,38 @@
 const CandidateService = require("../services/candidate.service");
-const { OK } = require('../core/success.response');
+const { OK, CREATED } = require('../core/success.response');
 const CandidateValidation = require("../validations/candidate.validation");
 const { BadRequestError } = require("../core/error.response");
 
 class CandidateController {
+    signUp = async (req, res, next) => {
+        const { error, value } = CandidateValidation.validateSignUp(req.body);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { metadata, message } = await CandidateService.signUp(value);
+        new CREATED({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
+    verifyEmail = async (req, res, next) => {
+        const email = req.query.email;
+        const { otp } = req.body;
+        const { message } = await CandidateService.verifyEmail(email, otp);
+        new OK({
+            message: message
+        }).send(res)
+    }
+
+    resendVerifyEmail = async (req, res, next) => {
+        const { message, metadata } = await CandidateService.resendVerifyEmail(req.body);
+        new OK({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
     getInformation = async (req, res, next) => {
         const { message, metadata } = await CandidateService.getInformation(req.payload);
         new OK({

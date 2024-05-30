@@ -37,25 +37,6 @@ class RecruiterValidation {
         return validateSchema.validate(data);
     }
 
-    static validateCandidateSignUp = data => {
-        const validateSchema = joi.object({
-            name: joi.string().max(50).custom((value) => {
-                const cleanName = xss(value);
-                return cleanName;
-            }).required(),
-            email: joi.string().email().lowercase().required(),
-            password: joi.string().min(8).max(32).custom((value) => {
-                const cleanPassword = xss(value);
-                return cleanPassword;
-            }).required(),
-            confirmPassword: joi.string().valid(joi.ref("password")).required().messages({
-                'any.only': 'Mật khẩu xác nhận không khớp',
-                'any.required': 'Vui lòng nhập mật khẩu xác nhận'
-            })
-        })
-        return validateSchema.validate(data);
-    }
-
     static validateUpdateInformation = data => {
         const validateSchema = joi.object({
             name: joi.string().max(50).custom((value, helpers) => {
@@ -132,19 +113,12 @@ class RecruiterValidation {
         }).messages({
             "any.only": "'{#label}' không hợp lệ",
         });
-        let fieldOA = data?.fieldOfActivity;
-        if (fieldOA) {
-            if (Array.isArray(fieldOA)) {
-                fieldOA = fieldOA;
-            } else {
-                fieldOA = fieldOA.split(',').map(item => item.trim())
+        if (data?.fieldOfActivity) {
+            if (typeof(data.fieldOfActivity) === "string") {
+                data.fieldOfActivity = JSON.parse(data.fieldOfActivity);
             }
         }
-        const processData = {
-            ...data,
-            fieldOfActivity: fieldOA
-        }
-        return validateSchema.validate(processData);
+        return validateSchema.validate(data);
     }
 
     static validateUpdateAvatar = data => {
@@ -261,18 +235,51 @@ class RecruiterValidation {
         }).messages({
             'any.only': "'{#label}' không hợp lệ"
         });
-        let processData;
-        let fieldOA = data.fieldOfActivity;
-        if (Array.isArray(fieldOA)) {
-            fieldOA = fieldOA;
-        } else {
-            fieldOA = fieldOA.split(',').map(item => item.trim())
+        if (data?.fieldOfActivity) {
+            if (typeof(data.fieldOfActivity) === "string") {
+                data.fieldOfActivity = JSON.parse(data.fieldOfActivity);
+            }
         }
-        processData = {
-            ...data,
-            fieldOfActivity: fieldOA
-        }
-        return validateSchema.validate(processData);
+        return validateSchema.validate(data);
+    }
+
+    static validateGetListRecruiterHomePage = data => {
+        const validateSchema = joi.object({
+            searchText: joi.string().custom((value) => {
+                const searchText = xss(value.trim());
+                return searchText;
+            }),
+            page: joi.number().integer().min(1),
+            limit: joi.number().integer().min(1)
+        }).messages({
+            "any.only": "'{#label}' không hợp lệ"
+        })
+        return validateSchema.validate(data);
+    }
+
+    static validateGetRecruiterInformationBySlug = data => {
+        const validateSchema = joi.object({
+            slug: joi.string().custom((value) => {
+                const slug = xss(value.trim());
+                return slug;
+            })
+        })
+        return validateSchema.validate(data);
+    }
+
+    static validateGetListRelatedRecruiter = data => {
+        const validateSchema = joi.object({
+            recruiterId: objectIdJoiSchema.required(),
+            searchText: joi.string().custom((value) => {
+                const searchText = xss(value.trim());
+                return searchText;
+            }),
+            page: joi.number().integer().min(1),
+            limit: joi.number().integer().min(1)
+        }).messages({
+            "any.only": "'{#label}' không hợp lệ"
+        })
+        return validateSchema.validate(data);
     }
 
     static validateCreateJob = data => {

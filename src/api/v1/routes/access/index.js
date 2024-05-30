@@ -1,20 +1,10 @@
 const express = require('express');
 const accessController = require('../../controllers/access.controller');
+const recruiterController = require('../../controllers/recruiter.controller');
+const jobController = require('../../controllers/job.controller');
 const { asyncHandler } = require('../../auth/checkAuth');
 const router = express.Router();
 
-// Recruiter signup
-router.post('/recruiter/signup', asyncHandler(accessController.recruiterSignUp));
-// Recruiter verify email
-router.post('/recruiter/verify', asyncHandler(accessController.recruiterVerifyEmail));
-// Recruiter resend email
-router.post('/recruiter/signup/resend_mail', asyncHandler(accessController.recruiterResendVerifyEmail));
-// Candidate signup
-router.post('/candidate/signup', asyncHandler(accessController.candidateSignUp));
-// Candidate verify email
-router.post('/candidate/verify', asyncHandler(accessController.candidateVerifyEmail));
-// Candidate resend email
-router.post('/candidate/signup/resend_mail', asyncHandler(accessController.candidateResendVerifyEmail));
 // login
 router.post('/login', asyncHandler(accessController.login));
 // forget password
@@ -40,18 +30,18 @@ router.post('/refresh_token', asyncHandler(accessController.refreshAccessToken))
 // logout
 router.delete('/logout', asyncHandler(accessController.logout));
 // get list job
-router.get('/jobs', asyncHandler(accessController.getListJob));
+router.get('/jobs', asyncHandler(jobController.getListJob));
 // get list relevant job by field
-router.get('/jobs/:jobId/related_jobs', asyncHandler(accessController.getListRelatedJobByField));
+router.get('/jobs/:jobId/related_jobs', asyncHandler(jobController.getListRelatedJobByField));
 // get list job of recruiter
-router.get('/:slug/listjob', asyncHandler(accessController.getListJobOfRecruiter));
+router.get('/:slug/listjob', asyncHandler(jobController.getListJobOfRecruiter));
 // get job detail
-router.get('/jobs/:jobId', asyncHandler(accessController.getJobDetail));
-// get list recruiter
-router.get('/recruiters', asyncHandler(accessController.getListRecruiter));
+router.get('/jobs/:jobId', asyncHandler(jobController.getJobDetail));
+// get list recruiter home page
+router.get('/recruiters', asyncHandler(recruiterController.getListRecruiterHomePage));
 // get recruiter information
-router.get('/recruiters/:slug', asyncHandler(accessController.getRecruiterInformation));
-// get list recruiter
-router.get('/recruiters/:recruiterId/related_recruiter', asyncHandler(accessController.getListRelatedRecruiter));
+router.get('/recruiters/:slug', asyncHandler(recruiterController.getInformationBySlug));
+// get list related recruiter
+router.get('/recruiters/:recruiterId/related_recruiter', asyncHandler(recruiterController.getListRelatedRecruiter));
 
 module.exports = router;

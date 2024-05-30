@@ -4,6 +4,12 @@ const { verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter } = require
 const recruiterController = require('../../controllers/recruiter.controller');
 const router = express.Router();
 
+// signup
+router.post('/signup', asyncHandler(recruiterController.signUp));
+// verify email
+router.post('/verify', asyncHandler(recruiterController.verifyEmail));
+// resend email
+router.post('/signup/resend_mail', asyncHandler(recruiterController.resendVerifyEmail));
 // get information
 router.get('/information', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getInformation));
 // update information

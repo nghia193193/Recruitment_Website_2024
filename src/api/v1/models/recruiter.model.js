@@ -117,26 +117,6 @@ recruiterSchema.statics.getInformation = async function (userId) {
     }
 }
 
-recruiterSchema.statics.getInformationBySlug = async function ({ slug }) {
-    try {
-        const recruiterInfor = await this.findOne({ slug }).lean().select(
-            '-roles -createdAt -updatedAt -__v -acceptanceStatus -verifyEmail -firstApproval -loginId -avatar'
-        );
-        if (!recruiterInfor) {
-            throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
-        }
-        const { FavoriteRecruiter } = require('./favoriteRecruiter.model');
-        const likeNumber = await FavoriteRecruiter.getLikeNumber({ recruiterId: recruiterInfor._id.toString() });
-        recruiterInfor.companyLogo = recruiterInfor.companyLogo?.url ?? null;
-        recruiterInfor.companyCoverPhoto = recruiterInfor.companyCoverPhoto?.url ?? null;
-        recruiterInfor.slug = recruiterInfor.slug ?? null;
-        recruiterInfor.likeNumber = likeNumber;
-        return recruiterInfor;
-    } catch (error) {
-        throw error;
-    }
-}
-
 recruiterSchema.statics.updateInformation = async function ({ userId, name, position, phone, contactEmail, companyName,
     companyWebsite, companyAddress, companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity, slug }) {
     try {
@@ -367,16 +347,21 @@ recruiterSchema.statics.updateCompany = async function ({ userId, companyName, c
             }
         }
         //check slug
-        const recruiter = await this.findOne({ slug }).lean();
-        if (recruiter) {
-            if (recruiter._id.toString() !== userId) {
-                throw new BadRequestError("Slug này đã tồn tại. Vui lòng nhập slug khác.");
+        if (slug) {
+            const recruiter = await this.findOne({ slug }).lean();
+            if (recruiter) {
+                console.log("db: ", recruiter._id.toString());
+                console.log("userId: ", userId);
+                if (recruiter._id.toString() !== userId) {
+                    throw new BadRequestError("Slug này đã tồn tại. Vui lòng nhập slug khác.");
+                }
             }
         }
+        
         const result = await this.findOneAndUpdate({ _id: userId }, {
             $set: {
                 companyName, companyWebsite, companyAddress, about, employeeNumber, fieldOfActivity,
-                companyLogo: logo, companyCoverPhoto: coverPhoto,
+                companyLogo: logo, companyCoverPhoto: coverPhoto, slug,
                 acceptanceStatus: "waiting"
             }
         }, {
@@ -414,90 +399,6 @@ recruiterSchema.statics.getListRecruiterByAdmin = async function ({ searchText, 
                 .lean()
                 .select("-createdAt -updatedAt -__v -loginId")
                 .sort({ score: { $meta: "textScore" }, updatedAt: -1 })
-                .skip((page - 1) * limit)
-                .limit(limit);
-        } else {
-            listRecruiter = await this.find(query)
-                .lean()
-                .select("-createdAt -updatedAt -__v -loginId")
-                .sort({ updatedAt: -1 })
-                .skip((page - 1) * limit)
-                .limit(limit);
-        }
-        const totalElement = await this.find(query).lean().countDocuments();
-        if (listRecruiter.length !== 0) {
-            listRecruiter = listRecruiter.map(recruiter => {
-                return {
-                    ...recruiter,
-                    companyLogo: recruiter.companyLogo?.url,
-                    companyCoverPhoto: recruiter.companyCoverPhoto?.url
-                }
-            })
-        }
-        return {
-            totalElement, listRecruiter
-        }
-    } catch (error) {
-        throw error;
-    }
-}
-
-recruiterSchema.statics.getListRecruiter = async function ({ searchText, page, limit }) {
-    try {
-        let query = {};
-        let listRecruiter;
-        if (searchText) {
-            query["$text"] = { $search: searchText };
-            listRecruiter = await this.find(query, { score: { $meta: "textScore" } })
-                .lean()
-                .select("-createdAt -updatedAt -__v -loginId")
-                .sort({ score: { $meta: "textScore" } })
-                .skip((page - 1) * limit)
-                .limit(limit);
-        } else {
-            listRecruiter = await this.find(query)
-                .lean()
-                .select("-createdAt -updatedAt -__v -loginId")
-                .sort({ updatedAt: -1 })
-                .skip((page - 1) * limit)
-                .limit(limit);
-        }
-        const totalElement = await this.find(query).lean().countDocuments();
-        if (listRecruiter.length !== 0) {
-            listRecruiter = listRecruiter.map(recruiter => {
-                return {
-                    ...recruiter,
-                    companyLogo: recruiter.companyLogo?.url,
-                    companyCoverPhoto: recruiter.companyCoverPhoto?.url
-                }
-            })
-        }
-        return {
-            totalElement, listRecruiter
-        }
-    } catch (error) {
-        throw error;
-    }
-}
-
-recruiterSchema.statics.getListRelatedRecruiter = async function ({ recruiterId, searchText, page, limit }) {
-    try {
-        const recruiter = await this.findById(recruiterId).lean();
-        if (!recruiter) {
-            throw new BadRequestError("Có lỗi xảy ra vui lòng thử lại.");
-        }
-        const field = recruiter.fieldOfActivity;
-        let query = {
-            _id: { $ne: recruiterId },
-            fieldOfActivity: { $in: field }
-        };
-        let listRecruiter;
-        if (searchText) {
-            query["$text"] = { $search: searchText };
-            listRecruiter = await this.find(query, { score: { $meta: "textScore" } })
-                .lean()
-                .select("-createdAt -updatedAt -__v -loginId")
-                .sort({ score: { $meta: "textScore" } })
                 .skip((page - 1) * limit)
                 .limit(limit);
         } else {
