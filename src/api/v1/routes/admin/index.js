@@ -2,6 +2,7 @@ const express = require('express');
 const { asyncHandler } = require('../../auth/checkAuth');
 const { verifyAccessToken, authPageAdmin } = require('../../middlewares');
 const adminController = require('../../controllers/admin.controller');
+const jobController = require('../../controllers/job.controller');
 const router = express.Router();
 
 // get information
@@ -15,9 +16,9 @@ router.patch('/recruiters/:recruiterId/approve', verifyAccessToken, authPageAdmi
 // get list acceptance status
 router.get('/acceptance_status', verifyAccessToken, authPageAdmin, asyncHandler(adminController.getListAcceptanceStatus));
 // get list job
-router.get('/jobs', verifyAccessToken, authPageAdmin, asyncHandler(adminController.getListJob));
+router.get('/jobs', verifyAccessToken, authPageAdmin, asyncHandler(jobController.getListJobPremiumPrivilege));
 // get job detail
-router.get('/jobs/:jobId', verifyAccessToken, authPageAdmin, asyncHandler(adminController.getJobDetail));
+router.get('/jobs/:jobId', verifyAccessToken, authPageAdmin, asyncHandler(jobController.getJobDetail));
 // approve job
 router.patch('/jobs/:jobId/approve', verifyAccessToken, authPageAdmin, asyncHandler(adminController.approveJob));
 

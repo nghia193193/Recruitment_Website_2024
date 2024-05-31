@@ -113,36 +113,6 @@ class AdminService {
         }
     }
 
-    static getListJob = async ({ companyName, name, field, levelRequirement, acceptanceStatus, page, limit }) => {
-        try {
-            page = page ? +page : 1;
-            limit = limit ? +limit : 5;
-            const { result, length } = await Job.getListJobAdmin({ companyName, name, field, levelRequirement, acceptanceStatus, page, limit });
-            return {
-                message: "Lấy danh sách công việc thành công",
-                metadata: { listJob: result, totalElement: length },
-                options: {
-                    page: page,
-                    limit: limit
-                }
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    static getJobDetail = async ({ jobId }) => {
-        try {
-            const job = await JobService.getJobDetail({ jobId });
-            return {
-                message: "Lấy thông tin công việc thành công",
-                metadata: { ...job },
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
     static approveJob = async ({ userId, jobId, acceptanceStatus, reasonDecline }) => {
         try {
             const { job, recruiterId, companyName } = await Job.approveJob({ jobId, acceptanceStatus, reasonDecline });

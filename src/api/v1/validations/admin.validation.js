@@ -41,27 +41,6 @@ class AdminValidation {
         return validateSchema.validate(data);
     }
 
-    static validateGetListJob = data => {
-        const validateSchema = joi.object({
-            companyName: joi.string().custom((value) => {
-                const companyName = xss(value);
-                return companyName;
-            }),
-            name: joi.string().custom((value) => {
-                const cleanName = xss(value);
-                return cleanName;
-            }),
-            field: joi.string().valid(...fieldOfActivity),
-            levelRequirement: joi.string().valid(...levelRequirement),
-            acceptanceStatus: joi.string().valid(...acceptanceStatus),
-            page: joi.number().integer().min(1),
-            limit: joi.number().integer().min(1)
-        }).messages({
-            "any.only": "'{#label}' không hợp lệ"
-        })
-        return validateSchema.validate(data);
-    }
-
     static validateJobId = data => {
         const validateSchema = joi.object({
             jobId: objectIdJoiSchema.required()

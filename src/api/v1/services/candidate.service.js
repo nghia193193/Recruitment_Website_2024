@@ -17,6 +17,7 @@ const OTPService = require("./otp.service");
 const EmailService = require("./email.service");
 const { mapRolePermission } = require("../utils");
 const ObjectId = mongoose.Types.ObjectId;
+const { clearImage } = require('../utils/processImage');
 
 class CandidateService {
     static signUp = async ({ name, email, password }) => {
@@ -157,10 +158,27 @@ class CandidateService {
 
     static updateAvatar = async ({ userId, avatar }) => {
         try {
-            const candidate = await Candidate.updateAvatar({ userId, avatar });
+            const candidate = await Candidate.findById(userId).select("-createdAt, -updatedAt, -__v");
+            const oldAvatar = candidate.avatar;
+            if (oldAvatar) {
+                const splitArr = oldAvatar.split("/");
+                const image = splitArr[splitArr.length-1];
+                clearImage(image);
+            }
+            candidate.avatar = avatar;
+            await candidate.save();
+            const result = await Candidate.findById(userId).populate('loginId').select("-createdAt, -updatedAt, -__v").lean();
+            result.role = result.loginId?.role;
+            delete result.loginId;
+            result.phone = result.phone ?? null;
+            result.gender = result.gender ?? null;
+            result.homeTown = result.homeTown ?? null;
+            result.workStatus = result.workStatus ?? null;
+            result.dateOfBirth = result.dateOfBirth ?? null;
+            // const candidate = await Candidate.updateAvatar({ userId, avatar });
             return {
                 message: "Cập nhật ảnh đại diện thành công",
-                metadata: { ...candidate }
+                metadata: { ...result }
             }
         } catch (error) {
             throw error;

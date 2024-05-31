@@ -1,0 +1,105 @@
+31/05/2024	16:56:36 ::1---/v1/api/candidate/update_avatar---PATCH---Cannot read properties of undefined (reading 'avatar')
+31/05/2024	16:57:20 ::1---/v1/api/candidate/update_avatar---PATCH---Bạn chưa chọn file!
+31/05/2024	16:57:27 ::1---/v1/api/candidate/update_avatar---PATCH---req.files.avatar[0].split is not a function
+31/05/2024	16:58:11 ::1---/v1/api/candidate/update_avatar---PATCH---req.files.avatar[0].split is not a function
+31/05/2024	17:00:21 ::1---/v1/api/candidate/update_avatar---PATCH---Bạn chưa chọn file!
+31/05/2024	17:01:13 ::1---/v1/api/candidate/update_avatar---PATCH---Bạn chưa chọn file!
+31/05/2024	17:09:12 ::1---/v1/api/candidate/update_avatar---PATCH---Bạn chưa chọn file!
+31/05/2024	17:09:40 ::1---/v1/api/candidate/update_avatar---PATCH---Bạn chưa chọn file!
+31/05/2024	17:38:44 ::1---/v1/api/admin/jobs?name=vien---GET---$match with $text is only allowed as the first pipeline stage
+31/05/2024	17:40:53 ::1---/v1/api/admin/jobs?name=vien---GET---$match with $text is only allowed as the first pipeline stage
+31/05/2024	17:41:23 ::1---/v1/api/admin/jobs?name=vien---GET---$match with $text is only allowed as the first pipeline stage
+31/05/2024	19:54:52 ::1---/v1/api/admin/jobs---GET---Vui lòng đăng nhập lại
+31/05/2024	19:55:07 ::1---/v1/api/admin/jobs---GET---this.aggregate is not a function
+31/05/2024	19:55:25 ::1---/v1/api/admin/jobs---GET---invalid argument to $skip stage: Expected an integer, but found NaN in: $skip: nan.0
+31/05/2024	20:04:50 ::1---/v1/api/admin/jobs?name=vien---GET---query requires text score metadata, but it is not available
+31/05/2024	20:11:06 ::1---/v1/api/admin/jobs?name=vien---GET---query requires text score metadata, but it is not available
+31/05/2024	20:11:14 ::1---/v1/api/admin/jobs?name=vien---GET---query requires text score metadata, but it is not available
+31/05/2024	20:14:52 ::1---/v1/api/admin/jobs?name=vien---GET---query requires text score metadata, but it is not available
+31/05/2024	20:19:55 ::1---/v1/api/admin/jobs?name=vien---GET---query requires text score metadata, but it is not available
+31/05/2024	20:22:59 ::1---/v1/api/admin/jobs?name=vien---GET---query requires text score metadata, but it is not available
+31/05/2024	20:24:55 ::1---/v1/api/admin/jobs?name=vien---GET---(name && {(intermediate value)}) is not iterable
+31/05/2024	20:25:09 ::1---/v1/api/admin/jobs?name=vien---GET---Arguments must be aggregate pipeline operators
+31/05/2024	20:25:51 ::1---/v1/api/admin/jobs?name=vien---GET---query requires text score metadata, but it is not available
+31/05/2024	20:27:56 ::1---/v1/api/admin/jobs?name=vien---GET---query requires text score metadata, but it is not available
+31/05/2024	20:32:18 ::1---/v1/api/admin/jobs?name=vien---GET---Cannot access 'page' before initialization
+31/05/2024	20:33:19 ::1---/v1/api/admin/jobs?name=vien---GET---query requires text score metadata, but it is not available
+31/05/2024	20:34:55 ::1---/v1/api/admin/jobs?name=vien---GET---query requires text score metadata, but it is not available
+31/05/2024	20:35:23 ::1---/v1/api/admin/jobs?name=vien---GET---query requires text score metadata, but it is not available
+31/05/2024	20:35:24 ::1---/v1/api/admin/jobs?name=vien---GET---query requires text score metadata, but it is not available
+31/05/2024	20:35:42 ::1---/v1/api/admin/jobs?name=vien---GET---query requires text score metadata, but it is not available
+31/05/2024	20:39:30 ::1---/v1/api/admin/jobs?name=vien---GET---query requires text score metadata, but it is not available
+31/05/2024	20:44:02 ::1---/v1/api/admin/jobs?name=vien---GET---query requires text score metadata, but it is not available
+31/05/2024	20:47:17 ::1---/v1/api/admin/jobs?name=vien---GET---query requires text score metadata, but it is not available
+31/05/2024	20:47:21 ::1---/v1/api/admin/jobs---GET---query requires text score metadata, but it is not available
+31/05/2024	20:47:26 ::1---/v1/api/admin/jobs---GET---query requires text score metadata, but it is not available
+31/05/2024	20:47:30 ::1---/v1/api/admin/jobs?name=vien---GET---query requires text score metadata, but it is not available
+31/05/2024	20:48:06 ::1---/v1/api/admin/jobs?name=vien---GET---query requires text score metadata, but it is not available
+31/05/2024	20:51:00 ::1---/v1/api/admin/jobs?name=vi%C3%AAn---GET---query requires text score metadata, but it is not available
+31/05/2024	20:53:18 ::1---/v1/api/admin/jobs?name=vi%C3%AAn&acceptanceStatus=accept---GET---query requires text score metadata, but it is not available
+31/05/2024	20:55:48 ::1---/v1/api/admin/jobs?acceptanceStatus=accept---GET---Vui lòng đăng nhập lại
+31/05/2024	20:56:29 ::1---/v1/api/admin/jobs?name=vi%C3%AAn---GET---query requires text score metadata, but it is not available
+31/05/2024	21:05:17 ::1---/v1/api/admin/jobs?name=vi%C3%AAn---GET---query requires text score metadata, but it is not available
+31/05/2024	21:08:54 ::1---/v1/api/admin/jobs?name=vi%C3%AAn---GET---PlanExecutor error during aggregation :: caused by :: Should never call getNext on a $match stage with $text clause
+31/05/2024	21:19:45 ::1---/v1/api/recruiter/signup---POST---invalid_grant
+31/05/2024	21:41:54 ::1---/v1/api/recruiter/signup---POST---Recruiter validation failed: companyName: Path `companyName` is required., position: Path `position` is required., phone: Path `phone` is required., contactEmail: Path `contactEmail` is required., email: Path `email` is required., name: Path `name` is required.
+31/05/2024	21:42:33 ::1---/v1/api/recruiter/signup---POST---Recruiter validation failed: companyName: Path `companyName` is required., position: Path `position` is required., phone: Path `phone` is required., contactEmail: Path `contactEmail` is required., email: Path `email` is required., name: Path `name` is required.
+31/05/2024	21:45:12 ::1---/v1/api/recruiter/signup---POST---invalid_grant
+31/05/2024	21:45:51 ::1---/v1/api/recruiter/signup---POST---Email này đã được đăng ký, vui lòng truy cập email để xác nhận tài khoản
+31/05/2024	21:46:06 ::1---/v1/api/recruiter/signup---POST---Recruiter validation failed: companyName: Path `companyName` is required., position: Path `position` is required., phone: Path `phone` is required., contactEmail: Path `contactEmail` is required., email: Path `email` is required., name: Path `name` is required.
+31/05/2024	21:50:26 ::1---/v1/api/recruiter/signup---POST---Email này đã được đăng ký, vui lòng truy cập email để xác nhận tài khoản
+31/05/2024	21:58:13 ::1---/v1/api/recruiter/signup---POST---Recruiter validation failed: companyName: Path `companyName` is required., position: Path `position` is required., phone: Path `phone` is required., contactEmail: Path `contactEmail` is required., email: Path `email` is required., name: Path `name` is required.
+31/05/2024	22:02:05 ::1---/v1/api/recruiter/signup---POST---invalid_grant
+31/05/2024	22:02:39 ::1---/v1/api/recruiter/signup---POST---invalid_grant
+31/05/2024	22:07:07 ::1---/v1/api/recruiter/signup---POST---invalid_grant
+31/05/2024	22:07:20 ::1---/v1/api/recruiter/signup---POST---invalid_grant
+31/05/2024	22:08:17 ::1---/v1/api/recruiter/signup---POST---invalid_grant
+31/05/2024	22:12:42 ::1---/v1/api/recruiter/update_information---PATCH---Vui lòng đăng nhập lại
+31/05/2024	22:13:52 ::1---/v1/api/recruiter/update_information---PATCH---Chưa upload ảnh đại diện và ảnh bìa!
+31/05/2024	22:14:10 ::1---/v1/api/recruiter/update_information---PATCH---Chưa upload ảnh đại diện và ảnh bìa!
+31/05/2024	22:17:35 ::1---/v1/api/recruiter/update_information---PATCH---"slug" is required
+31/05/2024	22:17:50 ::1---/v1/api/recruiter/update_information---PATCH---this.findOne is not a function
+31/05/2024	22:19:26 ::1---/favicon.ico---GET---Page not found
+31/05/2024	22:22:24 ::1---/v1/api/recruiter/signup---POST---Email này đã được đăng ký, vui lòng truy cập email để xác nhận tài khoản
+31/05/2024	22:23:22 ::1---/v1/api/recruiter/signup---POST---Email này đã được đăng ký, vui lòng truy cập email để xác nhận tài khoản
+31/05/2024	22:41:59 ::1---/v1/api/recruiter/signup---POST---Cannot read properties of undefined (reading 'name')
+31/05/2024	22:42:33 ::1---/v1/api/recruiter/signup---POST---Email này đã được đăng ký, vui lòng truy cập email để xác nhận tài khoản
+31/05/2024	22:42:48 ::1---/v1/api/recruiter/signup---POST---invalid_grant
+31/05/2024	22:44:51 ::1---/v1/api/recruiter/signup---POST---invalid_grant
+31/05/2024	22:46:48 ::1---/v1/api/recruiter/signup---POST---Email này đã được đăng ký, vui lòng truy cập email để xác nhận tài khoản
+31/05/2024	22:48:30 ::1---/v1/api/recruiter/update_information---PATCH---Cannot read properties of undefined (reading 'role')
+31/05/2024	22:49:59 ::1---/v1/api/recruiter/update_information---PATCH---Cannot read properties of undefined (reading 'role')
+31/05/2024	22:50:45 ::1---/v1/api/recruiter/update_information---PATCH---Cannot read properties of undefined (reading 'role')
+31/05/2024	22:51:44 ::1---/v1/api/recruiter/update_information---PATCH---Cannot read properties of undefined (reading 'role')
+31/05/2024	22:52:39 ::1---/v1/api/recruiter/update_information---PATCH---Cannot read properties of undefined (reading 'role')
+31/05/2024	22:53:10 ::1---/v1/api/recruiter/update_information---PATCH---Cannot read properties of undefined (reading 'role')
+31/05/2024	22:59:18 ::1---/v1/api/recruiter/update_avatar---PATCH---Vui lòng đăng nhập lại
+31/05/2024	22:59:26 ::1---/v1/api/recruiter/update_avatar---PATCH---Bạn chưa chọn file!
+31/05/2024	23:00:00 ::1---/v1/api/recruiter/update_avatar---PATCH---Bạn chưa chọn file!
+31/05/2024	23:01:58 ::1---/v1/api/recruiter/update_avatar---PATCH---oldAvatar.split is not a function
+31/05/2024	23:03:52 ::1---/v1/api/recruiter/update_avatar---PATCH---clearImage is not defined
+31/05/2024	23:09:23 ::1---/v1/api/recruiter/update_company_information---PATCH---Vui lòng đăng nhập lại
+31/05/2024	23:09:44 ::1---/v1/api/recruiter/update_company_information---PATCH---"companyLog" is not allowed
+31/05/2024	23:10:00 ::1---/v1/api/recruiter/update_company_information---PATCH---"companyLog" is not allowed
+31/05/2024	23:10:30 ::1---/v1/api/recruiter/update_company_information---PATCH---"companyLogo" is not allowed
+31/05/2024	23:24:14 ::1---/v1/api/recruiter/update_company_information---PATCH---"sdfsdf" is not allowed
+31/05/2024	23:25:32 ::1---/v1/api/recruiter/update_company_information---PATCH---"companyLogo" must be one of [object, string]
+31/05/2024	23:28:00 ::1---/v1/api/recruiter/update_company_information---PATCH---"companyLogo" must be one of [object, string]
+31/05/2024	23:32:40 ::1---/v1/api/recruiter/update_company_information---PATCH---The array type does not allow arguments
+31/05/2024	23:35:05 ::1---/v1/api/recruiter/update_company_information---PATCH---"sdfsdf" is not allowed
+31/05/2024	23:37:23 ::1---/v1/api/recruiter/update_company_information---PATCH---"sdfsdf" is not allowed
+31/05/2024	23:41:45 ::1---/v1/api/recruiter/update_company_information---PATCH---Cannot read properties of undefined (reading 'length')
+31/05/2024	23:43:04 ::1---/v1/api/recruiter/update_company_information---PATCH---Cannot read properties of undefined (reading 'length')
+31/05/2024	23:43:40 ::1---/v1/api/recruiter/update_company_information---PATCH---"sdfsdf" is not allowed
+31/05/2024	23:53:51 ::1---/v1/api/recruiter/update_company_information---PATCH---"sdfsdf" is not allowed
+31/05/2024	23:57:18 ::1---/v1/api/recruiter/update_avatar---PATCH---"avatar" is not allowed to be empty
+31/05/2024	23:57:48 ::1---/v1/api/recruiter/update_avatar---PATCH---Vui lòng đăng nhập lại
+31/05/2024	23:58:11 ::1---/v1/api/recruiter/update_avatar---PATCH---"avatar" is required
+31/05/2024	23:58:21 ::1---/v1/api/recruiter/update_avatar---PATCH---"avatar" is required
+31/05/2024	23:58:27 ::1---/v1/api/recruiter/update_avatar---PATCH---"avatar" is required
+31/05/2024	23:58:34 ::1---/v1/api/recruiter/update_avatar---PATCH---"avatar" is required
+31/05/2024	23:59:11 ::1---/v1/api/recruiter/update_avatar---PATCH---Cannot read properties of undefined (reading '0')
+31/05/2024	23:59:39 ::1---/v1/api/recruiter/update_avatar---PATCH---"avatar" is required
+31/05/2024	23:59:49 ::1---/v1/api/recruiter/update_avatar---PATCH---"avatar" is not allowed to be empty
+31/05/2024	23:59:58 ::1---/v1/api/recruiter/update_avatar---PATCH---"avatar" is required
+01/06/2024	00:00:07 ::1---/v1/api/recruiter/update_avatar---PATCH---"avatar" is required

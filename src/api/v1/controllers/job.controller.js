@@ -53,6 +53,19 @@ class JobController {
             options
         }).send(res)
     }
+
+    getListJobPremiumPrivilege = async (req, res, next) => {
+        const { error, value } = JobValidation.validateGetListJobPremiumPrivilege(req.query);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { metadata, message, options } = await JobService.getListJobPremiumPrivilege({ ...value });
+        new OK({
+            message: message,
+            metadata: { ...metadata },
+            options: options
+        }).send(res)
+    }
 }
 
 module.exports = new JobController();

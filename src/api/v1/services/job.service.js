@@ -283,6 +283,168 @@ class JobService {
             throw error;
         }
     }
+
+    static getListJobPremiumPrivilege = async ({ companyName, name, field, levelRequirement, acceptanceStatus, page, limit }) => {
+        try {
+            page = page ? page : 1;
+            limit = limit ? limit : 5;
+            const match = {
+                status: "active",
+                deadline: { $gte: new Date() }
+            };
+            if (name) {
+                match["$text"] = { $search: name };
+            }
+            const query = {};
+            if (companyName) {
+                query["recruiters.companyName"] = new RegExp(companyName, "i");
+            }
+            if (field) {
+                query["field"] = field;
+            }
+            if (levelRequirement) {
+                query["levelRequirement"] = levelRequirement;
+            }
+            if (acceptanceStatus) {
+                query["acceptanceStatus"] = acceptanceStatus;
+            }
+
+            const commonPipeline = [
+                {
+                    $lookup: {
+                        from: 'orders',
+                        let: { recruiterId: '$recruiterId' },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ['$recruiterId', '$$recruiterId'] },
+                                            { $eq: ['$status', 'Thành công'] },
+                                            { $gt: ['$validTo', new Date()] }
+                                        ]
+                                    }
+                                }
+                            },
+                            { $project: { _id: 1 } }
+                        ],
+                        as: 'premiumDetails'
+                    }
+                },
+                {
+                    $addFields: {
+                        premiumAccount: { $gt: [{ $size: '$premiumDetails' }, 0] }
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "recruiters",
+                        localField: "recruiterId",
+                        foreignField: "_id",
+                        as: "recruiters"
+                    }
+                },
+                {
+                    $match: query
+                },
+                {
+                    $project: {
+                        "_id": 1,
+                        "name": 1,
+                        "type": 1,
+                        "salary": 1,
+                        "province": 1,
+                        "levelRequirement": 1,
+                        "field": 1,
+                        "deadline": 1,
+                        "acceptanceStatus": 1,
+                        "reasonDecline": 1,
+                        "recruiters.companyName": 1,
+                        "recruiters.slug": 1,
+                        "recruiters.employeeNumber": 1,
+                        "recruiters.companyLogo": 1,
+                        "premiumAccount": 1,
+                        "updatedAt": 1,
+                    }
+                }
+            ];
+
+            const totalDocumentPipeline = [
+                { $match: match },
+                ...commonPipeline,
+                { $count: "totalDocuments" }
+            ];
+            const resultPipeline = [
+                { $match: match },
+                {
+                    $facet: {
+                        waiting: [
+                            ...commonPipeline,
+                            {
+                                $match: { acceptanceStatus: "waiting" }
+                            },
+                            {
+                                $sort: {
+                                    "premiumAccount": -1,
+                                    "updatedAt": 1
+                                }
+                            }
+                        ],
+                        nonWaiting: [
+                            ...commonPipeline,
+                            {
+                                $match: { acceptanceStatus: { $ne: "waiting" } }
+                            },
+                            {
+                                $sort: { 
+                                    "updatedAt": -1
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    $project: {
+                        results: { $concatArrays: ["$waiting", "$nonWaiting"] }
+                    }
+                },
+                { $unwind: "$results" },
+                { $replaceRoot: { newRoot: "$results" } },
+                {
+                    $skip: (page - 1) * limit
+                },
+                {
+                    $limit: limit
+                }
+            ];
+
+            const totalDocument = await Job.aggregate(totalDocumentPipeline);
+            const length = totalDocument.length > 0 ? totalDocument[0].totalDocuments : 0;
+            console.log(length)
+            let result = await Job.aggregate(resultPipeline);
+            console.log(result);
+            result = result.map(job => {
+                job.reasonDecline = job.reasonDecline ?? null;
+                job.companySlug = job.recruiters[0].slug ?? null;
+                job.companyName = job.recruiters[0].companyName ?? null;
+                job.companyLogo = job.recruiters[0].companyLogo ?? null;
+                job.employeeNumber = job.recruiters[0].employeeNumber;
+                job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
+                delete job.recruiters;
+                return { ...job };
+            })
+            return {
+                message: "Lấy danh sách công việc thành công",
+                metadata: { listJob: result, totalElement: length },
+                options: {
+                    page: page,
+                    limit: limit
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 module.exports = JobService;

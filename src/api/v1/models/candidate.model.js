@@ -21,10 +21,11 @@ const candidateSchema = new Schema({
         type: String,
         enum: ["Nam", "Nữ"]
     },
-    avatar: {
-        publicId: String,
-        url: String
-    },
+    avatar: String,
+    // avatar: {
+    //     publicId: String,
+    //     url: String
+    // },
     homeTown: String,
     workStatus: {
         type: String,

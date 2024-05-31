@@ -83,18 +83,6 @@ class RecruiterValidation {
             }).required().messages({
                 'any.empty': "Địa chỉ công ty không được để trống",
             }),
-            companyLogo: joi.alternatives().try(
-                joi.object({
-                    mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg'),
-                }).unknown(true),
-                joi.string().uri() // Cho phép URL hợp lệ
-            ).required(),
-            companyCoverPhoto: joi.alternatives().try(
-                joi.object({
-                    mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg'),
-                }).unknown(true),
-                joi.string().uri()
-            ).required(),
             about: joi.string().custom((value) => {
                 const cleanAbout = xss(value.trim());
                 return cleanAbout;
@@ -114,7 +102,7 @@ class RecruiterValidation {
             "any.only": "'{#label}' không hợp lệ",
         });
         if (data?.fieldOfActivity) {
-            if (typeof(data.fieldOfActivity) === "string") {
+            if (typeof (data.fieldOfActivity) === "string") {
                 data.fieldOfActivity = JSON.parse(data.fieldOfActivity);
             }
         }
@@ -124,9 +112,9 @@ class RecruiterValidation {
     static validateUpdateAvatar = data => {
         const validateSchema = joi.object({
             avatar: joi.alternatives().try(
-                joi.object({
-                    mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg'),
-                }).unknown(true),
+                joi.array().items(joi.object({
+                    mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
+                }).unknown(true)),
                 joi.string().uri() // Cho phép URL hợp lệ
             ).required(),
         })
@@ -190,18 +178,18 @@ class RecruiterValidation {
                 'string.max': "Địa chỉ không được vượt quá 200 ký tự"
             }),
             companyLogo: joi.alternatives().try(
-                joi.object({
+                joi.array().items(joi.object({
                     mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
-                }).unknown(true),
+                }).unknown(true)),
                 joi.string().uri() // Cho phép URL hợp lệ
             ).messages({
                 'string.uri': "Logo phải là một URL hợp lệ",
                 'object.mimetype': "Logo phải là tệp hình ảnh có định dạng hợp lệ"
             }),
             companyCoverPhoto: joi.alternatives().try(
-                joi.object({
+                joi.array().items(joi.object({
                     mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
-                }).unknown(true),
+                }).unknown(true)),
                 joi.string().uri() // Cho phép URL hợp lệ
             ).messages({
                 'string.uri': "Ảnh bìa phải là một URL hợp lệ",
@@ -236,7 +224,7 @@ class RecruiterValidation {
             'any.only': "'{#label}' không hợp lệ"
         });
         if (data?.fieldOfActivity) {
-            if (typeof(data.fieldOfActivity) === "string") {
+            if (typeof (data.fieldOfActivity) === "string") {
                 data.fieldOfActivity = JSON.parse(data.fieldOfActivity);
             }
         }
@@ -481,12 +469,12 @@ class RecruiterValidation {
             major: joi.string().custom((value) => {
                 const cleanMajor = xss(value.trim());
                 return cleanMajor;
-            }), 
+            }),
             goal: joi.string().custom((value) => {
                 const cleanGoal = xss(value.trim());
                 return cleanGoal;
             }),
-            status: joi.string().valid('Đã nộp','Đã nhận', 'Không nhận'),
+            status: joi.string().valid('Đã nộp', 'Đã nhận', 'Không nhận'),
             page: joi.number().integer().min(1),
             limit: joi.number().integer().min(1)
         }).messages({
@@ -512,7 +500,7 @@ class RecruiterValidation {
     static validateReadNotification = data => {
         const validateSchema = joi.object({
             notificationId: objectIdJoiSchema.required(),
-            
+
         })
         return validateSchema.validate(data);
     }
@@ -525,5 +513,6 @@ const objectIdValidator = (value, helpers) => {
     return value;
 };
 const objectIdJoiSchema = joi.string().custom(objectIdValidator, 'Custom validation for ObjectId').message("Id không hợp lệ");
+
 
 module.exports = RecruiterValidation

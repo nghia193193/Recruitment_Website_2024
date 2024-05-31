@@ -1,7 +1,7 @@
 const joi = require('joi');
 const xss = require('xss');
 const mongoose = require('mongoose');
-const { provinceOfVietNam, jobType, levelRequirement, experience, fieldOfActivity, genderRequirement } = require('../utils');
+const { provinceOfVietNam, jobType, levelRequirement, experience, fieldOfActivity, genderRequirement, acceptanceStatus } = require('../utils');
 
 class JobValidation {
     static validateGetListJob = data => {
@@ -16,6 +16,27 @@ class JobValidation {
             experience: joi.string().valid(...experience),
             field: joi.string().valid(...fieldOfActivity),
             genderRequirement: joi.string().valid(...genderRequirement),
+            page: joi.number().integer().min(1),
+            limit: joi.number().integer().min(1)
+        }).messages({
+            "any.only": "'{#label}' không hợp lệ"
+        })
+        return validateSchema.validate(data);
+    }
+
+    static validateGetListJobPremiumPrivilege = data => {
+        const validateSchema = joi.object({
+            companyName: joi.string().custom((value) => {
+                const companyName = xss(value);
+                return companyName;
+            }),
+            name: joi.string().custom((value) => {
+                const cleanName = xss(value);
+                return cleanName;
+            }),
+            field: joi.string().valid(...fieldOfActivity),
+            levelRequirement: joi.string().valid(...levelRequirement),
+            acceptanceStatus: joi.string().valid(...acceptanceStatus),
             page: joi.number().integer().min(1),
             limit: joi.number().integer().min(1)
         }).messages({

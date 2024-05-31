@@ -2,6 +2,8 @@ const CandidateService = require("../services/candidate.service");
 const { OK, CREATED } = require('../core/success.response');
 const CandidateValidation = require("../validations/candidate.validation");
 const { BadRequestError } = require("../core/error.response");
+const { clearImage } = require("../utils/processImage");
+require('dotenv').config();
 
 class CandidateController {
     signUp = async (req, res, next) => {
@@ -54,10 +56,12 @@ class CandidateController {
     }
 
     updateAvatar = async (req, res, next) => {
-        const { error, value } = CandidateValidation.validateUpdateAvatar({ ...req.body, ...req.files });
+        const { error, value } = CandidateValidation.validateUpdateAvatar(req.files);
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
+        const { avatar } = value;
+        value.avatar = `http://localhost:${process.env.PORT}/images/${avatar[0].filename}`;
         const { message, metadata } = await CandidateService.updateAvatar({ ...req.payload, ...value });
         new OK({
             message,
@@ -267,7 +271,6 @@ class CandidateController {
     }
 
     uploadCertification = async (req, res, next) => {
-        console.log(req.files)
         const { error, value } = CandidateValidation.validateUploadCertification(req.files);
         if (error) {
             throw new BadRequestError(error.details[0].message);

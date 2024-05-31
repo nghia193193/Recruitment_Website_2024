@@ -2,6 +2,7 @@ const RecruiterService = require("../services/recruiter.service");
 const RecruiterValidation = require("../validations/recruiter.validation");
 const { CREATED, OK } = require('../core/success.response');
 const { BadRequestError } = require('../core/error.response');
+const { clearImage } = require("../utils/processImage");
 
 class RecruiterController {
     signUp = async (req, res, next) => {
@@ -42,11 +43,28 @@ class RecruiterController {
     }
 
     updateInformation = async (req, res, next) => {
-        const { error, value } = RecruiterValidation.validateUpdateInformation({ ...req.body, ...req.files });
+        let companyLogo, companyCoverPhoto;
+        if (req.files['companyLogo'] && req.files['companyCoverPhoto']) {
+            const splitArrLogo = req.files['companyLogo'][0].path.split("\\");
+            const splitArrCoverPhoto = req.files['companyCoverPhoto'][0].path.split("\\");
+            companyLogo = `http://localhost:${process.env.PORT}/images/${splitArrLogo[splitArrLogo.length - 1]}`;
+            companyCoverPhoto = `http://localhost:${process.env.PORT}/images/${splitArrCoverPhoto[splitArrCoverPhoto.length - 1]}`;
+        } else {
+            // xử lý field cho phép nhưng không phải là logo, coverphoto
+            const wrongField = req.files['avatar'];
+            console.log(wrongField)
+            if (wrongField) {
+                const splitWF = wrongField[0].path.split("\\");
+                const file = splitWF[splitWF.length - 1];
+                clearImage(file);
+            }
+            throw new BadRequestError("Chưa upload ảnh đại diện và ảnh bìa!");
+        }
+        const { error, value } = RecruiterValidation.validateUpdateInformation({ ...req.body });
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const { metadata, message } = await RecruiterService.updateInformation({ ...value, ...req.payload });
+        const { metadata, message } = await RecruiterService.updateInformation({ ...value, ...req.payload, companyLogo, companyCoverPhoto });
         new OK({
             message: message,
             metadata: { ...metadata }
@@ -54,11 +72,13 @@ class RecruiterController {
     }
 
     updateAvatar = async (req, res, next) => {
-        const { error, value } = RecruiterValidation.validateUpdateAvatar({ ...req.body, ...req.files });
+        const { error, value } = RecruiterValidation.validateUpdateAvatar(req.files);
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const { metadata, message } = await RecruiterService.updateAvatar({ ...value, ...req.payload });
+        const { avatar } = value;
+        value.avatar = `http://localhost:${process.env.PORT}/images/${avatar[0].filename}`;
+        const { metadata, message } = await RecruiterService.updateAvatar({ ...req.payload, ...value });
         new OK({
             message: message,
             metadata: { ...metadata }
@@ -80,7 +100,21 @@ class RecruiterController {
     updateCompany = async (req, res, next) => {
         const { error, value } = RecruiterValidation.validateUpdateCompany({ ...req.body, ...req.files });
         if (error) {
+            const { companyLogo, companyCoverPhoto } = value;
+            if (companyLogo) {
+                clearImage(companyLogo[0].filename)
+            }
+            if (companyCoverPhoto) {
+                clearImage(companyCoverPhoto[0].filename)
+            }
             throw new BadRequestError(error.details[0].message);
+        }
+        const { companyLogo, companyCoverPhoto } = value;
+        if (companyLogo) {
+            value.companyLogo = `http://localhost:${process.env.PORT}/images/${companyLogo[0].filename}`;
+        }
+        if (companyCoverPhoto) {
+            value.companyCoverPhoto = `http://localhost:${process.env.PORT}/images/${companyCoverPhoto[0].filename}`;
         }
         const { metadata, message } = await RecruiterService.updateCompany({ ...value, ...req.payload });
         new OK({
@@ -302,8 +336,7 @@ class RecruiterController {
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const companyName = req.recruiter.companyName;
-        const { metadata, message } = await RecruiterService.approveApplication({ ...value, ...req.payload, companyName });
+        const { metadata, message } = await RecruiterService.approveApplication({ ...value, ...req.payload });
         new OK({
             message: message,
             metadata: { ...metadata }

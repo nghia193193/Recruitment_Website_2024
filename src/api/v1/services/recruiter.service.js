@@ -14,12 +14,16 @@ const RedisService = require("./redis.service");
 const EmailService = require("./email.service");
 const OTPService = require("./otp.service");
 const { FavoriteRecruiter } = require("../models/favoriteRecruiter.model");
+const { clearImage } = require('../utils/processImage');
+const mongoose = require('mongoose');
 
 
 class RecruiterService {
 
     static signUp = async ({ companyName, name, position, phone, contactEmail, email, password }) => {
+        const session = await mongoose.startSession();
         try {
+            session.startTransaction();
             // check user exist by mail
             const isExist = await Login.findOne({ email });
             if (isExist) {
@@ -41,11 +45,14 @@ class RecruiterService {
             const hashPassword = await bcrypt.hash(password, 10);
             await RedisService.setPassword(email, hashPassword);
             // create recruiter
-            const newRecruiter = await Recruiter.create({
+            const newRecruiter = await Recruiter.create([{
                 companyName, name, position, phone, contactEmail, email
+            }], {
+                session
             })
-            await EmailService.sendSignUpMail({ toEmail: email, userName: newRecruiter.name, code: mapRolePermission["RECRUITER"] });
-            // return 201
+            await EmailService.sendSignUpMail({ toEmail: email, userName: newRecruiter[0].name, code: mapRolePermission["RECRUITER"] });
+            await session.commitTransaction();
+            session.endSession();
             return {
                 message: "Đăng ký tài khoản thành công",
                 metadata: {
@@ -53,12 +60,16 @@ class RecruiterService {
                 }
             }
         } catch (error) {
+            await session.abortTransaction();
+            session.endSession();
             throw error;
         }
     }
 
     static verifyEmail = async (email, otp) => {
+        const session = await mongoose.startSession();
         try {
+            session.startTransaction();
             // get last otp
             const otpHolder = await OTP.find({ email });
             if (!otpHolder.length) {
@@ -71,32 +82,40 @@ class RecruiterService {
                 throw new BadRequestError('OTP không chính xác')
             }
             // verify Email
-            await Recruiter.verifyEmail(email);
+            await Recruiter.verifyEmail(email, session);
             // add recruiter to login
             const hashPassword = await RedisService.getEmailKey(email);
             if (!hashPassword) {
                 throw new BadRequestError("Quá thời hạn 24 giờ kể từ lúc đăng ký vui lòng đăng ký lại.");
             }
-            const login = await Login.create({
+            const login = await Login.create([{
                 email,
                 password: hashPassword,
                 role: "RECRUITER",
+            }], {
+                session
             })
             // Reference Recruiter, Login
             await Recruiter.findOneAndUpdate({ email }, {
                 $set: {
-                    loginId: login._id
+                    loginId: login[0]._id
                 }
+            }, {
+                session
             })
             // delete redis password
             await RedisService.deleteEmailKey(email);
             // delete all otp verify in db
-            await OTP.deleteMany({ email });
+            await OTP.deleteMany({ email }, { session });
+            await session.commitTransaction();
+            session.endSession();
             //return 200
             return {
                 message: "Xác nhận email thành công",
             }
         } catch (error) {
+            await session.abortTransaction();
+            session.endSession();
             throw error;
         }
     }
@@ -142,27 +161,66 @@ class RecruiterService {
         }
     }
 
-    static updateInformation = async ({ userId, name, position, phone, contactEmail, companyName, companyEmail,
-        companyWebsite, companyAddress, companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity, slug }) => {
+    static updateInformation = async ({ userId, name, position, phone, contactEmail, companyName, companyWebsite,
+        companyAddress, companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity, slug }) => {
+        const session = await mongoose.startSession();
         try {
-            const result = await Recruiter.updateInformation({
-                userId, name, position, phone, contactEmail, companyName, companyEmail,
-                companyWebsite, companyAddress, companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity, slug
-            })
+            session.startTransaction();
+            //check slug
+            const recruiter = await Recruiter.findOne({ slug }).lean();
+            if (recruiter) {
+                if (recruiter._id.toString() !== userId) {
+                    throw new BadRequestError("Slug này đã tồn tại. Vui lòng nhập slug khác.");
+                }
+            }
+            const result = await Recruiter.findOneAndUpdate({ _id: userId }, {
+                $set: {
+                    name, position, phone, contactEmail, companyName, companyWebsite, companyAddress,
+                    about, employeeNumber, fieldOfActivity, companyLogo, companyCoverPhoto, slug,
+                    acceptanceStatus: "waiting", firstUpdate: false
+                }
+            }, {
+                session,
+                new: true,
+                select: { __v: 0 }
+            }).populate('loginId').lean()
+            console.log(result)
+            if (!result) {
+                throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại');
+            }
+            result.role = result.loginId?.role;
+            delete result.loginId;
+            result.avatar = result.avatar ?? null;
+            await session.commitTransaction();
+            session.endSession();
             return {
                 message: "cập nhật thông tin thành công",
                 metadata: { ...result }
             }
         } catch (error) {
+            await session.abortTransaction();
+            session.endSession();
             throw error;
         }
     }
 
     static updateAvatar = async ({ userId, avatar }) => {
         try {
-            const result = await Recruiter.updateAvatar({
-                userId, avatar
-            })
+            const recruiter = await Recruiter.findById(userId);
+            const oldAvatar = recruiter.avatar;
+            if (oldAvatar) {
+                const splitArr = oldAvatar.split("/");
+                const image = splitArr[splitArr.length - 1];
+                clearImage(image);
+            }
+            recruiter.avatar = avatar;
+            await recruiter.save();
+            const result = await Recruiter.findById(userId).populate("loginId").select("-__v").lean();
+            result.role = result.loginId.role;
+            delete result.loginId;
+            result.slug = result.slug ?? null;
+            result.companyLogo = result.companyLogo ?? null;
+            result.companyCoverPhoto = result.companyCoverPhoto ?? null;
             return {
                 message: "cập nhật ảnh đại diện thành công",
                 metadata: { ...result }
@@ -174,9 +232,24 @@ class RecruiterService {
 
     static updateProfile = async ({ userId, name, position, phone, contactEmail }) => {
         try {
-            const result = await Recruiter.updateProfile({
-                userId, name, position, phone, contactEmail
-            })
+            const result = await Recruiter.findOneAndUpdate({ _id: userId }, {
+                $set: {
+                    name, position, phone, contactEmail,
+                    acceptanceStatus: "waiting"
+                }
+            }, {
+                new: true,
+                select: { createdAt: 0, updatedAt: 0, __v: 0 }
+            }).lean().populate('loginId')
+            if (!result) {
+                throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại');
+            }
+            result.role = result.loginId.role;
+            delete result.loginId;
+            result.avatar = result.avatar ?? null;
+            result.slug = result.slug ?? null;
+            result.companyLogo = result.companyLogo ?? null;
+            result.companyCoverPhoto = result.companyCoverPhoto ?? null;
             return {
                 message: "cập nhật thông tin thành công",
                 metadata: { ...result }
@@ -186,13 +259,67 @@ class RecruiterService {
         }
     }
 
-    static updateCompany = async ({ userId, companyName, companyEmail, companyWebsite, companyAddress,
+    static updateCompany = async ({ userId, companyName, companyWebsite, companyAddress,
         companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity, slug }) => {
         try {
-            const result = await Recruiter.updateCompany({
-                userId, companyName, companyEmail, companyWebsite, companyAddress, companyLogo,
-                companyCoverPhoto, about, employeeNumber, fieldOfActivity, slug
-            })
+            //check slug
+            if (slug) {
+                const recruiterSlug = await Recruiter.findOne({ slug }).lean();
+                if (recruiterSlug) {
+                    if (recruiterSlug._id.toString() !== userId) {
+                        throw new BadRequestError("Slug này đã tồn tại. Vui lòng nhập slug khác.");
+                    }
+                }
+            }
+            const recruiter = await Recruiter.findById(userId);
+            if (companyLogo) {
+                const oldLogo = recruiter.companyLogo;
+                if (oldLogo) {
+                    const splitArrLogo = oldLogo.split("/");
+                    const deleteLogo = splitArrLogo[splitArrLogo.length - 1];
+                    clearImage(deleteLogo);
+                }
+                recruiter.companyLogo = companyLogo;
+            }
+            if (companyCoverPhoto) {
+                const oldCP = recruiter.companyCoverPhoto;
+                if (oldCP) {
+                    const splitArrCP = oldCP.split("/");
+                    const deleteCP = splitArrCP[splitArrCP.length - 1];
+                    clearImage(deleteCP);
+                }
+                recruiter.companyCoverPhoto = companyCoverPhoto;
+            }
+            if (companyName) {
+                recruiter.companyName = companyName;
+            }
+            if (companyWebsite) {
+                recruiter.companyWebsite = companyWebsite;
+            }
+            if (companyAddress) {
+                recruiter.companyAddress = companyAddress;
+            }
+            if (about) {
+                recruiter.about = about;
+            }
+            if (employeeNumber) {
+                recruiter.employeeNumber = employeeNumber;
+            }
+            if (fieldOfActivity) {
+                recruiter.fieldOfActivity = fieldOfActivity;
+            }
+            if (slug) {
+                recruiter.slug = slug;
+            }
+            recruiter.acceptanceStatus = "waiting";
+            await recruiter.save();
+            const result = await Recruiter.findById(userId).populate('loginId').select("-__v").lean();
+            result.role = result.loginId.role;
+            delete result.loginId;
+            result.avatar = result.avatar ?? null;
+            result.slug = result.slug ?? null;
+            result.companyLogo = result.companyLogo ?? null;
+            result.companyCoverPhoto = result.companyCoverPhoto ?? null;
             return {
                 message: "cập nhật thông tin thành công",
                 metadata: { ...result }
@@ -238,6 +365,7 @@ class RecruiterService {
                                     $expr: {
                                         $and: [
                                             { $eq: ['$recruiterId', '$$recruiterId'] }, // id từ order, recruiter
+                                            { $eq: ['$status', 'Thành công'] },
                                             { $gt: ['$validTo', new Date()] }
                                         ]
                                     }
@@ -279,8 +407,8 @@ class RecruiterService {
                         __v: 0,
                         loginId: 0,
                         avatar: 0,
-                        premiumDetails: 0, 
-                        likeDetails: 0 
+                        premiumDetails: 0,
+                        likeDetails: 0
                     }
                 }
             ]);
@@ -630,8 +758,9 @@ class RecruiterService {
         }
     }
 
-    static approveApplication = async ({ userId, applicationId, status, companyName, reasonDecline }) => {
+    static approveApplication = async ({ userId, applicationId, status, reasonDecline }) => {
         try {
+            const companyName = (await Recruiter.findById(userId).lean()).companyName;
             const { candidateId, jobName } = await Application.approveApplication({ userId, applicationId, status, reasonDecline });
             const notification = await Notification.create({
                 senderId: userId,
@@ -724,7 +853,6 @@ class RecruiterService {
     static createPayment = async ({ userId, orderType, language, ipAddr }) => {
         try {
             const order = await OrderService.createOrder({ userId, price: 600000 });
-            console.log(order._id.toString())
             const vpnUrl = await VNPayService.createPaymentURL({ ipAddr, orderId: order._id.toString(), amount: 600000, orderType, language });
             return {
                 message: "Tạo đơn thanh toán thành công",

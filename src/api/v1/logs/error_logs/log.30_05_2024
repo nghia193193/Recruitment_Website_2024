@@ -39,3 +39,22 @@ Require stack:
 30/05/2024	17:45:54 ::1---/v1/api/recruiter/update_company_information---PATCH---Unexpected token I in JSON at position 0
 30/05/2024	17:46:25 ::1---/v1/api/recruiter/update_company_information---PATCH---Unexpected token I in JSON at position 0
 30/05/2024	17:49:10 ::1---/v1/api/recruiter/update_company_information---PATCH---'"fieldOfActivity[2]"' không hợp lệ
+30/05/2024	21:23:07 ::1---/v1/api/login---POST---Mật khẩu không chính xác
+30/05/2024	21:24:25 ::1---/v1/api/candidate/update_avatar---PATCH---Unexpected field
+30/05/2024	21:24:44 ::1---/v1/api/candidate/update_avatar---PATCH---Unexpected field
+30/05/2024	21:25:41 ::1---/v1/api/candidate/update_avatar---PATCH---Unexpected field
+30/05/2024	21:28:22 ::1---/v1/api/candidate/update_avatar---PATCH---Unexpected field
+30/05/2024	21:28:47 ::1---/v1/api/candidate/update_avatar---PATCH---Unexpected field
+30/05/2024	22:24:47 ::1---/v1/api/candidate/update_avatar---PATCH---Vui lòng đăng nhập lại
+30/05/2024	22:37:54 ::1---/v1/api/candidate/update_avatar---PATCH---image is not defined
+30/05/2024	22:38:00 ::1---/v1/api/candidate/update_avatar---PATCH---image is not defined
+30/05/2024	22:39:05 ::1---/v1/api/candidate/update_avatar---PATCH---Bạn chưa chọn file!
+30/05/2024	22:52:47 ::1---/v1/api/candidate/update_avatar---PATCH---image is not defined
+30/05/2024	22:53:33 ::1---/v1/api/candidate/update_avatar---PATCH---candidate.save is not a function
+30/05/2024	23:25:01 ::1---/v1/api/candidate/update_avatar---PATCH---Vui lòng đăng nhập lại
+30/05/2024	23:33:41 ::1---/v1/api/candidate/information---GET---Vui lòng đăng nhập lại
+30/05/2024	23:39:42 ::1---/images---GET---Page not found
+30/05/2024	23:41:32 ::1---/images/---GET---Page not found
+30/05/2024	23:41:33 ::1---/images/---GET---Page not found
+30/05/2024	23:41:33 ::1---/images/---GET---Page not found
+30/05/2024	23:48:51 ::1---/favicon.ico---GET---Page not found

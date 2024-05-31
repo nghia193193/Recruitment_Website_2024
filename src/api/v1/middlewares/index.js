@@ -55,7 +55,6 @@ const authPageRecruiter = async (req, res, next) => {
         if (!recruiter) {
             throw new ForbiddenRequestError("Bạn không có quyền");
         }
-        req.recruiter = recruiter;
         next();
     } catch (error) {
         next(error)

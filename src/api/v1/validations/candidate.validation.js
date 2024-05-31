@@ -69,9 +69,9 @@ class CandidateValidation {
     static validateUpdateAvatar = data => {
         const validateSchema = joi.object({
             avatar: joi.alternatives().try(
-                joi.object({
-                    mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg'),
-                }).unknown(true),
+                joi.array().items(joi.object({
+                    mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
+                }).unknown(true)),
                 joi.string().uri() // Cho phép URL hợp lệ
             ).required(),
         })

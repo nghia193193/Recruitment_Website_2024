@@ -3,14 +3,17 @@ const cors = require('cors');
 const helmet = require('helmet');
 const routes = require('./routes');
 const createError = require('http-errors');
+// const { fileConfig } = require('./configs/config.fileUpload');
 const logEvents = require('./utils/logEvents');
 const compression = require('compression');
 const morgan = require('morgan');
-const { fileConfig } = require('./configs/config.fileUpload');
 require('dotenv').config();
 require('./configs/config.coudinary').cloudinaryConfig;
+const path = require('path');
 
 const app = express();
+
+app.use(require('./middlewares/uploadFile').uploadMiddleware);
 
 app.use(cors());
 app.use(helmet());
@@ -26,7 +29,8 @@ app.use(compression({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(fileConfig);
+// app.use(fileConfig);
+app.use('/images', express.static(path.join(__dirname, '../../images')));
 app.use(morgan("combined"));
 
 app.use((req, res, next) => {
