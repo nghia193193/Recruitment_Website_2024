@@ -43,28 +43,34 @@ class RecruiterController {
     }
 
     updateInformation = async (req, res, next) => {
-        let companyLogo, companyCoverPhoto;
-        if (req.files['companyLogo'] && req.files['companyCoverPhoto']) {
-            const splitArrLogo = req.files['companyLogo'][0].path.split("\\");
-            const splitArrCoverPhoto = req.files['companyCoverPhoto'][0].path.split("\\");
-            companyLogo = `http://localhost:${process.env.PORT}/images/${splitArrLogo[splitArrLogo.length - 1]}`;
-            companyCoverPhoto = `http://localhost:${process.env.PORT}/images/${splitArrCoverPhoto[splitArrCoverPhoto.length - 1]}`;
-        } else {
-            // xử lý field cho phép nhưng không phải là logo, coverphoto
-            const wrongField = req.files['avatar'];
-            console.log(wrongField)
-            if (wrongField) {
-                const splitWF = wrongField[0].path.split("\\");
-                const file = splitWF[splitWF.length - 1];
-                clearImage(file);
-            }
-            throw new BadRequestError("Chưa upload ảnh đại diện và ảnh bìa!");
-        }
-        const { error, value } = RecruiterValidation.validateUpdateInformation({ ...req.body });
+        const { error, value } = RecruiterValidation.validateUpdateInformation({ ...req.body, ...req.files });
         if (error) {
+            const { avatar, companyLogo, companyCoverPhoto } = value;
+            if (avatar) {
+                if (Array.isArray(avatar)) {
+                    clearImage(avatar[0].filename);
+                }
+            }
+            if (companyLogo) {
+                if (Array.isArray(companyLogo)) {
+                    clearImage(companyLogo[0].filename);
+                }
+            }
+            if (companyCoverPhoto) {
+                if (Array.isArray(companyCoverPhoto)) {
+                    clearImage(companyCoverPhoto[0].filename);
+                }
+            }
             throw new BadRequestError(error.details[0].message);
         }
-        const { metadata, message } = await RecruiterService.updateInformation({ ...value, ...req.payload, companyLogo, companyCoverPhoto });
+        const { companyLogo, companyCoverPhoto } = value;
+        if (companyLogo) {
+            value.companyLogo = `http://localhost:${process.env.PORT}/images/${companyLogo[0].filename}`;
+        }
+        if (companyCoverPhoto) {
+            value.companyCoverPhoto = `http://localhost:${process.env.PORT}/images/${companyCoverPhoto[0].filename}`;
+        }
+        const { metadata, message } = await RecruiterService.updateInformation({ ...value, ...req.payload });
         new OK({
             message: message,
             metadata: { ...metadata }
@@ -74,6 +80,16 @@ class RecruiterController {
     updateAvatar = async (req, res, next) => {
         const { error, value } = RecruiterValidation.validateUpdateAvatar(req.files);
         if (error) {
+            const { avatar, companyLogo, companyCoverPhoto } = value;
+            if (avatar) {
+                clearImage(avatar[0].filename);
+            }
+            if (companyLogo) {
+                clearImage(companyLogo[0].filename);
+            }
+            if (companyCoverPhoto) {
+                clearImage(companyCoverPhoto[0].filename);
+            }
             throw new BadRequestError(error.details[0].message);
         }
         const { avatar } = value;
@@ -100,12 +116,21 @@ class RecruiterController {
     updateCompany = async (req, res, next) => {
         const { error, value } = RecruiterValidation.validateUpdateCompany({ ...req.body, ...req.files });
         if (error) {
-            const { companyLogo, companyCoverPhoto } = value;
+            const { avatar, companyLogo, companyCoverPhoto } = value;
+            if (avatar) {
+                if (Array.isArray(avatar)) {
+                    clearImage(avatar[0].filename);
+                }
+            }
             if (companyLogo) {
-                clearImage(companyLogo[0].filename)
+                if (Array.isArray(companyLogo)) {
+                    clearImage(companyLogo[0].filename);
+                }
             }
             if (companyCoverPhoto) {
-                clearImage(companyCoverPhoto[0].filename)
+                if (Array.isArray(companyCoverPhoto)) {
+                    clearImage(companyCoverPhoto[0].filename);
+                }
             }
             throw new BadRequestError(error.details[0].message);
         }

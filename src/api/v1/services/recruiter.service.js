@@ -170,6 +170,16 @@ class RecruiterService {
             const recruiter = await Recruiter.findOne({ slug }).lean();
             if (recruiter) {
                 if (recruiter._id.toString() !== userId) {
+                    if (companyLogo) {
+                        const splitArr = companyLogo.split("/");
+                        const image = splitArr[splitArr.length - 1];
+                        clearImage(image);
+                    }
+                    if (companyCoverPhoto) {
+                        const splitArr = companyCoverPhoto.split("/");
+                        const image = splitArr[splitArr.length - 1];
+                        clearImage(image);
+                    }
                     throw new BadRequestError("Slug này đã tồn tại. Vui lòng nhập slug khác.");
                 }
             }
@@ -184,8 +194,17 @@ class RecruiterService {
                 new: true,
                 select: { __v: 0 }
             }).populate('loginId').lean()
-            console.log(result)
             if (!result) {
+                if (companyLogo) {
+                    const splitArr = companyLogo.split("/");
+                    const image = splitArr[splitArr.length - 1];
+                    clearImage(image);
+                }
+                if (companyCoverPhoto) {
+                    const splitArr = companyCoverPhoto.split("/");
+                    const image = splitArr[splitArr.length - 1];
+                    clearImage(image);
+                }
                 throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại');
             }
             result.role = result.loginId?.role;
@@ -267,6 +286,16 @@ class RecruiterService {
                 const recruiterSlug = await Recruiter.findOne({ slug }).lean();
                 if (recruiterSlug) {
                     if (recruiterSlug._id.toString() !== userId) {
+                        if (companyLogo) {
+                            const splitArr = companyLogo.split("/");
+                            const image = splitArr[splitArr.length - 1];
+                            clearImage(image);
+                        }
+                        if (companyCoverPhoto) {
+                            const splitArr = companyCoverPhoto.split("/");
+                            const image = splitArr[splitArr.length - 1];
+                            clearImage(image);
+                        }
                         throw new BadRequestError("Slug này đã tồn tại. Vui lòng nhập slug khác.");
                     }
                 }

@@ -58,6 +58,16 @@ class CandidateController {
     updateAvatar = async (req, res, next) => {
         const { error, value } = CandidateValidation.validateUpdateAvatar(req.files);
         if (error) {
+            const { avatar, companyLogo, companyCoverPhoto } = value;
+            if (avatar) {
+                clearImage(avatar[0].filename);
+            }
+            if (companyLogo) {
+                clearImage(companyLogo[0].filename);
+            }
+            if (companyCoverPhoto) {
+                clearImage(companyCoverPhoto[0].filename);
+            }
             throw new BadRequestError(error.details[0].message);
         }
         const { avatar } = value;
@@ -224,8 +234,26 @@ class CandidateController {
     addResume = async (req, res, next) => {
         const { error, value } = CandidateValidation.validateAddResume({ ...req.body, ...req.files });
         if (error) {
+            const { avatar, companyLogo, companyCoverPhoto } = value;
+            if (avatar) {
+                if (Array.isArray(avatar)) {
+                    clearImage(avatar[0].filename);
+                }
+            }
+            if (companyLogo) {
+                if (Array.isArray(companyLogo)) {
+                    clearImage(companyLogo[0].filename);
+                }
+            }
+            if (companyCoverPhoto) {
+                if (Array.isArray(companyCoverPhoto)) {
+                    clearImage(companyCoverPhoto[0].filename);
+                }
+            }
             throw new BadRequestError(error.details[0].message);
         }
+        const { avatar } = value;
+        value.avatar = `http://localhost:${process.env.PORT}/images/${avatar[0].filename}`;
         const { message, metadata } = await CandidateService.addResume({ ...req.payload, ...value });
         new OK({
             message,
@@ -236,7 +264,27 @@ class CandidateController {
     updateResume = async (req, res, next) => {
         const { error, value } = CandidateValidation.validateUpdateResume({ ...req.body, ...req.params, ...req.files });
         if (error) {
+            const { avatar, companyLogo, companyCoverPhoto } = value;
+            if (avatar) {
+                if (Array.isArray(avatar)) {
+                    clearImage(avatar[0].filename);
+                }
+            }
+            if (companyLogo) {
+                if (Array.isArray(companyLogo)) {
+                    clearImage(companyLogo[0].filename);
+                }
+            }
+            if (companyCoverPhoto) {
+                if (Array.isArray(companyCoverPhoto)) {
+                    clearImage(companyCoverPhoto[0].filename);
+                }
+            }
             throw new BadRequestError(error.details[0].message);
+        }
+        const { avatar } = value;
+        if (avatar) {
+            value.avatar = `http://localhost:${process.env.PORT}/images/${avatar[0].filename}`;
         }
         const { message, metadata } = await CandidateService.updateResume({ ...req.payload, ...value });
         new OK({

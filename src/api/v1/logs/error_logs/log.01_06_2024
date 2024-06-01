@@ -2,3 +2,50 @@
 01/06/2024	00:03:10 ::1---/v1/api/recruiter/update_avatar---PATCH---"avatar" is required
 01/06/2024	00:03:17 ::1---/v1/api/recruiter/update_avatar---PATCH---"avatar" is required
 01/06/2024	00:08:48 ::1---/v1/api/candidate/update_avatar---PATCH---"avatar" is required
+01/06/2024	15:17:31 ::1---/v1/api/recruiter/update_avatar---PATCH---"avatar" is required
+01/06/2024	15:17:47 ::1---/v1/api/recruiter/update_avatar---PATCH---"avatar" is required
+01/06/2024	15:18:16 ::1---/v1/api/recruiter/update_avatar---PATCH---"avatar[0].fieldname" is not allowed
+01/06/2024	15:20:00 ::1---/v1/api/recruiter/update_avatar---PATCH---"avatar[0].fieldname" is not allowed
+01/06/2024	15:21:38 ::1---/v1/api/recruiter/update_avatar---PATCH---"avatar" is required
+01/06/2024	15:24:47 ::1---/v1/api/recruiter/update_avatar---PATCH---"avatar" is required
+01/06/2024	15:25:58 ::1---/v1/api/recruiter/update_avatar---PATCH---"avatar" is required
+01/06/2024	15:26:09 ::1---/v1/api/recruiter/update_avatar---PATCH---"avatar" is required
+01/06/2024	15:26:49 ::1---/v1/api/recruiter/update_avatar---PATCH---"companyLogo" is not allowed
+01/06/2024	15:26:58 ::1---/v1/api/recruiter/update_avatar---PATCH---"companyLogo" is not allowed
+01/06/2024	15:27:41 ::1---/v1/api/recruiter/update_avatar---PATCH---"companyLogo" is not allowed
+01/06/2024	15:28:42 ::1---/v1/api/recruiter/update_avatar---PATCH---"companyLogo" is not allowed
+01/06/2024	15:28:46 ::1---/v1/api/recruiter/update_avatar---PATCH---"companyLogo" is not allowed
+01/06/2024	15:40:28 ::1---/v1/api/candidate/resumes/add---POST---Vui lòng đăng nhập lại
+01/06/2024	15:41:02 ::1---/v1/api/candidate/resumes/add---POST---The "path" argument must be of type string. Received undefined
+01/06/2024	15:42:28 ::1---/v1/api/candidate/resumes/add---POST---The "path" argument must be of type string. Received undefined
+01/06/2024	15:45:14 ::1---/v1/api/candidate/update_avatar---PATCH---"avatar" is required
+01/06/2024	15:47:35 ::1---/v1/api/candidate/update_avatar---PATCH---"avatar" is required
+01/06/2024	15:52:19 ::1---/v1/api/candidate/resumes/add---POST---The "path" argument must be of type string. Received undefined
+01/06/2024	15:53:08 ::1---/v1/api/candidate/resumes/add---POST---The "path" argument must be of type string. Received undefined
+01/06/2024	16:01:23 ::1---/v1/api/candidate/resumes/add---POST---Ảnh đại diện không hợp lệ.
+01/06/2024	16:01:31 ::1---/v1/api/candidate/resumes/add---POST---Ảnh đại diện không hợp lệ.
+01/06/2024	16:02:16 ::1---/v1/api/candidate/resumes/add---POST---Ảnh đại diện không hợp lệ.
+01/06/2024	16:02:32 ::1---/v1/api/candidate/resumes/add---POST---"email" is required
+01/06/2024	16:03:23 ::1---/v1/api/candidate/resumes/add---POST---"major" is not allowed to be empty
+01/06/2024	16:03:32 ::1---/v1/api/candidate/resumes/add---POST---"companyLogo" is not allowed
+01/06/2024	16:03:42 ::1---/v1/api/candidate/resumes/add---POST---Resume validation failed: avatar: Cast to string failed for value "{
+  url: [
+    {
+      fieldname: 'avatar',
+      originalname: '246473694_176695411291241_6111864146654646265_n.jpg',
+      encoding: '7bit',
+      mimetype: 'image/jpeg',
+      destination: 'D:\\Nam4\\DATN\\Recruitment_Website\\src\\images',
+      filename: 'a70155b1-dad6-4931-b6b8-ce8a76299bdf.jpg',
+      path: 'D:\\Nam4\\DATN\\Recruitment_Website\\src\\images\\a70155b1-dad6-4931-b6b8-ce8a76299bdf.jpg',
+      size: 6389
+    }
+  ]
+}" (type Object) at path "avatar"
+01/06/2024	16:05:07 ::1---/v1/api/candidate/resumes/add---POST---Resume validation failed: avatar: Cast to string failed for value "{
+  url: 'http://localhost:8080/images/53ded04a-c405-4d80-93d8-fa46e0b0c31a.jpg'
+}" (type Object) at path "avatar"
+01/06/2024	16:24:22 ::1---/v1/api/candidate/resumes/update/665ae523e84f7eae1a3c8caa---PATCH---Vui lòng đăng nhập lại
+01/06/2024	16:24:34 ::1---/v1/api/candidate/resumes/update/665ae523e84f7eae1a3c8caa---PATCH---Ảnh đại diện không hợp lệ.
+01/06/2024	16:24:56 ::1---/v1/api/candidate/resumes/update/665ae523e84f7eae1a3c8caa---PATCH---Ảnh đại diện không hợp lệ.
+01/06/2024	16:25:25 ::1---/v1/api/candidate/resumes/update/665ae523e84f7eae1a3c8cab---PATCH---Có lỗi xảy ra vui lòng thử lại.

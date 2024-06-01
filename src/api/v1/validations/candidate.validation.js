@@ -68,12 +68,9 @@ class CandidateValidation {
 
     static validateUpdateAvatar = data => {
         const validateSchema = joi.object({
-            avatar: joi.alternatives().try(
-                joi.array().items(joi.object({
-                    mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
-                }).unknown(true)),
-                joi.string().uri() // Cho phép URL hợp lệ
-            ).required(),
+            avatar: joi.array().items(joi.object({
+                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
+            }).unknown(true)).required(),
         })
         return validateSchema.validate(data);
     }
@@ -174,12 +171,11 @@ class CandidateValidation {
                 const cleanTitle = xss(value.trim());
                 return cleanTitle;
             }).required(),
-            avatar: joi.alternatives().try(
-                joi.object({
-                    mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg'),
-                }).unknown(true),
-                joi.string().uri()
-            ).required(),
+            avatar: joi.array().items(joi.object({
+                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
+            }).unknown(true)).required().messages({
+                'array.base': 'Ảnh đại diện không hợp lệ.'
+            }),
             goal: joi.string().custom((value) => {
                 const cleanGoal = xss(value.trim());
                 return cleanGoal;
@@ -263,12 +259,11 @@ class CandidateValidation {
             }).messages({
                 'any.empty': "Tiêu đề không được để trống"
             }),
-            avatar: joi.alternatives().try(
-                joi.object({
-                    mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg'),
-                }).unknown(true),
-                joi.string().uri()
-            ),
+            avatar: joi.array().items(joi.object({
+                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
+            }).unknown(true)).messages({
+                'array.base': 'Ảnh đại diện không hợp lệ.'
+            }),
             goal: joi.string().custom((value, helpers) => {
                 const cleanGoal = xss(value.trim());
                 if (cleanGoal === '') {

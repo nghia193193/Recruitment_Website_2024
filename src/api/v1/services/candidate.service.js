@@ -142,11 +142,13 @@ class CandidateService {
         }
     }
 
-    static updateInformation = async ({ userId, name, phone, gender, homeTown, workStatus, dateOfBirth, 
+    static updateInformation = async ({ userId, name, phone, gender, homeTown, workStatus, dateOfBirth,
         allowSearch, listResume }) => {
         try {
-            const candidate = await Candidate.updateInformation({ userId, name, phone, gender, homeTown, workStatus, 
-                dateOfBirth, allowSearch, listResume });
+            const candidate = await Candidate.updateInformation({
+                userId, name, phone, gender, homeTown, workStatus,
+                dateOfBirth, allowSearch, listResume
+            });
             return {
                 message: "Cập nhật thông tin thành công",
                 metadata: { ...candidate }
@@ -162,7 +164,7 @@ class CandidateService {
             const oldAvatar = candidate.avatar;
             if (oldAvatar) {
                 const splitArr = oldAvatar.split("/");
-                const image = splitArr[splitArr.length-1];
+                const image = splitArr[splitArr.length - 1];
                 clearImage(image);
             }
             candidate.avatar = avatar;
@@ -232,7 +234,7 @@ class CandidateService {
         try {
             const { message, exist } = await FavoriteJob.checkFavoriteJob({ userId, jobId });
             return {
-                message, 
+                message,
                 metadata: { exist }
             }
         } catch (error) {
@@ -244,7 +246,7 @@ class CandidateService {
         try {
             const { message, exist } = await FavoriteRecruiter.checkFavoriteRecruiter({ userId, recruiterId });
             return {
-                message, 
+                message,
                 metadata: { exist }
             }
         } catch (error) {
@@ -360,8 +362,8 @@ class CandidateService {
     static addResume = async ({ userId, name, title, avatar, goal, phone, educationLevel, homeTown, email, major,
         dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories }) => {
         try {
-            const resume = await Resume.addResume({
-                userId, name, title, avatar, goal, phone, educationLevel, homeTown, email, major,
+            const resume = await Resume.create({
+                candidateId: userId, name, title, avatar, goal, phone, educationLevel, homeTown, email, major,
                 dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories
             });
             return {
@@ -375,14 +377,38 @@ class CandidateService {
     static updateResume = async ({ userId, resumeId, name, title, avatar, goal, phone, educationLevel, homeTown, email, major,
         dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories }) => {
         try {
-            const resume = await Resume.updateResume({
-                userId, resumeId, name, title, avatar, goal, phone, educationLevel, homeTown, email, major,
-                dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories
-            });
+            const resume = await Resume.findOne({ _id: resumeId, candidateId: userId });
+            if (!resume) {
+                if (avatar) {
+                    const splitArr = avatar.split("/");
+                    const image = splitArr[splitArr.length - 1];
+                    clearImage(image);
+                }
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+            }
+            if (avatar) {
+                const oldAva = resume.avatar;
+                const splitArr = oldAva.split("/");
+                const image = splitArr[splitArr.length - 1];
+                clearImage(image);
+                resume.avatar = avatar;
+                await resume.save();
+            }
+            const result = await Resume.findOneAndUpdate({ _id: resumeId, candidateId: userId }, {
+                $set: {
+                    name, title, goal, phone, educationLevel, homeTown, email, major,
+                    dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories
+                }
+            }, {
+                new: true,
+                select: { __v: 0, candidateId: 0 }
+            }).lean();
+            result.createdAt = formatInTimeZone(result.createdAt, "Asia/Ho_Chi_Minh", "dd/MM/yyy HH:mm:ss");
+            result.updatedAt = formatInTimeZone(result.updatedAt, "Asia/Ho_Chi_Minh", "dd/MM/yyy HH:mm:ss");
             return {
                 message: "Cập nhật resume thành công.",
-                metadata: { ...resume }
-            }   
+                metadata: { ...result }
+            }
         } catch (error) {
             throw error;
         }
@@ -611,7 +637,7 @@ class CandidateService {
                 item.name = item.jobs.name;
                 item.levelRequirement = item.jobs.levelRequirement;
                 item.field = item.jobs.field,
-                item.deadline = formatInTimeZone(item.jobs.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy"); 
+                    item.deadline = formatInTimeZone(item.jobs.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
                 item.companyName = item.recruiter.companyName;
                 delete item.jobs;
                 delete item.recruiter;

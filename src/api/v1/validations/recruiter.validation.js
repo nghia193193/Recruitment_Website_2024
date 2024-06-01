@@ -73,6 +73,16 @@ class RecruiterValidation {
             }).required().messages({
                 'any.empty': "Tên công ty không được để trống",
             }),
+            companyLogo: joi.array().items(joi.object({
+                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
+            }).unknown(true)).required().messages({
+                'array.base': 'Logo không hợp lệ.'
+            }),
+            companyCoverPhoto: joi.array().items(joi.object({
+                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
+            }).unknown(true)).required().messages({
+                'array.base': 'Ảnh bìa diện không hợp lệ.'
+            }),
             companyWebsite: joi.string().uri().required(),
             companyAddress: joi.string().max(200).custom((value, helpers) => {
                 const cleanCA = xss(value.trim());
@@ -111,12 +121,9 @@ class RecruiterValidation {
 
     static validateUpdateAvatar = data => {
         const validateSchema = joi.object({
-            avatar: joi.alternatives().try(
-                joi.array().items(joi.object({
-                    mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
-                }).unknown(true)),
-                joi.string().uri() // Cho phép URL hợp lệ
-            ).required(),
+            avatar: joi.array().items(joi.object({
+                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
+            }).unknown(true)).required(),
         })
         return validateSchema.validate(data);
     }
@@ -177,23 +184,15 @@ class RecruiterValidation {
                 'any.empty': "Địa chỉ không được để trống",
                 'string.max': "Địa chỉ không được vượt quá 200 ký tự"
             }),
-            companyLogo: joi.alternatives().try(
-                joi.array().items(joi.object({
-                    mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
-                }).unknown(true)),
-                joi.string().uri() // Cho phép URL hợp lệ
-            ).messages({
-                'string.uri': "Logo phải là một URL hợp lệ",
-                'object.mimetype': "Logo phải là tệp hình ảnh có định dạng hợp lệ"
+            companyLogo: joi.array().items(joi.object({
+                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
+            }).unknown(true)).messages({
+                'array.base': 'Logo không hợp lệ.'
             }),
-            companyCoverPhoto: joi.alternatives().try(
-                joi.array().items(joi.object({
-                    mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
-                }).unknown(true)),
-                joi.string().uri() // Cho phép URL hợp lệ
-            ).messages({
-                'string.uri': "Ảnh bìa phải là một URL hợp lệ",
-                'object.mimetype': "Ảnh bìa phải là tệp hình ảnh có định dạng hợp lệ"
+            companyCoverPhoto: joi.array().items(joi.object({
+                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
+            }).unknown(true)).messages({
+                'array.base': 'Ảnh bìa diện không hợp lệ.'
             }),
             about: joi.string().custom((value, helpers) => {
                 const cleanAbout = xss(value.trim());
