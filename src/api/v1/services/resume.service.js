@@ -19,9 +19,9 @@ class ResumeService {
             if (major) query["major"] = major;
             const length = await Resume.find(query).countDocuments();
             const result = await Resume.find(query).select("-__v -candidateId -allowSearch")
-                .skip((page - 1)*limit)
+                .sort({ updatedAt: -1 })
+                .skip((page - 1) * limit)
                 .limit(limit)
-                .lean()
             return {
                 message: "Tìm kiếm ứng viên thành công",
                 metadata: {

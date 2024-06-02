@@ -58,12 +58,12 @@ router.get('/notifications', verifyAccessToken, authPageRecruiter, asyncHandler(
 // read notification
 router.patch('/notifications/:notificationId', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.readNotification));
 // create payment
-router.post('/create_payment_url', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, recruiterController.createPayment);
+router.post('/create_payment_url', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.createPayment));
 // get vnpay ipn
-router.get('/vnpay_ipn', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, recruiterController.getVNPayIPN);
+router.get('/vnpay_ipn', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getVNPayIPN));
 // check premium Account
-router.get('/check_premium_account', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, recruiterController.checkPremiumAccount);
+router.get('/check_premium_account', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.checkPremiumAccount));
 // advanced search premium
-router.get('/list_advanced_resume', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, resumeController.advancedSearchForPremium);
+router.get('/list_advanced_resume', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(resumeController.advancedSearchForPremium));
 
 module.exports = router;
