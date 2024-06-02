@@ -104,7 +104,7 @@ resumeSchema.statics.getListResume = async function ({ userId, page, limit, titl
             .limit(limit)
             .sort({ updatedAt: -1 });
         listResume = listResume.map(resume => {
-            resume.avatar = resume.avatar.url;
+            resume.avatar = resume.avatar;
             resume.updatedAt = formatInTimeZone(resume.updatedAt, "Asia/Ho_Chi_Minh", "dd/MM/yyy HH:mm:ss");
             return resume;
         })
@@ -121,7 +121,7 @@ resumeSchema.statics.getResumeDetail = async function ({ userId, resumeId }) {
             throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
         }
         delete resume.candidateId;
-        resume.avatar = resume.avatar.url;
+        resume.avatar = resume.avatar;
         resume.createdAt = formatInTimeZone(resume.createdAt, "Asia/Ho_Chi_Minh", "dd/MM/yyy HH:mm:ss");
         resume.updatedAt = formatInTimeZone(resume.updatedAt, "Asia/Ho_Chi_Minh", "dd/MM/yyy HH:mm:ss");
         return resume;

@@ -53,7 +53,7 @@ router.patch('/resumes/change_status/:resumeId', verifyAccessToken, authPageCand
 // upload certification
 router.post('/resumes/upload_certification', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.uploadCertification));
 // delete upload certification
-router.delete('/resumes/delete_upload_certification/:Id', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.deleteUploadCertification));
+router.delete('/resumes/delete_upload_certification', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.deleteUploadCertification));
 // check apply
 router.get('/jobs/check_apply/:jobId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.checkApplyJob));
 // apply job

@@ -31,6 +31,8 @@ router.post('/refresh_token', asyncHandler(accessController.refreshAccessToken))
 router.delete('/logout', asyncHandler(accessController.logout));
 // get list job
 router.get('/jobs', asyncHandler(jobController.getListJob));
+// get list job nổi bật
+router.get('/highlighted_jobs', asyncHandler(jobController.getListJobPremiumPrivilegeHome));
 // get list relevant job by field
 router.get('/jobs/:jobId/related_jobs', asyncHandler(jobController.getListRelatedJobByField));
 // get list job of recruiter

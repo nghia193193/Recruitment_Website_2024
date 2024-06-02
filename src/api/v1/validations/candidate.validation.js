@@ -384,20 +384,20 @@ class CandidateValidation {
 
     static validateUploadCertification = data => {
         const validateSchema = joi.object({
-            uploadFile: joi.object({
-                name: joi.string(),
-                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg', 'application/pdf'),
-                size: joi.number().max(5 * 1024 * 1024)
-            }).unknown(true).required()
+            uploadFile: joi.array().items(joi.object({
+                mimetype: joi.string().valid('application/pdf').messages({
+                    'any.only': 'Chỉ cho phép file PDF!',
+                })
+            }).unknown(true)).required()
         })
         return validateSchema.validate(data);
     }
 
     static validateDeleteUploadCertification = data => {
         const validateSchema = joi.object({
-            Id: joi.string().custom((value) => {
-                const cleanPass = xss(value.trim());
-                return cleanPass;
+            uploadFile: joi.string().custom((value) => {
+                const cleanvalue = xss(value.trim());
+                return cleanvalue;
             }).required()
         })
         return validateSchema.validate(data);
@@ -441,17 +441,14 @@ const objectIdValidator = (value, helpers) => {
 };
 const objectIdJoiSchema = joi.string().custom(objectIdValidator, 'Custom validation for ObjectId').message("Id không hợp lệ");
 
-const uploadFileSchema = joi.object({
-    Id: joi.string().custom((value) => {
-        const cleanPass = xss(value.trim());
-        return cleanPass;
-    }).required(), 
-    url: joi.string().uri().required()
-});
-
 const certificationSchema = joi.object({
     name: joi.string().required(), 
-    uploadFile: uploadFileSchema.required()
+    uploadFile: joi.string().uri().required().messages({
+        'string.base': 'uploadFile phải là một chuỗi!',
+        'string.empty': 'uploadFile không được để trống!',
+        'string.uri': 'uploadFile phải là một URL hợp lệ!',
+        'any.required': 'Trường uploadFile là bắt buộc!'
+    })
 });
 
 const educationSchema = joi.object({

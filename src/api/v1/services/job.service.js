@@ -54,7 +54,7 @@ class JobService {
                 result.map(async (job) => {
                     job.premiumAccount = await Order.checkPremiumAccount({ recruiterId: job.recruiterId._id.toString() });
                     job.companyName = job.recruiterId.companyName ?? null;
-                    job.companyLogo = job.recruiterId.companyLogo?.url ?? null;
+                    job.companyLogo = job.recruiterId.companyLogo ?? null;
                     job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
                     job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
                     job.approvalDate = job.approvalDate ? formatInTimeZone(job.approvalDate, "Asia/Ho_Chi_Minh", "dd/MM/yyyy") : null;
@@ -94,7 +94,7 @@ class JobService {
             job.approvalDate = job.approvalDate ? formatInTimeZone(job.approvalDate, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX") : undefined;
             job.companyName = job.recruiterId.companyName ?? null;
             job.companySlug = job.recruiterId.slug ?? null;
-            job.companyLogo = job.recruiterId.companyLogo?.url ?? null;
+            job.companyLogo = job.recruiterId.companyLogo ?? null;
             job.employeeNumber = job.recruiterId.employeeNumber;
             job.companyAddress = job.recruiterId.companyAddress;
             job.acceptedNumber = acceptedNumber;
@@ -188,7 +188,7 @@ class JobService {
             result = result.map(job => {
                 job.companySlug = job.recruiters[0].slug ?? null;
                 job.companyName = job.recruiters[0].companyName ?? null;
-                job.companyLogo = job.recruiters[0].companyLogo?.url ?? null;
+                job.companyLogo = job.recruiters[0].companyLogo ?? null;
                 job.employeeNumber = job.recruiters[0].employeeNumber;
                 job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
                 job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
@@ -259,7 +259,7 @@ class JobService {
             // format data
             result = result.map(job => {
                 job.companyName = job.recruiterId.companyName ?? null;
-                job.companyLogo = job.recruiterId.companyLogo?.url ?? null;
+                job.companyLogo = job.recruiterId.companyLogo ?? null;
                 job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
                 job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
                 job.approvalDate = job.approvalDate ? formatInTimeZone(job.approvalDate, "Asia/Ho_Chi_Minh", "dd/MM/yyyy") : null;
@@ -396,7 +396,7 @@ class JobService {
                                 $match: { acceptanceStatus: { $ne: "waiting" } }
                             },
                             {
-                                $sort: { 
+                                $sort: {
                                     "updatedAt": -1
                                 }
                             }
@@ -420,9 +420,7 @@ class JobService {
 
             const totalDocument = await Job.aggregate(totalDocumentPipeline);
             const length = totalDocument.length > 0 ? totalDocument[0].totalDocuments : 0;
-            console.log(length)
             let result = await Job.aggregate(resultPipeline);
-            console.log(result);
             result = result.map(job => {
                 job.reasonDecline = job.reasonDecline ?? null;
                 job.companySlug = job.recruiters[0].slug ?? null;
@@ -435,6 +433,163 @@ class JobService {
             })
             return {
                 message: "Lấy danh sách công việc thành công",
+                metadata: { listJob: result, totalElement: length },
+                options: {
+                    page: page,
+                    limit: limit
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getListJobPremiumPrivilegeHome = async ({ name, province, type, levelRequirement, experience, field,
+        genderRequirement, page, limit }) => {
+        try {
+            page = page ? page : 1;
+            limit = limit ? limit : 5;
+            const match = {
+                status: "active",
+                acceptanceStatus: "accept",
+                deadline: { $gte: new Date() }
+            };
+            if (name) {
+                match["$text"] = { $search: name };
+            }
+            if (province) {
+                match["province"] = province;
+            }
+            if (type) {
+                match["type"] = type;
+            }
+            if (experience) {
+                match["experience"] = experience;
+            }
+            if (field) {
+                match["field"] = field;
+            }
+            if (levelRequirement) {
+                match["levelRequirement"] = levelRequirement;
+            }
+            if (genderRequirement) {
+                match["genderRequirement"] = genderRequirement;
+            }
+
+            const commonPipeline = [
+                {
+                    $lookup: {
+                        from: 'orders',
+                        let: { recruiterId: '$recruiterId' },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ['$recruiterId', '$$recruiterId'] },
+                                            { $eq: ['$status', 'Thành công'] },
+                                            { $gt: ['$validTo', new Date()] }
+                                        ]
+                                    }
+                                }
+                            },
+                            { $project: { _id: 1 } }
+                        ],
+                        as: 'premiumDetails'
+                    }
+                },
+                {
+                    $lookup: {
+                        from: 'favoritejobs',
+                        let: { jobId: { $toString: '$_id' } },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $in: ['$$jobId', '$favoriteJobs']
+                                    }
+                                }
+                            },
+                            { $count: 'likeNumber' }
+                        ],
+                        as: 'likeDetails'
+                    }
+                },
+                {
+                    $addFields: {
+                        premiumAccount: { $gt: [{ $size: '$premiumDetails' }, 0] },
+                        likeNumber: { $ifNull: [{ $arrayElemAt: ['$likeDetails.likeNumber', 0] }, 0] }
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "recruiters",
+                        localField: "recruiterId",
+                        foreignField: "_id",
+                        as: "recruiters"
+                    }
+                },
+                {
+                    $project: {
+                        "_id": 1,
+                        "name": 1,
+                        "type": 1,
+                        "salary": 1,
+                        "province": 1,
+                        "levelRequirement": 1,
+                        "field": 1,
+                        "deadline": 1,
+                        "acceptanceStatus": 1,
+                        "reasonDecline": 1,
+                        "recruiters.companyName": 1,
+                        "recruiters.slug": 1,
+                        "recruiters.employeeNumber": 1,
+                        "recruiters.companyLogo": 1,
+                        "premiumAccount": 1,
+                        "likeNumber": 1,
+                        "updatedAt": 1,
+                    }
+                }
+            ];
+
+            const totalDocumentPipeline = [
+                { $match: match },
+                ...commonPipeline,
+                { $count: "totalDocuments" }
+            ];
+            const resultPipeline = [
+                { $match: match },
+                ...commonPipeline,
+                {
+                    $sort: {
+                        "premiumAccount": -1,
+                        "likeNumber": -1,
+                        "updatedAt": -1
+                    }
+                },
+                {
+                    $skip: (page - 1) * limit
+                },
+                {
+                    $limit: limit
+                }
+            ];
+
+            const totalDocument = await Job.aggregate(totalDocumentPipeline);
+            const length = totalDocument.length > 0 ? totalDocument[0].totalDocuments : 0;
+            let result = await Job.aggregate(resultPipeline);
+            result = result.map(job => {
+                job.reasonDecline = job.reasonDecline ?? null;
+                job.companySlug = job.recruiters[0].slug ?? null;
+                job.companyName = job.recruiters[0].companyName ?? null;
+                job.companyLogo = job.recruiters[0].companyLogo ?? null;
+                job.employeeNumber = job.recruiters[0].employeeNumber;
+                job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
+                delete job.recruiters;
+                return { ...job };
+            })
+            return {
+                message: "Lấy danh sách công việc nổi bật thành công",
                 metadata: { listJob: result, totalElement: length },
                 options: {
                     page: page,

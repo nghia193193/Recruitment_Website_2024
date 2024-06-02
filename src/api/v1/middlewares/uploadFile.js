@@ -13,10 +13,13 @@ const fileStorage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-    if (file.mimetype === 'image/jpg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpeg') {
+    if (file.mimetype === 'image/jpg' ||
+        file.mimetype === 'image/png' ||
+        file.mimetype === 'image/jpeg' ||
+        file.mimetype === 'application/pdf') {
         cb(null, true)
     } else {
-        const error = new Error('Chỉ cho phép file JPG, JPEG, và PNG!');
+        const error = new Error('Chỉ cho phép file JPG, JPEG, PNG và PDF!');
         error.code = 'LIMIT_FILE_TYPE';
         cb(error, false)
     }
@@ -32,7 +35,8 @@ const uploadMiddleware = (req, res, next) => {
     const uploadMultiple = upload.fields([
         { name: 'avatar', maxCount: 1 },
         { name: 'companyLogo', maxCount: 1 },
-        { name: 'companyCoverPhoto', maxCount: 1 }
+        { name: 'companyCoverPhoto', maxCount: 1 },
+        { name: 'uploadFile', maxCount: 1 }
     ]);
     uploadMultiple(req, res, (err) => {
         if (err) {

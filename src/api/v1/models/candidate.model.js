@@ -164,59 +164,6 @@ candidateSchema.statics.updateInformation = async function ({ userId, name, phon
     }
 }
 
-candidateSchema.statics.updateAvatar = async function ({ userId, avatar }) {
-    try {
-        let ava;
-        //upload avatar
-        if (avatar?.tempFilePath) {
-            const resultAvatar = await cloudinary.uploader.upload(avatar.tempFilePath);
-            if (!resultAvatar) {
-                throw InternalServerError("Upload ảnh đại diện thất bại");
-            };
-            const avatarPublicId = resultAvatar.public_id;
-            const avatarUrl = cloudinary.url(avatarPublicId);
-            ava = {
-                publicId: avatarPublicId,
-                url: avatarUrl
-            }
-            //check oldAvatar
-            const oldAvatar = (await this.findById(userId)).avatar?.publicId;
-            if (oldAvatar) {
-                await cloudinary.uploader.destroy(oldAvatar);
-            };
-        } else {
-            const oldAvatar = (await this.findById(userId)).companyAvatar?.publicId;
-            if (oldAvatar) {
-                await cloudinary.uploader.destroy(oldAvatar);
-            };
-            ava = {
-                url: avatar
-            }
-        }
-        const result = await this.findOneAndUpdate({ _id: userId }, {
-            $set: {
-                avatar: ava
-            }
-        }, {
-            new: true,
-            select: { createdAt: 0, updatedAt: 0, __v: 0 }
-        }).lean().populate('loginId')
-        if (!result) {
-            throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại');
-        }
-        result.role = result.loginId?.role;
-        delete result.loginId;
-        result.avatar = result.avatar?.url ?? null;
-        result.phone = result.phone ?? null;
-        result.gender = result.gender ?? null;
-        result.homeTown = result.homeTown ?? null;
-        result.workStatus = result.workStatus ?? null;
-        result.dateOfBirth = result.dateOfBirth ?? null;
-        return result;
-    } catch (error) {
-        throw error;
-    }
-}
 
 module.exports = {
     Candidate: model('Candidate', candidateSchema)

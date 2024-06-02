@@ -45,6 +45,26 @@ class JobValidation {
         return validateSchema.validate(data);
     }
 
+    static validateGetListJobPremiumPrivilegeHome = data => {
+        const validateSchema = joi.object({
+            name: joi.string().custom((value) => {
+                const cleanName = xss(value.trim());
+                return cleanName;
+            }),
+            province: joi.string().valid(...provinceOfVietNam),
+            type: joi.string().valid(...jobType),
+            levelRequirement: joi.string().valid(...levelRequirement),
+            experience: joi.string().valid(...experience),
+            field: joi.string().valid(...fieldOfActivity),
+            genderRequirement: joi.string().valid(...genderRequirement),
+            page: joi.number().integer().min(1),
+            limit: joi.number().integer().min(1)
+        }).messages({
+            "any.only": "'{#label}' không hợp lệ"
+        })
+        return validateSchema.validate(data);
+    }
+
     static validateJobId = data => {
         const validateSchema = joi.object({
             jobId: objectIdJoiSchema.required()

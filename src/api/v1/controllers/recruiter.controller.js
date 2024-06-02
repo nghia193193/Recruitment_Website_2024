@@ -45,7 +45,7 @@ class RecruiterController {
     updateInformation = async (req, res, next) => {
         const { error, value } = RecruiterValidation.validateUpdateInformation({ ...req.body, ...req.files });
         if (error) {
-            const { avatar, companyLogo, companyCoverPhoto } = value;
+            const { avatar, companyLogo, companyCoverPhoto, uploadFile } = value;
             if (avatar) {
                 if (Array.isArray(avatar)) {
                     clearImage(avatar[0].filename);
@@ -59,6 +59,11 @@ class RecruiterController {
             if (companyCoverPhoto) {
                 if (Array.isArray(companyCoverPhoto)) {
                     clearImage(companyCoverPhoto[0].filename);
+                }
+            }
+            if (uploadFile) {
+                if (Array.isArray(uploadFile)) {
+                    clearImage(uploadFile[0].filename);
                 }
             }
             throw new BadRequestError(error.details[0].message);
@@ -80,7 +85,10 @@ class RecruiterController {
     updateAvatar = async (req, res, next) => {
         const { error, value } = RecruiterValidation.validateUpdateAvatar(req.files);
         if (error) {
-            const { avatar, companyLogo, companyCoverPhoto } = value;
+            const { avatar, companyLogo, companyCoverPhoto, uploadFile } = value;
+            if (uploadFile) {
+                clearImage(uploadFile[0].filename);
+            }
             if (avatar) {
                 clearImage(avatar[0].filename);
             }
@@ -116,7 +124,7 @@ class RecruiterController {
     updateCompany = async (req, res, next) => {
         const { error, value } = RecruiterValidation.validateUpdateCompany({ ...req.body, ...req.files });
         if (error) {
-            const { avatar, companyLogo, companyCoverPhoto } = value;
+            const { avatar, companyLogo, companyCoverPhoto, uploadFile } = value;
             if (avatar) {
                 if (Array.isArray(avatar)) {
                     clearImage(avatar[0].filename);
@@ -130,6 +138,11 @@ class RecruiterController {
             if (companyCoverPhoto) {
                 if (Array.isArray(companyCoverPhoto)) {
                     clearImage(companyCoverPhoto[0].filename);
+                }
+            }
+            if (uploadFile) {
+                if (Array.isArray(uploadFile)) {
+                    clearImage(uploadFile[0].filename);
                 }
             }
             throw new BadRequestError(error.details[0].message);

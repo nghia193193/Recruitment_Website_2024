@@ -446,8 +446,8 @@ class RecruiterService {
                 listRecruiter = listRecruiter.map(recruiter => {
                     return {
                         ...recruiter,
-                        companyLogo: recruiter.companyLogo?.url,
-                        companyCoverPhoto: recruiter.companyCoverPhoto?.url
+                        companyLogo: recruiter.companyLogo,
+                        companyCoverPhoto: recruiter.companyCoverPhoto
                     }
                 })
             }
@@ -476,8 +476,8 @@ class RecruiterService {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
             }
             const likeNumber = await FavoriteRecruiter.getLikeNumber({ recruiterId: recruiterInfor._id.toString() });
-            recruiterInfor.companyLogo = recruiterInfor.companyLogo?.url ?? null;
-            recruiterInfor.companyCoverPhoto = recruiterInfor.companyCoverPhoto?.url ?? null;
+            recruiterInfor.companyLogo = recruiterInfor.companyLogo ?? null;
+            recruiterInfor.companyCoverPhoto = recruiterInfor.companyCoverPhoto ?? null;
             recruiterInfor.slug = recruiterInfor.slug ?? null;
             recruiterInfor.likeNumber = likeNumber;
             return {
@@ -527,8 +527,8 @@ class RecruiterService {
                 listRecruiter = listRecruiter.map(recruiter => {
                     return {
                         ...recruiter,
-                        companyLogo: recruiter.companyLogo?.url,
-                        companyCoverPhoto: recruiter.companyCoverPhoto?.url
+                        companyLogo: recruiter.companyLogo,
+                        companyCoverPhoto: recruiter.companyCoverPhoto
                     }
                 })
             }

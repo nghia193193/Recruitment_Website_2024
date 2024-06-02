@@ -177,7 +177,6 @@ class CandidateService {
             result.homeTown = result.homeTown ?? null;
             result.workStatus = result.workStatus ?? null;
             result.dateOfBirth = result.dateOfBirth ?? null;
-            // const candidate = await Candidate.updateAvatar({ userId, avatar });
             return {
                 message: "Cập nhật ảnh đại diện thành công",
                 metadata: { ...result }
@@ -446,34 +445,6 @@ class CandidateService {
             return {
                 message: "Thay đổi trạng thái thành công.",
                 metadata: { ...resume }
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    static uploadCertification = async ({ uploadFile }) => {
-        try {
-            const result = await cloudinary.uploader.upload(uploadFile.tempFilePath);
-            if (!result) {
-                throw InternalServerError("Upload thất bại");
-            };
-            const publicId = result.public_id;
-            const url = cloudinary.url(publicId);
-            return {
-                message: "Upload thành công.",
-                metadata: { Id: publicId, url }
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    static deleteUploadCertification = async ({ Id }) => {
-        try {
-            await cloudinary.uploader.destroy(Id);
-            return {
-                message: "Xóa file thành công.",
             }
         } catch (error) {
             throw error;

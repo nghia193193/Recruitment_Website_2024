@@ -201,7 +201,7 @@ applicationSchema.statics.getListJobApplication = async function ({ userId, jobI
             }]
         )
         listApplication = listApplication.map((item) => {
-            item.resume.avatar = item.resume.avatar.url;
+            item.resume.avatar = item.resume.avatar;
             item.resume.updatedAt = formatInTimeZone(item.resume.updatedAt, "Asia/Ho_Chi_Minh", "dd/MM/yyy HH:mm:ss");
             return {
                 _id: item._id,
@@ -276,7 +276,7 @@ applicationSchema.statics.getApplicationDetail = async function ({ userId, appli
         delete result.candidateId;
         result.status = listApplication[0].status;
         result.reasonDecline = listApplication[0].reasonDecline ?? null;
-        result.avatar = result.avatar.url;
+        result.avatar = result.avatar;
         result.createdAt = formatInTimeZone(result.createdAt, "Asia/Ho_Chi_Minh", "dd/MM/yyy HH:mm:ss");
         result.updatedAt = formatInTimeZone(result.updatedAt, "Asia/Ho_Chi_Minh", "dd/MM/yyy HH:mm:ss");
         return { result, jobId, jobName, quantity };

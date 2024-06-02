@@ -58,7 +58,10 @@ class CandidateController {
     updateAvatar = async (req, res, next) => {
         const { error, value } = CandidateValidation.validateUpdateAvatar(req.files);
         if (error) {
-            const { avatar, companyLogo, companyCoverPhoto } = value;
+            const { avatar, companyLogo, companyCoverPhoto, uploadFile } = value;
+            if (uploadFile) {
+                clearImage(uploadFile[0].filename);
+            }
             if (avatar) {
                 clearImage(avatar[0].filename);
             }
@@ -234,7 +237,7 @@ class CandidateController {
     addResume = async (req, res, next) => {
         const { error, value } = CandidateValidation.validateAddResume({ ...req.body, ...req.files });
         if (error) {
-            const { avatar, companyLogo, companyCoverPhoto } = value;
+            const { avatar, companyLogo, companyCoverPhoto, uploadFile } = value;
             if (avatar) {
                 if (Array.isArray(avatar)) {
                     clearImage(avatar[0].filename);
@@ -248,6 +251,11 @@ class CandidateController {
             if (companyCoverPhoto) {
                 if (Array.isArray(companyCoverPhoto)) {
                     clearImage(companyCoverPhoto[0].filename);
+                }
+            }
+            if (uploadFile) {
+                if (Array.isArray(uploadFile)) {
+                    clearImage(uploadFile[0].filename);
                 }
             }
             throw new BadRequestError(error.details[0].message);
@@ -264,7 +272,7 @@ class CandidateController {
     updateResume = async (req, res, next) => {
         const { error, value } = CandidateValidation.validateUpdateResume({ ...req.body, ...req.params, ...req.files });
         if (error) {
-            const { avatar, companyLogo, companyCoverPhoto } = value;
+            const { avatar, companyLogo, companyCoverPhoto, uploadFile } = value;
             if (avatar) {
                 if (Array.isArray(avatar)) {
                     clearImage(avatar[0].filename);
@@ -278,6 +286,11 @@ class CandidateController {
             if (companyCoverPhoto) {
                 if (Array.isArray(companyCoverPhoto)) {
                     clearImage(companyCoverPhoto[0].filename);
+                }
+            }
+            if (uploadFile) {
+                if (Array.isArray(uploadFile)) {
+                    clearImage(uploadFile[0].filename);
                 }
             }
             throw new BadRequestError(error.details[0].message);
@@ -321,9 +334,27 @@ class CandidateController {
     uploadCertification = async (req, res, next) => {
         const { error, value } = CandidateValidation.validateUploadCertification(req.files);
         if (error) {
+            const { avatar, companyLogo, companyCoverPhoto, uploadFile } = value;
+            if (uploadFile) {
+                clearImage(uploadFile[0].filename);
+            }
+            if (avatar) {
+                clearImage(avatar[0].filename);
+            }
+            if (companyLogo) {
+                clearImage(companyLogo[0].filename);
+            }
+            if (companyCoverPhoto) {
+                clearImage(companyCoverPhoto[0].filename);
+            }
             throw new BadRequestError(error.details[0].message);
         }
-        const { message, metadata } = await CandidateService.uploadCertification({ ...value });
+        let { uploadFile } = value;
+        uploadFile = `http://localhost:${process.env.PORT}/images/${uploadFile[0].filename}`;
+        const message = "Upload thành công.";
+        const metadata = {
+            uploadFile
+        }
         new OK({
             message,
             metadata: { ...metadata },
@@ -331,14 +362,18 @@ class CandidateController {
     }
 
     deleteUploadCertification = async (req, res, next) => {
-        const { error, value } = CandidateValidation.validateDeleteUploadCertification(req.params);
+        const { error, value } = CandidateValidation.validateDeleteUploadCertification(req.body);
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const { message, metadata } = await CandidateService.deleteUploadCertification({ ...value });
+        let { uploadFile } = value;
+        const splitArr = uploadFile.split("/");
+        const image = splitArr[splitArr.length - 1];
+        clearImage(image);
+        const message = "Xóa file thành công.";
         new OK({
             message,
-            metadata: { ...metadata },
+            metadata: {}
         }).send(res)
     }
 
