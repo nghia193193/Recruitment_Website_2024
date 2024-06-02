@@ -12,3 +12,4 @@
 02/06/2024	14:36:43 ::1---/v1/api/candidate/resumes/add---POST---"email" is not allowed to be empty
 02/06/2024	14:37:15 ::1---/v1/api/candidate/resumes/add---POST---"certifications[0].uploadFile" must be of type object
 02/06/2024	15:36:03 ::1---/v1/api/candidate/favorite_jobs/add/66519518807f2f82e5cf413f---POST---Bạn đã thêm công việc này vào công việc yêu thích rồi.
+02/06/2024	21:24:09 ::1---/v1/api/recruiter/list_advanced_resume---GET---Cannot read properties of undefined (reading 'acceptanceStatus')

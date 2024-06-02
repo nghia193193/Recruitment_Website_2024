@@ -63,7 +63,8 @@ const authPageRecruiter = async (req, res, next) => {
 
 const checkAcceptedRecruiter = async (req, res, next) => {
     try {
-        const status = req.recruiter.acceptanceStatus;
+        const { userId } = req.payload;
+        const status = (await Recruiter.findById(userId)).acceptanceStatus;
         if (status !== "accept") {
             throw new ForbiddenRequestError("Bạn cần được chấp thuận để sử dụng chức năng");
         }

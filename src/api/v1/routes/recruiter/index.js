@@ -2,6 +2,7 @@ const express = require('express');
 const { asyncHandler } = require('../../auth/checkAuth');
 const { verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter } = require('../../middlewares');
 const recruiterController = require('../../controllers/recruiter.controller');
+const resumeController = require('../../controllers/resume.controller');
 const router = express.Router();
 
 // signup
@@ -61,6 +62,8 @@ router.post('/create_payment_url', verifyAccessToken, authPageRecruiter, checkAc
 // get vnpay ipn
 router.get('/vnpay_ipn', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, recruiterController.getVNPayIPN);
 // check premium Account
-router.get('/check_premium_account', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, recruiterController.checkPremiumAccount)
+router.get('/check_premium_account', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, recruiterController.checkPremiumAccount);
+// advanced search premium
+router.get('/list_advanced_resume', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, resumeController.advancedSearchForPremium);
 
 module.exports = router;

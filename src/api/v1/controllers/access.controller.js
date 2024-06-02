@@ -3,6 +3,7 @@
 const { BadRequestError } = require('../core/error.response');
 const { CREATED, OK } = require('../core/success.response');
 const AccessService = require('../services/access.service');
+const { majors } = require('../utils');
 const AccessValidation = require('../validations/access.validation');
 const RecruiterValidation = require('../validations/recruiter.validation');
 
@@ -109,6 +110,17 @@ class AccessController {
 
     getWorkStatus = async (req, res, next) => {
         const { message, metadata } = await AccessService.getWorkStatus();
+        new OK({
+            message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
+    getListMajor = async (req, res, next) => {
+        const message = "Lấy danh sách chuyên ngành thành công";
+        const metadata = {
+            ListMajor: majors
+        }
         new OK({
             message,
             metadata: { ...metadata }

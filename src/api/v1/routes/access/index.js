@@ -25,6 +25,8 @@ router.get('/gender_requirement', asyncHandler(accessController.getGenderRequire
 router.get('/province', asyncHandler(accessController.getProvince));
 // get list work status
 router.get('/work_status', asyncHandler(accessController.getWorkStatus));
+// get list major
+router.get('/majors', asyncHandler(accessController.getListMajor));
 // refresh access token
 router.post('/refresh_token', asyncHandler(accessController.refreshAccessToken));
 // logout
