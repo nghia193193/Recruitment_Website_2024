@@ -16,7 +16,10 @@ const app = express();
 app.use(require('./middlewares/uploadFile').uploadMiddleware);
 
 app.use(cors());
-app.use(helmet());
+
+app.use(helmet({
+    crossOriginResourcePolicy: false,
+}));
 app.use(compression({
     level: 6,
     threshold: 100 * 1024, //byte
