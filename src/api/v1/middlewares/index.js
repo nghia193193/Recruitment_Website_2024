@@ -61,19 +61,6 @@ const authPageRecruiter = async (req, res, next) => {
     }
 }
 
-const checkAcceptedRecruiter = async (req, res, next) => {
-    try {
-        const { userId } = req.payload;
-        const status = (await Recruiter.findById(userId)).acceptanceStatus;
-        if (status !== "accept") {
-            throw new ForbiddenRequestError("Bạn cần được chấp thuận để sử dụng chức năng");
-        }
-        next();
-    } catch (error) {
-        next(error)
-    }
-}
-
 const authPageAdmin = async (req, res, next) => {
     try {
         const { userId } = req.payload;
@@ -93,7 +80,6 @@ const authPageAdmin = async (req, res, next) => {
 module.exports = {
     verifyAccessToken,
     authPageRecruiter,
-    checkAcceptedRecruiter,
     authPageAdmin,
     authPageCandidate
 }

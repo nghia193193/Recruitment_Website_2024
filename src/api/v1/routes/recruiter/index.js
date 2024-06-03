@@ -1,6 +1,6 @@
 const express = require('express');
 const { asyncHandler } = require('../../auth/checkAuth');
-const { verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter } = require('../../middlewares');
+const { verifyAccessToken, authPageRecruiter } = require('../../middlewares');
 const recruiterController = require('../../controllers/recruiter.controller');
 const resumeController = require('../../controllers/resume.controller');
 const router = express.Router();
@@ -24,46 +24,46 @@ router.patch('/update_company_information', verifyAccessToken, authPageRecruiter
 // change password
 router.post('/change_password', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.changePassword));
 // create job
-router.post('/jobs/create_job', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.createJob));
+router.post('/jobs/create_job', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.createJob));
 // get list waiting job
-router.get('/jobs/waiting_jobs', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getListWaitingJob));
+router.get('/jobs/waiting_jobs', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListWaitingJob));
 // get list accepted job
-router.get('/jobs/accepted_jobs', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getListAcceptedJob));
+router.get('/jobs/accepted_jobs', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListAcceptedJob));
 // get list declined job
-router.get('/jobs/declined_jobs', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getListDeclinedJob));
+router.get('/jobs/declined_jobs', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListDeclinedJob));
 // get list nearing expiration job
-router.get('/jobs/nearing_expiration_jobs', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getListNearingExpirationdJob));
+router.get('/jobs/nearing_expiration_jobs', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListNearingExpirationdJob));
 // get list expired job
-router.get('/jobs/expired_jobs', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getListExpiredJob));
+router.get('/jobs/expired_jobs', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListExpiredJob));
 // get job status
-router.get('/jobs/status', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getJobStatus));
+router.get('/jobs/status', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getJobStatus));
 // get job detail
-router.get('/jobs/:jobId', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getJobDetail));
+router.get('/jobs/:jobId', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getJobDetail));
 // update job
-router.patch('/jobs/:jobId/update_job', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.updateJob));
+router.patch('/jobs/:jobId/update_job', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.updateJob));
 // change job status
-router.patch('/jobs/:jobId/change_status', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.changeJobStatus));
+router.patch('/jobs/:jobId/change_status', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.changeJobStatus));
 // get list job application experience
-router.get('/jobs/applications/:jobId/list_experience', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getListJobApplicationExperience));
+router.get('/jobs/applications/:jobId/list_experience', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListJobApplicationExperience));
 // get list job application
-router.get('/jobs/applications/:jobId', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getListJobApplication));
+router.get('/jobs/applications/:jobId', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListJobApplication));
 // get application detail
-router.get('/jobs/applications/detail/:applicationId', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getApplicationDetail));
+router.get('/jobs/applications/detail/:applicationId', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getApplicationDetail));
 // approve application
-router.patch('/jobs/applications/approve/:applicationId', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.approveApplication));
+router.patch('/jobs/applications/approve/:applicationId', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.approveApplication));
 // get list application status
-router.get('/application_status', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getListApplicationStatus));
+router.get('/application_status', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListApplicationStatus));
 // get list notification
 router.get('/notifications', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListNotification));
 // read notification
 router.patch('/notifications/:notificationId', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.readNotification));
 // create payment
-router.post('/create_payment_url', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.createPayment));
+router.post('/create_payment_url', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.createPayment));
 // get vnpay ipn
-router.get('/vnpay_ipn', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.getVNPayIPN));
+router.get('/vnpay_ipn', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getVNPayIPN));
 // check premium Account
-router.get('/check_premium_account', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(recruiterController.checkPremiumAccount));
+router.get('/check_premium_account', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.checkPremiumAccount));
 // advanced search premium
-router.get('/list_advanced_resume', verifyAccessToken, authPageRecruiter, checkAcceptedRecruiter, asyncHandler(resumeController.advancedSearchForPremium));
+router.get('/list_advanced_resume', verifyAccessToken, authPageRecruiter, asyncHandler(resumeController.advancedSearchForPremium));
 
 module.exports = router;

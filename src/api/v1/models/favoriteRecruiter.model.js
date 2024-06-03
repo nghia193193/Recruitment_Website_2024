@@ -28,8 +28,8 @@ favoriteRecruiterSchema.statics.getListFavoriteRecruiter = async function ({ use
             const recruiter = await Recruiter.findById(recruiterId).lean().select(
                 '-roles -createdAt -updatedAt -__v -acceptanceStatus -verifyEmail -firstApproval -loginId -avatar'
             )
-            recruiter.companyLogo = recruiter.companyLogo?.url ?? null;
-            recruiter.companyCoverPhoto = recruiter.companyCoverPhoto?.url ?? null;
+            recruiter.companyLogo = recruiter.companyLogo ?? null;
+            recruiter.companyCoverPhoto = recruiter.companyCoverPhoto ?? null;
             recruiter.slug = recruiter.slug ?? null;
             if (searchText) {
                 if (new RegExp(searchText, "i").test(recruiter.companyName) || new RegExp(searchText, "i").test(recruiter.slug)) {

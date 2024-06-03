@@ -755,12 +755,16 @@ class RecruiterService {
                 userId, jobId, candidateName, experience, status, major, goal,
                 page, limit
             })
+            const acceptedNumber = await Application.getJobAcceptedApplicationNumber({ jobId });
             return {
                 message: "Lấy danh sách ứng tuyển thành công",
                 metadata: {
                     listApplication,
                     totalElement,
                     name: job.name,
+                    type: job.type,
+                    quantity: job.quantity,
+                    acceptedNumber,
                     levelRequirement: job.levelRequirement
                 },
                 options: {
@@ -839,40 +843,6 @@ class RecruiterService {
             await Notification.readNotification({ userId, notificationId })
             return {
                 message: "Đọc thông báo thành công"
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    static getListJobApplication = async ({ userId, jobId, candidateName, experience, status, major, goal,
-        page, limit }) => {
-        try {
-            page = page ? +page : 1;
-            limit = limit ? +limit : 5;
-            const job = await Job.findById(jobId).lean();
-            if (!job) {
-                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
-            }
-            const { listApplication, totalElement } = await Application.getListJobApplication({
-                userId, jobId, candidateName, experience, status, major, goal,
-                page, limit
-            })
-            const acceptedNumber = await Application.getJobAcceptedApplicationNumber({ jobId });
-            return {
-                message: "Lấy danh sách ứng tuyển thành công",
-                metadata: {
-                    listApplication,
-                    totalElement,
-                    name: job.name,
-                    quantity: job.quantity,
-                    acceptedNumber,
-                    levelRequirement: job.levelRequirement
-                },
-                options: {
-                    page: page,
-                    limit: limit
-                }
             }
         } catch (error) {
             throw error;

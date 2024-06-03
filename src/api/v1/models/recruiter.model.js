@@ -101,9 +101,9 @@ recruiterSchema.statics.getInformation = async function (userId) {
         const likeNumber = await FavoriteRecruiter.getLikeNumber({ recruiterId: userId });
         recruiterInfor.role = recruiterInfor.loginId?.role;
         delete recruiterInfor.loginId;
-        recruiterInfor.avatar = recruiterInfor.avatar?.url ?? null;
-        recruiterInfor.companyLogo = recruiterInfor.companyLogo?.url ?? null;
-        recruiterInfor.companyCoverPhoto = recruiterInfor.companyCoverPhoto?.url ?? null;
+        recruiterInfor.avatar = recruiterInfor.avatar ?? null;
+        recruiterInfor.companyLogo = recruiterInfor.companyLogo ?? null;
+        recruiterInfor.companyCoverPhoto = recruiterInfor.companyCoverPhoto ?? null;
         recruiterInfor.slug = recruiterInfor.slug ?? null;
         recruiterInfor.likeNumber = likeNumber;
         recruiterInfor.reasonDecline = recruiterInfor.reasonDecline ?? null;
@@ -146,8 +146,8 @@ recruiterSchema.statics.getListRecruiterByAdmin = async function ({ searchText, 
             listRecruiter = listRecruiter.map(recruiter => {
                 return {
                     ...recruiter,
-                    companyLogo: recruiter.companyLogo?.url,
-                    companyCoverPhoto: recruiter.companyCoverPhoto?.url
+                    companyLogo: recruiter.companyLogo,
+                    companyCoverPhoto: recruiter.companyCoverPhoto
                 }
             })
         }
@@ -186,9 +186,9 @@ recruiterSchema.statics.approveRecruiter = async function ({ recruiterId, accept
         }
         result.role = result.loginId.role;
         delete result.loginId;
-        result.avatar = result.avatar?.url ?? null;
-        result.companyLogo = result.companyLogo?.url ?? null;
-        result.companyCoverPhoto = result.companyCoverPhoto?.url ?? null;
+        result.avatar = result.avatar ?? null;
+        result.companyLogo = result.companyLogo ?? null;
+        result.companyCoverPhoto = result.companyCoverPhoto ?? null;
         result.reasonDecline = result.reasonDecline ?? null;
         return result;
     } catch (error) {
