@@ -1,8 +1,9 @@
 const express = require('express');
 const { asyncHandler } = require('../../auth/checkAuth');
-const { verifyAccessToken, authPageRecruiter } = require('../../middlewares');
+const { verifyAccessToken, authPageRecruiter, checkPremium } = require('../../middlewares');
 const recruiterController = require('../../controllers/recruiter.controller');
 const resumeController = require('../../controllers/resume.controller');
+const favoriteResumeController = require('../../controllers/favoriteResume.controller');
 const router = express.Router();
 
 // signup
@@ -64,6 +65,13 @@ router.get('/vnpay_ipn', verifyAccessToken, authPageRecruiter, asyncHandler(recr
 // check premium Account
 router.get('/check_premium_account', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.checkPremiumAccount));
 // advanced search premium
-router.get('/list_advanced_resume', verifyAccessToken, authPageRecruiter, asyncHandler(resumeController.advancedSearchForPremium));
+router.get('/list_advanced_resume', verifyAccessToken, authPageRecruiter, checkPremium, asyncHandler(resumeController.advancedSearchForPremium));
+// list favorite resume
+router.get('/favorite_resumes/list', verifyAccessToken, authPageRecruiter, checkPremium, asyncHandler(favoriteResumeController.getListFavoriteResume));
+router.get('/favorite_resumes/check/:resumeId', verifyAccessToken, authPageRecruiter, checkPremium, asyncHandler(favoriteResumeController.checkFavoriteResume));
+router.post('/favorite_resumes/add/:resumeId', verifyAccessToken, authPageRecruiter, checkPremium, asyncHandler(favoriteResumeController.addFavoriteResume));
+router.delete('/favorite_resumes/remove/:resumeId', verifyAccessToken, authPageRecruiter, checkPremium, asyncHandler(favoriteResumeController.removeFavoriteResume));
+router.delete('/favorite_resumes/remove_all', verifyAccessToken, authPageRecruiter, checkPremium, asyncHandler(favoriteResumeController.removeAllFavoriteResume));
+
 
 module.exports = router;

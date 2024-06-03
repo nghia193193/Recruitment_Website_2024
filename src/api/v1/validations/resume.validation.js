@@ -1,28 +1,18 @@
 const joi = require('joi');
 const xss = require('xss');
 const mongoose = require('mongoose');
-const { majors, jobType } = require('../utils');
+const { majors, jobType, educationLevel, experience } = require('../utils');
 
 class ResumeValidation {
     static validateGetListAdvanced = data => {
         const validateSchema = joi.object({
-            title: joi.string().custom((value) => {
-                const cleanTitle = xss(value.trim());
-                return cleanTitle;
+            searchText: joi.string().custom((value) => {
+                const cleanText = xss(value.trim());
+                return cleanText;
             }),
-            educationLevel: joi.string().custom((value) => {
-                const cleanEL = xss(value.trim());
-                return cleanEL;
-            }),
-            english: joi.string().custom((value) => {
-                const cleanEnglish = xss(value.trim());
-                return cleanEnglish;
-            }),
+            educationLevel: joi.string().valid(...educationLevel),
             jobType: joi.string().valid(...jobType),
-            experience: joi.string().custom((value) => {
-                const cleanExperience = xss(value.trim());
-                return cleanExperience;
-            }),
+            experience: joi.string().valid(...experience),
             major: joi.string().valid(...majors),
             page: joi.number().integer().min(1),
             limit: joi.number().integer().min(1)
