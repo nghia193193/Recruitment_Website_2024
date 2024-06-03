@@ -18,4 +18,4 @@ class ResumeController {
     }
 }
 
-module.exports = new ResumeController;
+module.exports = new ResumeController();

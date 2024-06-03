@@ -87,6 +87,15 @@ const provinceOfVietNam = [
     "Yên Bái"
 ]
 
+const educationLevel = [
+    "Trên đại học",
+    "Đại học",
+    "Cao đẳng",
+    "Trung cấp",
+    "Trung học",
+    "Chứng chỉ nghề"
+]
+
 const mapRolePermission = {
     "ADMIN": "001",
     "RECRUITER": "002",
@@ -421,6 +430,7 @@ module.exports = {
     jobType,
     levelRequirement,
     experience,
+    educationLevel,
     genderRequirement,
     acceptanceStatus,
     status,

@@ -1,7 +1,7 @@
 const { Resume } = require("../models/resume.model");
 
 class ResumeService {
-    static advancedSearchForPremium = async ({ title, educationLevel, english, jobType, experience, major, page, limit }) => {
+    static advancedSearchForPremium = async ({ searchText, educationLevel, jobType, experience, major, page, limit }) => {
         try {
             page = page ? page : 1;
             limit = limit ? limit : 5;
@@ -9,13 +9,16 @@ class ResumeService {
                 status: "active",
                 allowSearch: true
             }
-            const searchFields = [title, educationLevel, english, experience].filter(Boolean);
-            if (searchFields.length > 0) {
-                query["$text"] = {
-                    $search: searchFields.join(" ")
-                };
+            if (searchText) {
+                query["$or"] = [
+                    { title: new RegExp(searchText, "i") },
+                    { name: new RegExp(searchText, "i") },
+                    { english: new RegExp(searchText, "i") }
+                ]
             }
+            if (educationLevel) query["educationLevel"] = educationLevel;
             if (jobType) query["jobType"] = jobType;
+            if (experience) query["experience"] = experience;
             if (major) query["major"] = major;
             const length = await Resume.find(query).countDocuments();
             const result = await Resume.find(query).select("-__v -candidateId -allowSearch")

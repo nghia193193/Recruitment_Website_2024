@@ -1,7 +1,7 @@
 const joi = require('joi');
 const mongoose = require('mongoose');
 const xss = require('xss');
-const { workStatus, jobType } = require('../utils');
+const { workStatus, jobType, experience, educationLevel } = require('../utils');
 
 class CandidateValidation {
     static validateSignUp = data => {
@@ -184,10 +184,7 @@ class CandidateValidation {
                 .messages({
                     'string.pattern.base': 'Không phải là số điện thoại Việt Nam hợp lệ'
                 }),
-            educationLevel: joi.string().custom((value) => {
-                const cleanEL = xss(value.trim());
-                return cleanEL;
-            }).required(),
+            educationLevel: joi.string().valid(...educationLevel).required(),
             homeTown: joi.string().custom((value) => {
                 const cleanHomeTown = xss(value.trim());
                 return cleanHomeTown;
@@ -198,10 +195,7 @@ class CandidateValidation {
                 return cleanEnglish;
             }),
             jobType: joi.string().valid(...jobType).required(),
-            experience: joi.string().custom((value) => {
-                const cleanExperience = xss(value.trim());
-                return cleanExperience;
-            }),
+            experience: joi.string().valid(...experience),
             GPA: joi.number().required(),
             email: joi.string().email().lowercase().required(),
             major: joi.string().custom((value) => {
@@ -276,15 +270,7 @@ class CandidateValidation {
             phone: joi.string().regex(/^(0[2-9]|1[0-9]|2[0-8]|3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5])[0-9]{8}$/).messages({
                 'string.pattern.base': 'Không phải là số điện thoại Việt Nam hợp lệ'
             }),
-            educationLevel: joi.string().custom((value, helpers) => {
-                const cleanEL = xss(value.trim());
-                if (cleanEL === '') {
-                    return helpers.error('any.empty');
-                }
-                return cleanEL;
-            }).messages({
-                'any.empty': "Trình độ học vấn không được để trống"
-            }),
+            educationLevel: joi.string().valid(...educationLevel),
             homeTown: joi.string().custom((value, helpers) => {
                 const cleanHomeTown = xss(value.trim());
                 if (cleanHomeTown === '') {
@@ -304,10 +290,7 @@ class CandidateValidation {
             jobType: joi.string().valid(...jobType).messages({
                 'any.only': "Loại hình công việc không hợp lệ"
             }),
-            experience: joi.string().custom((value, helpers) => {
-                const cleanExperience = xss(value.trim());
-                return cleanExperience;
-            }),
+            experience: joi.string().valid(...experience),
             GPA: joi.number().messages({
                 'number.base': "'GPA' phải là một số"
             }),

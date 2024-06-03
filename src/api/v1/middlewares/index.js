@@ -3,6 +3,7 @@ const { UnauthorizedRequestError, NotFoundRequestError, ForbiddenRequestError } 
 const { Recruiter } = require('../models/recruiter.model');
 const { Admin } = require('../models/admin.model');
 const { Candidate } = require('../models/candidate.model');
+const { Order } = require('../models/order.model');
 
 const verifyAccessToken = (req, res, next) => {
     try {
@@ -77,9 +78,26 @@ const authPageAdmin = async (req, res, next) => {
     }
 }
 
+const checkPremium = async (req, res, next) => {
+    try {
+        const { userId } = req.payload;
+        if (!userId) {
+            throw new UnauthorizedRequestError("Vui lòng đăng nhập");
+        }
+        const isPremium = await Order.checkPremiumAccount({ recruiterId: userId });
+        if (!isPremium) {
+            throw new ForbiddenRequestError("Bạn cần nâng cấp để sử dụng chức năng.");
+        }
+        next();
+    } catch (error) {
+        next(error)
+    }
+}
+
 module.exports = {
     verifyAccessToken,
     authPageRecruiter,
     authPageAdmin,
-    authPageCandidate
+    authPageCandidate,
+    checkPremium
 }

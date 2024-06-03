@@ -438,4 +438,4 @@ class RecruiterController {
     }
 }
 
-module.exports = new RecruiterController;
+module.exports = new RecruiterController();
