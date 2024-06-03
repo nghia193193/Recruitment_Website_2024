@@ -23,7 +23,9 @@ class ResumeValidation {
                 const cleanExperience = xss(value.trim());
                 return cleanExperience;
             }),
-            major: joi.string().valid(...majors)
+            major: joi.string().valid(...majors),
+            page: joi.number().integer().min(1),
+            limit: joi.number().integer().min(1)
         }).messages({
             "any.only": "'{#label}' không hợp lệ",
         });

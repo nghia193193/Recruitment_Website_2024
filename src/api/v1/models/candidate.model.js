@@ -22,10 +22,6 @@ const candidateSchema = new Schema({
         enum: ["Nam", "Nữ"]
     },
     avatar: String,
-    // avatar: {
-    //     publicId: String,
-    //     url: String
-    // },
     homeTown: String,
     workStatus: {
         type: String,
@@ -77,7 +73,7 @@ candidateSchema.statics.getInformation = async function (userId) {
         const listAllowSearchResume = list.map(resume => resume._id);
         candidateInfor.role = candidateInfor.loginId?.role;
         delete candidateInfor.loginId;
-        candidateInfor.avatar = candidateInfor.avatar?.url ?? null;
+        candidateInfor.avatar = candidateInfor.avatar ?? null;
         candidateInfor.phone = candidateInfor.phone ?? null;
         candidateInfor.gender = candidateInfor.gender ?? null;
         candidateInfor.homeTown = candidateInfor.homeTown ?? null;
@@ -147,7 +143,7 @@ candidateSchema.statics.updateInformation = async function ({ userId, name, phon
         }
         result.role = result.loginId?.role;
         delete result.loginId;
-        result.avatar = result.avatar?.url ?? null;
+        result.avatar = result.avatar ?? null;
         result.phone = result.phone ?? null;
         result.gender = result.gender ?? null;
         result.homeTown = result.homeTown ?? null;
