@@ -1,0 +1,4 @@
+04/06/2024	14:18:35 ::1---/v1/api/recruiter/favorite_resumes/check/66536c1c7eb0448b8e344757---GET---Vui lòng đăng nhập
+04/06/2024	14:19:27 ::1---/v1/api/recruiter/favorite_resumes/check/664b8d10a32897a8ead6ac2f---GET---Cannot destructure property 'metadata' of '(intermediate value)' as it is undefined.
+04/06/2024	14:20:52 ::1---/v1/api/recruiter/favorite_resumes/check/664b8d10a32897a8ead6ac2f---GET---Cannot destructure property 'metadata' of '(intermediate value)' as it is undefined.
+04/06/2024	14:49:22 ::1---/v1/api/candidate/resumes---GET---CandidateService is not defined

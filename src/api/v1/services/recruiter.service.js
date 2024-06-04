@@ -375,8 +375,7 @@ class RecruiterService {
             page = page ? +page : 1;
             limit = limit ? +limit : 5;
             let query = {
-                firstApproval: false,
-                acceptanceStatus: "accept"
+                firstApproval: false
             };
             let listRecruiter;
             if (searchText) {

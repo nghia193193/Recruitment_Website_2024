@@ -2,6 +2,7 @@ const express = require('express');
 const { asyncHandler } = require('../../auth/checkAuth');
 const { verifyAccessToken, authPageCandidate } = require('../../middlewares');
 const candidateController = require('../../controllers/candidate.controller');
+const resumeController = require('../../controllers/resume.controller');
 const router = express.Router();
 
 // signup
@@ -39,17 +40,17 @@ router.delete('/favorite_jobs/remove_all', verifyAccessToken, authPageCandidate,
 // remove all favorite recruiter
 router.delete('/favorite_recruiters/remove_all', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.removeAllFavoriteRecruiter));
 // get list resume
-router.get('/resumes', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.getListResume));
+router.get('/resumes', verifyAccessToken, authPageCandidate, asyncHandler(resumeController.getListResume));
 // get resume detail
-router.get('/resumes/detail/:resumeId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.getResumeDetail));
+router.get('/resumes/detail/:resumeId', verifyAccessToken, authPageCandidate, asyncHandler(resumeController.getResumeDetail));
 // add resume
-router.post('/resumes/add', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.addResume));
+router.post('/resumes/add', verifyAccessToken, authPageCandidate, asyncHandler(resumeController.addResume));
 // update resume
-router.patch('/resumes/update/:resumeId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.updateResume));
+router.patch('/resumes/update/:resumeId', verifyAccessToken, authPageCandidate, asyncHandler(resumeController.updateResume));
 // delete resume
-router.delete('/resumes/delete/:resumeId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.deleteResume));
-// change status
-router.patch('/resumes/change_status/:resumeId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.changeResumeStatus));
+router.delete('/resumes/delete/:resumeId', verifyAccessToken, authPageCandidate, asyncHandler(resumeController.deleteResume));
+// change resume status
+router.patch('/resumes/change_status/:resumeId', verifyAccessToken, authPageCandidate, asyncHandler(resumeController.changeResumeStatus));
 // upload certification
 router.post('/resumes/upload_certification', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.uploadCertification));
 // delete upload certification

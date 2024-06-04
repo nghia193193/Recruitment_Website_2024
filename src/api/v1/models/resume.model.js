@@ -99,10 +99,10 @@ resumeSchema.statics.getListResume = async function ({ userId, page, limit, titl
             query["status"] = status;
         }
         const length = await this.find(query).lean().countDocuments();
-        let listResume = await this.find(query).lean().select("title name educationLevel status email major jobType experience avatar updatedAt")
+        let listResume = await this.find(query).lean().select("title name educationLevel status email major jobType experience avatar allowSearch updatedAt")
             .skip((page - 1) * limit)
             .limit(limit)
-            .sort({ updatedAt: -1 });
+            .sort({ allowSearch: -1, updatedAt: -1 });
         listResume = listResume.map(resume => {
             resume.avatar = resume.avatar;
             resume.updatedAt = formatInTimeZone(resume.updatedAt, "Asia/Ho_Chi_Minh", "dd/MM/yyy HH:mm:ss");

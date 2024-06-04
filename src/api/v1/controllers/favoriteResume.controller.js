@@ -21,11 +21,10 @@ class FavoriteResumeController {
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const { metadata, message, options } = await FavoriteResumeService.checkFavoriteResume({ ...req.payload, ...value });
+        const { metadata, message } = await FavoriteResumeService.checkFavoriteResume({ ...req.payload, ...value });
         new OK({
             message: message,
-            metadata: { ...metadata },
-            options: options
+            metadata: { ...metadata }
         }).send(res)
     }
 

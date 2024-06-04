@@ -78,14 +78,24 @@ class FavoriteResumeService {
             if (!recruiter) {
                 return {
                     message: "Bạn chưa thêm resume vào mục yêu thích",
-                    exist: false
+                    metadata: {
+                        exist: false
+                    }
                 }
             }
             // check có resume trong list chưa
             if (recruiter.favoriteResumes.includes(resumeId)) {
                 return {
                     message: "Bạn đã thêm resume vào mục yêu thích",
-                    exist: true
+                    metadata: {
+                        exist: true
+                    }
+                }
+            }
+            return {
+                message: "Bạn chưa thêm resume vào mục yêu thích",
+                metadata: {
+                    exist: false
                 }
             }
         } catch (error) {
