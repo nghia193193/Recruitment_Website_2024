@@ -81,10 +81,10 @@ class RecruiterValidation {
             companyCoverPhoto: joi.array().items(joi.object({
                 mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
             }).unknown(true)).required().messages({
-                'array.base': 'Ảnh bìa diện không hợp lệ.'
+                'array.base': 'Ảnh diện không hợp lệ.'
             }),
             companyWebsite: joi.string().uri().required(),
-            companyAddress: joi.string().max(200).custom((value, helpers) => {
+            companyAddress: joi.string().custom((value, helpers) => {
                 const cleanCA = xss(value.trim());
                 if (cleanCA === '') {
                     return helpers.error('any.empty');
@@ -174,7 +174,7 @@ class RecruiterValidation {
             companyWebsite: joi.string().uri().messages({
                 'string.uri': "Website phải là một URL hợp lệ"
             }),
-            companyAddress: joi.string().max(200).custom((value, helpers) => {
+            companyAddress: joi.string().custom((value, helpers) => {
                 const cleanCA = xss(value.trim());
                 if (cleanCA === '') {
                     return helpers.error('any.empty');
@@ -192,7 +192,7 @@ class RecruiterValidation {
             companyCoverPhoto: joi.array().items(joi.object({
                 mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
             }).unknown(true)).messages({
-                'array.base': 'Ảnh bìa diện không hợp lệ.'
+                'array.base': 'Ảnh bìa không hợp lệ.'
             }),
             about: joi.string().custom((value, helpers) => {
                 const cleanAbout = xss(value.trim());

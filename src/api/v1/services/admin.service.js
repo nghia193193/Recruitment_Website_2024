@@ -1,4 +1,4 @@
-const { NotFoundRequestError, BadRequestError, InternalServerError } = require('../core/error.response');
+const { BadRequestError, InternalServerError } = require('../core/error.response');
 const { Admin } = require('../models/admin.model');
 const { Job } = require('../models/job.model');
 const { Notification } = require('../models/notification.model');
@@ -6,7 +6,10 @@ const { Recruiter } = require('../models/recruiter.model');
 const { FavoriteRecruiter } = require('../models/favoriteRecruiter.model');
 const { acceptanceStatus, mapRolePermission } = require('../utils');
 const { createTransporter } = require('../utils/sendMails');
-const JobService = require('./job.service');
+const { Login } = require('../models/login.model');
+const { default: mongoose } = require('mongoose');
+const bcrypt = require('bcryptjs');
+const { clearImage } = require('../utils/processImage');
 
 class AdminService {
 
@@ -39,6 +42,53 @@ class AdminService {
             throw error;
         }
 
+    }
+
+    static createRecruiter = async ({ name, position, phone, contactEmail, companyName, companyWebsite, companyAddress,
+        companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity, slug, email, password }) => {
+        const session = await mongoose.startSession();
+        try {
+            session.startTransaction();
+            //check slug
+            const recruiter = await Recruiter.findOne({ slug }).lean();
+            if (recruiter) {
+                throw new BadRequestError("Slug này đã tồn tại. Vui lòng nhập slug khác.");
+            }
+            const result = await Recruiter.create([{
+                name, position, phone, contactEmail, companyName, companyWebsite, companyAddress,
+                companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity, slug, email,
+                acceptanceStatus: "accept", firstApproval: false, firstUpdate: false, verifyEmail: true
+            }], { session })
+            if (!result) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+            }
+            const hashPassword = await bcrypt.hash(password, 10);
+            const login = await Login.create([{
+                email, password: hashPassword, role: "RECRUITER"
+            }], session)
+            if (!login) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+            }
+            await session.commitTransaction();
+            session.endSession();
+            return {
+                message: "Tạo nhà tuyển dụng thành công"
+            }
+        } catch (error) {
+            if (companyLogo) {
+                const splitArr = companyLogo.split("/");
+                const image = splitArr[splitArr.length - 1];
+                clearImage(image);
+            }
+            if (companyCoverPhoto) {
+                const splitArr = companyCoverPhoto.split("/");
+                const image = splitArr[splitArr.length - 1];
+                clearImage(image);
+            }
+            await session.abortTransaction();
+            session.endSession();
+            throw error;
+        }
     }
 
     static getRecruiterInformation = async ({ recruiterId }) => {
@@ -109,6 +159,53 @@ class AdminService {
                 metadata: { listAcceptanceStatus: acceptanceStatus },
             }
         } catch (error) {
+            throw error;
+        }
+    }
+
+    static createJob = async ({ recruiterId, name, location, province, type, levelRequirement, experience, salary,
+        field, description, requirement, benefit, quantity, deadline, gender }) => {
+        const session = await mongoose.startSession();
+        try {
+            session.startTransaction();
+            const recruiter = await Recruiter.findById(recruiterId).lean();
+            if (!recruiter) {
+                throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại.');
+            }
+            const result = await Job.create([{
+                name, location, province, type, levelRequirement, experience, salary, field, description,
+                requirement, benefit, quantity, deadline, gender, recruiterId, acceptanceStatus: "accept",
+                status: "active", approvalDate: new Date()
+            }], { session })
+            if (!result) {
+                throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại.');
+            }
+            // thông báo tới ứng viên yêu thích nhà tuyển dụng
+            const listCandidate = await FavoriteRecruiter.find({ favoriteRecruiters: recruiterId.toString() }).lean();
+            if (listCandidate.length !== 0) {
+                for (let i = 0; i < listCandidate.length; i++) {
+                    const notificationCandidate = await Notification.create([{
+                        senderId: recruiterId,
+                        receiverId: listCandidate[i].candidateId,
+                        senderCode: mapRolePermission["RECRUITER"],
+                        link: `${process.env.FE_URL}/jobs/${result[0]._id.toString()}`,
+                        title: "Nhà tuyển dụng đã đăng việc làm mới.",
+                        content: `${recruiter.companyName} vừa đăng tải tin tuyển dụng mới. Vào xem ngay!`
+                    }], { session })
+                    if (!notificationCandidate) {
+                        throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+                    }
+                    _io.emit(`notification_candidate_${listCandidate[i].candidateId}`, notificationCandidate);
+                }
+            }
+            await session.commitTransaction();
+            session.endSession();
+            return {
+                message: "Tạo công việc thành công"
+            }
+        } catch (error) {
+            await session.abortTransaction();
+            session.endSession();
             throw error;
         }
     }

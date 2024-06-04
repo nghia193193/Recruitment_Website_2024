@@ -50,6 +50,9 @@ class RecruiterService {
             }], {
                 session
             })
+            if (!newRecruiter) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+            }
             await EmailService.sendSignUpMail({ toEmail: email, userName: newRecruiter[0].name, code: mapRolePermission["RECRUITER"] });
             await session.commitTransaction();
             session.endSession();
@@ -170,16 +173,6 @@ class RecruiterService {
             const recruiter = await Recruiter.findOne({ slug }).lean();
             if (recruiter) {
                 if (recruiter._id.toString() !== userId) {
-                    if (companyLogo) {
-                        const splitArr = companyLogo.split("/");
-                        const image = splitArr[splitArr.length - 1];
-                        clearImage(image);
-                    }
-                    if (companyCoverPhoto) {
-                        const splitArr = companyCoverPhoto.split("/");
-                        const image = splitArr[splitArr.length - 1];
-                        clearImage(image);
-                    }
                     throw new BadRequestError("Slug này đã tồn tại. Vui lòng nhập slug khác.");
                 }
             }
@@ -195,16 +188,6 @@ class RecruiterService {
                 select: { __v: 0 }
             }).populate('loginId').lean()
             if (!result) {
-                if (companyLogo) {
-                    const splitArr = companyLogo.split("/");
-                    const image = splitArr[splitArr.length - 1];
-                    clearImage(image);
-                }
-                if (companyCoverPhoto) {
-                    const splitArr = companyCoverPhoto.split("/");
-                    const image = splitArr[splitArr.length - 1];
-                    clearImage(image);
-                }
                 throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại');
             }
             result.role = result.loginId?.role;
@@ -217,6 +200,16 @@ class RecruiterService {
                 metadata: { ...result }
             }
         } catch (error) {
+            if (companyLogo) {
+                const splitArr = companyLogo.split("/");
+                const image = splitArr[splitArr.length - 1];
+                clearImage(image);
+            }
+            if (companyCoverPhoto) {
+                const splitArr = companyCoverPhoto.split("/");
+                const image = splitArr[splitArr.length - 1];
+                clearImage(image);
+            }
             await session.abortTransaction();
             session.endSession();
             throw error;
@@ -286,16 +279,6 @@ class RecruiterService {
                 const recruiterSlug = await Recruiter.findOne({ slug }).lean();
                 if (recruiterSlug) {
                     if (recruiterSlug._id.toString() !== userId) {
-                        if (companyLogo) {
-                            const splitArr = companyLogo.split("/");
-                            const image = splitArr[splitArr.length - 1];
-                            clearImage(image);
-                        }
-                        if (companyCoverPhoto) {
-                            const splitArr = companyCoverPhoto.split("/");
-                            const image = splitArr[splitArr.length - 1];
-                            clearImage(image);
-                        }
                         throw new BadRequestError("Slug này đã tồn tại. Vui lòng nhập slug khác.");
                     }
                 }
@@ -354,6 +337,16 @@ class RecruiterService {
                 metadata: { ...result }
             }
         } catch (error) {
+            if (companyLogo) {
+                const splitArr = companyLogo.split("/");
+                const image = splitArr[splitArr.length - 1];
+                clearImage(image);
+            }
+            if (companyCoverPhoto) {
+                const splitArr = companyCoverPhoto.split("/");
+                const image = splitArr[splitArr.length - 1];
+                clearImage(image);
+            }
             throw error;
         }
     }
@@ -546,11 +539,11 @@ class RecruiterService {
         field, description, requirement, benefit, quantity, deadline, gender }) => {
         try {
             const result = await Job.create({
-                userId, name, location, province, type, levelRequirement, experience, salary, field, description,
+                name, location, province, type, levelRequirement, experience, salary, field, description,
                 requirement, benefit, quantity, deadline, gender, recruiterId: userId
             })
             if (!result) {
-                throw new InternalServerError('Có lỗi xảy ra');
+                throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại.');
             }
             const returnResult = result.toObject();
             delete returnResult.recruiterId;
