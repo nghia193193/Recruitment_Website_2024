@@ -114,9 +114,9 @@ resumeSchema.statics.getListResume = async function ({ userId, page, limit, titl
     }
 }
 
-resumeSchema.statics.getResumeDetail = async function ({ userId, resumeId }) {
+resumeSchema.statics.getResumeDetail = async function ({ resumeId }) {
     try {
-        const resume = await this.findOne({ _id: resumeId, candidateId: userId }).lean().select("-__v");
+        const resume = await this.findOne({ _id: resumeId }).lean().select("-__v");
         if (!resume) {
             throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
         }

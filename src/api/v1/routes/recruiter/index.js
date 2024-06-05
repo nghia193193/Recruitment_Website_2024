@@ -66,6 +66,8 @@ router.get('/vnpay_ipn', verifyAccessToken, authPageRecruiter, asyncHandler(recr
 router.get('/check_premium_account', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.checkPremiumAccount));
 // advanced search premium
 router.get('/list_advanced_resume', verifyAccessToken, authPageRecruiter, checkPremium, asyncHandler(resumeController.advancedSearchForPremium));
+// resume detail
+router.get('/list_advanced_resume/:resumeId', verifyAccessToken, authPageRecruiter, checkPremium, asyncHandler(resumeController.getResumeDetail));
 // list favorite resume
 router.get('/favorite_resumes/list', verifyAccessToken, authPageRecruiter, checkPremium, asyncHandler(favoriteResumeController.getListFavoriteResume));
 router.get('/favorite_resumes/check/:resumeId', verifyAccessToken, authPageRecruiter, checkPremium, asyncHandler(favoriteResumeController.checkFavoriteResume));
