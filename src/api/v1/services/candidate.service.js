@@ -331,7 +331,7 @@ class CandidateService {
         }
     }
 
-    
+
 
     static checkApplyJob = async ({ userId, jobId }) => {
         try {
@@ -465,7 +465,8 @@ class CandidateService {
                         "recruiter.companyName": 1,
                         "jobs.deadline": 1,
                         "updatedAt": 1,
-                        "status": 1
+                        "status": 1,
+                        "reasonDecline": 1
                     }
                 }
             ]
@@ -489,9 +490,11 @@ class CandidateService {
             listApplication = listApplication.map((item, index) => {
                 item.name = item.jobs.name;
                 item.levelRequirement = item.jobs.levelRequirement;
-                item.field = item.jobs.field,
-                    item.deadline = formatInTimeZone(item.jobs.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
+                item.field = item.jobs.field;
+                item.deadline = formatInTimeZone(item.jobs.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
+                item.updatedAt = formatInTimeZone(item.updatedAt, "Asia/Ho_Chi_Minh", "dd/MM/yyyy HH:mm:ss");
                 item.companyName = item.recruiter.companyName;
+                item.reasonDecline = item.reasonDecline ?? null;
                 delete item.jobs;
                 delete item.recruiter;
                 return {
