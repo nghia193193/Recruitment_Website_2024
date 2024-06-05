@@ -19,6 +19,13 @@ class ResumeValidation {
         return validateSchema.validate(data);
     }
 
+    static validateResumeId = data => {
+        const validateSchema = joi.object({
+            resumeId: objectIdJoiSchema.required()
+        })
+        return validateSchema.validate(data);
+    }
+
     static validateAddResume = data => {
         const validateSchema = joi.object({
             name: joi.string().custom((value) => {
