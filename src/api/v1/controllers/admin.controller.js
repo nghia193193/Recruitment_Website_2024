@@ -58,6 +58,38 @@ class AdminController {
         }).send(res)
     }
 
+    updateRecruiter = async (req, res, next) => {
+        const { error, value } = AdminValidation.validateUpdateRecruiter({ ...req.body, ...req.files, ...req.params });
+        if (error) {
+            const { avatar, companyLogo, companyCoverPhoto, uploadFile } = value;
+            if (uploadFile) {
+                clearImage(uploadFile[0].filename);
+            }
+            if (avatar) {
+                clearImage(avatar[0].filename);
+            }
+            if (companyLogo) {
+                clearImage(companyLogo[0].filename);
+            }
+            if (companyCoverPhoto) {
+                clearImage(companyCoverPhoto[0].filename);
+            }
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { companyLogo, companyCoverPhoto } = value;
+        if (companyLogo) {
+            value.companyLogo = `http://localhost:${process.env.PORT}/images/${companyLogo[0].filename}`;
+        }
+        if (companyCoverPhoto) {
+            value.companyCoverPhoto = `http://localhost:${process.env.PORT}/images/${companyCoverPhoto[0].filename}`;
+        }
+        const { metadata, message } = await AdminService.updateRecruiter({ ...value });
+        new OK({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
     getRecruiterInformation = async (req, res, next) => {
         const { error, value } = AdminValidation.validateRecruiterId(req.params);
         if (error) {
@@ -96,6 +128,18 @@ class AdminController {
             throw new BadRequestError(error.details[0].message);
         }
         const { metadata, message } = await AdminService.createJob({ ...value });
+        new OK({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
+    updateJob = async (req, res, next) => {
+        const { error, value } = AdminValidation.validateUpdateJob({ ...req.body, ...req.params });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { metadata, message } = await AdminService.updateJob({ ...value });
         new OK({
             message: message,
             metadata: { ...metadata }

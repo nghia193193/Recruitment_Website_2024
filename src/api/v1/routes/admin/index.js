@@ -12,6 +12,8 @@ router.get('/information', verifyAccessToken, authPageAdmin, asyncHandler(adminC
 router.get('/recruiters', verifyAccessToken, authPageAdmin, asyncHandler(adminController.getListRecruiter));
 // create recruiter
 router.post('/recruiters/create', verifyAccessToken, authPageAdmin, asyncHandler(adminController.createRecruiter));
+// update recruiter
+router.patch('/recruiters/update/:recruiterId', verifyAccessToken, authPageAdmin, asyncHandler(adminController.updateRecruiter));
 // get recruiter information
 router.get('/recruiters/:recruiterId', verifyAccessToken, authPageAdmin, asyncHandler(adminController.getRecruiterInformation));
 // approve recruiter
@@ -22,6 +24,8 @@ router.get('/acceptance_status', verifyAccessToken, authPageAdmin, asyncHandler(
 router.get('/jobs', verifyAccessToken, authPageAdmin, asyncHandler(jobController.getListJobPremiumPrivilege));
 // create job
 router.post('/jobs/create', verifyAccessToken, authPageAdmin, asyncHandler(adminController.createJob));
+// update job
+router.patch('/jobs/update/:jobId', verifyAccessToken, authPageAdmin, asyncHandler(adminController.updateJob));
 // get job detail
 router.get('/jobs/:jobId', verifyAccessToken, authPageAdmin, asyncHandler(jobController.getJobDetail));
 // approve job

@@ -91,6 +91,71 @@ class AdminService {
         }
     }
 
+    static updateRecruiter = async ({ recruiterId, name, position, phone, contactEmail, companyName, companyWebsite,
+        companyAddress, companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity, slug, acceptanceStatus,
+        reasonDecline }) => {
+        const session = await mongoose.startSession();
+        try {
+            session.startTransaction();
+            //check slug
+            if (slug) {
+                const recruiter = await Recruiter.findOne({ slug }).lean();
+                if (recruiter._id.toString() !== recruiterId) {
+                    throw new BadRequestError("Slug này đã tồn tại. Vui lòng nhập slug khác.");
+                }
+            }
+            let result;
+            if (acceptanceStatus === "accept") {
+                result = await Recruiter.findByIdAndUpdate(recruiterId, {
+                    $set: {
+                        name, position, phone, contactEmail, companyName, companyWebsite, companyAddress, companyLogo,
+                        companyCoverPhoto, about, employeeNumber, fieldOfActivity, slug, acceptanceStatus, reasonDecline: null,
+                    }
+                }, {
+                    session,
+                    new: true,
+                    select: { __v: 0, loginId: 0 }
+                }).lean();
+            } else {
+                result = await Recruiter.findByIdAndUpdate(recruiterId, {
+                    $set: {
+                        name, position, phone, contactEmail, companyName, companyWebsite, companyAddress, companyLogo,
+                        companyCoverPhoto, about, employeeNumber, fieldOfActivity, slug, acceptanceStatus, reasonDecline
+                    }
+                }, {
+                    session,
+                    new: true,
+                    select: { __v: 0, loginId: 0 }
+                }).lean();
+            }
+            if (!result) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+            }
+            await session.commitTransaction();
+            session.endSession();
+            return {
+                message: "Cập nhật nhà tuyển dụng thành công",
+                metadata: {
+                    ...result
+                }
+            }
+        } catch (error) {
+            if (companyLogo) {
+                const splitArr = companyLogo.split("/");
+                const image = splitArr[splitArr.length - 1];
+                clearImage(image);
+            }
+            if (companyCoverPhoto) {
+                const splitArr = companyCoverPhoto.split("/");
+                const image = splitArr[splitArr.length - 1];
+                clearImage(image);
+            }
+            await session.abortTransaction();
+            session.endSession();
+            throw error;
+        }
+    }
+
     static getRecruiterInformation = async ({ recruiterId }) => {
         try {
             const recruiter = await Recruiter.getInformation(recruiterId);
@@ -202,6 +267,55 @@ class AdminService {
             session.endSession();
             return {
                 message: "Tạo công việc thành công"
+            }
+        } catch (error) {
+            await session.abortTransaction();
+            session.endSession();
+            throw error;
+        }
+    }
+
+    static updateJob = async ({ jobId, name, location, province, type, levelRequirement, experience, salary,
+        field, description, requirement, benefit, quantity, deadline, gender, acceptanceStatus, reasonDecline }) => {
+        const session = await mongoose.startSession();
+        try {
+            session.startTransaction();
+            let result;
+            if (acceptanceStatus === "accept") {
+                result = await Job.findByIdAndUpdate(jobId, {
+                    $set: {
+                        name, location, province, type, levelRequirement, experience, salary, field, description,
+                        requirement, benefit, quantity, deadline, gender, acceptanceStatus, reasonDecline: null,
+                        approvalDate: new Date()
+                    }
+                }, {
+                    session,
+                    new: true,
+                    select: { __v: 0, recruiterId: 0}
+                }).lean()
+            } else {
+                result = await Job.findByIdAndUpdate(jobId, {
+                    $set: {
+                        name, location, province, type, levelRequirement, experience, salary, field, description,
+                        requirement, benefit, quantity, deadline, gender, acceptanceStatus, reasonDecline,
+                        approvalDate: new Date()
+                    }
+                }, {
+                    session,
+                    new: true,
+                    select: { __v: 0, recruiterId: 0}
+                }).lean()
+            }
+            if (!result) {
+                throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại.');
+            }
+            await session.commitTransaction();
+            session.endSession();
+            return {
+                message: "Cập nhật công việc thành công",
+                metadata: {
+                    ...result
+                }
             }
         } catch (error) {
             await session.abortTransaction();

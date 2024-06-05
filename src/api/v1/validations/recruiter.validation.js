@@ -271,37 +271,72 @@ class RecruiterValidation {
 
     static validateCreateJob = data => {
         const validateSchema = joi.object({
-            name: joi.string().custom((value) => {
-                const cleanName = xss(value);
+            name: joi.string().custom((value, helpers) => {
+                const cleanName = xss(value.trim());
+                if (cleanName === '') {
+                    return helpers.error('any.empty');
+                }
                 return cleanName;
-            }).required(),
-            location: joi.string().custom((value) => {
-                const cleanLocation = xss(value);
+            }).required().messages({
+                'any.empty': "Tên không được để trống",
+            }),
+            location: joi.string().custom((value, helpers) => {
+                const cleanLocation = xss(value.trim());
+                if (cleanLocation === '') {
+                    return helpers.error('any.empty');
+                }
                 return cleanLocation;
-            }).required(),
+            }).required().messages({
+                'any.empty': "Địa chỉ không được để trống",
+            }),
             province: joi.string().valid(...provinceOfVietNam).required(),
             type: joi.string().valid(...jobType).required(),
             levelRequirement: joi.string().valid(...levelRequirement).required(),
             experience: joi.string().valid(...experience).required(),
-            salary: joi.string().custom((value) => {
-                const cleanSalary = xss(value);
+            salary: joi.string().custom((value, helpers) => {
+                const cleanSalary = xss(value.trim());
+                if (cleanSalary === '') {
+                    return helpers.error('any.empty');
+                }
                 return cleanSalary;
-            }).required(),
+            }).required().messages({
+                'any.empty': "Mức lương không được để trống",
+            }),
             field: joi.string().valid(...fieldOfActivity).required(),
-            description: joi.string().custom((value) => {
-                const cleanDescription = xss(value);
+            description: joi.string().custom((value, helpers) => {
+                const cleanDescription = xss(value.trim());
+                if (cleanDescription === '') {
+                    return helpers.error('any.empty');
+                }
                 return cleanDescription;
-            }).required(),
-            requirement: joi.string().custom((value) => {
-                const cleanRequirement = xss(value);
+            }).required().messages({
+                'any.empty': "mô tả công việc không được để trống",
+            }),
+            requirement: joi.string().custom((value, helpers) => {
+                const cleanRequirement = xss(value.trim());
+                if (cleanRequirement === '') {
+                    return helpers.error('any.empty');
+                }
                 return cleanRequirement;
-            }).required(),
-            benefit: joi.string().custom((value) => {
-                const cleanBenefit = xss(value);
+            }).required().messages({
+                'any.empty': "Yêu cầu công việc không được để trống",
+            }),
+            benefit: joi.string().custom((value, helpers) => {
+                const cleanBenefit = xss(value.trim());
+                if (cleanBenefit === '') {
+                    return helpers.error('any.empty');
+                }
                 return cleanBenefit;
-            }).required(),
-            quantity: joi.number().integer().min(1).required(),
-            deadline: joi.date().iso().required(),
+            }).required().messages({
+                'any.empty': "Lợi ích không được để trống",
+            }),
+            quantity: joi.number().integer().min(1).required().messages({
+                'number.base': "Số lượng phải là số nguyên",
+                'number.min': "Số lượng phải lớn hơn hoặc bằng 1"
+            }),
+            deadline: joi.date().iso().required().messages({
+                'date.format': "'deadline' phải là một ngày hợp lệ theo định dạng ISO"
+            }),
             genderRequirement: joi.string().valid(...genderRequirement).required()
         }).messages({
             "any.only": "'{#label}' không hợp lệ"
