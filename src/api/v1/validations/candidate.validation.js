@@ -113,6 +113,16 @@ class CandidateValidation {
         return validateSchema.validate(data);
     }
 
+    static validateCheckFavoriteRecruiter = data => {
+        const validateSchema = joi.object({
+            slug: joi.string().custom((value) => {
+                const slug = xss(value.trim());
+                return slug;
+            })
+        })
+        return validateSchema.validate(data);
+    }
+
     static validateRemoveFavoriteJob = data => {
         const validateSchema = joi.object({
             jobId: objectIdJoiSchema.required(),

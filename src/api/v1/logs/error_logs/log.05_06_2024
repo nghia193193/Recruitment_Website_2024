@@ -30,3 +30,4 @@
 05/06/2024	16:47:38 ::1---/v1/api/admin/recruiters/update/665f287336837fc0b566033b---PATCH---Slug này đã tồn tại. Vui lòng nhập slug khác.
 05/06/2024	16:48:11 ::1---/v1/api/admin/recruiters/update/665f287336837fc0b566033b---PATCH---Slug này đã tồn tại. Vui lòng nhập slug khác.
 05/06/2024	17:12:01 ::1---/v1/api/admin/jobs/update/123123---PATCH---Id không hợp lệ
+05/06/2024	22:18:40 ::1---/v1/api/candidate/favorite_recruiters/check/MWG---GET---"recruiterId" is required

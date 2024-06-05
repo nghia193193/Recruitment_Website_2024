@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { Recruiter } = require('./recruiter.model');
 const { BadRequestError, InternalServerError } = require('../core/error.response');
+const { Job } = require('./job.model');
 const model = mongoose.model;
 const Schema = mongoose.Schema;
 
@@ -25,12 +26,14 @@ favoriteRecruiterSchema.statics.getListFavoriteRecruiter = async function ({ use
     }
     let mappedFavoriteRecruiters = await Promise.all(
         candidate.favoriteRecruiters.map(async (recruiterId) => {
+            const activeJobCount = await Job.find({ status: "active", acceptanceStatus: "accept", recruiterId }).countDocuments();
             const recruiter = await Recruiter.findById(recruiterId).lean().select(
                 '-roles -createdAt -updatedAt -__v -acceptanceStatus -verifyEmail -firstApproval -loginId -avatar'
             )
             recruiter.companyLogo = recruiter.companyLogo ?? null;
             recruiter.companyCoverPhoto = recruiter.companyCoverPhoto ?? null;
             recruiter.slug = recruiter.slug ?? null;
+            recruiter.activeJobCount = activeJobCount;
             if (searchText) {
                 if (new RegExp(searchText, "i").test(recruiter.companyName) || new RegExp(searchText, "i").test(recruiter.slug)) {
                     return recruiter;
@@ -50,9 +53,9 @@ favoriteRecruiterSchema.statics.getListFavoriteRecruiter = async function ({ use
     return { length: mappedFavoriteRecruiters.length, listFavoriteRecruiter: mappedFavoriteRecruiters.slice(start, end) };
 }
 
-favoriteRecruiterSchema.statics.checkFavoriteRecruiter = async function ({ userId, recruiterId }) {
+favoriteRecruiterSchema.statics.checkFavoriteRecruiter = async function ({ userId, slug }) {
     // check có recruiter này không
-    const recruiter = await Recruiter.findById(recruiterId).lean();
+    const recruiter = await Recruiter.findOne({ slug }).lean();
     if (!recruiter) {
         throw new BadRequestError("Không tìm thấy nhà tuyển dụng này, vui lòng thử lại");
     }
@@ -65,7 +68,7 @@ favoriteRecruiterSchema.statics.checkFavoriteRecruiter = async function ({ userI
         }
     }
     // check recruiter đã có trong list chưa
-    if (listFavoriteRecruiter.favoriteRecruiters.includes(recruiterId)) {
+    if (listFavoriteRecruiter.favoriteRecruiters.includes(recruiter._id.toString())) {
         return {
             message: "Đã thêm nhà tuyển dụng vào nhà tuyển dụng yêu thích.",
             exist: true
@@ -128,7 +131,7 @@ favoriteRecruiterSchema.statics.removeAllFavoriteRecruiter = async function ({ u
 }
 
 favoriteRecruiterSchema.statics.getLikeNumber = async function ({ recruiterId }) {
-    const likeNumber = await this.find({favoriteRecruiters: recruiterId}).countDocuments();
+    const likeNumber = await this.find({ favoriteRecruiters: recruiterId }).countDocuments();
     return likeNumber;
 }
 

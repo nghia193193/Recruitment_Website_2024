@@ -26,7 +26,7 @@ router.get('/favorite_recruiters', verifyAccessToken, authPageCandidate, asyncHa
 // check favorite job
 router.get('/favorite_jobs/check/:jobId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.checkFavoriteJob));
 // check favorite recruiter
-router.get('/favorite_recruiters/check/:recruiterId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.checkFavoriteRecruiter));
+router.get('/favorite_recruiters/check/:slug', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.checkFavoriteRecruiter));
 // add favorite job
 router.post('/favorite_jobs/add/:jobId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.addFavoriteJob));
 // add favorite recruiter

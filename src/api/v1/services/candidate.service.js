@@ -241,9 +241,9 @@ class CandidateService {
         }
     }
 
-    static checkFavoriteRecruiter = async ({ userId, recruiterId }) => {
+    static checkFavoriteRecruiter = async ({ userId, slug }) => {
         try {
-            const { message, exist } = await FavoriteRecruiter.checkFavoriteRecruiter({ userId, recruiterId });
+            const { message, exist } = await FavoriteRecruiter.checkFavoriteRecruiter({ userId, slug });
             return {
                 message,
                 metadata: { exist }

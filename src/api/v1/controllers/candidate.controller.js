@@ -132,7 +132,7 @@ class CandidateController {
     }
 
     checkFavoriteRecruiter = async (req, res, next) => {
-        const { error, value } = CandidateValidation.validateRecruiterId(req.params);
+        const { error, value } = CandidateValidation.validateCheckFavoriteRecruiter(req.params);
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }

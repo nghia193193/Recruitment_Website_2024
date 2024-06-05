@@ -516,13 +516,20 @@ class RecruiterService {
             }
             const totalElement = await Recruiter.find(query).lean().countDocuments();
             if (listRecruiter.length !== 0) {
-                listRecruiter = listRecruiter.map(recruiter => {
-                    return {
-                        ...recruiter,
-                        companyLogo: recruiter.companyLogo,
-                        companyCoverPhoto: recruiter.companyCoverPhoto
-                    }
-                })
+                listRecruiter = await Promise.all(
+                    listRecruiter.map(async (recruiter) => {
+                        const activeJobCount = await Job.find({
+                            status: "active", acceptanceStatus: "accept",
+                            recruiterId: recruiter._id.toString()
+                        }).countDocuments();
+                        return {
+                            ...recruiter,
+                            activeJobCount,
+                            companyLogo: recruiter.companyLogo,
+                            companyCoverPhoto: recruiter.companyCoverPhoto
+                        }
+                    })
+                )
             }
             return {
                 message: "Lấy danh sách nhà tuyển dụng liên quan thành công",
