@@ -551,7 +551,7 @@ class RecruiterService {
 
     static getInformationBySlug = async ({ slug }) => {
         try {
-            const recruiterInfor = await Recruiter.findOne({ slug, acceptanceStatus: "accept" }).lean().select(
+            const recruiterInfor = await Recruiter.findOne({ slug }).lean().select(
                 '-roles -createdAt -updatedAt -__v -acceptanceStatus -verifyEmail -firstApproval -loginId -avatar'
             );
             if (!recruiterInfor) {
