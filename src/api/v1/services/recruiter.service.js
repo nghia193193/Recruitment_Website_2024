@@ -557,7 +557,7 @@ class RecruiterService {
             if (!recruiterInfor) {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
             }
-            const likeNumber = await FavoriteRecruiter.getLikeNumber({ recruiterId: recruiterInfor._id.toString() });
+            const likeNumber = await FavoriteRecruiterService.getLikeNumber({ recruiterId: recruiterInfor._id.toString() });
             recruiterInfor.companyLogo = recruiterInfor.companyLogo ?? null;
             recruiterInfor.companyCoverPhoto = recruiterInfor.companyCoverPhoto ?? null;
             recruiterInfor.slug = recruiterInfor.slug ?? null;

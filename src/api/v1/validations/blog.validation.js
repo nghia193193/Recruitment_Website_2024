@@ -11,7 +11,9 @@ class BlogValidation {
                 return name;
             }),
             type: joi.string().valid(...blogType),
-            status: joi.string().valid("active", "inactive")
+            status: joi.string().valid("active", "inactive"),
+            page: joi.number().integer().min(1),
+            limit: joi.number().integer().min(1)
         }).messages({
             "any.only": "'{#label}' không hợp lệ"
         })

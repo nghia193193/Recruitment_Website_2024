@@ -89,3 +89,6 @@
 06/06/2024	22:26:19 ::1---/v1/api/blogs/6661bea7a11dd0056e20cb32---GET---Cannot read properties of null (reading 'createdAt')
 06/06/2024	22:27:55 ::1---/v1/api/blogs/6661bea7a11dd0056e20cb32---GET---Có lỗi xảy ra vui lòng thử lại.
 06/06/2024	22:28:00 ::1---/v1/api/blogs/6661bea7a11dd0056e20cb32---GET---Có lỗi xảy ra vui lòng thử lại.
+06/06/2024	22:41:50 ::1---/v1/api/recruiters/FPT---GET---FavoriteRecruiter.getLikeNumber is not a function
+06/06/2024	22:45:18 ::1---/v1/api/blogs?page=2&limit=1---GET---BadRequestError is not defined
+06/06/2024	22:45:38 ::1---/v1/api/blogs?page=2&limit=1---GET---"page" is not allowed

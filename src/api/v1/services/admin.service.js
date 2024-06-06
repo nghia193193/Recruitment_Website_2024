@@ -11,6 +11,7 @@ const { default: mongoose } = require('mongoose');
 const bcrypt = require('bcryptjs');
 const { clearImage } = require('../utils/processImage');
 const { formatInTimeZone } = require('date-fns-tz');
+const RecruiterService = require('./recruiter.service');
 
 class AdminService {
 
@@ -144,7 +145,7 @@ class AdminService {
 
     static getRecruiterInformation = async ({ recruiterId }) => {
         try {
-            const recruiter = await Recruiter.getInformation(recruiterId);
+            const recruiter = await RecruiterService.getInformation(recruiterId);
             return {
                 message: "Lấy thông tin nhà tuyển dụng thành công",
                 metadata: { ...recruiter }
