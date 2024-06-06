@@ -26,7 +26,8 @@ favoriteRecruiterSchema.statics.getListFavoriteRecruiter = async function ({ use
     }
     let mappedFavoriteRecruiters = await Promise.all(
         candidate.favoriteRecruiters.map(async (recruiterId) => {
-            const activeJobCount = await Job.find({ status: "active", acceptanceStatus: "accept", recruiterId }).countDocuments();
+            const activeJobCount = await Job.find({ status: "active", acceptanceStatus: "accept", 
+                recruiterId, deadline: { $gte: new Date() } }).countDocuments();
             const recruiter = await Recruiter.findById(recruiterId).lean().select(
                 '-roles -createdAt -updatedAt -__v -acceptanceStatus -verifyEmail -firstApproval -loginId -avatar'
             )
