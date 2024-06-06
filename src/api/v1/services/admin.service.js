@@ -145,7 +145,7 @@ class AdminService {
 
     static getRecruiterInformation = async ({ recruiterId }) => {
         try {
-            const recruiter = await RecruiterService.getInformation(recruiterId);
+            const recruiter = await RecruiterService.getInformation({ userId: recruiterId });
             return {
                 message: "Lấy thông tin nhà tuyển dụng thành công",
                 metadata: { ...recruiter }

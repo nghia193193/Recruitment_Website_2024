@@ -171,19 +171,6 @@ class AdminController {
         }).send(res)
     }
 
-    getListExpiredBlog = async (req, res, next) => {
-        const { error, value } = AdminValidation.validateListBlog(req.query);
-        if (error) {
-            throw new BadRequestError(error.details[0].message);
-        }
-        const { metadata, message, options } = await BlogService.getListExpiredBlog(value);
-        new OK({
-            message: message,
-            metadata: { ...metadata },
-            options
-        }).send(res)
-    }
-
     createBlog = async (req, res, next) => {
         const { error, value } = AdminValidation.validateCreateBlog({ ...req.body, ...req.files });
         if (error) {

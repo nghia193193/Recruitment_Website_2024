@@ -34,7 +34,6 @@ router.patch('/jobs/:jobId/approve', verifyAccessToken, authPageAdmin, asyncHand
 // blog
 router.get('/blogs', verifyAccessToken, authPageAdmin, asyncHandler(adminController.getListBlog));
 router.get('/blogs/:blogId', verifyAccessToken, authPageAdmin, asyncHandler(adminController.getBlogDetail));
-router.get('/expired_blogs', verifyAccessToken, authPageAdmin, asyncHandler(adminController.getListExpiredBlog));
 router.post('/blogs/create', verifyAccessToken, authPageAdmin, asyncHandler(adminController.createBlog));
 router.patch('/blogs/update/:blogId', verifyAccessToken, authPageAdmin, asyncHandler(adminController.updateBlog))
 // statistic
