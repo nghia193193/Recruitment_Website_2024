@@ -1,4 +1,3 @@
-const { formatInTimeZone } = require('date-fns-tz');
 const mongoose = require('mongoose');
 const model = mongoose.model;
 const Schema = mongoose.Schema;

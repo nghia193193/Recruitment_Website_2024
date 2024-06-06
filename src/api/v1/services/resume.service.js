@@ -1,5 +1,6 @@
 const { InternalServerError } = require("../core/error.response");
 const { Resume } = require("../models/resume.model");
+const { clearImage } = require("../utils/processImage");
 
 class ResumeService {
     static getListResume = async ({ userId, page, limit, title, status }) => {
@@ -52,11 +53,6 @@ class ResumeService {
         try {
             const resume = await Resume.findOne({ _id: resumeId, candidateId: userId });
             if (!resume) {
-                if (avatar) {
-                    const splitArr = avatar.split("/");
-                    const image = splitArr[splitArr.length - 1];
-                    clearImage(image);
-                }
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
             }
             if (avatar) {
@@ -64,12 +60,18 @@ class ResumeService {
                 const splitArr = oldAva.split("/");
                 const image = splitArr[splitArr.length - 1];
                 clearImage(image);
-                resume.avatar = avatar;
-                await resume.save();
+            }
+            // loop certification
+            if (resume.certifications.length !== 0) {
+                for (let i = 0; i < resume.certifications.length; i++) {
+                    const splitArr = resume.certifications[i].uploadFile.split("/");
+                    const image = splitArr[splitArr - 1];
+                    clearImage(image);
+                }
             }
             const result = await Resume.findOneAndUpdate({ _id: resumeId, candidateId: userId }, {
                 $set: {
-                    name, title, goal, phone, educationLevel, homeTown, email, major,
+                    name, title, goal, phone, educationLevel, homeTown, email, major, avatar,
                     dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories
                 }
             }, {
@@ -86,6 +88,11 @@ class ResumeService {
                 metadata: { ...result }
             }
         } catch (error) {
+            if (avatar) {
+                const splitArr = avatar.split("/");
+                const image = splitArr[splitArr.length - 1];
+                clearImage(image);
+            }
             throw error;
         }
     }
@@ -98,8 +105,16 @@ class ResumeService {
             if (!result) {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
             }
-            if (result.avatar?.publicId) {
-                await cloudinary.uploader.destroy(result.avatar.publicId);
+            const splitArr = result.avatar.split("/");
+            const image = splitArr[splitArr - 1];
+            clearImage(image);
+            // loop certification
+            if (result.certifications.length !== 0) {
+                for (let i = 0; i < result.certifications.length; i++) {
+                    const splitArr = result.certifications[i].uploadFile.split("/");
+                    const image = splitArr[splitArr - 1];
+                    clearImage(image);
+                }
             }
             const { length, listResume } = await Resume.getListResume({ userId, page, limit, title })
             return {

@@ -69,7 +69,9 @@ class CandidateValidation {
     static validateUpdateAvatar = data => {
         const validateSchema = joi.object({
             avatar: joi.array().items(joi.object({
-                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
+                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg').messages({
+                    'any.only': 'Chỉ chấp nhận file JPG, PNG, JPEG.'
+                })
             }).unknown(true)).required(),
         })
         return validateSchema.validate(data);

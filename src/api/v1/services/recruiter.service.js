@@ -328,27 +328,15 @@ class RecruiterService {
                 }
                 recruiter.companyCoverPhoto = companyCoverPhoto;
             }
-            if (companyName) {
-                recruiter.companyName = companyName;
-            }
-            if (companyWebsite) {
-                recruiter.companyWebsite = companyWebsite;
-            }
-            if (companyAddress) {
-                recruiter.companyAddress = companyAddress;
-            }
-            if (about) {
-                recruiter.about = about;
-            }
-            if (employeeNumber) {
-                recruiter.employeeNumber = employeeNumber;
-            }
-            if (fieldOfActivity) {
-                recruiter.fieldOfActivity = fieldOfActivity;
-            }
-            if (slug) {
-                recruiter.slug = slug;
-            }
+            if (companyName) recruiter.companyName = companyName;
+            
+            if (companyWebsite) recruiter.companyWebsite = companyWebsite;
+            
+            if (companyAddress) recruiter.companyAddress = companyAddress;
+            if (about) recruiter.about = about;
+            if (employeeNumber) recruiter.employeeNumber = employeeNumber;
+            if (fieldOfActivity) recruiter.fieldOfActivity = fieldOfActivity;
+            if (slug) recruiter.slug = slug;
             recruiter.acceptanceStatus = "waiting";
             await recruiter.save();
             const result = await Recruiter.findById(userId).populate('loginId').select("-__v").lean();

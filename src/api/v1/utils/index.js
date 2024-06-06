@@ -104,6 +104,7 @@ const mapRolePermission = {
 
 const workStatus = ["Đang tìm việc", "Đã có việc", "Đang tìm nơi thực tập"];
 const applicationStatus = ['Đã nộp', 'Đã nhận', 'Không nhận'];
+const blogType = ['Định hướng nghề nghiệp', 'Bí kíp tìm việc', 'Chế độ lương thưởng', 'Kiến thức chuyên ngành'];
 
 function sortObject(obj) {
 	let sorted = {};
@@ -439,5 +440,6 @@ module.exports = {
     workStatus,
     applicationStatus,
     sortObject,
-    majors
+    majors,
+    blogType
 }

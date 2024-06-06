@@ -37,7 +37,9 @@ class ResumeValidation {
                 return cleanTitle;
             }).required(),
             avatar: joi.array().items(joi.object({
-                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
+                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg').messages({
+                    'any.only': 'Chỉ chấp nhận file JPG, PNG, JPEG.'
+                })
             }).unknown(true)).required().messages({
                 'array.base': 'Ảnh đại diện không hợp lệ.'
             }),
@@ -116,7 +118,9 @@ class ResumeValidation {
                 'any.empty': "Tiêu đề không được để trống"
             }),
             avatar: joi.array().items(joi.object({
-                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
+                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg').messages({
+                    'any.only': 'Chỉ chấp nhận file JPG, PNG, JPEG.'
+                })
             }).unknown(true)).messages({
                 'array.base': 'Ảnh đại diện không hợp lệ.'
             }),

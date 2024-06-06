@@ -74,12 +74,16 @@ class RecruiterValidation {
                 'any.empty': "Tên công ty không được để trống",
             }),
             companyLogo: joi.array().items(joi.object({
-                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
+                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg').messages({
+                    'any.only': 'Chỉ chấp nhận file JPG, PNG, JPEG.'
+                })
             }).unknown(true)).required().messages({
                 'array.base': 'Logo không hợp lệ.'
             }),
             companyCoverPhoto: joi.array().items(joi.object({
-                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
+                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg').messages({
+                    'any.only': 'Chỉ chấp nhận file JPG, PNG, JPEG.'
+                })
             }).unknown(true)).required().messages({
                 'array.base': 'Ảnh diện không hợp lệ.'
             }),
@@ -122,7 +126,9 @@ class RecruiterValidation {
     static validateUpdateAvatar = data => {
         const validateSchema = joi.object({
             avatar: joi.array().items(joi.object({
-                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
+                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg').messages({
+                    'any.only': 'Chỉ chấp nhận file JPG, PNG, JPEG.'
+                })
             }).unknown(true)).required(),
         })
         return validateSchema.validate(data);
@@ -185,12 +191,16 @@ class RecruiterValidation {
                 'string.max': "Địa chỉ không được vượt quá 200 ký tự"
             }),
             companyLogo: joi.array().items(joi.object({
-                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
+                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg').messages({
+                    'any.only': 'Chỉ chấp nhận file JPG, PNG, JPEG.'
+                })
             }).unknown(true)).messages({
                 'array.base': 'Logo không hợp lệ.'
             }),
             companyCoverPhoto: joi.array().items(joi.object({
-                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg')
+                mimetype: joi.string().valid('image/jpg', 'image/png', 'image/jpeg').messages({
+                    'any.only': 'Chỉ chấp nhận file JPG, PNG, JPEG.'
+                })
             }).unknown(true)).messages({
                 'array.base': 'Ảnh bìa không hợp lệ.'
             }),

@@ -31,6 +31,12 @@ router.patch('/jobs/update/:jobId', verifyAccessToken, authPageAdmin, asyncHandl
 router.get('/jobs/:jobId', verifyAccessToken, authPageAdmin, asyncHandler(jobController.getJobDetail));
 // approve job
 router.patch('/jobs/:jobId/approve', verifyAccessToken, authPageAdmin, asyncHandler(adminController.approveJob));
+// blog
+router.get('/blogs', verifyAccessToken, authPageAdmin, asyncHandler(adminController.getListBlog));
+router.get('/blogs/:blogId', verifyAccessToken, authPageAdmin, asyncHandler(adminController.getBlogDetail));
+router.get('/expired_blogs', verifyAccessToken, authPageAdmin, asyncHandler(adminController.getListExpiredBlog));
+router.post('/blogs/create', verifyAccessToken, authPageAdmin, asyncHandler(adminController.createBlog));
+router.patch('/blogs/update/:blogId', verifyAccessToken, authPageAdmin, asyncHandler(adminController.updateBlog))
 // statistic
 router.get('/statistic/total_candidate', verifyAccessToken, authPageAdmin, asyncHandler(adminStatisticController.totalCandidateStatistic));
 router.get('/statistic/total_recruiter', verifyAccessToken, authPageAdmin, asyncHandler(adminStatisticController.totalRecruiterStatistic));
