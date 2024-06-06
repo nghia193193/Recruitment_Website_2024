@@ -1,6 +1,7 @@
 const express = require('express');
 const { asyncHandler } = require('../../auth/checkAuth');
 const { verifyAccessToken, authPageRecruiter, checkPremium } = require('../../middlewares');
+const applicationController = require('../../controllers/application.controller');
 const recruiterController = require('../../controllers/recruiter.controller');
 const resumeController = require('../../controllers/resume.controller');
 const favoriteResumeController = require('../../controllers/favoriteResume.controller');
@@ -45,11 +46,11 @@ router.patch('/jobs/:jobId/update_job', verifyAccessToken, authPageRecruiter, as
 // change job status
 router.patch('/jobs/:jobId/change_status', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.changeJobStatus));
 // get list job application experience
-router.get('/jobs/applications/:jobId/list_experience', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListJobApplicationExperience));
+router.get('/jobs/applications/:jobId/list_experience', verifyAccessToken, authPageRecruiter, asyncHandler(applicationController.getListJobApplicationExperience));
 // get list job application
-router.get('/jobs/applications/:jobId', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListJobApplication));
+router.get('/jobs/applications/:jobId', verifyAccessToken, authPageRecruiter, asyncHandler(applicationController.getListJobApplication));
 // get application detail
-router.get('/jobs/applications/detail/:applicationId', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getApplicationDetail));
+router.get('/jobs/applications/detail/:applicationId', verifyAccessToken, authPageRecruiter, asyncHandler(applicationController.getApplicationDetail));
 // approve application
 router.patch('/jobs/applications/approve/:applicationId', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.approveApplication));
 // get list application status

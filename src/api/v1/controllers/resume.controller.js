@@ -28,7 +28,7 @@ class ResumeController {
             metadata: { ...metadata }
         }).send(res)
     }
-
+    
     addResume = async (req, res, next) => {
         const { error, value } = ResumeValidation.validateAddResume({ ...req.body, ...req.files });
         if (error) {

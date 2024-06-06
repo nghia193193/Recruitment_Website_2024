@@ -4,22 +4,6 @@ const mongoose = require('mongoose');
 const xss = require('xss');
 
 class AdminValidation {
-
-    static validateGetListRecruiter = data => {
-        const validateSchema = joi.object({
-            name: joi.string().custom((value) => {
-                const cleanName = xss(value);
-                return cleanName;
-            }),
-            acceptanceStatus: joi.string().valid(...acceptanceStatus),
-            page: joi.number().integer().min(1),
-            limit: joi.number().integer().min(1)
-        }).messages({
-            "any.only": "'{#label}' không hợp lệ"
-        })
-        return validateSchema.validate(data);
-    }
-
     static validateCreateRecruiter = data => {
         const validateSchema = joi.object({
             name: joi.string().max(50).custom((value, helpers) => {

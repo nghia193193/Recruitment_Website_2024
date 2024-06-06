@@ -3,7 +3,6 @@ const { FavoriteJob } = require("../models/favoriteJob.model");
 const { Resume } = require("../models/resume.model");
 const { Login } = require("../models/login.model");
 const { InternalServerError, BadRequestError, ConflictRequestError, NotFoundRequestError } = require("../core/error.response");
-const { v2: cloudinary } = require('cloudinary');
 const { Application } = require("../models/application.model");
 const { Job } = require("../models/job.model");
 const mongoose = require("mongoose");
@@ -18,6 +17,8 @@ const EmailService = require("./email.service");
 const { mapRolePermission } = require("../utils");
 const ObjectId = mongoose.Types.ObjectId;
 const { clearImage } = require('../utils/processImage');
+const FavoriteRecruiterService = require("./favoriteRecruiter.service");
+const FavoriteJobService = require("./favoriteJob.service");
 
 class CandidateService {
     static signUp = async ({ name, email, password }) => {
@@ -71,7 +72,16 @@ class CandidateService {
                 throw new BadRequestError('OTP không chính xác')
             }
             // verify Email
-            await Candidate.verifyEmail(email);
+            const result = await Candidate.findOneAndUpdate({ email }, {
+                $set: {
+                    verifyEmail: true
+                }
+            }, {
+                new: true
+            })
+            if (!result) {
+                throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại');
+            }
             // add recruiter to login
             const hashPassword = await RedisService.getEmailKey(email);
             if (!hashPassword) {
@@ -132,10 +142,26 @@ class CandidateService {
 
     static getInformation = async ({ userId }) => {
         try {
-            const candidate = await Candidate.getInformation(userId);
+            const candidateInfor = await Candidate.findById(userId).populate("loginId").lean().select(
+                '-createdAt -updatedAt -__v'
+            );
+            if (!candidateInfor) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
+            }
+            const list = await Resume.find({ candidateId: userId, allowSearch: true }).lean().select("_id");
+            const listAllowSearchResume = list.map(resume => resume._id);
+            candidateInfor.role = candidateInfor.loginId?.role;
+            delete candidateInfor.loginId;
+            candidateInfor.avatar = candidateInfor.avatar ?? null;
+            candidateInfor.phone = candidateInfor.phone ?? null;
+            candidateInfor.gender = candidateInfor.gender ?? null;
+            candidateInfor.homeTown = candidateInfor.homeTown ?? null;
+            candidateInfor.workStatus = candidateInfor.workStatus ?? null;
+            candidateInfor.dateOfBirth = candidateInfor.dateOfBirth ?? null;
+            candidateInfor.listAllowSearchResume = listAllowSearchResume;
             return {
                 message: "Lấy thông tin thành công",
-                metadata: { ...candidate }
+                metadata: { ...candidateInfor }
             }
         } catch (error) {
             throw error;
@@ -144,16 +170,77 @@ class CandidateService {
 
     static updateInformation = async ({ userId, name, phone, gender, homeTown, workStatus, dateOfBirth,
         allowSearch, listResume }) => {
+        const session = await mongoose.startSession();
         try {
-            const candidate = await Candidate.updateInformation({
-                userId, name, phone, gender, homeTown, workStatus,
-                dateOfBirth, allowSearch, listResume
-            });
+            session.startTransaction();
+            const result = await Candidate.findOneAndUpdate({ _id: userId }, {
+                $set: {
+                    name, phone, gender, homeTown, workStatus, dateOfBirth, allowSearch
+                }
+            }, {
+                session,
+                new: true,
+                select: { createdAt: 0, updatedAt: 0, __v: 0 }
+            }).lean().populate('loginId')
+            if (!result) {
+                throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại');
+            }
+            if (allowSearch) {
+                if (allowSearch === "true") {
+                    if (listResume.length !== 0) {
+                        await Resume.updateMany({ candidateId: userId }, {
+                            $set: {
+                                allowSearch: false
+                            }
+                        }, {
+                            session
+                        })
+                        for (let i = 0; i < listResume.length; i++) {
+                            const result = await Resume.findByIdAndUpdate(listResume[i], {
+                                $set: {
+                                    allowSearch: true
+                                }
+                            }, {
+                                session,
+                                new: true
+                            })
+                            if (!result) {
+                                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+                            }
+                            if (result.status !== "active") {
+                                throw new BadRequestError(`Resume '${result.title}' cần được kích hoạt.`);
+                            }
+                        }
+                    }
+                } else {
+                    await Resume.updateMany({ candidateId: userId }, {
+                        $set: {
+                            allowSearch: false
+                        }
+                    }, {
+                        session
+                    })
+                    listResume = [];
+                }
+            }
+            result.role = result.loginId?.role;
+            delete result.loginId;
+            result.avatar = result.avatar ?? null;
+            result.phone = result.phone ?? null;
+            result.gender = result.gender ?? null;
+            result.homeTown = result.homeTown ?? null;
+            result.workStatus = result.workStatus ?? null;
+            result.dateOfBirth = result.dateOfBirth ?? null;
+            result.listAllowSearchResume = listResume;
+            await session.commitTransaction();
+            session.endSession();
             return {
                 message: "Cập nhật thông tin thành công",
-                metadata: { ...candidate }
+                metadata: { ...result }
             }
         } catch (error) {
+            await session.abortTransaction();
+            session.endSession();
             throw error;
         }
     }
@@ -203,7 +290,7 @@ class CandidateService {
         try {
             page = page ? +page : 1;
             limit = limit ? +limit : 5;
-            const { length, listFavoriteJob } = await FavoriteJob.getListFavoriteJob({ userId, page, limit, name });
+            const { length, listFavoriteJob } = await FavoriteJobService.getListFavoriteJob({ userId, page, limit, name });
             return {
                 message: "Lấy danh sách công việc yêu thích thành công.",
                 metadata: { listFavoriteJob, totalElement: length },
@@ -218,7 +305,7 @@ class CandidateService {
         try {
             page = page ? +page : 1;
             limit = limit ? +limit : 5;
-            const { length, listFavoriteRecruiter } = await FavoriteRecruiter.getListFavoriteRecruiter({ userId, page, limit, searchText });
+            const { length, listFavoriteRecruiter } = await FavoriteRecruiterService.getListFavoriteRecruiter({ userId, page, limit, searchText });
             return {
                 message: "Lấy danh sách nhà tuyển dụng yêu thích thành công.",
                 metadata: { listFavoriteRecruiter, totalElement: length },
@@ -231,7 +318,7 @@ class CandidateService {
 
     static checkFavoriteJob = async ({ userId, jobId }) => {
         try {
-            const { message, exist } = await FavoriteJob.checkFavoriteJob({ userId, jobId });
+            const { message, exist } = await FavoriteJobService.checkFavoriteJob({ userId, jobId });
             return {
                 message,
                 metadata: { exist }
@@ -243,7 +330,7 @@ class CandidateService {
 
     static checkFavoriteRecruiter = async ({ userId, slug }) => {
         try {
-            const { message, exist } = await FavoriteRecruiter.checkFavoriteRecruiter({ userId, slug });
+            const { message, exist } = await FavoriteRecruiterService.checkFavoriteRecruiter({ userId, slug });
             return {
                 message,
                 metadata: { exist }
@@ -255,7 +342,7 @@ class CandidateService {
 
     static addFavoriteJob = async ({ userId, jobId }) => {
         try {
-            await FavoriteJob.addFavoriteJob({ userId, jobId });
+            await FavoriteJobService.addFavoriteJob({ userId, jobId });
             return {
                 message: "Thêm công việc yêu thích thành công.",
                 metadata: {}
@@ -267,7 +354,7 @@ class CandidateService {
 
     static addFavoriteRecruiter = async ({ userId, recruiterId }) => {
         try {
-            await FavoriteRecruiter.addFavoriteRecruiter({ userId, recruiterId });
+            await FavoriteRecruiterService.addFavoriteRecruiter({ userId, recruiterId });
             return {
                 message: "Thêm nhà tuyển dụng yêu thích thành công.",
                 metadata: {}
@@ -281,7 +368,7 @@ class CandidateService {
         try {
             page = page ? +page : 1;
             limit = limit ? +limit : 5;
-            const { length, listFavoriteJob } = await FavoriteJob.removeFavoriteJob({ userId, jobId, page, limit, name });
+            const { length, listFavoriteJob } = await FavoriteJobService.removeFavoriteJob({ userId, jobId, page, limit, name });
             return {
                 message: "Xóa công việc yêu thích thành công.",
                 metadata: { listFavoriteJob, totalElement: length },
@@ -296,7 +383,7 @@ class CandidateService {
         try {
             page = page ? +page : 1;
             limit = limit ? +limit : 5;
-            const { length, listFavoriteRecruiter } = await FavoriteRecruiter.removeFavoriteRecruiter({ userId, recruiterId, page, limit, searchText });
+            const { length, listFavoriteRecruiter } = await FavoriteRecruiterService.removeFavoriteRecruiter({ userId, recruiterId, page, limit, searchText });
             return {
                 message: "Xóa nhà tuyển dụng yêu thích thành công.",
                 metadata: { listFavoriteRecruiter, totalElement: length },
@@ -309,7 +396,7 @@ class CandidateService {
 
     static removeAllFavoriteJob = async ({ userId }) => {
         try {
-            const { length, listFavoriteJob } = await FavoriteJob.removeAllFavoriteJob({ userId });
+            const { length, listFavoriteJob } = await FavoriteJobService.removeAllFavoriteJob({ userId });
             return {
                 message: "Xóa toàn bộ công việc yêu thích thành công.",
                 metadata: { listFavoriteJob, totalElement: length },
@@ -321,7 +408,7 @@ class CandidateService {
 
     static removeAllFavoriteRecruiter = async ({ userId }) => {
         try {
-            const { length, listFavoriteRecruiter } = await FavoriteRecruiter.removeAllFavoriteRecruiter({ userId });
+            const { length, listFavoriteRecruiter } = await FavoriteRecruiterService.removeAllFavoriteRecruiter({ userId });
             return {
                 message: "Xóa toàn bộ nhà tuyển dụng yêu thích thành công.",
                 metadata: { listFavoriteRecruiter, totalElement: length },

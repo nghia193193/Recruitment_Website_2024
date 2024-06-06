@@ -16,19 +16,6 @@ var adminSchema = new mongoose.Schema({
     timestamps: true
 })
 
-adminSchema.statics.getInformation = async function ({ userId }) {
-    try {
-        const adminInfor = await this.findById(userId).populate("loginId").lean().select(
-            '-createdAt -updatedAt -__v'
-        );
-        adminInfor.role = adminInfor.loginId?.role;
-        adminInfor.loginId = undefined;
-        return adminInfor;
-    } catch (error) {
-        throw error;
-    }
-}
-
 module.exports = {
     Admin: mongoose.model('Admin', adminSchema)
 };

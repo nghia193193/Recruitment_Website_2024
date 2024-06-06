@@ -4,12 +4,13 @@ const { verifyAccessToken, authPageAdmin } = require('../../middlewares');
 const adminController = require('../../controllers/admin.controller');
 const jobController = require('../../controllers/job.controller');
 const adminStatisticController = require('../../controllers/adminStatistic.controller');
+const recruiterController = require('../../controllers/recruiter.controller');
 const router = express.Router();
 
 // get information
 router.get('/information', verifyAccessToken, authPageAdmin, asyncHandler(adminController.getInformation));
 // get list recruiter
-router.get('/recruiters', verifyAccessToken, authPageAdmin, asyncHandler(adminController.getListRecruiter));
+router.get('/recruiters', verifyAccessToken, authPageAdmin, asyncHandler(recruiterController.getListRecruiterByAdmin));
 // create recruiter
 router.post('/recruiters/create', verifyAccessToken, authPageAdmin, asyncHandler(adminController.createRecruiter));
 // update recruiter

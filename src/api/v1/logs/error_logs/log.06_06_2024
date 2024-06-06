@@ -1,0 +1,57 @@
+06/06/2024	12:07:07 ::1---/v1/api/candidate/favorite_recruiters---GET---Vui lòng đăng nhập lại
+06/06/2024	15:07:02 ::1---/v1/api/admin/recruiters---GET---Vui lòng đăng nhập
+06/06/2024	15:11:09 ::1---/v1/api/admin/recruiters?searchText=hang---GET---"searchText" is not allowed
+06/06/2024	15:14:37 ::1---/v1/api/admin/recruiters?searchText=hang---GET---Arguments must be aggregate pipeline operators
+06/06/2024	15:14:54 ::1---/v1/api/admin/recruiters?searchText=hang---GET---Arguments must be aggregate pipeline operators
+06/06/2024	15:17:14 ::1---/v1/api/admin/recruiters?field=Ng%C3%A2n%20h%C3%A0ng%20/%20T%C3%A0i%20ch%C3%ADnh---GET---$in needs an array
+06/06/2024	15:21:07 ::1---/v1/api/admin/recruiters?searchText=hang---GET---Arguments must be aggregate pipeline operators
+06/06/2024	15:24:51 ::1---/v1/api/admin/recruiters---GET---this.aggregate is not a function
+06/06/2024	15:32:11 ::1---/v1/api/admin/recruiters---GET---acceptanceStatus is not defined
+06/06/2024	15:33:43 ::1---/v1/api/admin/recruiters---GET---invalid argument to $skip stage: Expected an integer, but found NaN in: $skip: nan.0
+06/06/2024	15:37:36 ::1---/v1/api/admin/recruiters?searchText=vietinbank---GET---Vui lòng đăng nhập lại
+06/06/2024	16:04:13 ::1---/v1/api/recruiter/jobs/applications/664fec6b6b0e9c7e2907a8a6---GET---ObjectId is not defined
+06/06/2024	16:05:29 ::1---/v1/api/recruiter/jobs/applications/664fec6b6b0e9c7e2907a8a6---GET---formatInTimeZone is not defined
+06/06/2024	16:06:14 ::1---/v1/api/recruiter/jobs/applications/664fec6b6b0e9c7e2907a8a6---GET---OK is not defined
+06/06/2024	16:15:21 ::1---/v1/api/recruiter/jobs/applications/664f488210fd81e433a4946e/list_experience---GET---Vui lòng đăng nhập lại
+06/06/2024	16:15:30 ::1---/v1/api/recruiter/jobs/applications/664f488210fd81e433a4946e/list_experience---GET---fn is not a function
+06/06/2024	16:16:50 ::1---/v1/api/recruiter/jobs/applications/664ff06d0fecf4288ab4e459/list_experience---GET---InternalServerError is not defined
+06/06/2024	16:17:25 ::1---/v1/api/recruiter/jobs/applications/664ff06d0fecf4288ab4e459/list_experience---GET---Có lỗi xảy ra vui lòng thử lại
+06/06/2024	16:39:20 ::1---/v1/api/recruiter/jobs/applications/detail/6655df7a1bb8beba01352c42---GET---this.aggregate is not a function
+06/06/2024	17:06:08 ::1---/v1/api/recruiter/jobs/applications/664fec6b6b0e9c7e2907a8a6---GET---Vui lòng đăng nhập lại
+06/06/2024	17:06:17 ::1---/v1/api/recruiter/jobs/applications/664fec6b6b0e9c7e2907a8a6---GET---Vui lòng đăng nhập lại
+06/06/2024	17:06:28 ::1---/v1/api/recruiter/jobs/applications/664fec6b6b0e9c7e2907a8a6---GET---Cannot read properties of undefined (reading 'findById')
+06/06/2024	17:06:54 ::1---/v1/api/recruiter/jobs/applications/664fec6b6b0e9c7e2907a8a6---GET---Cannot read properties of undefined (reading 'findById')
+06/06/2024	17:07:39 ::1---/v1/api/recruiter/jobs/applications/664fec6b6b0e9c7e2907a8a6---GET---Cannot read properties of undefined (reading 'findById')
+06/06/2024	17:08:19 ::1---/v1/api/recruiter/jobs/applications/664fec6b6b0e9c7e2907a8a6---GET---Cannot read properties of undefined (reading 'findById')
+06/06/2024	17:09:58 ::1---/v1/api/recruiter/jobs/applications/664fec6b6b0e9c7e2907a8a6---GET---this.find is not a function
+06/06/2024	17:13:18 ::1---/v1/api/recruiter/jobs/applications/664fec6b6b0e9c7e2907a8a6---GET---this.find is not a function
+06/06/2024	17:13:59 ::1---/v1/api/recruiter/jobs/applications/detail/664ff06d0fecf4288ab4e459---GET---Vui lòng đăng nhập lại
+06/06/2024	17:19:02 ::1---/v1/api/recruiter/jobs/waiting_jobs---GET---JobService.getListWaitingJob is not a function
+06/06/2024	17:19:54 ::1---/v1/api/recruiter/jobs/waiting_jobs---GET---this.find is not a function
+06/06/2024	17:23:21 ::1---/v1/api/recruiter/jobs/accepted_jobs---GET---this.find is not a function
+06/06/2024	17:28:16 ::1---/v1/api/recruiter/jobs/accepted_jobs---GET---ApplicationService is not defined
+06/06/2024	17:28:40 ::1---/v1/api/recruiter/jobs/accepted_jobs---GET---this.aggregate is not a function
+06/06/2024	17:33:13 ::1---/v1/api/recruiter/jobs/662f4f7488a6f0c504c764db---GET---NotFoundRequestError is not defined
+06/06/2024	17:33:39 ::1---/v1/api/recruiter/jobs/662f4f7488a6f0c504c764db---GET---Không tìm thấy công việc
+06/06/2024	17:34:06 ::1---/v1/api/recruiter/jobs/664f488210fd81e433a4946e---GET---Application.getJobAcceptedApplicationNumber is not a function
+06/06/2024	18:23:59 ::1---/v1/api/recruiter/information---GET---Vui lòng đăng nhập lại
+06/06/2024	18:24:09 ::1---/v1/api/recruiter/information---GET---this.findById is not a function
+06/06/2024	18:26:46 ::1---/v1/api/candidate/favorite_recruiters---GET---Job is not defined
+06/06/2024	18:28:01 ::1---/v1/api/candidate/favorite_recruiters/add/662f489df9935d12abe2c12b---POST---BadRequestError is not defined
+06/06/2024	18:28:56 ::1---/v1/api/candidate/favorite_recruiters/add/662f489df9935d12abe2c12b---POST---Không tìm thấy nhà tuyển dụng này, vui lòng thử lại
+06/06/2024	18:29:25 ::1---/v1/api/candidate/favorite_recruiters/add/661d5b4bf37bdb5683f66bcf---POST---Bạn đã thêm nhà tuyển dụng vào nhà tuyển dụng yêu thích.
+06/06/2024	18:29:41 ::1---/v1/api/candidate/favorite_recruiters/remove/664091af9bc3ed7d2ade2abb---DELETE---Có lỗi xảy ra vui lòng thử lại.
+06/06/2024	18:29:56 ::1---/v1/api/candidate/favorite_recruiters/remove/661d5b4bf37bdb5683f66bcf---DELETE---FavoriteRecruiter.getListFavoriteRecruiter is not a function
+06/06/2024	18:30:24 ::1---/v1/api/candidate/favorite_recruiters/remove/661d5b4bf37bdb5683f66bcf---DELETE---Có lỗi xảy ra vui lòng thử lại.
+06/06/2024	18:30:32 ::1---/v1/api/candidate/favorite_recruiters/add/661d5b4bf37bdb5683f66bcf---POST---Cannot destructure property 'message' of '(intermediate value)' as it is undefined.
+06/06/2024	18:31:44 ::1---/v1/api/candidate/favorite_recruiters/add/661d5b4bf37bdb5683f66bcf---POST---Bạn đã thêm nhà tuyển dụng vào nhà tuyển dụng yêu thích.
+06/06/2024	18:32:38 ::1---/v1/api/candidate/favorite_recruiters/remove/661d5b4bf37bdb5683f66bcf---DELETE---Có lỗi xảy ra vui lòng thử lại.
+06/06/2024	18:32:46 ::1---/v1/api/candidate/favorite_recruiters/remove/661d5b4bf37bdb5683f66bcf---DELETE---Có lỗi xảy ra vui lòng thử lại.
+06/06/2024	18:32:59 ::1---/v1/api/candidate/favorite_recruiters/add/661d5b4bf37bdb5683f66bcf---POST---Cannot destructure property 'message' of '(intermediate value)' as it is undefined.
+06/06/2024	18:35:46 ::1---/v1/api/candidate/favorite_recruiters/add/661d5b4bf37bdb5683f66bcf---POST---Bạn đã thêm nhà tuyển dụng vào nhà tuyển dụng yêu thích.
+06/06/2024	18:36:48 ::1---/v1/api/candidate/favorite_recruiters/remove_all---DELETE---Không có nhà tuyển dụng nào trong danh sách.
+06/06/2024	19:08:28 ::1---/v1/api/candidate/favorite_recruiters/remove_all---DELETE---FavoriteRecruiter.removeAllFavoriteRecruiter is not a function
+06/06/2024	19:17:37 ::1---/v1/api/candidate/favorite_jobs---GET---FavoriteJob.getListFavoriteJob is not a function
+06/06/2024	19:18:53 ::1---/v1/api/candidate/favorite_jobs/check/662f4f7488a6f0c504c764db---GET---Không tìm thấy công việc này, vui lòng thử lại
+06/06/2024	19:19:29 ::1---/v1/api/candidate/favorite_jobs/remove/66462dad398b9230cddc2c26---DELETE---FavoriteJob.getListFavoriteJob is not a function
+06/06/2024	19:21:40 ::1---/v1/api/candidate/favorite_jobs/remove/66462dad398b9230cddc2c26---DELETE---Có lỗi xảy ra vui lòng thử lại.

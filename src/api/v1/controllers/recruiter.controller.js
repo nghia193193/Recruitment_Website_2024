@@ -3,6 +3,7 @@ const RecruiterValidation = require("../validations/recruiter.validation");
 const { CREATED, OK } = require('../core/success.response');
 const { BadRequestError } = require('../core/error.response');
 const { clearImage } = require("../utils/processImage");
+const JobService = require("../services/job.service");
 
 class RecruiterController {
     signUp = async (req, res, next) => {
@@ -172,6 +173,19 @@ class RecruiterController {
         }).send(res)
     }
 
+    getListRecruiterByAdmin = async (req, res, next) => {
+        const { error, value } = RecruiterValidation.validateGetListRecruiterByAdmin(req.query);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata, options } = await RecruiterService.getListRecruiterByAdmin(value);
+        new OK({
+            message,
+            metadata: { ...metadata },
+            options
+        }).send(res)
+    }
+
     getListRecruiterHomePage = async (req, res, next) => {
         const { error, value } = RecruiterValidation.validateGetListRecruiterHomePage(req.query);
         if (error) {
@@ -227,7 +241,7 @@ class RecruiterController {
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const { metadata, message } = await RecruiterService.getJobDetail({ ...value, ...req.payload });
+        const { metadata, message } = await JobService.getJobDetail({ ...value, ...req.payload });
         new OK({
             message: message,
             metadata: { ...metadata }
@@ -271,7 +285,7 @@ class RecruiterController {
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const { metadata, message, options } = await RecruiterService.getListWaitingJob({ ...value, ...req.payload });
+        const { metadata, message, options } = await JobService.getListWaitingJobByRecruiter({ ...value, ...req.payload });
         new OK({
             message: message,
             metadata: { ...metadata },
@@ -284,7 +298,7 @@ class RecruiterController {
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const { metadata, message, options } = await RecruiterService.getListAcceptedJob({ ...value, ...req.payload });
+        const { metadata, message, options } = await JobService.getListAcceptedJobByRecruiter({ ...value, ...req.payload });
         new OK({
             message: message,
             metadata: { ...metadata },
@@ -297,7 +311,7 @@ class RecruiterController {
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const { metadata, message, options } = await RecruiterService.getListDeclinedJob({ ...value, ...req.payload });
+        const { metadata, message, options } = await JobService.getListDeclinedJobByRecruiter({ ...value, ...req.payload });
         new OK({
             message: message,
             metadata: { ...metadata },
@@ -310,7 +324,7 @@ class RecruiterController {
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const { metadata, message, options } = await RecruiterService.getListNearingExpirationdJob({ ...value, ...req.payload });
+        const { metadata, message, options } = await JobService.getListNearingExpirationdJobByRecruiter({ ...value, ...req.payload });
         new OK({
             message: message,
             metadata: { ...metadata },
@@ -323,49 +337,11 @@ class RecruiterController {
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const { metadata, message, options } = await RecruiterService.getListExpiredJob({ ...value, ...req.payload });
+        const { metadata, message, options } = await JobService.getListExpiredJobByRecruiter({ ...value, ...req.payload });
         new OK({
             message: message,
             metadata: { ...metadata },
             options: options
-        }).send(res)
-    }
-
-    getListJobApplicationExperience = async (req, res, next) => {
-        const { error, value } = RecruiterValidation.validateJobId(req.params);
-        if (error) {
-            throw new BadRequestError(error.details[0].message);
-        }
-        const { metadata, message, options } = await RecruiterService.getListJobApplicationExperience({ ...value, ...req.payload });
-        new OK({
-            message: message,
-            metadata: { ...metadata },
-            options: options
-        }).send(res)
-    }
-
-    getListJobApplication = async (req, res, next) => {
-        const { error, value } = RecruiterValidation.validateGetListJobApplication({ ...req.params, ...req.query });
-        if (error) {
-            throw new BadRequestError(error.details[0].message);
-        }
-        const { metadata, message, options } = await RecruiterService.getListJobApplication({ ...value, ...req.payload });
-        new OK({
-            message: message,
-            metadata: { ...metadata },
-            options: options
-        }).send(res)
-    }
-
-    getApplicationDetail = async (req, res, next) => {
-        const { error, value } = RecruiterValidation.validateApplicationId(req.params);
-        if (error) {
-            throw new BadRequestError(error.details[0].message);
-        }
-        const { metadata, message } = await RecruiterService.getApplicationDetail({ ...value, ...req.payload });
-        new OK({
-            message: message,
-            metadata: { ...metadata }
         }).send(res)
     }
 

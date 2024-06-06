@@ -13,19 +13,6 @@ class AdminController {
         }).send(res)
     }
 
-    getListRecruiter = async (req, res, next) => {
-        const { error, value } = AdminValidation.validateGetListRecruiter(req.query);
-        if (error) {
-            throw new BadRequestError(error.details[0].message);
-        }
-        const { metadata, message, options } = await AdminService.getListRecruiter({ ...req.body, ...value });
-        new OK({
-            message: message,
-            metadata: { ...metadata },
-            options
-        }).send(res)
-    }
-
     createRecruiter = async (req, res, next) => {
         const { error, value } = AdminValidation.validateCreateRecruiter({ ...req.body, ...req.files });
         if (error) {

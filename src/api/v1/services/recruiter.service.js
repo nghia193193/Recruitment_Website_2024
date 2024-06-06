@@ -16,6 +16,8 @@ const OTPService = require("./otp.service");
 const { FavoriteRecruiter } = require("../models/favoriteRecruiter.model");
 const { clearImage } = require('../utils/processImage');
 const mongoose = require('mongoose');
+const ApplicationService = require("./application.service");
+const FavoriteRecruiterService = require("./favoriteRecruiter.service");
 
 
 class RecruiterService {
@@ -85,7 +87,17 @@ class RecruiterService {
                 throw new BadRequestError('OTP không chính xác')
             }
             // verify Email
-            await Recruiter.verifyEmail(email, session);
+            const result = await Recruiter.findOneAndUpdate({ email }, {
+                $set: {
+                    verifyEmail: true
+                }
+            }, {
+                session,
+                new: true
+            })
+            if (!result) {
+                throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại');
+            }
             // add recruiter to login
             const hashPassword = await RedisService.getEmailKey(email);
             if (!hashPassword) {
@@ -154,10 +166,24 @@ class RecruiterService {
 
     static getInformation = async ({ userId }) => {
         try {
-            const recruiter = await Recruiter.getInformation(userId);
+            const recruiterInfor = await Recruiter.findById(userId).populate("loginId").lean().select(
+                '-createdAt -updatedAt -__v'
+            );
+            if (!recruiterInfor) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
+            }
+            const likeNumber = await FavoriteRecruiterService.getLikeNumber({ recruiterId: userId });
+            recruiterInfor.role = recruiterInfor.loginId?.role;
+            delete recruiterInfor.loginId;
+            recruiterInfor.avatar = recruiterInfor.avatar ?? null;
+            recruiterInfor.companyLogo = recruiterInfor.companyLogo ?? null;
+            recruiterInfor.companyCoverPhoto = recruiterInfor.companyCoverPhoto ?? null;
+            recruiterInfor.slug = recruiterInfor.slug ?? null;
+            recruiterInfor.likeNumber = likeNumber;
+            recruiterInfor.reasonDecline = recruiterInfor.reasonDecline ?? null;
             return {
                 message: "Lấy thông tin thành công",
-                metadata: { ...recruiter }
+                metadata: { ...recruiterInfor }
             }
         } catch (error) {
             throw error;
@@ -357,6 +383,82 @@ class RecruiterService {
             const { message } = await Login.changePassword({ email, currentPassword, newPassword });
             return {
                 message: message
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getListRecruiterByAdmin = async function ({ searchText, field, acceptanceStatus, page, limit }) {
+        try {
+            page = page ? +page : 1;
+            limit = limit ? +limit : 5;
+            let query = {
+                firstUpdate: false
+            };
+            let listRecruiter;
+            if (acceptanceStatus) query["acceptanceStatus"] = acceptanceStatus;
+            if (field) query["fieldOfActivity"] = { "$in": [field] };
+            const pipeline = [
+                {
+                    $lookup: {
+                        from: 'orders',
+                        let: { recruiterId: '$_id' },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ['$recruiterId', '$$recruiterId'] }, // id từ order, recruiter
+                                            { $eq: ['$status', 'Thành công'] },
+                                            { $gt: ['$validTo', new Date()] }
+                                        ]
+                                    }
+                                }
+                            },
+                            { $project: { _id: 1 } }
+                        ],
+                        as: 'premiumDetails'
+                    }
+                },
+                {
+                    $addFields: {
+                        premiumAccount: { $gt: [{ $size: '$premiumDetails' }, 0] }, // > 0 thì true
+                    }
+                },
+                { $sort: { premiumAccount: -1, updatedAt: -1 } },
+                { $skip: (page - 1) * limit },
+                { $limit: limit },
+                {
+                    $project: {
+                        __v: 0,
+                        loginId: 0,
+                        avatar: 0,
+                        premiumDetails: 0
+                    }
+                }
+            ]
+            if (searchText) {
+                query["$text"] = { $search: searchText };
+                listRecruiter = await Recruiter.aggregate([
+                    { $match: query },
+                    ...pipeline
+                ])
+            } else {
+                listRecruiter = await Recruiter.aggregate([
+                    { $match: query },
+                    ...pipeline
+                ])
+            }
+            const totalElement = await Recruiter.find(query).lean().countDocuments();
+            return {
+                message: "Lấy danh sách nhà tuyển dụng thành công",
+                metadata: {
+                    totalElement, listRecruiter
+                },
+                options: {
+                    page, limit
+                }
             }
         } catch (error) {
             throw error;
@@ -582,18 +684,6 @@ class RecruiterService {
         }
     }
 
-    static getJobDetail = async ({ userId, jobId }) => {
-        try {
-            const job = await Job.getJobDetailByRecruiter({ userId, jobId })
-            return {
-                message: "Lấy thông tin công việc thành công",
-                metadata: { ...job }
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
     static getJobStatus = async () => {
         try {
             const listStatus = status;
@@ -618,185 +708,43 @@ class RecruiterService {
         }
     }
 
-    static getListWaitingJob = async ({ userId, name, field, levelRequirement, status, page, limit }) => {
-        try {
-            page = page ? +page : 1;
-            limit = limit ? +limit : 5;
-            const { mappedList, length } = await Job.getListWaitingJobByRecruiterId({ userId, name, field, levelRequirement, status, page, limit })
-            return {
-                message: "Lấy danh sách công việc thành công",
-                metadata: {
-                    listWaitingJob: mappedList,
-                    totalElement: length
-                },
-                options: {
-                    page: page,
-                    limit: limit
-                }
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    static getListAcceptedJob = async ({ userId, name, field, levelRequirement, status, page, limit }) => {
-        try {
-            page = page ? +page : 1;
-            limit = limit ? +limit : 5;
-            const { mappedList, length } = await Job.getListAcceptedJobByRecruiterId({ userId, name, field, levelRequirement, status, page, limit })
-            return {
-                message: "Lấy danh sách công việc thành công",
-                metadata: {
-                    listAcceptedJob: mappedList,
-                    totalElement: length
-                },
-                options: {
-                    page: page,
-                    limit: limit
-                }
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    static getListDeclinedJob = async ({ userId, name, field, levelRequirement, status, page, limit }) => {
-        try {
-            page = page ? +page : 1;
-            limit = limit ? +limit : 5;
-            const { mappedList, length } = await Job.getListDeclinedJobByRecruiterId({ userId, name, field, levelRequirement, status, page, limit })
-            return {
-                message: "Lấy danh sách công việc thành công",
-                metadata: {
-                    listDeclinedJob: mappedList,
-                    totalElement: length
-                },
-                options: {
-                    page: page,
-                    limit: limit
-                }
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    static getListNearingExpirationdJob = async ({ userId, name, field, levelRequirement, status, page, limit }) => {
-        try {
-            page = page ? +page : 1;
-            limit = limit ? +limit : 5;
-            const { mappedList, length } = await Job.getListNearingExpirationdJobByRecruiterId({ userId, name, field, levelRequirement, status, page, limit })
-            return {
-                message: "Lấy danh sách công việc sắp hết hạn thành công",
-                metadata: {
-                    listNearingExpirationJob: mappedList,
-                    totalElement: length
-                },
-                options: {
-                    page: page,
-                    limit: limit
-                }
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    static getListExpiredJob = async ({ userId, name, field, levelRequirement, status, page, limit }) => {
-        try {
-            page = page ? +page : 1;
-            limit = limit ? +limit : 5;
-            const { mappedList, length } = await Job.getListExpiredJobByRecruiterId({ userId, name, field, levelRequirement, status, page, limit })
-            return {
-                message: "Lấy danh sách công việc đã hết hạn thành công",
-                metadata: {
-                    listExpiredJob: mappedList,
-                    totalElement: length
-                },
-                options: {
-                    page: page,
-                    limit: limit
-                }
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    static getListJobApplicationExperience = async ({ userId, jobId }) => {
-        try {
-            const job = await Job.findById(jobId).lean();
-            if (!job) {
-                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
-            }
-            const listExperience = await Application.getListJobApplicationExperience({ userId, jobId })
-            return {
-                message: "Lấy danh sách kinh nghiệm thành công",
-                metadata: {
-                    listExperience
-                }
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    static getListJobApplication = async ({ userId, jobId, candidateName, experience, status, major, goal,
-        page, limit }) => {
-        try {
-            page = page ? +page : 1;
-            limit = limit ? +limit : 5;
-            const job = await Job.findById(jobId).lean();
-            if (!job) {
-                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
-            }
-            const { listApplication, totalElement } = await Application.getListJobApplication({
-                userId, jobId, candidateName, experience, status, major, goal,
-                page, limit
-            })
-            const acceptedNumber = await Application.getJobAcceptedApplicationNumber({ jobId });
-            return {
-                message: "Lấy danh sách ứng tuyển thành công",
-                metadata: {
-                    listApplication,
-                    totalElement,
-                    name: job.name,
-                    type: job.type,
-                    quantity: job.quantity,
-                    acceptedNumber,
-                    levelRequirement: job.levelRequirement
-                },
-                options: {
-                    page: page,
-                    limit: limit
-                }
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    static getApplicationDetail = async ({ userId, applicationId }) => {
-        try {
-            const { result } = await Application.getApplicationDetail({ userId, applicationId });
-            return {
-                message: "Lấy thông tin resume thành công",
-                metadata: {
-                    ...result
-                }
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
     static approveApplication = async ({ userId, applicationId, status, reasonDecline }) => {
         try {
             const companyName = (await Recruiter.findById(userId).lean()).companyName;
-            const { candidateId, jobName } = await Application.approveApplication({ userId, applicationId, status, reasonDecline });
+            // validate recruiter
+            const { result, jobId, jobName, quantity } = await ApplicationService.getApplicationDetail({ userId, applicationId });
+            if (!result) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
+            }
+            // validate quantity
+            let application;
+            const acceptedNumber = await Application.getJobAcceptedApplicationNumber({ jobId });
+            if (status === "Đã nhận") {
+                if (acceptedNumber >= quantity) {
+                    throw new BadRequestError("Đã đủ số lượng cần tuyển, không thể nhận thêm!");
+                }
+                application = await Application.findOneAndUpdate({ _id: applicationId }, {
+                    $set: {
+                        status, reasonDecline: null
+                    }
+                }, {
+                    new: true
+                }).lean()
+            } else {
+                application = await Application.findOneAndUpdate({ _id: applicationId }, {
+                    $set: {
+                        status, reasonDecline
+                    }
+                }, {
+                    new: true
+                }).lean()
+            }
+            if (!application) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
+            }
             const notification = await Notification.create({
                 senderId: userId,
-                receiverId: candidateId,
+                receiverId: application.candidateId.toString(),
                 senderCode: mapRolePermission["RECRUITER"],
                 link: `${process.env.FE_URL}/profile/submitted-jobs`,
                 title: `${companyName} đã duyệt đơn ứng tuyển của bạn.`,
@@ -805,7 +753,7 @@ class RecruiterService {
             if (!notification) {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
             }
-            _io.emit(`notification_candidate_${candidateId}`, notification);
+            _io.emit(`notification_candidate_${application.candidateId.toString()}`, notification);
             return {
                 message: "Duyệt đơn ứng tuyển thành công thành công",
             }

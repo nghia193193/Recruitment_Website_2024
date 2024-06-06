@@ -1,7 +1,8 @@
 const { formatInTimeZone } = require("date-fns-tz");
-const { Application } = require("../models/application.model");
 const { Job } = require("../models/job.model");
 const { Order } = require("../models/order.model");
+const ApplicationService = require("./application.service");
+const { NotFoundRequestError } = require("../core/error.response");
 
 class JobService {
     static getListJob = async ({ name, province, type, levelRequirement, experience, field,
@@ -87,7 +88,7 @@ class JobService {
                 throw new NotFoundRequestError("Không tìm thấy công việc");
             }
             // format data
-            const acceptedNumber = await Application.getJobAcceptedApplicationNumber({ jobId });
+            const acceptedNumber = await ApplicationService.getJobAcceptedApplicationNumber({ jobId });
             job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
             job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
             job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
@@ -98,7 +99,7 @@ class JobService {
             job.employeeNumber = job.recruiterId.employeeNumber;
             job.companyAddress = job.recruiterId.companyAddress;
             job.acceptedNumber = acceptedNumber;
-            delete job.recruiterId;
+            job.recruiterId = job.recruiterId._id.toString();
 
             return {
                 message: "Lấy thông tin công việc thành công",
@@ -595,6 +596,283 @@ class JobService {
                     page: page,
                     limit: limit
                 }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getListWaitingJobByRecruiter = async function ({ userId, name, field, levelRequirement, status, page, limit }) {
+        try {
+            page = page ? +page : 1;
+            limit = limit ? +limit : 5;
+            const query = {
+                recruiterId: userId,
+                acceptanceStatus: "waiting"
+            }
+            if (name) {
+                query["$text"] = { $search: name };
+            }
+            if (field) {
+                query["field"] = field;
+            }
+            if (levelRequirement) {
+                query["levelRequirement"] = levelRequirement;
+            }
+            if (status) {
+                query["status"] = status;
+            }
+            const length = await Job.find(query).lean().countDocuments();
+            let result = await Job.find(query).lean()
+                .select("name field type levelRequirement status deadline")
+                .skip((page - 1) * limit)
+                .limit(limit)
+                .sort({ updatedAt: -1 })
+            let mappedList = await Promise.all(
+                result.map(async (item) => {
+                    const applicationNumber = await ApplicationService.getJobApplicationNumber({ jobId: item._id });
+                    return {
+                        ...item,
+                        applicationNumber: applicationNumber
+                    }
+                })
+            )
+            return {
+                message: "Lấy danh sách công việc thành công",
+                metadata: {
+                    listWaitingJob: mappedList,
+                    totalElement: length
+                },
+                options: {
+                    page: page,
+                    limit: limit
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getListAcceptedJobByRecruiter = async function ({ userId, name, field, levelRequirement, status, page, limit }) {
+        try {
+            page = page ? +page : 1;
+            limit = limit ? +limit : 5;
+            const query = {
+                recruiterId: userId,
+                acceptanceStatus: "accept",
+                deadline: { $gte: Date.now() }
+            }
+            if (name) {
+                query["$text"] = { $search: name };
+            }
+            if (field) {
+                query["field"] = field;
+            }
+            if (levelRequirement) {
+                query["levelRequirement"] = levelRequirement;
+            }
+            if (status) {
+                query["status"] = status;
+            }
+            const length = await Job.find(query).lean().countDocuments();
+            const result = await Job.find(query).lean()
+                .select("name field type levelRequirement status deadline")
+                .skip((page - 1) * limit)
+                .limit(limit)
+                .sort({ updatedAt: -1 })
+            let mappedList = await Promise.all(
+                result.map(async (item) => {
+                    const applicationNumber = await ApplicationService.getJobApplicationNumber({ jobId: item._id });
+                    return {
+                        ...item,
+                        applicationNumber: applicationNumber
+                    }
+                })
+            )
+            return {
+                message: "Lấy danh sách công việc thành công",
+                metadata: {
+                    listAcceptedJob: mappedList,
+                    totalElement: length
+                },
+                options: {
+                    page: page,
+                    limit: limit
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getListDeclinedJobByRecruiter = async function ({ userId, name, field, levelRequirement, status, page, limit }) {
+        try {
+            page = page ? +page : 1;
+            limit = limit ? +limit : 5;
+            const query = {
+                recruiterId: userId,
+                acceptanceStatus: "decline"
+            }
+            if (name) {
+                query["$text"] = { $search: name };
+            }
+            if (field) {
+                query["field"] = field;
+            }
+            if (levelRequirement) {
+                query["levelRequirement"] = levelRequirement;
+            }
+            if (status) {
+                query["status"] = status;
+            }
+            const length = await Job.find(query).lean().countDocuments();
+            let result = await Job.find(query).lean()
+                .select("name field type levelRequirement status deadline")
+                .skip((page - 1) * limit)
+                .limit(limit)
+                .sort({ updatedAt: -1 })
+            let mappedList = await Promise.all(
+                result.map(async (item) => {
+                    const applicationNumber = await ApplicationService.getJobApplicationNumber({ jobId: item._id });
+                    return {
+                        ...item,
+                        applicationNumber: applicationNumber
+                    }
+                })
+            )
+            return {
+                message: "Lấy danh sách công việc thành công",
+                metadata: {
+                    listDeclinedJob: mappedList,
+                    totalElement: length
+                },
+                options: {
+                    page: page,
+                    limit: limit
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getListNearingExpirationdJobByRecruiter = async function ({ userId, name, field, levelRequirement, status, page, limit }) {
+        try {
+            page = page ? +page : 1;
+            limit = limit ? +limit : 5;
+            const now = Date.now();
+            const oneWeekFromNow = now + 7 * 24 * 60 * 60 * 1000;
+            const query = {
+                recruiterId: userId,
+                deadline: { $gte: now, $lte: oneWeekFromNow }
+            }
+            if (name) {
+                query["$text"] = { $search: name };
+            }
+            if (field) {
+                query["field"] = field;
+            }
+            if (levelRequirement) {
+                query["levelRequirement"] = levelRequirement;
+            }
+            if (status) {
+                query["status"] = status;
+            }
+            const length = await Job.find(query).lean().countDocuments();
+            let result = await Job.find(query).lean()
+                .select("name field type levelRequirement status deadline")
+                .skip((page - 1) * limit)
+                .limit(limit)
+                .sort({ updatedAt: -1 })
+            let mappedList = await Promise.all(
+                result.map(async (item) => {
+                    const applicationNumber = await ApplicationService.getJobApplicationNumber({ jobId: item._id });
+                    return {
+                        ...item,
+                        applicationNumber: applicationNumber
+                    }
+                })
+            )
+            return {
+                message: "Lấy danh sách công việc sắp hết hạn thành công",
+                metadata: {
+                    listNearingExpirationJob: mappedList,
+                    totalElement: length
+                },
+                options: {
+                    page: page,
+                    limit: limit
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getListExpiredJobByRecruiter = async function ({ userId, name, field, levelRequirement, status, page, limit }) {
+        try {
+            page = page ? +page : 1;
+            limit = limit ? +limit : 5;
+            const query = {
+                recruiterId: userId,
+                deadline: { $lt: Date.now() }
+            }
+            if (name) {
+                query["$text"] = { $search: name };
+            }
+            if (field) {
+                query["field"] = field;
+            }
+            if (levelRequirement) {
+                query["levelRequirement"] = levelRequirement;
+            }
+            if (status) {
+                query["status"] = status;
+            }
+            const length = await Job.find(query).lean().countDocuments();
+            let result = await Job.find(query).lean()
+                .select("name field type levelRequirement status deadline")
+                .skip((page - 1) * limit)
+                .limit(limit)
+                .sort({ updatedAt: -1 })
+            let mappedList = await Promise.all(
+                result.map(async (item) => {
+                    const applicationNumber = await ApplicationService.getJobApplicationNumber({ jobId: item._id });
+                    return {
+                        ...item,
+                        applicationNumber: applicationNumber
+                    }
+                })
+            )
+            return {
+                message: "Lấy danh sách công việc đã hết hạn thành công",
+                metadata: {
+                    listExpiredJob: mappedList,
+                    totalElement: length
+                },
+                options: {
+                    page: page,
+                    limit: limit
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getJobDetailByRecruiter = async function ({ jobId }) {
+        try {
+            let job = await Job.findOne({ _id: jobId }).lean()
+                .select("-__v -recruiterId")
+            if (!job) {
+                throw new NotFoundRequestError("Không tìm thấy công việc");
+            }
+            job.reasonDecline = job.reasonDecline ?? null;
+            job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+            job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+            return {
+                message: "Lấy thông tin công việc thành công",
+                metadata: { ...job }
             }
         } catch (error) {
             throw error;

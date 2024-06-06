@@ -10,38 +10,24 @@ const { Login } = require('../models/login.model');
 const { default: mongoose } = require('mongoose');
 const bcrypt = require('bcryptjs');
 const { clearImage } = require('../utils/processImage');
+const { formatInTimeZone } = require('date-fns-tz');
 
 class AdminService {
 
     static getInformation = async ({ userId }) => {
         try {
-            const admin = await Admin.getInformation({ userId });
+            const adminInfor = await Admin.findById(userId).populate("loginId").lean().select(
+                '-createdAt -updatedAt -__v'
+            );
+            adminInfor.role = adminInfor.loginId?.role;
+            delete adminInfor.loginId;
             return {
                 message: "Lấy thông tin thành công",
-                metadata: { ...admin },
+                metadata: { ...adminInfor },
             }
         } catch (error) {
             throw error;
         }
-    }
-
-    static getListRecruiter = async ({ name, acceptanceStatus, page, limit }) => {
-        try {
-            page = page ? +page : 1;
-            limit = limit ? +limit : 5;
-            const { totalElement, listRecruiter } = await Recruiter.getListRecruiterByAdmin({ name, acceptanceStatus, page, limit });
-            return {
-                message: "Lấy danh sách nhà tuyển dụng thành công",
-                metadata: { listRecruiter, totalElement },
-                options: {
-                    page: page,
-                    limit: limit
-                }
-            }
-        } catch (error) {
-            throw error;
-        }
-
     }
 
     static createRecruiter = async ({ name, position, phone, contactEmail, companyName, companyWebsite, companyAddress,
@@ -171,7 +157,35 @@ class AdminService {
 
     static approveRecruiter = async ({ recruiterId, acceptanceStatus, reasonDecline }) => {
         try {
-            const result = await Recruiter.approveRecruiter({ recruiterId, acceptanceStatus, reasonDecline });
+            let result;
+            if (acceptanceStatus === "accept") {
+                result = await Recruiter.findOneAndUpdate({ _id: recruiterId }, {
+                    $set: {
+                        acceptanceStatus: acceptanceStatus, firstApproval: false
+                    }
+                }, {
+                    new: true,
+                    select: { __v: 0, createdAt: 0, udatedAt: 0 }
+                }).lean().populate('loginId')
+            } else {
+                result = await Recruiter.findOneAndUpdate({ _id: recruiterId }, {
+                    $set: {
+                        acceptanceStatus: acceptanceStatus, reasonDecline, firstApproval: false
+                    }
+                }, {
+                    new: true,
+                    select: { __v: 0, createdAt: 0, udatedAt: 0 }
+                }).lean().populate('loginId')
+            }
+            if (!result) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
+            }
+            result.role = result.loginId.role;
+            delete result.loginId;
+            result.avatar = result.avatar ?? null;
+            result.companyLogo = result.companyLogo ?? null;
+            result.companyCoverPhoto = result.companyCoverPhoto ?? null;
+            result.reasonDecline = result.reasonDecline ?? null;
             let mailDetails;
             if (result.acceptanceStatus === "accept") {
                 mailDetails = {
@@ -291,7 +305,7 @@ class AdminService {
                 }, {
                     session,
                     new: true,
-                    select: { __v: 0, recruiterId: 0}
+                    select: { __v: 0, recruiterId: 0 }
                 }).lean()
             } else {
                 result = await Job.findByIdAndUpdate(jobId, {
@@ -303,7 +317,7 @@ class AdminService {
                 }, {
                     session,
                     new: true,
-                    select: { __v: 0, recruiterId: 0}
+                    select: { __v: 0, recruiterId: 0 }
                 }).lean()
             }
             if (!result) {
@@ -326,7 +340,45 @@ class AdminService {
 
     static approveJob = async ({ userId, jobId, acceptanceStatus, reasonDecline }) => {
         try {
-            const { job, recruiterId, companyName } = await Job.approveJob({ jobId, acceptanceStatus, reasonDecline });
+            let job;
+            if (acceptanceStatus === "accept") {
+                job = await Job.findOneAndUpdate({ _id: jobId }, {
+                    $set: {
+                        acceptanceStatus: acceptanceStatus,
+                        approvalDate: formatInTimeZone(new Date(), "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
+                        reasonDecline: null
+                    }
+                }, {
+                    new: true,
+                    select: { __v: 0 }
+                }).lean().populate("recruiterId")
+            } else {
+                job = await Job.findOneAndUpdate({ _id: jobId }, {
+                    $set: {
+                        acceptanceStatus: acceptanceStatus,
+                        approvalDate: formatInTimeZone(new Date(), "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
+                        reasonDecline
+                    }
+                }, {
+                    new: true,
+                    select: { __v: 0 }
+                }).lean().populate("recruiterId")
+            }
+            if (!job) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
+            }
+            const recruiterId = job.recruiterId._id;
+            job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
+            job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+            job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+            job.approvalDate = formatInTimeZone(job.approvalDate, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+            job.companyName = job.recruiterId.companyName ?? null;
+            const companyName = job.companyName;
+            job.companyLogo = job.recruiterId.companyLogo ?? null;
+            job.employeeNumber = job.recruiterId.employeeNumber;
+            job.companyAddress = job.recruiterId.companyAddress;
+            job.reasonDecline = job.reasonDecline ?? null;
+            delete job.recruiterId;
             // thông báo tới nhà tuyển dụng
             const notification = await Notification.create({
                 senderId: userId,
