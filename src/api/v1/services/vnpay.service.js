@@ -2,7 +2,6 @@ const { formatInTimeZone } = require('date-fns-tz');
 const { sortObject } = require('../utils');
 const { config } = require('../configs/config.vnpayment');
 const OrderService = require('./order.service');
-const axios = require('axios');
 const { Order } = require('../models/order.model');
 
 class VNPayService {

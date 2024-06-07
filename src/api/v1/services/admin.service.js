@@ -1,4 +1,4 @@
-const { BadRequestError, InternalServerError } = require('../core/error.response');
+const { BadRequestError, InternalServerError, NotFoundRequestError } = require('../core/error.response');
 const { Admin } = require('../models/admin.model');
 const { Job } = require('../models/job.model');
 const { Notification } = require('../models/notification.model');
@@ -158,11 +158,26 @@ class AdminService {
 
     static approveRecruiter = async ({ recruiterId, acceptanceStatus, reasonDecline }) => {
         try {
+            const recruiter = await Recruiter.findById(recruiterId).lean();
+            if (!recruiter) {
+                throw new NotFoundRequestError("Có lỗi xảy ra vui lòng thử lại.");
+            }
             let result;
             if (acceptanceStatus === "accept") {
+                const { companyLogo, companyCoverPhoto } = recruiter.oldInfo;
+                if (companyLogo !== recruiter.companyLogo) {
+                    const splitArr = companyLogo.split("/");
+                    const image = splitArr[splitArr.length - 1];
+                    clearImage(image);
+                }
+                if (companyCoverPhoto !== recruiter.companyCoverPhoto) {
+                    const splitArr = companyCoverPhoto.split("/");
+                    const image = splitArr[splitArr.length - 1];
+                    clearImage(image);
+                }
                 result = await Recruiter.findOneAndUpdate({ _id: recruiterId }, {
                     $set: {
-                        acceptanceStatus: acceptanceStatus, firstApproval: false
+                        acceptanceStatus: acceptanceStatus, firstApproval: false, oldInfo: {}
                     }
                 }, {
                     new: true,

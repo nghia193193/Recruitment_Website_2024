@@ -1,5 +1,4 @@
 const { Candidate } = require("../models/candidate.model");
-const { FavoriteJob } = require("../models/favoriteJob.model");
 const { Resume } = require("../models/resume.model");
 const { Login } = require("../models/login.model");
 const { InternalServerError, BadRequestError, ConflictRequestError, NotFoundRequestError } = require("../core/error.response");
@@ -9,7 +8,6 @@ const mongoose = require("mongoose");
 const bcrypt = require('bcryptjs');
 const { formatInTimeZone } = require("date-fns-tz");
 const { Notification } = require("../models/notification.model");
-const { FavoriteRecruiter } = require("../models/favoriteRecruiter.model");
 const { OTP } = require("../models/otp.model");
 const RedisService = require("./redis.service");
 const OTPService = require("./otp.service");

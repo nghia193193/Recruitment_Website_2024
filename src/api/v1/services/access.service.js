@@ -1,17 +1,11 @@
-const { Candidate } = require("../models/candidate.model");
-const { OTP } = require("../models/otp.model");
-const { Recruiter } = require("../models/recruiter.model");
-const { validOtp } = require("./otp.service");
 const bcrypt = require('bcryptjs');
-const { sendSignUpMail, sendForgetPasswordMail } = require('../utils/sendMails');
 const { Login } = require("../models/login.model");
 const RedisService = require("./redis.service");
 const JWTService = require("./jwt.service");
-const { BadRequestError, InternalServerError, NotFoundRequestError, ConflictRequestError } = require("../core/error.response");
+const { BadRequestError, InternalServerError } = require("../core/error.response");
 const { findUserByRole } = require("../utils/findUser");
 const { fieldOfActivity, jobType, levelRequirement, experience, genderRequirement, provinceOfVietNam, mapRolePermission, workStatus } = require('../utils');
 const client = require('../dbs/init.redis');
-const { Job } = require("../models/job.model");
 const { randomBytes } = require('crypto');
 const EmailService = require("./email.service");
 

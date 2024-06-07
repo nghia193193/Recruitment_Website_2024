@@ -5,7 +5,6 @@ const { CREATED, OK } = require('../core/success.response');
 const AccessService = require('../services/access.service');
 const { majors } = require('../utils');
 const AccessValidation = require('../validations/access.validation');
-const RecruiterValidation = require('../validations/recruiter.validation');
 
 class AccessController {
     login = async (req, res, next) => {

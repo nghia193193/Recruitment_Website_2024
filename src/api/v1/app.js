@@ -8,7 +8,7 @@ const logEvents = require('./utils/logEvents');
 const compression = require('compression');
 const morgan = require('morgan');
 require('dotenv').config();
-require('./configs/config.coudinary').cloudinaryConfig;
+// require('./configs/config.coudinary').cloudinaryConfig;
 const path = require('path');
 
 const app = express();

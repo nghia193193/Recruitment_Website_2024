@@ -62,7 +62,11 @@ const recruiterSchema = new Schema({
         ref: "Login"
     },
     slug: String,
-    reasonDecline: String
+    reasonDecline: String,
+    oldInfo: {
+        type: Object,
+        default: {}
+    }
 }, {
     timestamps: true
 })

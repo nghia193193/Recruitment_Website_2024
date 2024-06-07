@@ -13,7 +13,6 @@ const VNPayService = require("./vnpay.service");
 const RedisService = require("./redis.service");
 const EmailService = require("./email.service");
 const OTPService = require("./otp.service");
-const { FavoriteRecruiter } = require("../models/favoriteRecruiter.model");
 const { clearImage } = require('../utils/processImage');
 const mongoose = require('mongoose');
 const ApplicationService = require("./application.service");
@@ -270,10 +269,12 @@ class RecruiterService {
 
     static updateProfile = async ({ userId, name, position, phone, contactEmail }) => {
         try {
+            const recruiter = await Recruiter.findById(userId)
+                .select("-__v -_id -loginId -verifyEmail -firstApproval -firstUpdate -createdAt -updatedAt -oldInfo -acceptanceStatus").lean();
             const result = await Recruiter.findOneAndUpdate({ _id: userId }, {
                 $set: {
                     name, position, phone, contactEmail,
-                    acceptanceStatus: "waiting"
+                    acceptanceStatus: "waiting", oldInfo: { ...recruiter }
                 }
             }, {
                 new: true,
@@ -309,37 +310,20 @@ class RecruiterService {
                     }
                 }
             }
-            const recruiter = await Recruiter.findById(userId);
-            if (companyLogo) {
-                const oldLogo = recruiter.companyLogo;
-                if (oldLogo) {
-                    const splitArrLogo = oldLogo.split("/");
-                    const deleteLogo = splitArrLogo[splitArrLogo.length - 1];
-                    clearImage(deleteLogo);
+            const recruiter = await Recruiter.findById(userId)
+                .select("-__v -_id -loginId -verifyEmail -firstApproval -firstUpdate -createdAt -updatedAt -oldInfo -acceptanceStatus").lean();
+            const result = await Recruiter.findByIdAndUpdate(userId, {
+                $set: {
+                    companyName, companyWebsite, companyAddress, about, employeeNumber, fieldOfActivity, slug,
+                    acceptanceStatus: "waiting", companyLogo, companyCoverPhoto, oldInfo: { ...recruiter }
                 }
-                recruiter.companyLogo = companyLogo;
+            }, {
+                new: true,
+                select: { __v: 0 }
+            }).populate('loginId').lean()
+            if (!result) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
             }
-            if (companyCoverPhoto) {
-                const oldCP = recruiter.companyCoverPhoto;
-                if (oldCP) {
-                    const splitArrCP = oldCP.split("/");
-                    const deleteCP = splitArrCP[splitArrCP.length - 1];
-                    clearImage(deleteCP);
-                }
-                recruiter.companyCoverPhoto = companyCoverPhoto;
-            }
-            if (companyName) recruiter.companyName = companyName;
-            
-            if (companyWebsite) recruiter.companyWebsite = companyWebsite;
-            
-            if (companyAddress) recruiter.companyAddress = companyAddress;
-            if (about) recruiter.about = about;
-            if (employeeNumber) recruiter.employeeNumber = employeeNumber;
-            if (fieldOfActivity) recruiter.fieldOfActivity = fieldOfActivity;
-            if (slug) recruiter.slug = slug;
-            recruiter.acceptanceStatus = "waiting";
-            await recruiter.save();
-            const result = await Recruiter.findById(userId).populate('loginId').select("-__v").lean();
             result.role = result.loginId.role;
             delete result.loginId;
             result.avatar = result.avatar ?? null;
@@ -551,13 +535,16 @@ class RecruiterService {
 
     static getInformationBySlug = async ({ slug }) => {
         try {
-            const recruiterInfor = await Recruiter.findOne({ slug }).lean().select(
+            let recruiterInfor = await Recruiter.findOne({ slug }).lean().select(
                 '-roles -createdAt -updatedAt -__v -acceptanceStatus -verifyEmail -firstApproval -loginId -avatar'
             );
             if (!recruiterInfor) {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
             }
             const likeNumber = await FavoriteRecruiterService.getLikeNumber({ recruiterId: recruiterInfor._id.toString() });
+            if (recruiterInfor.oldInfo.name) {
+                recruiterInfor = { ...recruiterInfor, ...recruiterInfor.oldInfo }
+            }
             recruiterInfor.companyLogo = recruiterInfor.companyLogo ?? null;
             recruiterInfor.companyCoverPhoto = recruiterInfor.companyCoverPhoto ?? null;
             recruiterInfor.slug = recruiterInfor.slug ?? null;
