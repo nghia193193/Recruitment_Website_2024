@@ -771,10 +771,22 @@ class RecruiterService {
         }
     }
 
-    static createPayment = async ({ userId, orderType, language, ipAddr }) => {
+    static createPayment = async ({ userId, premiumPackage, ipAddr, orderType, language }) => {
         try {
-            const order = await OrderService.createOrder({ userId, price: 600000 });
-            const vpnUrl = await VNPayService.createPaymentURL({ ipAddr, orderId: order._id.toString(), amount: 600000, orderType, language });
+            let price;
+            switch (premiumPackage) {
+                case "1 tháng":
+                    price = 600000;
+                    break;
+                case "3 tháng":
+                    price = 1500000;
+                    break;
+                case "6 tháng":
+                    price = 3000000;
+                    break;
+            }
+            const order = await OrderService.createOrder({ userId, price, premiumPackage });
+            const vpnUrl = await VNPayService.createPaymentURL({ ipAddr, orderId: order._id.toString(), amount: price, orderType, language });
             return {
                 message: "Tạo đơn thanh toán thành công",
                 metadata: { vpnUrl }
@@ -810,6 +822,19 @@ class RecruiterService {
         }
     }
 
+    static cancelOrder = async ({ userId }) => {
+        try {
+            const refundAmount = await OrderService.cancelOrder({ userId });
+            return {
+                message: "Hủy dịch vụ thành công",
+                metadata: {
+                    refundAmount
+                }
+            };
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 module.exports = RecruiterService;

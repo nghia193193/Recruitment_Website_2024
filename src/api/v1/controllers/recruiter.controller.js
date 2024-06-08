@@ -386,11 +386,15 @@ class RecruiterController {
     }
 
     createPayment = async (req, res, next) => {
+        const { error, value } = RecruiterValidation.validateCreatePayment(req.body);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
         var ipAddr = req.headers['x-forwarded-for'] ||
             req.connection.remoteAddress ||
             req.socket.remoteAddress ||
             req.connection.socket.remoteAddress;
-        const { metadata, message } = await RecruiterService.createPayment({ ...req.payload, ...req.body, ipAddr });
+        const { metadata, message } = await RecruiterService.createPayment({ ...req.payload, ...value, ipAddr });
         new OK({
             message: message,
             metadata: { ...metadata }
@@ -407,6 +411,14 @@ class RecruiterController {
 
     checkPremiumAccount = async (req, res, next) => {
         const { metadata, message } = await RecruiterService.checkPremiumAccount(req.payload);
+        new OK({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
+    cancelOrder = async (req, res, next) => {
+        const { metadata, message } = await RecruiterService.cancelOrder(req.payload);
         new OK({
             message: message,
             metadata: { ...metadata }

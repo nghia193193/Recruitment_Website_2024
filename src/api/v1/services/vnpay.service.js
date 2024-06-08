@@ -54,7 +54,7 @@ class VNPayService {
     static getVNPayIPN = async ({ reqQuery }) => {
         try {
             var vnp_Params = reqQuery;
-            console.log(vnp_Params)
+        
             var secureHash = vnp_Params['vnp_SecureHash'];
 
             delete vnp_Params['vnp_SecureHash'];

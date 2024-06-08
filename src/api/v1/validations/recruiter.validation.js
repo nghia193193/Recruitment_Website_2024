@@ -1,7 +1,8 @@
 const joi = require('joi');
-const { fieldOfActivity, jobType, levelRequirement, experience, genderRequirement, provinceOfVietNam, acceptanceStatus } = require('../utils/index');
+const { fieldOfActivity, jobType, levelRequirement, experience, genderRequirement, provinceOfVietNam, acceptanceStatus, premiumPackage } = require('../utils/index');
 const mongoose = require('mongoose');
 const xss = require('xss');
+const { language } = require('googleapis/build/src/apis/language');
 
 class RecruiterValidation {
 
@@ -512,9 +513,14 @@ class RecruiterValidation {
         const validateSchema = joi.object({
             applicationId: objectIdJoiSchema.required(),
             status: joi.string().valid("Đã nhận", "Không nhận").required(),
-            reasonDecline: joi.string().custom((value) => {
+            reasonDecline: joi.string().custom((value, helpers) => {
                 const cleanRD = xss(value.trim());
+                if (cleanRD === '') {
+                    return helpers.error('any.empty');
+                }
                 return cleanRD;
+            }).messages({
+                'any.empty': "Lí do không được để trống"
             })
         }).messages({
             "any.only": "'{#label}' không hợp lệ"
@@ -526,6 +532,31 @@ class RecruiterValidation {
         const validateSchema = joi.object({
             notificationId: objectIdJoiSchema.required(),
 
+        })
+        return validateSchema.validate(data);
+    }
+
+    static validateCreatePayment = data => {
+        const validateSchema = joi.object({
+            premiumPackage: joi.string().valid(...premiumPackage).required(),
+            orderType: joi.string().custom((value, helpers) => {
+                const orderType = xss(value.trim());
+                if (orderType === '') {
+                    return helpers.error('any.empty');
+                }
+                return orderType;
+            }).required().messages({
+                'any.empty': "Loại thanh toán không được để trống"
+            }),
+            language: joi.string().custom((value, helpers) => {
+                const language = xss(value.trim());
+                if (language === '') {
+                    return helpers.error('any.empty');
+                }
+                return language;
+            }).required().messages({
+                'any.empty': "Ngôn ngữ không được để trống"
+            })
         })
         return validateSchema.validate(data);
     }

@@ -1,14 +1,14 @@
 const { Order } = require("../models/order.model");
 const mongoose = require('mongoose');
-const { InternalServerError } = require('../core/error.response');
+const { InternalServerError, NotFoundRequestError } = require('../core/error.response');
 const { formatInTimeZone } = require('date-fns-tz');
 
 class OrderService {
-    static createOrder = async ({ userId, price }) => {
+    static createOrder = async ({ userId, price, premiumPackage }) => {
         const session = await mongoose.startSession();
         try {
             session.startTransaction();
-            const result = await Order.create({ recruiterId: userId, orderInfo: "Upgrade Premium", price: price });
+            const result = await Order.create({ recruiterId: userId, orderInfo: "Upgrade Premium", price, premiumPackage });
             if (!result) {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
             }
@@ -35,10 +35,24 @@ class OrderService {
 
     static updateStatus = async ({ orderId, status }) => {
         try {
+            const order = await Order.findById(orderId).lean();
+            const premiumPackage = order.premiumPackage;
+            let validTo;
+            switch (premiumPackage) {
+                case "1 tháng":
+                    validTo = new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000);
+                    break;
+                case "3 tháng":
+                    validTo = new Date(new Date().getTime() + 90 * 24 * 60 * 60 * 1000);
+                    break;
+                case "6 tháng":
+                    validTo = new Date(new Date().getTime() + 180 * 24 * 60 * 60 * 1000);
+                    break;
+            }
             let result = await Order.findByIdAndUpdate(orderId, {
                 $set: {
                     status: status,
-                    validTo: new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000)
+                    validTo
                 }
             }, {
                 new: true,
@@ -52,6 +66,37 @@ class OrderService {
             result.createdAt = formatInTimeZone(result.createdAt, "Asia/Ho_Chi_Minh", "dd/MM/yyyy HH:mm:ss");
             result.validTo = formatInTimeZone(result.validTo, "Asia/Ho_Chi_Minh", "dd/MM/yyyy HH:mm:ss");
             return result;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static cancelOrder = async ({ userId }) => {
+        try {
+            const order = await Order.findOne({ recruiterId: userId, status: "Thành công", validTo: { $gt: new Date() } });
+            if (!order) {
+                throw new NotFoundRequestError("Không tìm thấy dịch vụ.");
+            }
+            let refundAmount;
+            let remainDate;
+            switch (order.premiumPackage) {
+                case "1 tháng":
+                    remainDate = Math.ceil((new Date(order.validTo) - new Date()) / (1000 * 60 * 60 * 24));
+                    refundAmount = 600000 * (remainDate / 30);
+                    break;
+                case "3 tháng":
+                    remainDate = Math.ceil((new Date(order.validTo) - new Date()) / (1000 * 60 * 60 * 24));
+                    refundAmount = 1500000 * (remainDate / 90);
+                    break;
+                case "6 tháng":
+                    remainDate = Math.ceil((new Date(order.validTo) - new Date()) / (1000 * 60 * 60 * 24));
+                    refundAmount = 3000000 * (remainDate / 150);
+                    break;
+            }
+            order.status = "Đã hủy";
+            order.refundAmount = refundAmount;
+            await order.save();
+            return refundAmount.toLocaleString("en-US");
         } catch (error) {
             throw error;
         }

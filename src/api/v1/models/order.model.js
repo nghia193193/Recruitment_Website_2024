@@ -16,12 +16,17 @@ const orderSchema = new Schema({
         type: Number,
         required: true
     },
+    premiumPackage: {
+        type: String,
+        enum: ["1 tháng", "3 tháng", "6 tháng"]
+    },
     status: {
         type: String,
         enum: ["Đang xử lý", "Thất bại", "Thành công", "Đã hủy"],
         default: "Đang xử lý"
     },
-    validTo: Date
+    validTo: Date,
+    refundAmount: Number
 }, {
     timestamps: true
 })
