@@ -510,11 +510,10 @@ class RecruiterService {
             const totalElement = await Recruiter.find(query).lean().countDocuments();
             if (listRecruiter.length !== 0) {
                 listRecruiter = listRecruiter.map(recruiter => {
-                    return {
-                        ...recruiter,
-                        companyLogo: recruiter.companyLogo,
-                        companyCoverPhoto: recruiter.companyCoverPhoto
+                    if (recruiter.oldInfo.name) {
+                        recruiter = { ...recruiter, ...recruiter.oldInfo }
                     }
+                    return recruiter;
                 })
             }
             return {
