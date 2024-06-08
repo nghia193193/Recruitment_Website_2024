@@ -1,5 +1,5 @@
 const { Blog } = require("../models/blog.model");
-const { BadRequestError, InternalServerError } = require("../core/error.response");
+const { BadRequestError, InternalServerError, NotFoundRequestError } = require("../core/error.response");
 const { clearImage } = require("../utils/processImage");
 const { formatInTimeZone } = require("date-fns-tz");
 
@@ -26,6 +26,42 @@ class BlogService {
             })
             return {
                 message: "Lấy danh sách blog thành công",
+                metadata: {
+                    totalElement, listBlog
+                },
+                options: { page, limit }
+            };
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getListRelatedBlog = async ({ blogId, name, page, limit }) => {
+        try {
+            page = page ? page : 1;
+            limit = limit ? limit : 5;
+            const blog = await Blog.findById(blogId).lean();
+            if (!blog) {
+                throw new NotFoundRequestError("Có lỗi xảy ra vui lòng thử lại.");
+            }
+            const query = {
+                _id: { $ne: blogId },
+                status: "active",
+                type: blog.type
+            };
+            if (name) query['$text'] = { $search: name };
+            const totalElement = await Blog.find(query).countDocuments()
+            let listBlog = await Blog.find(query).select('-adminId -__v').lean()
+                .sort({ updatedAt: -1 })
+                .skip((page - 1) * limit)
+                .limit(limit)
+            listBlog = listBlog.map(blog => {
+                blog.createdAt = formatInTimeZone(blog.createdAt, "Asia/Ho_Chi_Minh", "dd/MM/yyyy HH:mm:ss");
+                blog.updatedAt = formatInTimeZone(blog.updatedAt, "Asia/Ho_Chi_Minh", "dd/MM/yyyy HH:mm:ss");
+                return blog;
+            })
+            return {
+                message: "Lấy danh sách blog liên quan thành công",
                 metadata: {
                     totalElement, listBlog
                 },

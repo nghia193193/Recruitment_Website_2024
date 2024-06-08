@@ -17,6 +17,19 @@ class BlogController {
         }).send(res)
     }
 
+    getListRelatedBlog = async (req, res, next) => {
+        const { error, value } = BlogValidation.validateListRelatedBlog({ ...req.query, ...req.params });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata, options } = await BlogService.getListRelatedBlog(value);
+        new OK({
+            message,
+            metadata: { ...metadata },
+            options
+        }).send(res)
+    }
+
     getBlogDetail = async (req, res, next) => {
         const { error, value } = BlogValidation.validateBlogId(req.params);
         if (error) {

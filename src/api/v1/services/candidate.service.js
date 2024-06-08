@@ -353,6 +353,7 @@ class CandidateService {
     static addFavoriteRecruiter = async ({ userId, recruiterId }) => {
         try {
             await FavoriteRecruiterService.addFavoriteRecruiter({ userId, recruiterId });
+            _io.emit(`favorite_recruiter`, "reload");
             return {
                 message: "Thêm nhà tuyển dụng yêu thích thành công.",
                 metadata: {}

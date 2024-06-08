@@ -20,6 +20,21 @@ class BlogValidation {
         return validateSchema.validate(data);
     }
 
+    static validateListRelatedBlog = data => {
+        const validateSchema = joi.object({
+            blogId: objectIdJoiSchema.required(),
+            name: joi.string().custom((value) => {
+                const name = xss(value.trim());
+                return name;
+            }),
+            page: joi.number().integer().min(1),
+            limit: joi.number().integer().min(1)
+        }).messages({
+            "any.only": "'{#label}' không hợp lệ"
+        })
+        return validateSchema.validate(data);
+    }
+
     static validateBlogId = data => {
         const validateSchema = joi.object({
             blogId: objectIdJoiSchema.required()
