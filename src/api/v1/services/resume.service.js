@@ -32,11 +32,11 @@ class ResumeService {
     }
 
     static addResume = async ({ userId, name, title, avatar, goal, phone, educationLevel, homeTown, email, major,
-        dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories }) => {
+        dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories, themeId }) => {
         try {
             const resume = await Resume.create({
                 candidateId: userId, name, title, avatar, goal, phone, educationLevel, homeTown, email, major,
-                dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories
+                dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories, themeId
             });
             if (!resume) {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
@@ -50,7 +50,7 @@ class ResumeService {
     }
 
     static updateResume = async ({ userId, resumeId, name, title, avatar, goal, phone, educationLevel, homeTown, email, major,
-        dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories }) => {
+        dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories, themeId }) => {
         try {
             const resume = await Resume.findOne({ _id: resumeId, candidateId: userId });
             if (!resume) {
@@ -64,7 +64,7 @@ class ResumeService {
             }
             const result = await Resume.findOneAndUpdate({ _id: resumeId, candidateId: userId }, {
                 $set: {
-                    name, title, goal, phone, educationLevel, homeTown, email, major, avatar,
+                    name, title, goal, phone, educationLevel, homeTown, email, major, avatar, themeId,
                     dateOfBirth, english, jobType, experience, GPA, activity, certifications, educations, workHistories
                 }
             }, {

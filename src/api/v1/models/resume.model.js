@@ -72,6 +72,7 @@ const resumeSchema = new Schema({
         type: Array,
         default: []
     },
+    themeId: String,
     status: {
         type: String,
         enum: ["active", "inactive"],
@@ -99,7 +100,7 @@ resumeSchema.statics.getListResume = async function ({ userId, page, limit, titl
             query["status"] = status;
         }
         const length = await this.find(query).lean().countDocuments();
-        let listResume = await this.find(query).lean().select("title name educationLevel status email major jobType experience avatar allowSearch updatedAt")
+        let listResume = await this.find(query).lean().select("title name educationLevel status email major jobType experience avatar themeId allowSearch updatedAt")
             .skip((page - 1) * limit)
             .limit(limit)
             .sort({ allowSearch: -1, updatedAt: -1 });

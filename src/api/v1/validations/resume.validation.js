@@ -70,6 +70,7 @@ class ResumeValidation {
                 const cleanExperience = xss(value.trim());
                 return cleanExperience;
             }),
+            themeId: joi.string().valid("1", "2", "3").required(),
             certifications: joi.array().items(certificationSchema),
             educations: joi.array().items(educationSchema).min(1).required().messages({
                 'array.min': 'Quá trình học tập không được để trống.'
@@ -79,17 +80,17 @@ class ResumeValidation {
             "any.only": "'{#label}' không hợp lệ",
         });
         if (data?.certifications) {
-            if (typeof(data.certifications) === "string") {
+            if (typeof (data.certifications) === "string") {
                 data.certifications = JSON.parse(data.certifications);
             }
         }
         if (data?.educations) {
-            if (typeof(data.educations) === "string") {
+            if (typeof (data.educations) === "string") {
                 data.educations = JSON.parse(data.educations);
             }
         }
         if (data?.workHistories) {
-            if (typeof(data.workHistories) === "string") {
+            if (typeof (data.workHistories) === "string") {
                 data.workHistories = JSON.parse(data.workHistories);
             }
         }
@@ -166,6 +167,7 @@ class ResumeValidation {
                 const cleanActivity = xss(value.trim());
                 return cleanActivity;
             }),
+            themeId: joi.string().valid("1", "2", "3"),
             certifications: joi.array().items(certificationSchema),
             educations: joi.array().items(educationSchema).min(1).messages({
                 'array.min': 'Quá trình học tập không được để trống'
@@ -175,17 +177,17 @@ class ResumeValidation {
             "any.only": "'{#label}' không hợp lệ"
         });
         if (data?.certifications) {
-            if (typeof(data.certifications) === "string") {
+            if (typeof (data.certifications) === "string") {
                 data.certifications = JSON.parse(data.certifications);
             }
         }
         if (data?.educations) {
-            if (typeof(data.educations) === "string") {
+            if (typeof (data.educations) === "string") {
                 data.educations = JSON.parse(data.educations);
             }
         }
         if (data?.workHistories) {
-            if (typeof(data.workHistories) === "string") {
+            if (typeof (data.workHistories) === "string") {
                 data.workHistories = JSON.parse(data.workHistories);
             }
         }
@@ -196,7 +198,7 @@ class ResumeValidation {
     static validateDeleteResume = data => {
         const validateSchema = joi.object({
             resumeId: objectIdJoiSchema.required(),
-            
+
         })
         return validateSchema.validate(data);
     }
@@ -239,7 +241,7 @@ const objectIdValidator = (value, helpers) => {
 const objectIdJoiSchema = joi.string().custom(objectIdValidator, 'Custom validation for ObjectId').message("Id không hợp lệ");
 
 const certificationSchema = joi.object({
-    name: joi.string().required(), 
+    name: joi.string().required(),
     uploadFile: joi.string().uri().required().messages({
         'string.base': 'uploadFile phải là một chuỗi!',
         'string.empty': 'uploadFile không được để trống!',
@@ -251,7 +253,7 @@ const certificationSchema = joi.object({
 const educationSchema = joi.object({
     from: joi.date().iso().required(),
     to: joi.date().iso().required(),
-    major: joi.string().valid(...majors).required(), 
+    major: joi.string().valid(...majors).required(),
 });
 
 const workHistorySchema = joi.object({
@@ -260,11 +262,11 @@ const workHistorySchema = joi.object({
     workUnit: joi.string().custom((value) => { // đơn vị công tác
         const cleanWorkUnit = xss(value);
         return cleanWorkUnit;
-    }).required(), 
+    }).required(),
     description: joi.string().custom((value) => { // mô tả
         const cleanDescription = xss(value);
         return cleanDescription;
-    }).required(), 
+    }).required(),
 });
 
 module.exports = ResumeValidation;
