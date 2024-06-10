@@ -189,6 +189,7 @@ class ResumeValidation {
                 data.workHistories = JSON.parse(data.workHistories);
             }
         }
+        console.log(data)
         return validateSchema.validate(data);
     }
 

@@ -1,3 +1,4 @@
+const { formatInTimeZone } = require("date-fns-tz");
 const { InternalServerError } = require("../core/error.response");
 const { Resume } = require("../models/resume.model");
 const { clearImage } = require("../utils/processImage");
@@ -60,14 +61,6 @@ class ResumeService {
                 const splitArr = oldAva.split("/");
                 const image = splitArr[splitArr.length - 1];
                 clearImage(image);
-            }
-            // loop certification
-            if (resume.certifications.length !== 0) {
-                for (let i = 0; i < resume.certifications.length; i++) {
-                    const splitArr = resume.certifications[i].uploadFile.split("/");
-                    const image = splitArr[splitArr - 1];
-                    clearImage(image);
-                }
             }
             const result = await Resume.findOneAndUpdate({ _id: resumeId, candidateId: userId }, {
                 $set: {
