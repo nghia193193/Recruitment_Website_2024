@@ -1,6 +1,7 @@
 const { BadRequestError } = require("../core/error.response");
 const { OK } = require("../core/success.response");
 const ResumeService = require("../services/resume.service");
+const { clearImage } = require("../utils/processImage");
 const ResumeValidation = require("../validations/resume.validation");
 
 class ResumeController {
