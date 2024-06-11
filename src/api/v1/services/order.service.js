@@ -71,7 +71,41 @@ class OrderService {
         }
     }
 
-    static cancelOrder = async ({ userId }) => {
+    static getOrderInfo = async ({ userId }) => {
+        try {
+            const order = await Order.findOne({ recruiterId: userId, status: "Thành công", validTo: { $gt: new Date() } });
+            if (!order) {
+                throw new NotFoundRequestError("Không tìm thấy dịch vụ.");
+            }
+            let refundAmount;
+            let remainDate;
+            switch (order.premiumPackage) {
+                case "1 tháng":
+                    remainDate = Math.ceil((new Date(order.validTo) - new Date()) / (1000 * 60 * 60 * 24));
+                    refundAmount = 600000 * (remainDate / 30);
+                    break;
+                case "3 tháng":
+                    remainDate = Math.ceil((new Date(order.validTo) - new Date()) / (1000 * 60 * 60 * 24));
+                    refundAmount = 1500000 * (remainDate / 90);
+                    break;
+                case "6 tháng":
+                    remainDate = Math.ceil((new Date(order.validTo) - new Date()) / (1000 * 60 * 60 * 24));
+                    refundAmount = 3000000 * (remainDate / 150);
+                    break;
+            }
+            return {
+                packageInfo: {
+                    validTo: formatInTimeZone(order.validTo, "Asia/Ho_Chi_Minh", "dd/MM/yyyy HH:mm:ss"),
+                    remainDate,
+                    refundAmount: refundAmount.toLocaleString("en-US")
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static cancelOrder = async ({ userId, reasonCancel }) => {
         try {
             const order = await Order.findOne({ recruiterId: userId, status: "Thành công", validTo: { $gt: new Date() } });
             if (!order) {
@@ -95,6 +129,7 @@ class OrderService {
             }
             order.status = "Đã hủy";
             order.refundAmount = refundAmount;
+            order.reasonCancel = reasonCancel;
             await order.save();
             return refundAmount.toLocaleString("en-US");
         } catch (error) {

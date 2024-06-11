@@ -770,43 +770,6 @@ class RecruiterService {
         }
     }
 
-    static createPayment = async ({ userId, premiumPackage, ipAddr, orderType, language }) => {
-        try {
-            let price;
-            switch (premiumPackage) {
-                case "1 tháng":
-                    price = 600000;
-                    break;
-                case "3 tháng":
-                    price = 1500000;
-                    break;
-                case "6 tháng":
-                    price = 3000000;
-                    break;
-            }
-            const order = await OrderService.createOrder({ userId, price, premiumPackage });
-            const vpnUrl = await VNPayService.createPaymentURL({ ipAddr, orderId: order._id.toString(), amount: price, orderType, language });
-            return {
-                message: "Tạo đơn thanh toán thành công",
-                metadata: { vpnUrl }
-            };
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    static getVNPayIPN = async ({ reqQuery }) => {
-        try {
-            const { message, code, result } = await VNPayService.getVNPayIPN({ reqQuery });
-            return {
-                message,
-                metadata: { code, result }
-            };
-        } catch (error) {
-            throw error;
-        }
-    }
-
     static checkPremiumAccount = async ({ userId }) => {
         try {
             const premiumAccount = await Order.checkPremiumAccount({ recruiterId: userId });
@@ -814,20 +777,6 @@ class RecruiterService {
                 message: "Kiểm tra tài khoản thành công",
                 metadata: {
                     premiumAccount
-                }
-            };
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    static cancelOrder = async ({ userId }) => {
-        try {
-            const refundAmount = await OrderService.cancelOrder({ userId });
-            return {
-                message: "Hủy dịch vụ thành công",
-                metadata: {
-                    refundAmount
                 }
             };
         } catch (error) {

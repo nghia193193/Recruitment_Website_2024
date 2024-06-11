@@ -59,14 +59,8 @@ router.get('/application_status', verifyAccessToken, authPageRecruiter, asyncHan
 router.get('/notifications', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListNotification));
 // read notification
 router.patch('/notifications/:notificationId', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.readNotification));
-// create payment
-router.post('/create_payment_url', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.createPayment));
-// get vnpay ipn
-router.get('/vnpay_ipn', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getVNPayIPN));
 // check premium Account
 router.get('/check_premium_account', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.checkPremiumAccount));
-// cancel order
-router.patch('/cancel_order', verifyAccessToken, authPageRecruiter, checkPremium, asyncHandler(recruiterController.cancelOrder));
 // advanced search premium
 router.get('/list_advanced_resume', verifyAccessToken, authPageRecruiter, checkPremium, asyncHandler(resumeController.advancedSearchForPremium));
 // resume detail

@@ -26,7 +26,8 @@ const orderSchema = new Schema({
         default: "Đang xử lý"
     },
     validTo: Date,
-    refundAmount: Number
+    refundAmount: Number,
+    reasonCancel: String
 }, {
     timestamps: true
 })
