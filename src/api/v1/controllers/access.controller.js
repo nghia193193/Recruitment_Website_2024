@@ -91,6 +91,14 @@ class AccessController {
         }).send(res)
     }
 
+    getResumeExperience = async (req, res, next) => {
+        const { message, metadata } = await AccessService.getResumeExperience();
+        new OK({
+            message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
     getGenderRequirement = async (req, res, next) => {
         const { message, metadata } = await AccessService.getGenderRequirement();
         new OK({

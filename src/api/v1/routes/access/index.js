@@ -19,6 +19,7 @@ router.get('/job_type', asyncHandler(accessController.getJobType));
 router.get('/level_requirement', asyncHandler(accessController.getLevelRequirement));
 // get list experience
 router.get('/experience', asyncHandler(accessController.getExperience));
+router.get('/resume_experience', asyncHandler(accessController.getResumeExperience));
 // get list gender requirement
 router.get('/gender_requirement', asyncHandler(accessController.getGenderRequirement));
 // get list province

@@ -4,7 +4,7 @@ const RedisService = require("./redis.service");
 const JWTService = require("./jwt.service");
 const { BadRequestError, InternalServerError } = require("../core/error.response");
 const { findUserByRole } = require("../utils/findUser");
-const { fieldOfActivity, jobType, levelRequirement, experience, genderRequirement, provinceOfVietNam, mapRolePermission, workStatus } = require('../utils');
+const { fieldOfActivity, jobType, levelRequirement, experience, genderRequirement, provinceOfVietNam, mapRolePermission, workStatus, resumeExperience } = require('../utils');
 const client = require('../dbs/init.redis');
 const { randomBytes } = require('crypto');
 const EmailService = require("./email.service");
@@ -175,6 +175,19 @@ class AccessService {
                 message: "Lấy danh sách kinh nghiệm thành công",
                 metadata: {
                     experience
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getResumeExperience = async () => {
+        try {
+            return {
+                message: "Lấy danh sách kinh nghiệm resume thành công",
+                metadata: {
+                    resumeExperience
                 }
             }
         } catch (error) {
