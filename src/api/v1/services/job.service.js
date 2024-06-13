@@ -36,7 +36,7 @@ class JobService {
                 query["genderRequirement"] = genderRequirement;
             }
             if (name) {
-                query["$text"] = { $search: name };
+                query["$text"] = { $search: `"${name}"` };
                 result = await Job.find(query, { score: { $meta: "textScore" } }).lean().populate("recruiterId")
                     .select("name field type levelRequirement experience salary province approvalDate deadline recruiterId createdAt updatedAt")
                     .sort({ score: { $meta: "textScore" }, approvalDate: -1 })

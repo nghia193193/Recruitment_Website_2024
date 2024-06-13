@@ -94,7 +94,7 @@ resumeSchema.statics.getListResume = async function ({ userId, page, limit, titl
             candidateId: userId
         }
         if (title) {
-            query["$text"] = { $search: title }
+            query["$text"] = { $search: `${title}` }
         }
         if (status) {
             query["status"] = status;

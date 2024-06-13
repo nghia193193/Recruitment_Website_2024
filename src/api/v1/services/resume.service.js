@@ -136,7 +136,7 @@ class ResumeService {
         }
     }
 
-    static advancedSearchForPremium = async ({ searchText, educationLevel, english, jobType, experience, major, page, limit }) => {
+    static advancedSearchForPremium = async ({ title, educationLevel, english, jobType, experience, major, page, limit }) => {
         try {
             page = page ? page : 1;
             limit = limit ? limit : 5;
@@ -144,12 +144,8 @@ class ResumeService {
                 status: "active",
                 allowSearch: true
             }
-            if (searchText) {
-                query["$or"] = [
-                    { title: new RegExp(searchText, "i") },
-                    { name: new RegExp(searchText, "i") },
-                    { homeTown: new RegExp(searchText, "i") }
-                ]
+            if (title) {
+                query["$text"] = { $search: `${title}` };
             }
             if (educationLevel) query["educationLevel"] = educationLevel;
             if (jobType) query["jobType"] = jobType;

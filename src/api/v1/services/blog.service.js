@@ -11,7 +11,7 @@ class BlogService {
             const query = {
                 status: "active"
             };
-            if (name) query['$text'] = { $search: name };
+            if (name) query['$text'] = { $search: `"${name}"` };
             if (type) query['type'] = type;
             if (status) query['status'] = status;
             const totalElement = await Blog.find(query).countDocuments()

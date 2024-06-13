@@ -215,7 +215,7 @@ class ResumeValidation {
 
     static validateGetListAdvanced = data => {
         const validateSchema = joi.object({
-            searchText: joi.string().custom((value) => {
+            title: joi.string().custom((value) => {
                 const cleanText = xss(value.trim());
                 return cleanText;
             }),
