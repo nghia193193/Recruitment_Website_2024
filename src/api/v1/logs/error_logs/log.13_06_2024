@@ -131,3 +131,5 @@ Collation: { locale: "simple" }
 13/06/2024	20:02:54 ::1---/images/a5c61053-eb1d-49fe-9ecd-5a9d104f9aa6.png---GET---Page not found
 13/06/2024	20:10:26 ::1---/v1/api/recruiter/list_advanced_resume?searchText=trong---GET---"searchText" is not allowed
 13/06/2024	20:10:34 ::1---/v1/api/recruiter/list_advanced_resume?title=trong---GET---unknown top level operator: $test. If you have a field name that starts with a '$' symbol, consider using $getField or $setField.
+13/06/2024	20:43:33 ::1---/v1/api/recruiter/list_advanced_resume---GET---Vui lòng đăng nhập lại
+13/06/2024	20:44:15 ::1---/v1/api/recruiter/list_advanced_resume?homeTown=TP---GET---'"homeTown"' không hợp lệ

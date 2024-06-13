@@ -1,7 +1,7 @@
 const joi = require('joi');
 const xss = require('xss');
 const mongoose = require('mongoose');
-const { majors, jobType, educationLevel, experience } = require('../utils');
+const { majors, jobType, educationLevel, experience, provinceOfVietNam } = require('../utils');
 
 class ResumeValidation {
     static validateGetListResume = data => {
@@ -52,10 +52,7 @@ class ResumeValidation {
                     'string.pattern.base': 'Không phải là số điện thoại Việt Nam hợp lệ'
                 }),
             educationLevel: joi.string().valid(...educationLevel).required(),
-            homeTown: joi.string().custom((value) => {
-                const cleanHomeTown = xss(value.trim());
-                return cleanHomeTown;
-            }).required(),
+            homeTown: joi.string().valid(...provinceOfVietNam).required(),
             dateOfBirth: joi.date().iso().required(),
             english: joi.string().custom((value) => {
                 const cleanEnglish = xss(value.trim());
@@ -138,15 +135,7 @@ class ResumeValidation {
                 'string.pattern.base': 'Không phải là số điện thoại Việt Nam hợp lệ'
             }),
             educationLevel: joi.string().valid(...educationLevel),
-            homeTown: joi.string().custom((value, helpers) => {
-                const cleanHomeTown = xss(value.trim());
-                if (cleanHomeTown === '') {
-                    return helpers.error('any.empty');
-                }
-                return cleanHomeTown;
-            }).messages({
-                'any.empty': "Quê quán không được để trống"
-            }),
+            homeTown: joi.string().valid(...provinceOfVietNam),
             dateOfBirth: joi.date().iso().messages({
                 'date.format': "Ngày sinh phải là một ngày hợp lệ theo định dạng ISO"
             }),
@@ -224,6 +213,7 @@ class ResumeValidation {
                 return english;
             }),
             educationLevel: joi.string().valid(...educationLevel),
+            homeTown: joi.string().valid(...provinceOfVietNam),
             jobType: joi.string().valid(...jobType),
             experience: joi.string().valid(...experience),
             major: joi.string().valid(...majors),
