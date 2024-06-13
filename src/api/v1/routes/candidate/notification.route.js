@@ -1,7 +1,7 @@
 const express = require('express');
 const { asyncHandler } = require('../../auth/checkAuth');
 const { verifyAccessToken, authPageCandidate } = require('../../middlewares');
-const candidateNotificationController = require('../../controllers/candidateNotification.controller');
+const candidateNotificationController = require('../../controllers/candidateNotificationManagement.controller');
 const router = express.Router();
 
 // get list notification
