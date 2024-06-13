@@ -21,11 +21,11 @@ class FavoriteJobService {
         }
         let length = await Job.find(query).lean().countDocuments();
         let result = await Job.find(query)
-                .lean().populate("recruiterId")
-                .select("-__v -reasonDecline")
-                .sort({ approvalDate: -1 })
-                .skip((page - 1) * limit)
-                .limit(limit)
+            .lean().populate("recruiterId")
+            .select("-__v -reasonDecline")
+            .sort({ approvalDate: -1 })
+            .skip((page - 1) * limit)
+            .limit(limit)
         let listFavoriteJob = await Promise.all(
             result.map(async (job) => {
                 const acceptedNumber = await ApplicationService.getJobAcceptedApplicationNumber({ jobId: job._id });
@@ -45,7 +45,7 @@ class FavoriteJobService {
         )
         return { length, listFavoriteJob };
     }
-    
+
     static checkFavoriteJob = async function ({ userId, jobId }) {
         // check có job này không
         const job = await Job.findById(jobId).lean();
@@ -75,7 +75,7 @@ class FavoriteJobService {
             exist: false
         }
     }
-    
+
     static addFavoriteJob = async function ({ userId, jobId }) {
         // check có job này không
         const job = await Job.findById(jobId).lean();
@@ -97,7 +97,7 @@ class FavoriteJobService {
         listFavoriteJob.favoriteJobs.push(jobId);
         await listFavoriteJob.save();
     }
-    
+
     static removeFavoriteJob = async function ({ userId, jobId, page, limit, name }) {
         // check đã có list chưa
         const candidate = await FavoriteJob.findOne({ candidateId: userId });
@@ -114,7 +114,23 @@ class FavoriteJobService {
         const { length, listFavoriteJob } = await this.getListFavoriteJob({ userId, page, limit, name });
         return { length, listFavoriteJob };
     }
-    
+
+    static removeListFavoriteJob = async function ({ userId, listJobId }) {
+        // check đã có list chưa
+        const candidate = await FavoriteJob.findOne({ candidateId: userId });
+        if (!candidate) {
+            throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+        }
+        // check job đã có trong list chưa
+        if (!listJobId.every(item => candidate.favoriteJobs.includes(item))) {
+            throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+        }
+        for (let i = 0; i < listJobId.length; i++){
+            candidate.favoriteJobs = candidate.favoriteJobs.filter(item => item !== listJobId[i]);
+        }
+        await candidate.save();
+    }
+
     static removeAllFavoriteJob = async function ({ userId }) {
         // check đã có list chưa
         const listFavoriteJob = await FavoriteJob.findOne({ candidateId: userId });

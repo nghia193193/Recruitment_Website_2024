@@ -193,6 +193,32 @@ class CandidateController {
         }).send(res)
     }
 
+    removeListFavoriteJob = async (req, res, next) => {
+        const { error, value } = CandidateValidation.validateRemoveListFavoriteJob(req.body);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata, options } = await CandidateService.removeListFavoriteJob({ ...req.payload, ...value });
+        new OK({
+            message,
+            metadata: { ...metadata },
+            options
+        }).send(res)
+    }
+
+    removeListFavoriteRecruiter = async (req, res, next) => {
+        const { error, value } = CandidateValidation.validateRemoveListFavoriteRecruiter(req.body);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata, options } = await CandidateService.removeListFavoriteRecruiter({ ...req.payload, ...value });
+        new OK({
+            message,
+            metadata: { ...metadata },
+            options
+        }).send(res)
+    }
+
     removeAllFavoriteJob = async (req, res, next) => {
         const { message, metadata } = await CandidateService.removeAllFavoriteJob({ ...req.payload });
         new OK({
@@ -301,26 +327,6 @@ class CandidateController {
             message,
             metadata: { ...metadata },
             options
-        }).send(res)
-    }
-
-    getListNotification = async (req, res, next) => {
-        const { metadata, message } = await CandidateService.getListNotification(req.payload);
-        new OK({
-            message: message,
-            metadata: { ...metadata }
-        }).send(res)
-    }
-
-    readNotification = async (req, res, next) => {
-        const { error, value } = CandidateValidation.validateReadNotification(req.params);
-        if (error) {
-            throw new BadRequestError(error.details[0].message);
-        }
-        const { metadata, message } = await CandidateService.readNotification({ ...req.payload, ...value });
-        new OK({
-            message: message,
-            metadata: { ...metadata }
         }).send(res)
     }
 }

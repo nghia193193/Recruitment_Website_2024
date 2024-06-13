@@ -55,13 +55,10 @@ router.get('/jobs/applications/detail/:applicationId', verifyAccessToken, authPa
 router.patch('/jobs/applications/approve/:applicationId', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.approveApplication));
 // get list application status
 router.get('/application_status', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListApplicationStatus));
-// get list notification
-router.get('/notifications', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListNotification));
-// read notification
-router.patch('/notifications/:notificationId', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.readNotification));
 // check premium Account
 router.get('/check_premium_account', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.checkPremiumAccount));
 // advanced search premium
+router.get('/list_english_resume', verifyAccessToken, authPageRecruiter, checkPremium, asyncHandler(resumeController.getListEnglishResume))
 router.get('/list_advanced_resume', verifyAccessToken, authPageRecruiter, checkPremium, asyncHandler(resumeController.advancedSearchForPremium));
 // resume detail
 router.get('/list_advanced_resume/:resumeId', verifyAccessToken, authPageRecruiter, checkPremium, asyncHandler(resumeController.getResumeDetail));

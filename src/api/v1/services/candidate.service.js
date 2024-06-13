@@ -393,6 +393,28 @@ class CandidateService {
         }
     }
 
+    static removeListFavoriteJob = async ({ userId, listJobId }) => {
+        try {
+            await FavoriteJobService.removeListFavoriteJob({ userId, listJobId });
+            return {
+                message: "Xóa công việc yêu thích thành công."
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static removeListFavoriteRecruiter = async ({ userId, listRecruiterId }) => {
+        try {
+            await FavoriteRecruiterService.removeListFavoriteRecruiter({ userId, listRecruiterId });
+            return {
+                message: "Xóa nhà tuyển dụng yêu thích thành công."
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
     static removeAllFavoriteJob = async ({ userId }) => {
         try {
             const { length, listFavoriteJob } = await FavoriteJobService.removeAllFavoriteJob({ userId });
@@ -597,30 +619,6 @@ class CandidateService {
             throw error;
         }
     }
-
-    static getListNotification = async ({ userId }) => {
-        try {
-            const listNotification = await Notification.getListNotification({ userId })
-            return {
-                message: "Lấy danh sách thông báo thành công",
-                metadata: { listNotification }
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    static readNotification = async ({ userId, notificationId }) => {
-        try {
-            await Notification.readNotification({ userId, notificationId })
-            return {
-                message: "Đọc thông báo thành công"
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
 }
 
 module.exports = CandidateService;

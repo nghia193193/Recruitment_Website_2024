@@ -365,26 +365,6 @@ class RecruiterController {
         }).send(res)
     }
 
-    getListNotification = async (req, res, next) => {
-        const { metadata, message } = await RecruiterService.getListNotification(req.payload);
-        new OK({
-            message: message,
-            metadata: { ...metadata }
-        }).send(res)
-    }
-
-    readNotification = async (req, res, next) => {
-        const { error, value } = RecruiterValidation.validateReadNotification(req.params);
-        if (error) {
-            throw new BadRequestError(error.details[0].message);
-        }
-        const { metadata, message } = await RecruiterService.readNotification({ ...req.payload, ...value });
-        new OK({
-            message: message,
-            metadata: { ...metadata }
-        }).send(res)
-    }
-
     checkPremiumAccount = async (req, res, next) => {
         const { metadata, message } = await RecruiterService.checkPremiumAccount(req.payload);
         new OK({

@@ -127,6 +127,14 @@ class ResumeController {
         }).send(res)
     }
 
+    getListEnglishResume = async (req, res, next) => {
+        const { result, length } = await ResumeService.getListEnglishResume();
+        new OK({
+            message: "Lấy danh sách trình độ ngoại ngữ thành công.",
+            metadata: { result, length }
+        }).send(res)
+    }
+
     advancedSearchForPremium = async (req, res, next) => {
         const { error, value } = ResumeValidation.validateGetListAdvanced(req.query);
         if (error) {

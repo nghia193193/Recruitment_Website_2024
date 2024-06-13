@@ -86,7 +86,7 @@ const resumeSchema = new Schema({
     timestamps: true
 })
 
-resumeSchema.index({ title: 'text', english: 'text' }, { default_language: 'none' });
+resumeSchema.index({ title: 'text' }, { default_language: 'none' });
 
 resumeSchema.statics.getListResume = async function ({ userId, page, limit, title, status }) {
     try {

@@ -1,0 +1,42 @@
+13/06/2024	15:09:45 ::1---/v1/api/login---POST---Mật khẩu không chính xác
+13/06/2024	15:12:07 ::1---/images/5c94c995-ee5c-453b-99ed-216fe26e49f4.png---GET---Page not found
+13/06/2024	15:12:07 ::1---/images/00b094f4-59c2-40ac-8ea5-0739d5972bcb.png---GET---Page not found
+13/06/2024	15:12:07 ::1---/images/700bfbdd-0cd0-4883-9bc9-f6e46bdafd3e.png---GET---Page not found
+13/06/2024	15:12:17 ::1---/images/00b094f4-59c2-40ac-8ea5-0739d5972bcb.png---GET---Page not found
+13/06/2024	15:12:17 ::1---/images/5c94c995-ee5c-453b-99ed-216fe26e49f4.png---GET---Page not found
+13/06/2024	15:12:17 ::1---/images/700bfbdd-0cd0-4883-9bc9-f6e46bdafd3e.png---GET---Page not found
+13/06/2024	15:39:53 ::1---/v1/api/login---POST---Operation `logins.findOne()` buffering timed out after 10000ms
+13/06/2024	15:46:50 ::1---/v1/api/recruiter/list_advanced_resume?searchText=tr%E1%BB%8Dng&english=TOEIC%20640---GET---error processing query: ns=Recruiment_Website.resumesTree: $and
+    $or
+        name regex /trọng/i
+        TEXT : query=trọng, language=none, caseSensitive=0, diacriticSensitive=0
+    allowSearch $eq true
+    english $eq "TOEIC 640"
+    status $eq "active"
+Sort: {}
+Proj: {}
+Collation: { locale: "simple" }
+ planner returned error :: caused by :: No query solutions
+13/06/2024	15:52:15 ::1---/v1/api/recruiter/list_advanced_resume?searchText=tr%E1%BB%8Dng&english=TOEIC%20640---GET---Cast to Number failed for value "/trọng/i" (type RegExp) at path "GPA" for model "Resume"
+13/06/2024	16:20:31 ::1---/v1/api/candidate/favorite_jobs/remove---DELETE---"listJobId" is not allowed
+13/06/2024	16:21:45 ::1---/v1/api/candidate/favorite_jobs/remove---DELETE---Có lỗi xảy ra vui lòng thử lại.
+13/06/2024	16:28:39 ::1---/v1/api/candidate/favorite_jobs/remove---DELETE---Có lỗi xảy ra vui lòng thử lại.
+13/06/2024	16:30:46 ::1---/v1/api/candidate/favorite_recruiters/add/661d5b4bf37bdb5683f66bcf---POST---Bạn đã thêm nhà tuyển dụng vào nhà tuyển dụng yêu thích.
+13/06/2024	16:32:43 ::1---/v1/api/candidate/favorite_recruiters/remove---DELETE---Có lỗi xảy ra vui lòng thử lại.
+13/06/2024	17:01:20 ::1---/v1/api/candidate/notifications---GET---Page not found
+13/06/2024	17:02:06 ::1---/v1/api/recruiter/notifications---GET---Vui lòng đăng nhập lại
+13/06/2024	17:02:06 ::1---/v1/api/recruiter/notifications---GET---Vui lòng đăng nhập lại
+13/06/2024	17:02:28 ::1---/images/5c94c995-ee5c-453b-99ed-216fe26e49f4.png---GET---Page not found
+13/06/2024	17:02:28 ::1---/images/00b094f4-59c2-40ac-8ea5-0739d5972bcb.png---GET---Page not found
+13/06/2024	17:02:28 ::1---/images/700bfbdd-0cd0-4883-9bc9-f6e46bdafd3e.png---GET---Page not found
+13/06/2024	17:02:29 ::1---/images/00b094f4-59c2-40ac-8ea5-0739d5972bcb.png---GET---Page not found
+13/06/2024	17:02:40 ::1---/v1/api/candidate/notifications/list_notification---GET---Bạn không có quyền
+13/06/2024	17:04:36 ::1---/v1/api/candidate/notifications/remove/664e36607db5669de680af2---DELETE---BadRequestError is not defined
+13/06/2024	17:05:08 ::1---/v1/api/candidate/notifications/remove/664e36607db5669de680af2---DELETE---Id không hợp lệ
+13/06/2024	17:06:32 ::1---/v1/api/candidate/notifications/remove_all---DELETE---Found non-callable @@iterator
+13/06/2024	17:19:45 ::1---/v1/api/recruiter/notifications---GET---Page not found
+13/06/2024	17:19:52 ::1---/v1/api/recruiter/notifications/list_notification---GET---Page not found
+13/06/2024	17:21:14 ::1---/v1/api/recruiter/notifications/665ae0c77e597e2b29402397---PATCH---Page not found
+13/06/2024	17:21:21 ::1---/v1/api/recruiter/notifications/665ae0c77e597e2b29402397---PATCH---Page not found
+13/06/2024	17:24:06 ::1---/v1/api/recruiter/notifications/remove/66586f72576c4a939d95c8f3---DELETE---Vui lòng đăng nhập
+13/06/2024	17:24:59 ::1---/v1/api/recruiter/notifications/remove_all---DELETE---Vui lòng đăng nhập

@@ -11,8 +11,10 @@ class FavoriteRecruiterService {
         }
         let mappedFavoriteRecruiters = await Promise.all(
             candidate.favoriteRecruiters.map(async (recruiterId) => {
-                const activeJobCount = await Job.find({ status: "active", acceptanceStatus: "accept", 
-                    recruiterId, deadline: { $gte: new Date() } }).countDocuments();
+                const activeJobCount = await Job.find({
+                    status: "active", acceptanceStatus: "accept",
+                    recruiterId, deadline: { $gte: new Date() }
+                }).countDocuments();
                 const recruiter = await Recruiter.findById(recruiterId).lean().select(
                     '-roles -createdAt -updatedAt -__v -acceptanceStatus -verifyEmail -firstApproval -loginId -avatar'
                 )
@@ -38,7 +40,7 @@ class FavoriteRecruiterService {
         const end = start + limit;
         return { length: mappedFavoriteRecruiters.length, listFavoriteRecruiter: mappedFavoriteRecruiters.slice(start, end) };
     }
-    
+
     static checkFavoriteRecruiter = async function ({ userId, slug }) {
         // check có recruiter này không
         const recruiter = await Recruiter.findOne({ slug }).lean();
@@ -65,7 +67,7 @@ class FavoriteRecruiterService {
             exist: false
         }
     }
-    
+
     static addFavoriteRecruiter = async function ({ userId, recruiterId }) {
         // check có recruiter này không
         const recruiter = await Recruiter.findById(recruiterId).lean();
@@ -84,7 +86,7 @@ class FavoriteRecruiterService {
         listFavoriteRecruiter.favoriteRecruiters.push(recruiterId);
         await listFavoriteRecruiter.save();
     }
-    
+
     static removeFavoriteRecruiter = async function ({ userId, recruiterId, page, limit, searchText }) {
         // check đã có list chưa
         const candidate = await FavoriteRecruiter.findOne({ candidateId: userId });
@@ -101,7 +103,23 @@ class FavoriteRecruiterService {
         const { length, listFavoriteRecruiter } = await this.getListFavoriteRecruiter({ userId, page, limit, searchText });
         return { length, listFavoriteRecruiter };
     }
-    
+
+    static removeListFavoriteRecruiter = async function ({ userId, listRecruiterId }) {
+        // check đã có list chưa
+        const candidate = await FavoriteRecruiter.findOne({ candidateId: userId });
+        if (!candidate) {
+            throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+        }
+        // check recruiter đã có trong list chưa
+        if (!listRecruiterId.every(item => candidate.favoriteRecruiters.includes(item))) {
+            throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+        }
+        for (let i = 0; i < listRecruiterId.length; i++) {
+            candidate.favoriteRecruiters = candidate.favoriteRecruiters.filter(item => item != listRecruiterId[i])
+        }
+        await candidate.save();
+    }
+
     static removeAllFavoriteRecruiter = async function ({ userId }) {
         // check đã có list chưa
         const listFavoriteRecruiter = await FavoriteRecruiter.findOne({ candidateId: userId });
@@ -115,7 +133,7 @@ class FavoriteRecruiterService {
         await listFavoriteRecruiter.save();
         return { length: 0, listFavoriteRecruiter: [] };
     }
-    
+
     static getLikeNumber = async function ({ recruiterId }) {
         const likeNumber = await FavoriteRecruiter.find({ favoriteRecruiters: recruiterId }).countDocuments();
         return likeNumber;

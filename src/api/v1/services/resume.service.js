@@ -136,7 +136,7 @@ class ResumeService {
         }
     }
 
-    static advancedSearchForPremium = async ({ searchText, educationLevel, jobType, experience, major, page, limit }) => {
+    static advancedSearchForPremium = async ({ searchText, educationLevel, english, jobType, experience, major, page, limit }) => {
         try {
             page = page ? page : 1;
             limit = limit ? limit : 5;
@@ -148,12 +148,13 @@ class ResumeService {
                 query["$or"] = [
                     { title: new RegExp(searchText, "i") },
                     { name: new RegExp(searchText, "i") },
-                    { english: new RegExp(searchText, "i") }
+                    { homeTown: new RegExp(searchText, "i") }
                 ]
             }
             if (educationLevel) query["educationLevel"] = educationLevel;
             if (jobType) query["jobType"] = jobType;
             if (experience) query["experience"] = experience;
+            if (english) query["english"] = english;
             if (major) query["major"] = major;
             const length = await Resume.find(query).countDocuments();
             const result = await Resume.find(query).select("-__v -candidateId -allowSearch")
@@ -171,6 +172,20 @@ class ResumeService {
                     limit
                 }
             }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getListEnglishResume = async () => {
+        try {
+            const query = {
+                status: "active",
+                allowSearch: true
+            }
+            let result = await Resume.find(query).select("english").lean();
+            result = [...new Set(result.map(item => item.english))];
+            return { result, length: result.length };
         } catch (error) {
             throw error;
         }

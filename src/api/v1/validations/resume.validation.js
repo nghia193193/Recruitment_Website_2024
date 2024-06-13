@@ -219,6 +219,10 @@ class ResumeValidation {
                 const cleanText = xss(value.trim());
                 return cleanText;
             }),
+            english: joi.string().custom((value) => {
+                const english = xss(value.trim());
+                return english;
+            }),
             educationLevel: joi.string().valid(...educationLevel),
             jobType: joi.string().valid(...jobType),
             experience: joi.string().valid(...experience),

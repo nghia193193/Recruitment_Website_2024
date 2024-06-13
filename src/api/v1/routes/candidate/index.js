@@ -35,6 +35,10 @@ router.post('/favorite_recruiters/add/:recruiterId', verifyAccessToken, authPage
 router.delete('/favorite_jobs/remove/:jobId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.removeFavoriteJob));
 // remove favorite recruiter
 router.delete('/favorite_recruiters/remove/:recruiterId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.removeFavoriteRecruiter));
+// remove list favorite job
+router.delete('/favorite_jobs/remove', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.removeListFavoriteJob));
+// remove list favorite recruiter
+router.delete('/favorite_recruiters/remove', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.removeListFavoriteRecruiter));
 // remove all favorite job
 router.delete('/favorite_jobs/remove_all', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.removeAllFavoriteJob));
 // remove all favorite recruiter
@@ -63,9 +67,5 @@ router.post('/jobs/apply/:jobId', verifyAccessToken, authPageCandidate, asyncHan
 router.delete('/jobs/cancel/:jobId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.cancelApplication));
 // get list application
 router.get('/applications', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.getListApplication));
-// get list notification
-router.get('/notifications', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.getListNotification));
-// read notification
-router.patch('/notifications/:notificationId', verifyAccessToken, authPageCandidate, asyncHandler(candidateController.readNotification));
 
 module.exports = router;

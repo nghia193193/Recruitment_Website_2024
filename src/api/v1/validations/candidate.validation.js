@@ -1,7 +1,7 @@
 const joi = require('joi');
 const mongoose = require('mongoose');
 const xss = require('xss');
-const { workStatus, jobType, experience, educationLevel } = require('../utils');
+const { workStatus } = require('../utils');
 
 class CandidateValidation {
     static validateSignUp = data => {
@@ -151,6 +151,20 @@ class CandidateValidation {
         return validateSchema.validate(data);
     }
 
+    static validateRemoveListFavoriteJob = data => {
+        const validateSchema = joi.object({
+            listJobId: joi.array().items(objectIdJoiSchema).required(),
+        })
+        return validateSchema.validate(data);
+    }
+
+    static validateRemoveListFavoriteRecruiter = data => {
+        const validateSchema = joi.object({
+            listRecruiterId: joi.array().items(objectIdJoiSchema).required(),
+        })
+        return validateSchema.validate(data);
+    }
+
     static validateChangePassword = data => {
         const validateSchema = joi.object({
             currentPassword: joi.string().min(8).max(32).custom((value) => {
@@ -207,14 +221,6 @@ class CandidateValidation {
             status: joi.string().valid('Đã nộp','Đã nhận', 'Không nhận'),
             page: joi.number().integer().min(1),
             limit: joi.number().integer().min(1)
-        })
-        return validateSchema.validate(data);
-    }
-
-    static validateReadNotification = data => {
-        const validateSchema = joi.object({
-            notificationId: objectIdJoiSchema.required(),
-            
         })
         return validateSchema.validate(data);
     }
