@@ -1,16 +1,22 @@
 const joi = require('joi');
 const mongoose = require('mongoose');
-const { experience, majors, educationLevel } = require('../utils');
+const { experience, majors, educationLevel, provinceOfVietNam, jobType } = require('../utils');
 const xss = require('xss');
 
 class FavoriteResumeValidation {
     static validateGetListFavoriteResume = data => {
         const validateSchema = joi.object({
-            searchText: joi.string().custom((value) => {
-                const cleanText = xss(value.trim());
-                return cleanText;
+            title: joi.string().custom((value) => {
+                const title = xss(value.trim());
+                return title;
+            }),
+            english: joi.string().custom((value) => {
+                const english = xss(value.trim());
+                return english;
             }),
             educationLevel: joi.string().valid(...educationLevel),
+            homeTown: joi.string().valid(...provinceOfVietNam),
+            jobType: joi.string().valid(...jobType),
             experience: joi.string().valid(...experience),
             major: joi.string().valid(...majors),
             page: joi.number().integer().min(1),

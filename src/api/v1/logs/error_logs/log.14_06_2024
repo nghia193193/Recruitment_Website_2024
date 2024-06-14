@@ -1,0 +1,10 @@
+14/06/2024	16:16:35 ::1---/v1/api/admin/statistic/revenue---GET---"startDate" is required
+14/06/2024	16:25:09 ::1---/v1/api/admin/statistic/revenue---GET---formatInTimezone is not defined
+14/06/2024	16:25:47 ::1---/v1/api/admin/statistic/revenue---GET---Use `dd` instead of `DD` (in `DD/MM/YYYY HH:mm:ss`) for formatting days of the month to the input `Thu May 30 2024 00:00:00 GMT+0700 (Indochina Time)`; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md
+14/06/2024	16:26:33 ::1---/v1/api/admin/statistic/revenue---GET---formatInTimezone is not defined
+14/06/2024	16:26:54 ::1---/v1/api/admin/statistic/revenue---GET---formatInTimezone is not defined
+14/06/2024	16:28:55 ::1---/v1/api/admin/statistic/revenue_by_month---GET---Vui lòng đăng nhập
+14/06/2024	16:46:14 ::1---/v1/api/admin/statistic/revenue_by_month---GET---consule is not defined
+14/06/2024	16:53:49 ::1---/v1/api/admin/statistic/revenue_by_month---GET---PlanExecutor error during aggregation :: caused by :: can't convert from BSON type object to Date
+14/06/2024	16:56:03 ::1---/v1/api/admin/statistic/revenue_by_month---GET---$_id is not defined
+14/06/2024	17:15:15 ::1---/v1/api/admin/statistic/revenue---GET---Vui lòng đăng nhập lại

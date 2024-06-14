@@ -3,7 +3,6 @@ const { asyncHandler } = require('../../auth/checkAuth');
 const { verifyAccessToken, authPageAdmin } = require('../../middlewares');
 const adminController = require('../../controllers/admin.controller');
 const jobController = require('../../controllers/job.controller');
-const adminStatisticController = require('../../controllers/adminStatistic.controller');
 const recruiterController = require('../../controllers/recruiter.controller');
 const router = express.Router();
 
@@ -36,9 +35,5 @@ router.get('/blogs', verifyAccessToken, authPageAdmin, asyncHandler(adminControl
 router.get('/blogs/:blogId', verifyAccessToken, authPageAdmin, asyncHandler(adminController.getBlogDetail));
 router.post('/blogs/create', verifyAccessToken, authPageAdmin, asyncHandler(adminController.createBlog));
 router.patch('/blogs/update/:blogId', verifyAccessToken, authPageAdmin, asyncHandler(adminController.updateBlog))
-// statistic
-router.get('/statistic/total_candidate', verifyAccessToken, authPageAdmin, asyncHandler(adminStatisticController.totalCandidateStatistic));
-router.get('/statistic/total_recruiter', verifyAccessToken, authPageAdmin, asyncHandler(adminStatisticController.totalRecruiterStatistic));
-router.get('/statistic/total_job', verifyAccessToken, authPageAdmin, asyncHandler(adminStatisticController.totalJobStatistic));
 
 module.exports = router;

@@ -4,7 +4,7 @@ const { FavoriteResume } = require("../models/favoriteResume");
 const { Resume } = require("../models/resume.model");
 
 class FavoriteResumeService {
-    static getListFavoriteResume = async ({ userId, searchText, educationLevel, experience, major, page, limit }) => {
+    static getListFavoriteResume = async ({ userId, title, educationLevel, homeTown, english, jobType, experience, major, page, limit }) => {
         try {
             page = page ? page : 1;
             limit = limit ? limit : 5;
@@ -26,16 +26,15 @@ class FavoriteResumeService {
                 status: "active",
                 allowSearch: true,
             }
-            if (educationLevel) query["educationLevel"] = educationLevel;
-            if (experience) query["experience"] = experience;
-            if (major) query["major"] = major;
-            if (searchText) {
-                query["$or"] = [
-                    { title: new RegExp(searchText, "i") },
-                    { name: new RegExp(searchText, "i") },
-                    { english: new RegExp(searchText, "i") }
-                ]
+            if (title) {
+                query["$text"] = { $search: `${title}` };
             }
+            if (educationLevel) query["educationLevel"] = educationLevel;
+            if (homeTown) query["homeTown"] = homeTown;
+            if (jobType) query["jobType"] = jobType;
+            if (experience) query["experience"] = experience;
+            if (english) query["english"] = english;
+            if (major) query["major"] = major;
             const length = await Resume.find({ _id: { $in: recruiter.favoriteResumes }, ...query }).countDocuments();
             let listResume = await Resume.find({ _id: { $in: recruiter.favoriteResumes }, ...query })
                 .select("-__v -candidateId -status -allowSearch")
@@ -48,7 +47,6 @@ class FavoriteResumeService {
                 resume.dateOfBirth = formatInTimeZone(resume.dateOfBirth, "Asia/Ho_Chi_Minh", "dd/MM/yyy HH:mm:ss");
                 resume.createdAt = formatInTimeZone(resume.createdAt, "Asia/Ho_Chi_Minh", "dd/MM/yyy HH:mm:ss");
                 resume.updatedAt = formatInTimeZone(resume.updatedAt, "Asia/Ho_Chi_Minh", "dd/MM/yyy HH:mm:ss");
-                console.log(resume)
                 return resume
             })
             return {

@@ -692,7 +692,7 @@ class RecruiterService {
             }
             // validate quantity
             let application;
-            const acceptedNumber = await Application.getJobAcceptedApplicationNumber({ jobId });
+            const acceptedNumber = await ApplicationService.getJobAcceptedApplicationNumber({ jobId });
             if (status === "Đã nhận") {
                 if (acceptedNumber >= quantity) {
                     throw new BadRequestError("Đã đủ số lượng cần tuyển, không thể nhận thêm!");
