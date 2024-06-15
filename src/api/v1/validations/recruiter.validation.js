@@ -240,22 +240,6 @@ class RecruiterValidation {
         return validateSchema.validate(data);
     }
 
-    static validateGetListRecruiterByAdmin = data => {
-        const validateSchema = joi.object({
-            searchText: joi.string().custom((value) => {
-                const cleanST = xss(value);
-                return cleanST;
-            }),
-            acceptanceStatus: joi.string().valid(...acceptanceStatus),
-            field: joi.string().valid(...fieldOfActivity),
-            page: joi.number().integer().min(1),
-            limit: joi.number().integer().min(1)
-        }).messages({
-            "any.only": "'{#label}' không hợp lệ"
-        })
-        return validateSchema.validate(data);
-    }
-
     static validateGetListRecruiterHomePage = data => {
         const validateSchema = joi.object({
             searchText: joi.string().custom((value) => {

@@ -28,3 +28,11 @@
 15/06/2024	12:09:20 ::1---/v1/api/admin/statistic/revenue---GET---Bạn không có quyền
 15/06/2024	14:37:45 ::1---/v1/api/recruiter/statistic/application_statistic_by_month---GET---"month" is required
 15/06/2024	14:44:44 ::1---/v1/api/recruiter/statistic/application_statistic_by_year---GET---"year" is required
+15/06/2024	20:22:41 ::1---/v1/api/admin/recruiters---GET---Page not found
+15/06/2024	20:24:39 ::1---/v1/api/admin/recruiters/664091af9bc3ed7d2ade2abb---GET---Page not found
+15/06/2024	20:24:48 ::1---/v1/api/admin/recruiters/infomation/664091af9bc3ed7d2ade2abb---GET---Page not found
+15/06/2024	20:44:45 ::1---/v1/api/admin/jobs?name=vi%C3%AAn&field=IT%20ph%E1%BA%A7n%20m%E1%BB%81m---GET---Page not found
+15/06/2024	20:45:09 ::1---/v1/api/admin/jobs/detail/6623df3a1c8d996b7c102f0b---GET---Vui lòng đăng nhập lại
+15/06/2024	21:02:10 ::1---/v1/api/admin/blogs---GET---Page not found
+15/06/2024	21:02:19 ::1---/v1/api/admin/blogs/list_blog---GET---Page not found
+15/06/2024	21:03:18 ::1---/v1/api/admin/blogs/6661d486d678dd5db574cee9---GET---Page not found

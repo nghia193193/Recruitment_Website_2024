@@ -173,19 +173,6 @@ class RecruiterController {
         }).send(res)
     }
 
-    getListRecruiterByAdmin = async (req, res, next) => {
-        const { error, value } = RecruiterValidation.validateGetListRecruiterByAdmin(req.query);
-        if (error) {
-            throw new BadRequestError(error.details[0].message);
-        }
-        const { message, metadata, options } = await RecruiterService.getListRecruiterByAdmin(value);
-        new OK({
-            message,
-            metadata: { ...metadata },
-            options
-        }).send(res)
-    }
-
     getListRecruiterHomePage = async (req, res, next) => {
         const { error, value } = RecruiterValidation.validateGetListRecruiterHomePage(req.query);
         if (error) {
