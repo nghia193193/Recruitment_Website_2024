@@ -5,7 +5,7 @@ const RecruiterStatisticValidation = require("../validations/recruiterStatistic.
 
 class RecruiterStatisticController {
     applicationStatistic = async (req, res, next) => {
-        const { error, value } = RecruiterStatisticValidation.validateApplicationStatistic(req.body);
+        const { error, value } = RecruiterStatisticValidation.validateApplicationStatistic(req.query);
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
@@ -32,7 +32,7 @@ class RecruiterStatisticController {
     }
 
     applicationStatisticByMonth = async (req, res, next) => {
-        const { error, value } = RecruiterStatisticValidation.validateApplicationStatisticByMonth(req.body);
+        const { error, value } = RecruiterStatisticValidation.validateApplicationStatisticByMonth(req.query);
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
@@ -59,7 +59,7 @@ class RecruiterStatisticController {
     }
 
     applicationStatisticByYear = async (req, res, next) => {
-        const { error, value } = RecruiterStatisticValidation.validateApplicationStatisticByYear(req.body);
+        const { error, value } = RecruiterStatisticValidation.validateApplicationStatisticByYear(req.query);
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }

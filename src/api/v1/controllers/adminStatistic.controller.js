@@ -29,7 +29,7 @@ class AdminStatisticController {
     }
 
     caculateRevenue = async (req, res, next) => {
-        const { error, value } = AdminStatisticValidation.validateCaculateRevenue(req.body);
+        const { error, value } = AdminStatisticValidation.validateCaculateRevenue(req.query);
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
@@ -41,7 +41,7 @@ class AdminStatisticController {
     }
 
     caculateRevenueByMonth = async (req, res, next) => {
-        const { error, value } = AdminStatisticValidation.validateCaculateRevenueByMonth(req.body);
+        const { error, value } = AdminStatisticValidation.validateCaculateRevenueByMonth(req.query);
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
@@ -53,7 +53,7 @@ class AdminStatisticController {
     }
 
     caculateRevenueByYear = async (req, res, next) => {
-        const { error, value } = AdminStatisticValidation.validateCaculateRevenueByYear(req.body);
+        const { error, value } = AdminStatisticValidation.validateCaculateRevenueByYear(req.query);
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
