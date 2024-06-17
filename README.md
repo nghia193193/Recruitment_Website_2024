@@ -48,34 +48,28 @@ REDIS_URI: The URI for connecting to the Redis instance.
 ## Setting Up Your .env File
 Create a file named .env in the root directory of your project and add the required environment variables in the following format:
 
-- MONGODB_URI=<your-mongodb-uri>
+- MONGODB_URI="your-mongodb-uri"
 
-- PORT=<your-port-number>
+- PORT="your-port-number"
 
-- UV_THREADPOOL_SIZE=<your-threadpool-size>
+- UV_THREADPOOL_SIZE="your-threadpool-size"
 
-- FE_URL=<your-frontend-url>
+- FE_URL="your-frontend-url"
 
-- CLOUDINARY_CLOUD_NAME=<your-cloudinary-cloud-name>
+- JWT_SECRET_KEY="your-jwt-secret-key"
 
-- CLOUDINARY_API_KEY=<your-cloudinary-api-key>
+- JWT_REFRESH_KEY="your-jwt-refresh-key"
 
-- CLOUDINARY_API_SECRET=<your-cloudinary-api-secret>
+- MAIL_SEND="your-email-address"
 
-- JWT_SECRET_KEY=<your-jwt-secret-key>
+- OAUTH_CLIENT_ID="your-oauth-client-id"
 
-- JWT_REFRESH_KEY=<your-jwt-refresh-key>
+- OAUTH_CLIENT_SECRET="your-oauth-client-secret"
 
-- MAIL_SEND=<your-email-address>
+- OAUTH_REDIRECT_URI="your-oauth-redirect-uri"
 
-- OAUTH_CLIENT_ID=<your-oauth-client-id>
+- OAUTH_REFRESH_TOKEN="your-oauth-refresh-token"
 
-- OAUTH_CLIENT_SECRET=<your-oauth-client-secret>
+- REDIS_PASSWORD="your-redis-password"
 
-- OAUTH_REDIRECT_URI=<your-oauth-redirect-uri>
-
-- OAUTH_REFRESH_TOKEN=<your-oauth-refresh-token>
-
-- REDIS_PASSWORD=<your-redis-password>
-
-- REDIS_URI=<your-redis-uri>
+- REDIS_URI="your-redis-uri"
