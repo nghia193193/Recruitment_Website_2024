@@ -63,6 +63,58 @@ class AdminStatisticController {
             metadata: { totalRevenue, monthlyDetails, year }
         }).send(res)
     }
+
+    applicationStatistic = async (req, res, next) => {
+        const { error, value } = AdminStatisticValidation.validateDateFromTo(req.query);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { totalApplications, totalSubmitted, totalAccepted, totalRejected, 
+            dailyDetails, startDate, endDate } = await AdminStatisticService.applicationStatistic(value);
+        new OK({
+            message: "Thống kê ứng tuyển thành công.",
+            metadata: { startDate, endDate, totalApplications, totalSubmitted, totalAccepted, totalRejected, dailyDetails }
+        }).send(res)
+    }
+
+    applicationStatisticByMonth = async (req, res, next) => {
+        const { error, value } = AdminStatisticValidation.validateMonthYear(req.query);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { totalApplications, totalSubmitted, totalAccepted, totalRejected, 
+            monthlyDetails, month, year } = await AdminStatisticService.applicationStatisticByMonth(value);
+        new OK({
+            message: "Thống kê ứng tuyển theo tháng thành công.",
+            metadata: { month, year, totalApplications, totalSubmitted, totalAccepted, totalRejected, monthlyDetails }
+        }).send(res)
+    }
+
+    applicationStatisticByYear = async (req, res, next) => {
+        const { error, value } = AdminStatisticValidation.validateYear(req.query);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { totalApplications, totalSubmitted, totalAccepted, totalRejected, 
+            yearlyDetails, year } = await AdminStatisticService.applicationStatisticByYear(value);
+        new OK({
+            message: "Thống kê ứng tuyển theo năm thành công.",
+            metadata: { year, totalApplications, totalSubmitted, totalAccepted, totalRejected, yearlyDetails }
+        }).send(res)
+    }
+
+    jobStatistic = async (req, res, next) => {
+        const { error, value } = AdminStatisticValidation.validateDateFromTo(req.query);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { startDate, endDate, totalJobs, totalWaiting, totalAccepted, 
+            totalRejected, dailyDetails } = await AdminStatisticService.jobStatistic(value);
+        new OK({
+            message: "Thống kê công việc thành công.",
+            metadata: { startDate, endDate, totalJobs, totalWaiting, totalAccepted, totalRejected, dailyDetails }
+        }).send(res)
+    }
 }
 
 module.exports = new AdminStatisticController();

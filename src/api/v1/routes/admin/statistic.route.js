@@ -14,4 +14,12 @@ router.get('/revenue_by_month', verifyAccessToken, authPageAdmin, asyncHandler(a
 // revenue by year
 router.get('/revenue_by_year', verifyAccessToken, authPageAdmin, asyncHandler(adminStatisticController.caculateRevenueByYear));
 
+// application statistic
+router.get('/application_statistic', verifyAccessToken, authPageAdmin, asyncHandler(adminStatisticController.applicationStatistic));
+router.get('/application_statistic_by_month', verifyAccessToken, authPageAdmin, asyncHandler(adminStatisticController.applicationStatisticByMonth));
+router.get('/application_statistic_by_year', verifyAccessToken, authPageAdmin, asyncHandler(adminStatisticController.applicationStatisticByYear));
+
+// job statistic
+router.get('/job_statistic', verifyAccessToken, authPageAdmin, asyncHandler(adminStatisticController.jobStatistic));
+
 module.exports = router;

@@ -1,7 +1,7 @@
 const joi = require("joi");
 
 class RecruiterStatisticValidation {
-    static validateApplicationStatistic = data => {
+    static validateADateFromTo = data => {
         const validateSchema = joi.object({
             startDate: joi.date().iso().required(),
             endDate: joi.date().iso().required()
@@ -9,7 +9,7 @@ class RecruiterStatisticValidation {
         return validateSchema.validate(data);
     }
 
-    static validateApplicationStatisticByMonth = data => {
+    static validateMonthYear = data => {
         const validateSchema = joi.object({
             month: joi.number().min(1).max(12).required(),
             year: joi.number().min(1).required()
@@ -17,7 +17,7 @@ class RecruiterStatisticValidation {
         return validateSchema.validate(data);
     }
 
-    static validateApplicationStatisticByYear = data => {
+    static validateYear = data => {
         const validateSchema = joi.object({
             year: joi.number().min(1).required()
         })

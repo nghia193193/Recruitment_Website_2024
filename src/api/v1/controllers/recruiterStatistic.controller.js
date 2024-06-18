@@ -5,7 +5,7 @@ const RecruiterStatisticValidation = require("../validations/recruiterStatistic.
 
 class RecruiterStatisticController {
     applicationStatistic = async (req, res, next) => {
-        const { error, value } = RecruiterStatisticValidation.validateApplicationStatistic(req.query);
+        const { error, value } = RecruiterStatisticValidation.validateADateFromTo(req.query);
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
@@ -32,7 +32,7 @@ class RecruiterStatisticController {
     }
 
     applicationStatisticByMonth = async (req, res, next) => {
-        const { error, value } = RecruiterStatisticValidation.validateApplicationStatisticByMonth(req.query);
+        const { error, value } = RecruiterStatisticValidation.validateMonthYear(req.query);
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
@@ -59,7 +59,7 @@ class RecruiterStatisticController {
     }
 
     applicationStatisticByYear = async (req, res, next) => {
-        const { error, value } = RecruiterStatisticValidation.validateApplicationStatisticByYear(req.query);
+        const { error, value } = RecruiterStatisticValidation.validateYear(req.query);
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
@@ -80,6 +80,67 @@ class RecruiterStatisticController {
                 totalAccepted,
                 totalRejected,
                 yearlyDetails
+            }
+        }).send(res);
+    }
+
+    jobStatistic = async (req, res, next) => {
+        const { error, value } = RecruiterStatisticValidation.validateADateFromTo(req.query);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { startDate, endDate, totalJobs, totalWaiting, totalAccepted,
+            totalRejected } = await RecruiterStatisticService.jobStatistic({
+                recruiterId: req.payload.userId, ...value
+            });
+        new OK({
+            message: 'Thống kê công việc thành công',
+            metadata: {
+                startDate, endDate, totalJobs, totalJobs, totalWaiting, totalAccepted, totalRejected
+            }
+        }).send(res);
+    }
+
+    jobStatisticByMonth = async (req, res, next) => {
+        const { error, value } = RecruiterStatisticValidation.validateMonthYear(req.query);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { month, year, totalJobs, totalWaiting, totalAccepted,
+            totalRejected } = await RecruiterStatisticService.jobStatisticByMonth({
+                recruiterId: req.payload.userId, ...value
+            });
+        new OK({
+            message: 'Thống kê công việc theo tháng thành công',
+            metadata: {
+                month, year, totalJobs, totalJobs, totalWaiting, totalAccepted, totalRejected
+            }
+        }).send(res);
+    }
+
+    jobStatisticByYear = async (req, res, next) => {
+        const { error, value } = RecruiterStatisticValidation.validateYear(req.query);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { year, totalJobs, totalWaiting, totalAccepted,
+            totalRejected } = await RecruiterStatisticService.jobStatisticByYear({
+                recruiterId: req.payload.userId, ...value
+            });
+        new OK({
+            message: 'Thống kê công việc theo năm thành công',
+            metadata: {
+                year, totalJobs, totalJobs, totalWaiting, totalAccepted, totalRejected
+            }
+        }).send(res);
+    }
+
+    jobHomePageStatistic = async (req, res, next) => {
+        const { totalJobs, details } = await RecruiterStatisticService.jobHomePageStatistic({ recruiterId: req.payload.userId });
+        new OK({
+            message: 'Thống kê công việc trang chủ thành công',
+            metadata: {
+                totalJobs, details
             }
         }).send(res);
     }

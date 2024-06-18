@@ -1,0 +1,4 @@
+16/06/2024	14:32:54 ::1---/v1/api/recruiter/statistic/application_statistic---GET---"startDate" is required
+16/06/2024	14:34:07 ::1---/v1/api/recruiter/statistic/application_statistic_by_month?month=5&year=2024---GET---Vui lòng đăng nhập
+16/06/2024	14:34:26 ::1---/v1/api/recruiter/statistic/application_statistic_by_year?year=2024---GET---Vui lòng đăng nhập lại
+16/06/2024	14:35:09 ::1---/v1/api/admin/statistic/revenue---GET---"startDate" is required
