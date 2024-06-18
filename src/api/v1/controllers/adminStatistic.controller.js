@@ -45,10 +45,10 @@ class AdminStatisticController {
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const { totalRevenue, dailyDetails, month, year } = await AdminStatisticService.caculateRevenueByMonth(value);
+        const { totalRevenue, monthlyDetails, month, year } = await AdminStatisticService.caculateRevenueByMonth(value);
         new OK({
             message: "Lấy doanh thu theo tháng thành công.",
-            metadata: { totalRevenue, dailyDetails, month, year }
+            metadata: { totalRevenue, monthlyDetails, month, year }
         }).send(res)
     }
 
@@ -57,10 +57,10 @@ class AdminStatisticController {
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const { totalRevenue, monthlyDetails, year } = await AdminStatisticService.caculateRevenueByYear(value);
+        const { totalRevenue, yearlyDetails, year } = await AdminStatisticService.caculateRevenueByYear(value);
         new OK({
             message: "Lấy doanh thu theo năm thành công.",
-            metadata: { totalRevenue, monthlyDetails, year }
+            metadata: { totalRevenue, yearlyDetails, year }
         }).send(res)
     }
 
