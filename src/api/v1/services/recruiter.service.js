@@ -8,15 +8,15 @@ const { OTP } = require("../models/otp.model");
 const { Recruiter } = require("../models/recruiter.model");
 const { status, applicationStatus, mapRolePermission } = require("../utils");
 const bcrypt = require('bcryptjs');
-const OrderService = require("./order.service");
-const VNPayService = require("./vnpay.service");
 const RedisService = require("./redis.service");
 const EmailService = require("./email.service");
+const JobService = require("./job.service");
 const OTPService = require("./otp.service");
 const { clearImage } = require('../utils/processImage');
 const mongoose = require('mongoose');
 const ApplicationService = require("./application.service");
 const FavoriteRecruiterService = require("./favoriteRecruiter.service");
+const { formatInTimeZone } = require("date-fns-tz");
 
 
 class RecruiterService {
@@ -569,10 +569,20 @@ class RecruiterService {
     static updateJob = async ({ userId, jobId, name, location, province, type, levelRequirement, experience, salary,
         field, description, requirement, benefit, quantity, deadline, gender }) => {
         try {
-            const job = await Job.updateJob({
-                userId, jobId, name, location, province, type, levelRequirement, experience, salary,
-                field, description, requirement, benefit, quantity, deadline, gender
-            })
+            const job = await Job.findOneAndUpdate({ _id: jobId, recruiterId: userId }, {
+                $set: {
+                    name, location, province, type, levelRequirement, experience, salary,
+                    field, description, requirement, benefit, quantity, deadline, gender, acceptanceStatus: "waiting"
+                }
+            }, {
+                new: true,
+                select: { __v: 0, recruiterId: 0 }
+            }).lean()
+            if (!job) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
+            }
+            job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+            job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
             return {
                 message: "Cập nhật công việc thành công",
                 metadata: { ...job }

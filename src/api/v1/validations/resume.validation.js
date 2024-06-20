@@ -1,7 +1,7 @@
 const joi = require('joi');
 const xss = require('xss');
 const mongoose = require('mongoose');
-const { majors, jobType, educationLevel, experience, provinceOfVietNam } = require('../utils');
+const { majors, jobType, educationLevel, provinceOfVietNam, resumeExperience } = require('../utils');
 
 class ResumeValidation {
     static validateGetListResume = data => {
@@ -59,7 +59,7 @@ class ResumeValidation {
                 return cleanEnglish;
             }),
             jobType: joi.string().valid(...jobType).required(),
-            experience: joi.string().valid(...experience),
+            experience: joi.string().valid(...resumeExperience),
             GPA: joi.number().required(),
             email: joi.string().email().lowercase().required(),
             major: joi.string().valid(...majors).required(),
@@ -146,7 +146,7 @@ class ResumeValidation {
             jobType: joi.string().valid(...jobType).messages({
                 'any.only': "Loại hình công việc không hợp lệ"
             }),
-            experience: joi.string().valid(...experience),
+            experience: joi.string().valid(...resumeExperience),
             GPA: joi.number().messages({
                 'number.base': "'GPA' phải là một số"
             }),
@@ -215,7 +215,7 @@ class ResumeValidation {
             educationLevel: joi.string().valid(...educationLevel),
             homeTown: joi.string().valid(...provinceOfVietNam),
             jobType: joi.string().valid(...jobType),
-            experience: joi.string().valid(...experience),
+            experience: joi.string().valid(...resumeExperience),
             major: joi.string().valid(...majors),
             page: joi.number().integer().min(1),
             limit: joi.number().integer().min(1)
