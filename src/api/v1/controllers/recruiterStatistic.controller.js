@@ -89,14 +89,14 @@ class RecruiterStatisticController {
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const { startDate, endDate, totalJobs, totalWaiting, totalAccepted,
+        const { startDate, endDate, totalJobs, totalWaiting, totalAccepted, dailyDetails,
             totalRejected } = await RecruiterStatisticService.jobStatistic({
                 recruiterId: req.payload.userId, ...value
             });
         new OK({
             message: 'Thống kê công việc thành công',
             metadata: {
-                startDate, endDate, totalJobs, totalJobs, totalWaiting, totalAccepted, totalRejected
+                startDate, endDate, totalJobs, totalJobs, totalWaiting, totalAccepted, totalRejected, dailyDetails
             }
         }).send(res);
     }
@@ -107,13 +107,13 @@ class RecruiterStatisticController {
             throw new BadRequestError(error.details[0].message);
         }
         const { month, year, totalJobs, totalWaiting, totalAccepted,
-            totalRejected } = await RecruiterStatisticService.jobStatisticByMonth({
+            totalRejected, monthlyDetails } = await RecruiterStatisticService.jobStatisticByMonth({
                 recruiterId: req.payload.userId, ...value
             });
         new OK({
             message: 'Thống kê công việc theo tháng thành công',
             metadata: {
-                month, year, totalJobs, totalJobs, totalWaiting, totalAccepted, totalRejected
+                month, year, totalJobs, totalJobs, totalWaiting, totalAccepted, totalRejected, monthlyDetails
             }
         }).send(res);
     }
@@ -124,13 +124,13 @@ class RecruiterStatisticController {
             throw new BadRequestError(error.details[0].message);
         }
         const { year, totalJobs, totalWaiting, totalAccepted,
-            totalRejected } = await RecruiterStatisticService.jobStatisticByYear({
+            totalRejected, yearlyDetails } = await RecruiterStatisticService.jobStatisticByYear({
                 recruiterId: req.payload.userId, ...value
             });
         new OK({
             message: 'Thống kê công việc theo năm thành công',
             metadata: {
-                year, totalJobs, totalJobs, totalWaiting, totalAccepted, totalRejected
+                year, totalJobs, totalJobs, totalWaiting, totalAccepted, totalRejected, yearlyDetails
             }
         }).send(res);
     }

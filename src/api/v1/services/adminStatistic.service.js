@@ -197,15 +197,15 @@ class AdminStatisticService {
                     $match: {
                         status: "Thành công",
                         $expr: {
-                            $eq: [{ $year: "$createdAt" }, year]
+                            $eq: [{ $year: "$updatedAt" }, year]
                         }
                     }
                 },
                 {
                     $group: {
                         _id: {
-                            month: { $month: "$createdAt" },
-                            year: { $year: "$createdAt" }
+                            month: { $month: "$updatedAt" },
+                            year: { $year: "$updatedAt" }
                         },
                         monthlyRevenue: { $sum: "$price" }
                     }
@@ -254,13 +254,13 @@ class AdminStatisticService {
             const stats = await Application.aggregate([
                 {
                     $match: {
-                        createdAt: { $gte: new Date(startDate), $lte: new Date(endDate) }
+                        updatedAt: { $gte: new Date(startDate), $lte: new Date(endDate) }
                     }
                 },
                 {
                     $addFields: {
                         date: {
-                            $dateToString: { format: "%Y-%m-%d", date: "$createdAt" }
+                            $dateToString: { format: "%Y-%m-%d", date: "$updatedAt" }
                         }
                     }
                 },
@@ -355,8 +355,8 @@ class AdminStatisticService {
                     $match: {
                         $expr: {
                             $and: [
-                                { $eq: [{ $month: "$createdAt" }, month] },
-                                { $eq: [{ $year: "$createdAt" }, year] }
+                                { $eq: [{ $month: "$updatedAt" }, month] },
+                                { $eq: [{ $year: "$updatedAt" }, year] }
                             ]
                         }
                     }
@@ -364,9 +364,9 @@ class AdminStatisticService {
                 {
                     $group: {
                         _id: {
-                            day: { $dayOfMonth: "$createdAt" },
-                            month: { $month: "$createdAt" },
-                            year: { $year: "$createdAt" }
+                            day: { $dayOfMonth: "$updatedAt" },
+                            month: { $month: "$updatedAt" },
+                            year: { $year: "$updatedAt" }
                         },
                         dailyTotalApplications: { $sum: 1 },
                         dailySubmitted: {
@@ -437,15 +437,15 @@ class AdminStatisticService {
                 {
                     $match: {
                         $expr: {
-                            $eq: [{ $year: "$createdAt" }, year]
+                            $eq: [{ $year: "$updatedAt" }, year]
                         }
                     }
                 },
                 {
                     $group: {
                         _id: {
-                            month: { $month: "$createdAt" },
-                            year: { $year: "$createdAt" }
+                            month: { $month: "$updatedAt" },
+                            year: { $year: "$updatedAt" }
                         },
                         monthlyTotalApplications: { $sum: 1 },
                         monthlySubmitted: {
