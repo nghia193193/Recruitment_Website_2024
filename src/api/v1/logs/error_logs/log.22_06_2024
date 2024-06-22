@@ -6,3 +6,16 @@
 22/06/2024	10:46:55 ::1---/v1/api/admin/recruiters/approve/665f287336837fc0b566033b---PATCH---invalid_grant
 22/06/2024	10:51:32 ::1---/v1/api/admin/recruiters/approve/665f287336837fc0b566033b---PATCH---invalid_grant
 22/06/2024	13:23:27 ::1---/v1/api/admin/jobs/detail/665f47b999e376daa1f56908---GET---Vui lòng đăng nhập lại
+22/06/2024	16:08:49 ::1---/v1/api/admin/statistic/job_statistic_by_year?year=sfsdfs---GET---"year" must be a number
+22/06/2024	16:14:45 ::1---/v1/api/admin/statistic/total_blog---GET---Blog is not defined
+22/06/2024	16:23:16 ::1---/v1/api/admin/statistic/recruiter_statistic?startDate=2024-04-10T17:00:00.000Z&endDate=2024-06-15T17:00:00.000Z---GET---Vui lòng đăng nhập
+22/06/2024	16:23:21 ::1---/v1/api/admin/statistic/recruiter_statistic?startDate=2024-04-10T17:00:00.000Z&endDate=2024-06-15T17:00:00.000Z---GET---Invalid time value
+22/06/2024	16:24:47 ::1---/v1/api/admin/statistic/recruiter_statistic?startDate=2024-04-10T17:00:00.000Z&endDate=2024-06-15T17:00:00.000Z---GET---Invalid time value
+22/06/2024	16:26:40 ::1---/v1/api/admin/statistic/recruiter_statistic?startDate=2024-04-10T17:00:00.000Z&endDate=2024-06-15T17:00:00.000Z---GET---Invalid time value
+22/06/2024	16:27:57 ::1---/v1/api/admin/statistic/recruiter_statistic?startDate=2024-04-10T17:00:00.000Z&endDate=2024-06-15T17:00:00.000Z---GET---Invalid time value
+22/06/2024	16:28:14 ::1---/v1/api/admin/statistic/recruiter_statistic?startDate=2024-04-10T17:00:00.000Z---GET---"endDate" is required
+22/06/2024	16:28:19 ::1---/v1/api/admin/statistic/recruiter_statistic?startDate=2024-04-10T17:00:00.000Z&endDate=2024-06-15T17:00:00.000Z---GET---Invalid time value
+22/06/2024	16:28:33 ::1---/v1/api/admin/statistic/recruiter_statistic?startDate=2024-04-10T17:00:00.000Z&endDate=2024-06-15T17:00:00.000Z---GET---Invalid time value
+22/06/2024	16:39:39 ::1---/v1/api/admin/statistic/recruiter_statistic_by_year?year=2024---GET---Vui lòng đăng nhập
+22/06/2024	20:53:50 ::1---/v1/api/admin/statistic/recruiter_statistic_by_year?year=2024---GET---Unrecognized expression '$firstApproval'
+22/06/2024	20:55:18 ::1---/v1/api/admin/statistic/recruiter_statistic_by_year?year=2024---GET---Unrecognized expression '$firstApproval'

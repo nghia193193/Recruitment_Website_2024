@@ -7,11 +7,11 @@ const router = express.Router();
 router.get('/total_candidate', verifyAccessToken, authPageAdmin, asyncHandler(adminStatisticController.totalCandidateStatistic));
 router.get('/total_recruiter', verifyAccessToken, authPageAdmin, asyncHandler(adminStatisticController.totalRecruiterStatistic));
 router.get('/total_job', verifyAccessToken, authPageAdmin, asyncHandler(adminStatisticController.totalJobStatistic));
-// revenue
+router.get('/total_blog', verifyAccessToken, authPageAdmin, asyncHandler(adminStatisticController.totalBlogStatistic));
+
+// revenue statistic
 router.get('/revenue', verifyAccessToken, authPageAdmin, asyncHandler(adminStatisticController.caculateRevenue));
-// revenue by month
 router.get('/revenue_by_month', verifyAccessToken, authPageAdmin, asyncHandler(adminStatisticController.caculateRevenueByMonth));
-// revenue by year
 router.get('/revenue_by_year', verifyAccessToken, authPageAdmin, asyncHandler(adminStatisticController.caculateRevenueByYear));
 
 // application statistic
@@ -21,5 +21,10 @@ router.get('/application_statistic_by_year', verifyAccessToken, authPageAdmin, a
 
 // job statistic
 router.get('/job_statistic', verifyAccessToken, authPageAdmin, asyncHandler(adminStatisticController.jobStatistic));
+router.get('/job_statistic_by_month', verifyAccessToken, authPageAdmin, asyncHandler(adminStatisticController.jobStatisticByMonth));
+router.get('/job_statistic_by_year', verifyAccessToken, authPageAdmin, asyncHandler(adminStatisticController.jobStatisticByYear));
+
+// recruiter statistic
+router.get('/recruiter_statistic_by_year', verifyAccessToken, authPageAdmin, asyncHandler(adminStatisticController.recruiterStatisticByYear));
 
 module.exports = router;

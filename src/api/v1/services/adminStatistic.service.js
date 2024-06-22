@@ -2,6 +2,7 @@ const { Candidate } = require('../models/candidate.model');
 const { Recruiter } = require('../models/recruiter.model');
 const { Job } = require('../models/job.model');
 const { Order } = require('../models/order.model');
+const { Blog } = require('../models/blog.model');
 const { formatInTimeZone } = require('date-fns-tz');
 const { Application } = require('../models/application.model');
 
@@ -21,7 +22,7 @@ class AdminStatisticService {
     }
     static totalRecruiterStatistic = async () => {
         try {
-            const number = await Recruiter.find({ verifyEmail: true }).countDocuments();
+            const number = await Recruiter.find({ verifyEmail: true, acceptanceStatus: 'accept' }).countDocuments();
             return {
                 message: "Lấy số lượng nhà tuyển dụng trong hệ thống thành công.",
                 metadata: {
@@ -34,9 +35,23 @@ class AdminStatisticService {
     }
     static totalJobStatistic = async () => {
         try {
-            const number = await Job.find().countDocuments();
+            const number = await Job.find({ status: 'active', acceptanceStatus: 'accept' }).countDocuments();
             return {
                 message: "Lấy số lượng công việc trong hệ thống thành công.",
+                metadata: {
+                    number
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static totalBlogStatistic = async () => {
+        try {
+            const number = await Blog.find({ status: 'active' }).countDocuments();
+            return {
+                message: "Lấy số lượng bài viết trong hệ thống thành công.",
                 metadata: {
                     number
                 }
@@ -595,13 +610,226 @@ class AdminStatisticService {
                 }
             ]);
             return {
-                totalJobs: stats[0].totalJobs,
-                totalWaiting: stats[0].totalWaiting,
-                totalAccepted: stats[0].totalAccepted,
-                totalRejected: stats[0].totalRejected,
-                dailyDetails: stats[0].dailyDetails,
+                totalJobs: stats[0]?.totalJobs ?? 0,
+                totalWaiting: stats[0]?.totalWaiting ?? 0,
+                totalAccepted: stats[0]?.totalAccepted ?? 0,
+                totalRejected: stats[0]?.totalRejected ?? 0,
+                dailyDetails: stats[0]?.dailyDetails ?? [],
                 startDate: formatInTimeZone(startDate, 'Asia/Ho_Chi_Minh', 'dd/MM/yyyy'),
                 endDate: formatInTimeZone(endDate, 'Asia/Ho_Chi_Minh', 'dd/MM/yyyy')
+            };
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static jobStatisticByMonth = async ({ month, year }) => {
+        try {
+            const stats = await Job.aggregate([
+                {
+                    $match: {
+                        $expr: {
+                            $and: [
+                                { $eq: [{ $month: "$updatedAt" }, month] },
+                                { $eq: [{ $year: "$updatedAt" }, year] }
+                            ]
+                        }
+                    }
+                },
+                {
+                    $group: {
+                        _id: {
+                            day: { $dayOfMonth: "$updatedAt" },
+                            month: { $month: "$updatedAt" },
+                            year: { $year: "$updatedAt" }
+                        },
+                        dailyTotalJobs: { $sum: 1 },
+                        dailyWaiting: {
+                            $sum: {
+                                $cond: [{ $eq: ["$acceptanceStatus", "waiting"] }, 1, 0]
+                            }
+                        },
+                        dailyAccepted: {
+                            $sum: {
+                                $cond: [{ $eq: ["$acceptanceStatus", "accept"] }, 1, 0]
+                            }
+                        },
+                        dailyRejected: {
+                            $sum: {
+                                $cond: [{ $eq: ["$acceptanceStatus", "decline"] }, 1, 0]
+                            }
+                        }
+                    },
+                },
+                { $sort: { "_id.day": 1 } },
+                {
+                    $group: {
+                        _id: null,
+                        totalJobs: { $sum: "$dailyTotalJobs" },
+                        totalWaiting: { $sum: "$dailyWaiting" },
+                        totalAccepted: { $sum: "$dailyAccepted" },
+                        totalRejected: { $sum: "$dailyRejected" },
+                        monthlyDetails: {
+                            $push: {
+                                day: "$_id.day",
+                                totalJobs: "$dailyTotalJobs",
+                                waiting: "$dailyWaiting",
+                                accepted: "$dailyAccepted",
+                                rejected: "$dailyRejected"
+                            }
+                        }
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        totalJobs: 1,
+                        totalWaiting: 1,
+                        totalAccepted: 1,
+                        totalRejected: 1,
+                        monthlyDetails: 1
+                    }
+                }
+            ]);
+            return {
+                month,
+                year,
+                totalJobs: stats[0]?.totalJobs ?? 0,
+                totalWaiting: stats[0]?.totalWaiting ?? 0,
+                totalAccepted: stats[0]?.totalAccepted ?? 0,
+                totalRejected: stats[0]?.totalRejected ?? 0,
+                monthlyDetails: stats[0]?.monthlyDetails ?? []
+            };
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static jobStatisticByYear = async ({ year }) => {
+        try {
+            const stats = await Job.aggregate([
+                {
+                    $match: {
+                        $expr: {
+                            $eq: [{ $year: "$updatedAt" }, year]
+                        }
+                    }
+                },
+                {
+                    $group: {
+                        _id: {
+                            month: { $month: "$updatedAt" },
+                            year: { $year: "$updatedAt" }
+                        },
+                        monthlyTotalJobs: { $sum: 1 },
+                        monthlyWaiting: {
+                            $sum: {
+                                $cond: [{ $eq: ["$acceptanceStatus", "waiting"] }, 1, 0]
+                            }
+                        },
+                        monthlyAccepted: {
+                            $sum: {
+                                $cond: [{ $eq: ["$acceptanceStatus", "accept"] }, 1, 0]
+                            }
+                        },
+                        monthlyRejected: {
+                            $sum: {
+                                $cond: [{ $eq: ["$acceptanceStatus", "decline"] }, 1, 0]
+                            }
+                        }
+                    },
+                },
+                { $sort: { "_id.month": 1 } },
+                {
+                    $group: {
+                        _id: null,
+                        totalJobs: { $sum: "$monthlyTotalJobs" },
+                        totalWaiting: { $sum: "$monthlyWaiting" },
+                        totalAccepted: { $sum: "$monthlyAccepted" },
+                        totalRejected: { $sum: "$monthlyRejected" },
+                        yearlyDetails: {
+                            $push: {
+                                month: "$_id.month",
+                                totalJobs: "$monthlyTotalJobs",
+                                waiting: "$monthlyWaiting",
+                                accepted: "$monthlyAccepted",
+                                rejected: "$monthlyRejected"
+                            }
+                        }
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        totalJobs: 1,
+                        totalWaiting: 1,
+                        totalAccepted: 1,
+                        totalRejected: 1,
+                        yearlyDetails: 1
+                    }
+                }
+            ]);
+            return {
+                year,
+                totalJobs: stats[0]?.totalJobs ?? 0,
+                totalWaiting: stats[0]?.totalWaiting ?? 0,
+                totalAccepted: stats[0]?.totalAccepted ?? 0,
+                totalRejected: stats[0]?.totalRejected ?? 0,
+                yearlyDetails: stats[0]?.yearlyDetails ?? []
+            };
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static recruiterStatisticByYear = async ({ year }) => {
+        try {
+            const stats = await Recruiter.aggregate([
+                {
+                    $match: {
+                        $expr: {
+                            $and: [
+                                { $eq: [{ $year: "$createdAt" }, year] },
+                                { $eq: ["$firstApproval", false] }
+                            ]
+
+                        }
+                    }
+                },
+                {
+                    $group: {
+                        _id: {
+                            month: { $month: "$createdAt" },
+                            year: { $year: "$createdAt" }
+                        },
+                        monthlyNewRecruiters: { $sum: 1 },
+                    }
+                },
+                { $sort: { "_id.month": 1 } },
+                {
+                    $group: {
+                        _id: null,
+                        totalNewRecruiters: { $sum: "$monthlyNewRecruiters" },
+                        yearlyDetails: {
+                            $push: {
+                                month: "$_id.month",
+                                totalNewRecruiters: "$monthlyNewRecruiters",
+                            }
+                        }
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        totalNewRecruiters: 1,
+                        yearlyDetails: 1
+                    }
+                }
+            ]);
+            return {
+                year,
+                totalNewRecruiters: stats[0]?.totalNewRecruiters ?? 0,
+                yearlyDetails: stats[0]?.yearlyDetails ?? []
             };
         } catch (error) {
             throw error;

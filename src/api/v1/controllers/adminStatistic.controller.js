@@ -28,6 +28,14 @@ class AdminStatisticController {
         }).send(res)
     }
 
+    totalBlogStatistic = async (req, res, next) => {
+        const { message, metadata } = await AdminStatisticService.totalBlogStatistic();
+        new OK({
+            message: message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
     caculateRevenue = async (req, res, next) => {
         const { error, value } = AdminStatisticValidation.validateCaculateRevenue(req.query);
         if (error) {
@@ -113,6 +121,44 @@ class AdminStatisticController {
         new OK({
             message: "Thống kê công việc thành công.",
             metadata: { startDate, endDate, totalJobs, totalWaiting, totalAccepted, totalRejected, dailyDetails }
+        }).send(res)
+    }
+
+    jobStatisticByMonth = async (req, res, next) => {
+        const { error, value } = AdminStatisticValidation.validateMonthYear(req.query);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { month, year, totalJobs, totalWaiting, totalAccepted, 
+            totalRejected, monthlyDetails } = await AdminStatisticService.jobStatisticByMonth(value);
+        new OK({
+            message: "Thống kê công việc theo tháng thành công.",
+            metadata: { month, year, totalJobs, totalWaiting, totalAccepted, totalRejected, monthlyDetails }
+        }).send(res)
+    }
+
+    jobStatisticByYear = async (req, res, next) => {
+        const { error, value } = AdminStatisticValidation.validateYear(req.query);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { year, totalJobs, totalWaiting, totalAccepted, 
+            totalRejected, yearlyDetails } = await AdminStatisticService.jobStatisticByYear(value);
+        new OK({
+            message: "Thống kê công việc theo năm thành công.",
+            metadata: { year, totalJobs, totalWaiting, totalAccepted, totalRejected, yearlyDetails }
+        }).send(res)
+    }
+
+    recruiterStatisticByYear = async (req, res, next) => {
+        const { error, value } = AdminStatisticValidation.validateYear(req.query);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { year, totalNewRecruiters, yearlyDetails } = await AdminStatisticService.recruiterStatisticByYear(value);
+        new OK({
+            message: "Thống kê nhà tuyển dụng mới theo năm thành công.",
+            metadata: { year, totalNewRecruiters, yearlyDetails }
         }).send(res)
     }
 }
