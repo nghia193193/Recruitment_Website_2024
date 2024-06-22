@@ -94,19 +94,20 @@ class AdminRecruiterManagementService {
             if (recruiter) {
                 throw new BadRequestError("Slug này đã tồn tại. Vui lòng nhập slug khác.");
             }
-            const result = await Recruiter.create([{
-                name, position, phone, contactEmail, companyName, companyWebsite, companyAddress,
-                companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity, slug, email,
-                acceptanceStatus: "accept", firstApproval: false, firstUpdate: false, verifyEmail: true
-            }], { session })
-            if (!result) {
-                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
-            }
             const hashPassword = await bcrypt.hash(password, 10);
             const login = await Login.create([{
                 email, password: hashPassword, role: "RECRUITER"
             }], session)
             if (!login) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+            }
+            const result = await Recruiter.create([{
+                name, position, phone, contactEmail, companyName, companyWebsite, companyAddress,
+                companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity, slug, email,
+                acceptanceStatus: "accept", firstApproval: false, firstUpdate: false, verifyEmail: true,
+                loginId: login[0]._id
+            }], { session })
+            if (!result) {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
             }
             await session.commitTransaction();
@@ -235,7 +236,7 @@ class AdminRecruiterManagementService {
                 }, {
                     new: true,
                     select: { __v: 0, createdAt: 0, udatedAt: 0 }
-                }).lean().populate('loginId')
+                }).populate('loginId').lean()
             } else {
                 result = await Recruiter.findOneAndUpdate({ _id: recruiterId }, {
                     $set: {
@@ -244,11 +245,12 @@ class AdminRecruiterManagementService {
                 }, {
                     new: true,
                     select: { __v: 0, createdAt: 0, udatedAt: 0 }
-                }).lean().populate('loginId')
+                }).populate('loginId').lean()
             }
             if (!result) {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
             }
+            console.log(result)
             result.role = result.loginId.role;
             delete result.loginId;
             result.avatar = result.avatar ?? null;

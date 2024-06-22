@@ -100,6 +100,7 @@ class JobService {
             job.companyAddress = job.recruiterId.companyAddress;
             job.acceptedNumber = acceptedNumber;
             job.recruiterId = job.recruiterId._id.toString();
+            job.reasonDecline = job.reasonDecline ?? null;
 
             return {
                 message: "Lấy thông tin công việc thành công",
