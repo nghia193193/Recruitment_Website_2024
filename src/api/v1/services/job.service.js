@@ -83,10 +83,11 @@ class JobService {
     static getJobDetail = async ({ jobId }) => {
         try {
             let job = await Job.findById(jobId).lean().populate("recruiterId")
-                .select("-__v -reasonDecline")
+                .select("-__v")
             if (!job) {
                 throw new NotFoundRequestError("Không tìm thấy công việc");
             }
+            console.log(job)
             // format data
             const acceptedNumber = await ApplicationService.getJobAcceptedApplicationNumber({ jobId });
             job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
