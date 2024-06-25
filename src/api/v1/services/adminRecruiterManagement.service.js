@@ -219,19 +219,23 @@ class AdminRecruiterManagementService {
             let result;
             if (acceptanceStatus === "accept") {
                 const { companyLogo, companyCoverPhoto } = recruiter.oldInfo;
-                if (companyLogo !== recruiter.companyLogo) {
-                    const splitArr = companyLogo.split("/");
-                    const image = splitArr[splitArr.length - 1];
-                    clearImage(image);
+                if (companyLogo) {
+                    if (companyLogo !== recruiter.companyLogo) {
+                        const splitArr = companyLogo.split("/");
+                        const image = splitArr[splitArr.length - 1];
+                        clearImage(image);
+                    }
                 }
-                if (companyCoverPhoto !== recruiter.companyCoverPhoto) {
-                    const splitArr = companyCoverPhoto.split("/");
-                    const image = splitArr[splitArr.length - 1];
-                    clearImage(image);
+                if (companyCoverPhoto) {
+                    if (companyCoverPhoto !== recruiter.companyCoverPhoto) {
+                        const splitArr = companyCoverPhoto.split("/");
+                        const image = splitArr[splitArr.length - 1];
+                        clearImage(image);
+                    }
                 }
                 result = await Recruiter.findOneAndUpdate({ _id: recruiterId }, {
                     $set: {
-                        acceptanceStatus: acceptanceStatus, firstApproval: false, oldInfo: {}
+                        acceptanceStatus: acceptanceStatus, reasonDecline: null, firstApproval: false, oldInfo: {}
                     }
                 }, {
                     new: true,
