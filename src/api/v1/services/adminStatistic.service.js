@@ -35,7 +35,7 @@ class AdminStatisticService {
     }
     static totalJobStatistic = async () => {
         try {
-            const number = await Job.find({ status: 'active', acceptanceStatus: 'accept' }).countDocuments();
+            const number = await Job.find({ status: 'active', acceptanceStatus: 'accept', deadline: { $gte: new Date() } }).countDocuments();
             return {
                 message: "Lấy số lượng công việc trong hệ thống thành công.",
                 metadata: {
