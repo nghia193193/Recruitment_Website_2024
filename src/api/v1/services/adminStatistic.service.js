@@ -528,13 +528,13 @@ class AdminStatisticService {
             const stats = await Job.aggregate([
                 {
                     $match: {
-                        updatedAt: { $gte: new Date(startDate), $lte: new Date(endDate) }
+                        approvalDate: { $gte: new Date(startDate), $lte: new Date(endDate) }
                     }
                 },
                 {
                     $addFields: {
                         date: {
-                            $dateToString: { format: "%Y-%m-%d", date: "$updatedAt" }
+                            $dateToString: { format: "%Y-%m-%d", date: "$approvalDate" }
                         }
                     }
                 },
@@ -630,8 +630,8 @@ class AdminStatisticService {
                     $match: {
                         $expr: {
                             $and: [
-                                { $eq: [{ $month: "$updatedAt" }, month] },
-                                { $eq: [{ $year: "$updatedAt" }, year] }
+                                { $eq: [{ $month: "$approvalDate" }, month] },
+                                { $eq: [{ $year: "$approvalDate" }, year] }
                             ]
                         }
                     }
@@ -639,9 +639,9 @@ class AdminStatisticService {
                 {
                     $group: {
                         _id: {
-                            day: { $dayOfMonth: "$updatedAt" },
-                            month: { $month: "$updatedAt" },
-                            year: { $year: "$updatedAt" }
+                            day: { $dayOfMonth: "$approvalDate" },
+                            month: { $month: "$approvalDate" },
+                            year: { $year: "$approvalDate" }
                         },
                         dailyTotalJobs: { $sum: 1 },
                         dailyWaiting: {
@@ -711,15 +711,15 @@ class AdminStatisticService {
                 {
                     $match: {
                         $expr: {
-                            $eq: [{ $year: "$updatedAt" }, year]
+                            $eq: [{ $year: "$approvalDate" }, year]
                         }
                     }
                 },
                 {
                     $group: {
                         _id: {
-                            month: { $month: "$updatedAt" },
-                            year: { $year: "$updatedAt" }
+                            month: { $month: "$approvalDate" },
+                            year: { $year: "$approvalDate" }
                         },
                         monthlyTotalJobs: { $sum: 1 },
                         monthlyWaiting: {
