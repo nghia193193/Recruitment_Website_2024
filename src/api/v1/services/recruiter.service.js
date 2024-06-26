@@ -434,7 +434,7 @@ class RecruiterService {
             const totalElement = await Recruiter.find(query).lean().countDocuments();
             if (listRecruiter.length !== 0) {
                 listRecruiter = listRecruiter.map(recruiter => {
-                    if (recruiter.oldInfo.name) {
+                    if (recruiter.oldInfo?.name) {
                         recruiter = { ...recruiter, ...recruiter.oldInfo }
                     }
                     return recruiter;
@@ -465,7 +465,7 @@ class RecruiterService {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
             }
             const likeNumber = await FavoriteRecruiterService.getLikeNumber({ recruiterId: recruiterInfor._id.toString() });
-            if (recruiterInfor.oldInfo.name) {
+            if (recruiterInfor.oldInfo?.name) {
                 recruiterInfor = { ...recruiterInfor, ...recruiterInfor.oldInfo }
             }
             recruiterInfor.companyLogo = recruiterInfor.companyLogo ?? null;
