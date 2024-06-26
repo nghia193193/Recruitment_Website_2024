@@ -626,7 +626,7 @@ class JobService {
             }
             const length = await Job.find(query).lean().countDocuments();
             let result = await Job.find(query).lean()
-                .select("name field type levelRequirement status deadline")
+                .select("name field type levelRequirement status deadline reasonDecline")
                 .skip((page - 1) * limit)
                 .limit(limit)
                 .sort({ updatedAt: -1 })
@@ -635,6 +635,7 @@ class JobService {
                     const applicationNumber = await ApplicationService.getJobApplicationNumber({ jobId: item._id });
                     return {
                         ...item,
+                        reasonDecline: item.reasonDecline ?? null,
                         applicationNumber: applicationNumber
                     }
                 })
@@ -678,7 +679,7 @@ class JobService {
             }
             const length = await Job.find(query).lean().countDocuments();
             const result = await Job.find(query).lean()
-                .select("name field type levelRequirement status deadline")
+                .select("name field type levelRequirement status deadline reasonDecline")
                 .skip((page - 1) * limit)
                 .limit(limit)
                 .sort({ updatedAt: -1 })
@@ -687,6 +688,7 @@ class JobService {
                     const applicationNumber = await ApplicationService.getJobApplicationNumber({ jobId: item._id });
                     return {
                         ...item,
+                        reasonDecline: item.reasonDecline ?? null,
                         applicationNumber: applicationNumber
                     }
                 })
@@ -729,7 +731,7 @@ class JobService {
             }
             const length = await Job.find(query).lean().countDocuments();
             let result = await Job.find(query).lean()
-                .select("name field type levelRequirement status deadline")
+                .select("name field type levelRequirement status deadline reasonDecline")
                 .skip((page - 1) * limit)
                 .limit(limit)
                 .sort({ updatedAt: -1 })
@@ -738,6 +740,7 @@ class JobService {
                     const applicationNumber = await ApplicationService.getJobApplicationNumber({ jobId: item._id });
                     return {
                         ...item,
+                        reasonDecline: item.reasonDecline ?? null,
                         applicationNumber: applicationNumber
                     }
                 })
@@ -782,7 +785,7 @@ class JobService {
             }
             const length = await Job.find(query).lean().countDocuments();
             let result = await Job.find(query).lean()
-                .select("name field type levelRequirement status deadline")
+                .select("name field type levelRequirement status deadline reasonDecline")
                 .skip((page - 1) * limit)
                 .limit(limit)
                 .sort({ updatedAt: -1 })
@@ -791,6 +794,7 @@ class JobService {
                     const applicationNumber = await ApplicationService.getJobApplicationNumber({ jobId: item._id });
                     return {
                         ...item,
+                        reasonDecline: item.reasonDecline ?? null,
                         applicationNumber: applicationNumber
                     }
                 })
@@ -833,7 +837,7 @@ class JobService {
             }
             const length = await Job.find(query).lean().countDocuments();
             let result = await Job.find(query).lean()
-                .select("name field type levelRequirement status deadline")
+                .select("name field type levelRequirement status deadline reasonDecline")
                 .skip((page - 1) * limit)
                 .limit(limit)
                 .sort({ updatedAt: -1 })
@@ -842,6 +846,7 @@ class JobService {
                     const applicationNumber = await ApplicationService.getJobApplicationNumber({ jobId: item._id });
                     return {
                         ...item,
+                        reasonDecline: item.reasonDecline ?? null,
                         applicationNumber: applicationNumber
                     }
                 })
