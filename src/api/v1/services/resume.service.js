@@ -145,7 +145,7 @@ class ResumeService {
                 allowSearch: true
             }
             if (title) {
-                query["$text"] = { $search: `${title}` };
+                query["$text"] = { $search: `"${title}"` };
             }
             if (educationLevel) query["educationLevel"] = educationLevel;
             if (homeTown) query["homeTown"] = homeTown;

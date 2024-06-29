@@ -2,7 +2,7 @@
 class SocketService {
     // connection
     connection(socket) {
-        console.log("Socket connect success")
+        console.log(`User connect id is: ${socket.id}`)
         socket.on("disconnect", () => {
             console.log(`User disconnect id is: ${socket.id}`);
         })

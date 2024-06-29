@@ -17,7 +17,7 @@ class FavoriteJobService {
             acceptanceStatus: "accept"
         }
         if (name) {
-            query.$text = { $search: name };
+            query.$text = { $search: `"${name}"` };
         }
         let length = await Job.find(query).lean().countDocuments();
         let result = await Job.find(query)

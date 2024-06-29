@@ -66,14 +66,25 @@ class AdminStatisticService {
             const result = await Order.aggregate([
                 {
                     $match: {
-                        status: "Thành công",
-                        updatedAt: { $gte: startDate, $lte: endDate }
+                        status: { $in: ["Thành công", "Đã hủy"] },
+                        createdAt: { $gte: startDate, $lte: endDate }
+                    }
+                },
+                {
+                    $addFields: {
+                        calculatedRevenue: {
+                            $cond: {
+                                if: { $eq: ["$status", "Đã hủy"] },
+                                then: { $subtract: ["$price", "$refundAmount"] },
+                                else: "$price"
+                            }
+                        }
                     }
                 },
                 {
                     $group: {
-                        _id: { $dateToString: { format: "%Y-%m-%d", date: "$updatedAt" } },
-                        dailyRevenue: { $sum: "$price" }
+                        _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+                        dailyRevenue: { $sum: "$calculatedRevenue" }
                     }
                 },
                 { $sort: { _id: 1 } },
@@ -145,23 +156,34 @@ class AdminStatisticService {
             const result = await Order.aggregate([
                 {
                     $match: {
-                        status: "Thành công",
+                        status: { $in: ["Thành công", "Đã hủy"] },
                         $expr: {
                             $and: [
-                                { $eq: [{ $month: "$updatedAt" }, month] },
-                                { $eq: [{ $year: "$updatedAt" }, year] }
+                                { $eq: [{ $month: "$createdAt" }, month] },
+                                { $eq: [{ $year: "$createdAt" }, year] }
                             ]
+                        }
+                    }
+                },
+                {
+                    $addFields: {
+                        calculatedRevenue: {
+                            $cond: {
+                                if: { $eq: ["$status", "Đã hủy"] },
+                                then: { $subtract: ["$price", "$refundAmount"] },
+                                else: "$price"
+                            }
                         }
                     }
                 },
                 {
                     $group: {
                         _id: {
-                            day: { $dayOfMonth: "$updatedAt" },
-                            month: { $month: "$updatedAt" },
-                            year: { $year: "$updatedAt" }
+                            day: { $dayOfMonth: "$createdAt" },
+                            month: { $month: "$createdAt" },
+                            year: { $year: "$createdAt" }
                         },
-                        dailyRevenue: { $sum: "$price" }
+                        dailyRevenue: { $sum: "$calculatedRevenue" }
                     }
                 }, { $sort: { "_id.day": 1 } },
                 {
@@ -210,19 +232,30 @@ class AdminStatisticService {
             let result = await Order.aggregate([
                 {
                     $match: {
-                        status: "Thành công",
+                        status: { $in: ["Thành công", "Đã hủy"] },
                         $expr: {
-                            $eq: [{ $year: "$updatedAt" }, year]
+                            $eq: [{ $year: "$createdAt" }, year]
+                        }
+                    }
+                },
+                {
+                    $addFields: {
+                        calculatedRevenue: {
+                            $cond: {
+                                if: { $eq: ["$status", "Đã hủy"] },
+                                then: { $subtract: ["$price", "$refundAmount"] },
+                                else: "$price"
+                            }
                         }
                     }
                 },
                 {
                     $group: {
                         _id: {
-                            month: { $month: "$updatedAt" },
-                            year: { $year: "$updatedAt" }
+                            month: { $month: "$createdAt" },
+                            year: { $year: "$createdAt" }
                         },
-                        monthlyRevenue: { $sum: "$price" }
+                        monthlyRevenue: { $sum: "$calculatedRevenue" }
                     }
                 }, { $sort: { "_id.month": 1 } },
                 {
