@@ -6,6 +6,8 @@ const { FavoriteRecruiter } = require('../models/favoriteRecruiter.model');
 const { mapRolePermission } = require('../utils');
 const { default: mongoose } = require('mongoose');
 const { formatInTimeZone } = require('date-fns-tz');
+const { Socket } = require('socket.io');
+const socketService = require('./socket.service');
 
 
 class AdminJobManagementService {
@@ -159,6 +161,7 @@ class AdminJobManagementService {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
             }
             // thông báo tới ứng viên yêu thích nhà tuyển dụng
+            const userSockets = socketService.getUserSockets();
             if (acceptanceStatus === "accept") {
                 const listCandidate = await FavoriteRecruiter.find({ favoriteRecruiters: recruiterId.toString() }).lean();
                 if (listCandidate.length !== 0) {
@@ -174,11 +177,19 @@ class AdminJobManagementService {
                         if (!notificationCandidate) {
                             throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
                         }
-                        _io.emit(`notification_candidate_${listCandidate[i].candidateId}`, notificationCandidate);
+                        const socketId = userSockets.get(listCandidate[i].candidateId.toString());
+                        if (socketId) {
+                            _io.to(socketId).emit('user_notification', notification);
+                            console.log(`Notification sent to user ${listCandidate[i].candidateId}: ${notification}`);
+                        }
                     }
                 }
             }
-            _io.emit(`notification_recruiter_${userId}`, notification);
+            const socketId = userSockets.get(recruiterId.toString());
+            if (socketId) {
+                _io.to(socketId).emit('user_notification', notification);
+                console.log(`Notification sent to user ${recruiterId}: ${notification}`);
+            }
             return {
                 message: "Duyệt công việc thành công",
                 metadata: { ...job },

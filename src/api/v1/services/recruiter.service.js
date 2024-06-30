@@ -17,6 +17,7 @@ const mongoose = require('mongoose');
 const ApplicationService = require("./application.service");
 const FavoriteRecruiterService = require("./favoriteRecruiter.service");
 const { formatInTimeZone } = require("date-fns-tz");
+const socketService = require("./socket.service");
 
 
 class RecruiterService {
@@ -661,7 +662,12 @@ class RecruiterService {
             if (!notification) {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
             }
-            _io.emit(`notification_candidate_${application.candidateId.toString()}`, notification);
+            const userSockets = socketService.getUserSockets();
+            const socketId = userSockets.get(application.candidateId.toString());
+            if (socketId) {
+                _io.to(socketId).emit('user_notification', notification);
+                console.log(`Notification sent to user ${application.candidateId.toString()}: ${notification}`);
+            }
             return {
                 message: "Duyệt đơn ứng tuyển thành công thành công",
             }

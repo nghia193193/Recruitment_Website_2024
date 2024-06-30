@@ -87,7 +87,6 @@ class JobService {
             if (!job) {
                 throw new NotFoundRequestError("Không tìm thấy công việc");
             }
-            console.log(job)
             // format data
             const acceptedNumber = await ApplicationService.getJobAcceptedApplicationNumber({ jobId });
             job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
