@@ -607,7 +607,19 @@ class RecruiterService {
 
     static changeJobStatus = async ({ userId, jobId, status }) => {
         try {
-            const job = await Job.changeJobStatus({ userId, jobId, status })
+            const job = await Job.findOneAndUpdate({ _id: jobId, recruiterId: userId }, {
+                $set: {
+                    status
+                }
+            }, {
+                new: true,
+                select: { __v: 0, recruiterId: 0 }
+            }).lean()
+            if (!job) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
+            }
+            job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+            job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
             return {
                 message: "Thay đổi trạng thái công việc thành công",
                 metadata: { ...job }
