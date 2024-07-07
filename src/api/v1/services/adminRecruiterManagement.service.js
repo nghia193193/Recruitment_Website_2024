@@ -218,19 +218,21 @@ class AdminRecruiterManagementService {
             }
             let result;
             if (acceptanceStatus === "accept") {
-                const { companyLogo, companyCoverPhoto } = recruiter.oldInfo;
-                if (companyLogo) {
-                    if (companyLogo !== recruiter.companyLogo) {
-                        const splitArr = companyLogo.split("/");
-                        const image = splitArr[splitArr.length - 1];
-                        clearImage(image);
+                if (recruiter.oldInfo) {
+                    const { companyLogo, companyCoverPhoto } = recruiter.oldInfo;
+                    if (companyLogo) {
+                        if (companyLogo !== recruiter.companyLogo) {
+                            const splitArr = companyLogo.split("/");
+                            const image = splitArr[splitArr.length - 1];
+                            clearImage(image);
+                        }
                     }
-                }
-                if (companyCoverPhoto) {
-                    if (companyCoverPhoto !== recruiter.companyCoverPhoto) {
-                        const splitArr = companyCoverPhoto.split("/");
-                        const image = splitArr[splitArr.length - 1];
-                        clearImage(image);
+                    if (companyCoverPhoto) {
+                        if (companyCoverPhoto !== recruiter.companyCoverPhoto) {
+                            const splitArr = companyCoverPhoto.split("/");
+                            const image = splitArr[splitArr.length - 1];
+                            clearImage(image);
+                        }
                     }
                 }
                 result = await Recruiter.findOneAndUpdate({ _id: recruiterId }, {

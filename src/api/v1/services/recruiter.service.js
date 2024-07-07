@@ -86,18 +86,6 @@ class RecruiterService {
             if (!isValid) {
                 throw new BadRequestError('OTP không chính xác')
             }
-            // verify Email
-            const result = await Recruiter.findOneAndUpdate({ email }, {
-                $set: {
-                    verifyEmail: true
-                }
-            }, {
-                session,
-                new: true
-            })
-            if (!result) {
-                throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại');
-            }
             // add recruiter to login
             const hashPassword = await RedisService.getEmailKey(email);
             if (!hashPassword) {
@@ -110,14 +98,18 @@ class RecruiterService {
             }], {
                 session
             })
-            // Reference Recruiter, Login
-            await Recruiter.findOneAndUpdate({ email }, {
+            // verify Email, reference Recruiter, Login
+            const result = await Recruiter.findOneAndUpdate({ email }, {
                 $set: {
-                    loginId: login[0]._id
+                    verifyEmail: true, loginId: login[0]._id
                 }
             }, {
-                session
+                session,
+                new: true
             })
+            if (!result) {
+                throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại');
+            }
             // delete redis password
             await RedisService.deleteEmailKey(email);
             // delete all otp verify in db
@@ -693,29 +685,6 @@ class RecruiterService {
             return {
                 message: "Lấy danh sách trạng thái ứng tuyển thành công",
                 metadata: { applicationStatus }
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    static getListNotification = async ({ userId }) => {
-        try {
-            const listNotification = await Notification.getListNotification({ userId })
-            return {
-                message: "Lấy danh sách thông báo thành công",
-                metadata: { listNotification }
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    static readNotification = async ({ userId, notificationId }) => {
-        try {
-            await Notification.readNotification({ userId, notificationId })
-            return {
-                message: "Đọc thông báo thành công"
             }
         } catch (error) {
             throw error;

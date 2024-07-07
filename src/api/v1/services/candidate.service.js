@@ -20,7 +20,9 @@ const FavoriteJobService = require("./favoriteJob.service");
 
 class CandidateService {
     static signUp = async ({ name, email, password }) => {
+        const session = await mongoose.startSession();
         try {
+            session.startTransaction();
             // check user exist by mail
             const isExist = await Login.findOne({ email });
             if (isExist) {
@@ -42,8 +44,17 @@ class CandidateService {
             const hashPassword = await bcrypt.hash(password, 10);
             await RedisService.setPassword(email, hashPassword);
             // create recruiter
-            const newCandidate = await Candidate.create({ name, email })
-            await EmailService.sendSignUpMail({ toEmail: email, userName: newCandidate.name, code: mapRolePermission["CANDIDATE"] });
+            const newCandidate = await Candidate.create([{ 
+                name, email 
+            }], {
+                session
+            })
+            if (!newCandidate) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+            }
+            await EmailService.sendSignUpMail({ toEmail: email, userName: newCandidate[0].name, code: mapRolePermission["CANDIDATE"] });
+            await session.commitTransaction();
+            session.endSession();
             // return 201
             return {
                 message: "Đăng ký tài khoản thành công",
@@ -52,12 +63,16 @@ class CandidateService {
                 }
             }
         } catch (error) {
+            await session.abortTransaction();
+            session.endSession();
             throw error;
         }
     }
 
     static verifyEmail = async (email, otp) => {
+        const session = await mongoose.startSession();
         try {
+            session.startTransaction();
             // get last otp
             const otpHolder = await OTP.find({ email });
             if (!otpHolder.length) {
@@ -69,42 +84,43 @@ class CandidateService {
             if (!isValid) {
                 throw new BadRequestError('OTP không chính xác')
             }
-            // verify Email
-            const result = await Candidate.findOneAndUpdate({ email }, {
-                $set: {
-                    verifyEmail: true
-                }
-            }, {
-                new: true
-            })
-            if (!result) {
-                throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại');
-            }
             // add recruiter to login
             const hashPassword = await RedisService.getEmailKey(email);
             if (!hashPassword) {
                 throw new BadRequestError("Quá thời hạn 24 giờ kể từ lúc đăng ký vui lòng đăng ký lại.");
             }
-            const login = await Login.create({
+            const login = await Login.create([{
                 email,
                 password: hashPassword,
                 role: "CANDIDATE",
+            }], {
+                session
             })
-            // Reference Candidate, Login
-            await Candidate.findOneAndUpdate({ email }, {
+            // verify Email, reference Candidate, Login
+            const result = await Candidate.findOneAndUpdate({ email }, {
                 $set: {
-                    loginId: login._id
+                    verifyEmail: true, loginId: login[0]._id
                 }
+            }, {
+                session,
+                new: true
             })
+            if (!result) {
+                throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại');
+            }
             // delete redis password
             await RedisService.deleteEmailKey(email);
             // delete all otp verify in db
             await OTP.deleteMany({ email });
+            await session.commitTransaction();
+            session.endSession();
             //return 200
             return {
                 message: "Xác nhận email thành công",
             }
         } catch (error) {
+            await session.abortTransaction();
+            session.endSession();
             throw error;
         }
     }
@@ -353,7 +369,6 @@ class CandidateService {
     static addFavoriteRecruiter = async ({ userId, recruiterId }) => {
         try {
             await FavoriteRecruiterService.addFavoriteRecruiter({ userId, recruiterId });
-            _io.emit(`favorite_recruiter`, "reload");
             return {
                 message: "Thêm nhà tuyển dụng yêu thích thành công.",
                 metadata: {}
@@ -476,7 +491,7 @@ class CandidateService {
             }
             // check resume
             const resume = await Resume.findOne({ _id: resumeId, candidateId: userId }).lean();
-            if (!resume || resume.candidateId.toString() !== userId) {
+            if (!resume) {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
             }
             if (resume.status === "inactive") {
