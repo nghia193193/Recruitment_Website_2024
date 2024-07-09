@@ -1,6 +1,7 @@
 const OTPGenerator = require('otp-generator');
 const OTPService = require("../services/otp.service");
 const { createTransporter } = require('../utils/sendMails');
+const { InternalServerError } = require('../core/error.response');
 
 class EmailService {
     static sendSignUpMail = async ({ toEmail, userName, code }) => {

@@ -29,6 +29,7 @@ class AdminJobManagementService {
                 throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại.');
             }
             // thông báo tới ứng viên yêu thích nhà tuyển dụng
+            const userSockets = socketService.getUserSockets();
             const listCandidate = await FavoriteRecruiter.find({ favoriteRecruiters: recruiterId.toString() }).lean();
             if (listCandidate.length !== 0) {
                 for (let i = 0; i < listCandidate.length; i++) {
@@ -43,7 +44,11 @@ class AdminJobManagementService {
                     if (!notificationCandidate) {
                         throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
                     }
-                    _io.emit(`notification_candidate_${listCandidate[i].candidateId}`, notificationCandidate);
+                    const socketId = userSockets.get(listCandidate[i].candidateId.toString());
+                    if (socketId) {
+                        _io.to(socketId).emit('user_notification', notificationCandidate);
+                        console.log(`Notification sent to user ${listCandidate[i].candidateId}: ${notificationCandidate}`);
+                    }
                 }
             }
             await session.commitTransaction();
@@ -179,8 +184,8 @@ class AdminJobManagementService {
                         }
                         const socketId = userSockets.get(listCandidate[i].candidateId.toString());
                         if (socketId) {
-                            _io.to(socketId).emit('user_notification', notification);
-                            console.log(`Notification sent to user ${listCandidate[i].candidateId}: ${notification}`);
+                            _io.to(socketId).emit('user_notification', notificationCandidate);
+                            console.log(`Notification sent to user ${listCandidate[i].candidateId}: ${notificationCandidate}`);
                         }
                     }
                 }

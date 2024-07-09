@@ -6,6 +6,8 @@ const router = express.Router();
 
 // get list recruiter
 router.get('/list_recruiter', verifyAccessToken, authPageAdmin, asyncHandler(adminRecruiterManagementController.getListRecruiterByAdmin));
+// get list all recruiter
+router.get('/list_all_recruiter', verifyAccessToken, authPageAdmin, asyncHandler(adminRecruiterManagementController.getListAllRecruiter));
 // create recruiter
 router.post('/create', verifyAccessToken, authPageAdmin, asyncHandler(adminRecruiterManagementController.createRecruiter));
 // update recruiter

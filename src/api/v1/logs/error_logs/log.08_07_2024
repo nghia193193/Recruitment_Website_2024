@@ -1,0 +1,35 @@
+08/07/2024	15:17:25 ::1---/v1/api/recruiter/information---GET---Vui lòng đăng nhập lại
+08/07/2024	15:17:25 ::1---/v1/api/recruiter/information---GET---Vui lòng đăng nhập lại
+08/07/2024	15:17:25 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+08/07/2024	15:17:25 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+08/07/2024	15:24:47 ::1---/v1/api/login---POST---Mật khẩu không chính xác
+08/07/2024	15:48:16 ::1---/v1/api/admin/recruiters/approve/661d5b4bf37bdb5683f66bcf---PATCH---invalid_grant
+08/07/2024	16:01:52 ::1---/images/01c78ca0-7006-4ae4-8447-d29944037f4e.png---GET---Page not found
+08/07/2024	17:15:27 ::1---/v1/api/recruiter/information---GET---Vui lòng đăng nhập lại
+08/07/2024	17:15:27 ::1---/v1/api/recruiter/information---GET---Vui lòng đăng nhập lại
+08/07/2024	17:15:27 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+08/07/2024	17:15:27 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+08/07/2024	17:15:32 ::1---/v1/api/login---POST---Mật khẩu không chính xác
+08/07/2024	17:24:48 ::1---/v1/api/admin/recruiters/list_all_recruiter?searchText=fpt&acceptanceStauts=accept---GET---"acceptanceStauts" is not allowed
+08/07/2024	20:41:52 ::1---/v1/api/admin/information---GET---Vui lòng đăng nhập lại
+08/07/2024	20:41:52 ::1---/v1/api/admin/information---GET---Vui lòng đăng nhập lại
+08/07/2024	20:41:52 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+08/07/2024	20:41:52 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+08/07/2024	20:43:12 ::ffff:127.0.0.1---/v1/api/admin/information---GET---Vui lòng đăng nhập lại
+08/07/2024	20:43:12 ::ffff:127.0.0.1---/v1/api/admin/information---GET---Vui lòng đăng nhập lại
+08/07/2024	20:43:12 ::ffff:127.0.0.1---/v1/api/auth/refresh-access-token---POST---Page not found
+08/07/2024	20:43:13 ::ffff:127.0.0.1---/v1/api/auth/refresh-access-token---POST---Page not found
+08/07/2024	20:43:37 ::ffff:127.0.0.1---/v1/api/login---POST---Mật khẩu không chính xác
+08/07/2024	20:47:01 ::ffff:127.0.0.1---/v1/api/login---POST---Mật khẩu không chính xác
+08/07/2024	20:47:07 ::ffff:127.0.0.1---/v1/api/login---POST---Mật khẩu không chính xác
+08/07/2024	20:47:16 ::ffff:127.0.0.1---/v1/api/login---POST---Mật khẩu không chính xác
+08/07/2024	20:50:04 ::ffff:127.0.0.1---/v1/api/login---POST---Mật khẩu không chính xác
+08/07/2024	20:51:43 ::ffff:127.0.0.1---/v1/api/login---POST---Mật khẩu không chính xác
+08/07/2024	21:42:00 ::ffff:127.0.0.1---/v1/api/login---POST---Mật khẩu không chính xác
+08/07/2024	21:43:03 ::1---/v1/api/recruiter/notifications/list_notification---GET---Vui lòng đăng nhập lại
+08/07/2024	21:43:03 ::1---/v1/api/recruiter/notifications/list_notification---GET---Vui lòng đăng nhập lại
+08/07/2024	21:43:03 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+08/07/2024	21:43:03 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+08/07/2024	22:33:30 ::ffff:127.0.0.1---/v1/api/login---POST---Mật khẩu không chính xác
+08/07/2024	22:33:34 ::ffff:127.0.0.1---/v1/api/login---POST---Mật khẩu không chính xác
+08/07/2024	22:34:21 ::1---/images/16a07639-9b74-46ea-8f2e-f18c6dc01607.png---GET---Page not found

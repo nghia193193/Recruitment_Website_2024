@@ -84,6 +84,47 @@ class AdminRecruiterManagementService {
         }
     }
 
+    static getListAllRecruiter = async function ({ searchText, acceptanceStatus }) {
+        try {
+            let query = {
+                firstUpdate: false
+            };
+            let listRecruiter;
+            if (acceptanceStatus) query["acceptanceStatus"] = acceptanceStatus;
+            const pipeline = [
+                {
+                    $project: {
+                        __v: 0,
+                        loginId: 0,
+                        avatar: 0
+                    }
+                },
+                { $sort: { name: -1 } }
+            ]
+            if (searchText) {
+                query["$text"] = { $search: searchText };
+                listRecruiter = await Recruiter.aggregate([
+                    { $match: query },
+                    ...pipeline
+                ])
+            } else {
+                listRecruiter = await Recruiter.aggregate([
+                    { $match: query },
+                    ...pipeline
+                ])
+            }
+            const totalElement = await Recruiter.find(query).lean().countDocuments();
+            return {
+                message: "Lấy danh sách nhà tuyển dụng thành công",
+                metadata: {
+                    totalElement, listRecruiter
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
     static createRecruiter = async ({ name, position, phone, contactEmail, companyName, companyWebsite, companyAddress,
         companyLogo, companyCoverPhoto, about, employeeNumber, fieldOfActivity, slug, email, password }) => {
         const session = await mongoose.startSession();
@@ -256,7 +297,6 @@ class AdminRecruiterManagementService {
             if (!result) {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
             }
-            console.log(result)
             result.role = result.loginId.role;
             delete result.loginId;
             result.avatar = result.avatar ?? null;

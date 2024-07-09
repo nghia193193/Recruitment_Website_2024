@@ -20,6 +20,19 @@ class AdminRecruiterManagementValidation {
         return validateSchema.validate(data);
     }
 
+    static validateGetListAllRecruiter = data => {
+        const validateSchema = joi.object({
+            searchText: joi.string().custom((value) => {
+                const cleanST = xss(value);
+                return cleanST;
+            }),
+            acceptanceStatus: joi.string().valid(...acceptanceStatus),
+        }).messages({
+            "any.only": "'{#label}' không hợp lệ"
+        })
+        return validateSchema.validate(data);
+    }
+
     static validateCreateRecruiter = data => {
         const validateSchema = joi.object({
             name: joi.string().max(50).custom((value, helpers) => {

@@ -18,6 +18,18 @@ class AdminRecruiterManagementController {
         }).send(res)
     }
 
+    getListAllRecruiter = async (req, res, next) => {
+        const { error, value } = AdminRecruiterManagementValidation.validateGetListAllRecruiter(req.query);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata } = await AdminRecruiterManagementService.getListAllRecruiter(value);
+        new OK({
+            message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
     createRecruiter = async (req, res, next) => {
         const { error, value } = AdminRecruiterManagementValidation.validateCreateRecruiter({ ...req.body, ...req.files });
         if (error) {
