@@ -1,7 +1,4 @@
 node_modules
-.env
-ecosystem.config.js
-nodemon.json
 Dockerfile
 .Dockerignore
 ab.exe
