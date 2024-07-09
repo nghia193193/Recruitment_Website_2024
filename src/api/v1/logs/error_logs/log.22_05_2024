@@ -1,0 +1,27 @@
+22/05/2024	16:32:03 ::1---/v1/api/recruiter/jobs/applications/approve/6646105b0fecf4288aba1696---PATCH---'"status"' không hợp lệ
+22/05/2024	17:20:32 ::1---/v1/api/recruiter/jobs/nearing_expiration_jobs---GET---Vui lòng đăng nhập
+22/05/2024	17:21:38 ::1---/v1/api/recruiter/jobs/expired_jobs---GET---Vui lòng đăng nhập
+22/05/2024	19:13:13 ::1---/v1/api/FPT/listjob?province=B%C3%A0%20---GET---'"province"' không hợp lệ
+22/05/2024	19:13:20 ::1---/v1/api/FPT/listjob?province=B%C3%A0%20R%E1%BB%8Ba---GET---'"province"' không hợp lệ
+22/05/2024	19:15:40 ::1---/v1/api/FPT/listjob?experience=Kh%C3%B4ng%20y%C3%AAu%20c%E1%BA%A7u---GET---'"experience"' không hợp lệ
+22/05/2024	19:33:18 ::1---/v1/api/jobs---GET---Operation `jobs.countDocuments()` buffering timed out after 10000ms
+22/05/2024	19:37:27 ::1---/v1/api/jobs/relevant_jobs---GET---'"field"' không hợp lệ
+22/05/2024	19:50:58 ::1---/v1/api/jobs/66463851398b9230cddc321/related_jobs---GET---Id không hợp lệ
+22/05/2024	19:51:03 ::1---/v1/api/jobs/66463851398b9230cddc321/related_jobs---GET---Id không hợp lệ
+22/05/2024	19:51:07 ::1---/v1/api/jobs/66463851398b9230cddc3217/related_jobs---GET---Có lỗi xảy ra vui lòng thử lại
+22/05/2024	20:10:48 ::1---/v1/api/recruiter/notifications---GET---Vui lòng đăng nhập
+22/05/2024	20:10:57 ::1---/v1/api/recruiter/notifications---GET---Vui lòng đăng nhập lại
+22/05/2024	20:15:53 ::1---/v1/api/candidate/notifications---GET---Vui lòng đăng nhập
+22/05/2024	20:15:58 ::1---/v1/api/candidate/notifications---GET---Notification is not defined
+22/05/2024	20:45:55 ::1---/v1/api/recruiter/information---GET---Bạn không có quyền
+22/05/2024	20:48:25 ::1---/v1/api/recruiter/application_status---GET---RecruiterService.getListApplicationStatus is not a function
+22/05/2024	20:48:53 ::1---/v1/api/recruiter/application_status---GET---RecruiterService.getListApplicationStatus is not a function
+22/05/2024	21:12:01 ::1---/v1/api/recruiter/notifications---GET---Vui lòng đăng nhập lại
+22/05/2024	21:16:35 ::1---/v1/api/candidate/applications---GET---Vui lòng đăng nhập lại
+22/05/2024	21:16:45 ::1---/v1/api/candidate/notifications---GET---Vui lòng đăng nhập lại
+22/05/2024	22:34:04 ::1---/v1/api/candidate/notifications/sdfsdf---PATCH---Vui lòng đăng nhập
+22/05/2024	22:34:09 ::1---/v1/api/candidate/notifications/sdfsdf---PATCH---Id không hợp lệ
+22/05/2024	22:34:17 ::1---/v1/api/candidate/notifications/664e0518a9e9ab8802b10848---PATCH---Có lỗi xảy ra vui lòng thử lại
+22/05/2024	22:35:18 ::1---/v1/api/recruiter/notifications/sdfsf---GET---Page not found
+22/05/2024	22:35:24 ::1---/v1/api/recruiter/notifications/sdfsf---GET---Page not found
+22/05/2024	22:35:41 ::1---/v1/api/recruiter/notifications/sdfsf---PATCH---Id không hợp lệ

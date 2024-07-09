@@ -1,0 +1,19 @@
+04/06/2024	14:18:35 ::1---/v1/api/recruiter/favorite_resumes/check/66536c1c7eb0448b8e344757---GET---Vui lòng đăng nhập
+04/06/2024	14:19:27 ::1---/v1/api/recruiter/favorite_resumes/check/664b8d10a32897a8ead6ac2f---GET---Cannot destructure property 'metadata' of '(intermediate value)' as it is undefined.
+04/06/2024	14:20:52 ::1---/v1/api/recruiter/favorite_resumes/check/664b8d10a32897a8ead6ac2f---GET---Cannot destructure property 'metadata' of '(intermediate value)' as it is undefined.
+04/06/2024	14:49:22 ::1---/v1/api/candidate/resumes---GET---CandidateService is not defined
+04/06/2024	15:26:10 ::1---/v1/api/admin/statistic/total_candidate---GET---Vui lòng đăng nhập
+04/06/2024	15:26:40 ::1---/v1/api/admin/statistic/total_recruiter---GET---Vui lòng đăng nhập
+04/06/2024	21:30:55 ::1---/v1/api/admin/recruiters/create---POST---"position" is required
+04/06/2024	21:34:27 ::1---/v1/api/admin/recruiters/create---POST---"companyLogo" is required
+04/06/2024	21:36:54 ::1---/v1/api/admin/recruiters/create---POST---"email" must be a valid email
+04/06/2024	21:37:34 ::1---/v1/api/admin/recruiters/create---POST---"companyWebsite" must be a valid uri
+04/06/2024	21:38:05 ::1---/v1/api/admin/recruiters/create---POST---clearImage is not defined
+04/06/2024	21:39:03 ::1---/v1/api/admin/recruiters/create---POST---userId is not defined
+04/06/2024	21:39:55 ::1---/v1/api/admin/recruiters/create---POST---Slug này đã tồn tại. Vui lòng nhập slug khác.
+04/06/2024	21:53:17 ::1---/v1/api/admin/jobs/create---POST---'"type"' không hợp lệ
+04/06/2024	21:54:26 ::1---/v1/api/admin/jobs/create---POST---"recruiterId" is required
+04/06/2024	21:54:51 ::1---/v1/api/admin/jobs/create---POST---Unexpected string in JSON at position 54
+04/06/2024	21:54:57 ::1---/v1/api/admin/jobs/create---POST---'"genderRequirement"' không hợp lệ
+04/06/2024	21:55:06 ::1---/v1/api/admin/jobs/create---POST---'"province"' không hợp lệ
+04/06/2024	21:55:25 ::1---/v1/api/admin/jobs/create---POST---'"field"' không hợp lệ

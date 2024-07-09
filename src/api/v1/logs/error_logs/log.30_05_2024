@@ -1,0 +1,60 @@
+30/05/2024	11:00:28 ::1---/v1/api/recruiter/signup---POST---Email này đã được đăng ký, vui lòng truy cập email để xác nhận tài khoản
+30/05/2024	11:01:32 ::1---/v1/api/recruiter/verify?email=vietnampro193913@gmail.com---POST---validOtp is not defined
+30/05/2024	11:03:35 ::1---/v1/api/recruiter/verify?email=vietnampro193913@gmail.com---POST---NotFoundRequestError is not defined
+30/05/2024	11:04:10 ::1---/v1/api/recruiter/verify?email=vietnampro193913@gmail.com---POST---OTP hết hạn vui lòng làm mới
+30/05/2024	11:06:45 ::1---/v1/api/recruiter/signup/resend_mail---POST---AccessService.recruiterResendVerifyEmail is not a function
+30/05/2024	11:08:33 ::1---/v1/api/recruiter/verify?email=vietnampro193913@gmail.com---POST---OTP không chính xác
+30/05/2024	11:29:23 ::1---/v1/api/recruiter/signup---POST---Email này đã được sử dụng vui lòng nhập email khác
+30/05/2024	12:03:26 ::1---/v1/api/candidate/signup---POST---mapRolePermission is not defined
+30/05/2024	12:04:02 undefined---/v1/api/candidate/signup---POST---Operation `logins.findOne()` buffering timed out after 10000ms
+30/05/2024	12:05:47 ::1---/v1/api/candidate/verify?email=20110683@student.hcmute.edu.vn---POST---validOtp is not defined
+30/05/2024	12:07:10 ::1---/v1/api/candidate/verify?email=20110683@student.hcmute.edu.vn---POST---OTP không chính xác
+30/05/2024	12:53:50 ::1---/v1/api/jobs?name=vien---GET---provinceOfVietNam is not defined
+30/05/2024	12:54:32 ::1---/v1/api/jobs?name=vien---GET---formatInTimeZone is not defined
+30/05/2024	12:55:42 ::1---/v1/api/FPT/listjob---GET---this.aggregate is not a function
+30/05/2024	12:56:16 ::1---/v1/api/FPT/listjob?name=IT---GET---$match with $text is only allowed as the first pipeline stage
+30/05/2024	12:56:55 ::1---/v1/api/FPT/listjob?name=IT---GET---$match with $text is only allowed as the first pipeline stage
+30/05/2024	12:59:46 ::1---/v1/api/FPT/listjob?name=IT---GET---$match with $text is only allowed as the first pipeline stage
+30/05/2024	15:57:40 ::1---/v1/api/recruiters---GET---this.find is not a function
+30/05/2024	16:03:17 ::1---/v1/api/recruiters/FPT---GET---Cannot find module './favoriteRecruiter.model'
+Require stack:
+- D:\Nam4\DATN\Recruitment_Website\src\api\v1\services\recruiter.service.js
+- D:\Nam4\DATN\Recruitment_Website\src\api\v1\controllers\recruiter.controller.js
+- D:\Nam4\DATN\Recruitment_Website\src\api\v1\routes\access\index.js
+- D:\Nam4\DATN\Recruitment_Website\src\api\v1\routes\index.js
+- D:\Nam4\DATN\Recruitment_Website\src\api\v1\app.js
+- D:\Nam4\DATN\Recruitment_Website\server.js
+30/05/2024	16:05:48 ::1---/v1/api/recruiters/MWG---GET---Thông tin của nhà tuyển dụng đang được cập nhật vui lòng quay lại sau.
+30/05/2024	16:38:19 ::1---/v1/api/recruiters---GET---Invalid $project :: caused by :: Cannot do exclusion on field createdAt in inclusion projection
+30/05/2024	16:39:27 ::1---/v1/api/recruiters---GET---Invalid $project :: caused by :: Cannot do exclusion on field createdAt in inclusion projection
+30/05/2024	17:16:32 ::1---/v1/api/login---POST---Tài khoản không tồn tại
+30/05/2024	17:18:20 ::1---/v1/api/recruiter/update_information---PATCH---Vui lòng đăng nhập lại
+30/05/2024	17:18:47 ::1---/v1/api/recruiter/update_company_information---PATCH---Vui lòng đăng nhập lại
+30/05/2024	17:18:54 ::1---/v1/api/recruiter/update_company_information---PATCH---Slug này đã tồn tại. Vui lòng nhập slug khác.
+30/05/2024	17:21:46 ::1---/v1/api/recruiter/update_company_information---PATCH---Slug này đã tồn tại. Vui lòng nhập slug khác.
+30/05/2024	17:23:14 ::1---/v1/api/recruiter/update_company_information---PATCH---Slug này đã tồn tại. Vui lòng nhập slug khác.
+30/05/2024	17:39:18 ::1---/v1/api/recruiter/update_company_information---PATCH---Unexpected token I in JSON at position 0
+30/05/2024	17:41:10 ::1---/v1/api/recruiter/update_company_information---PATCH---'"fieldOfActivity[2]"' không hợp lệ
+30/05/2024	17:44:23 ::1---/v1/api/recruiter/update_company_information---PATCH---Unexpected token I in JSON at position 0
+30/05/2024	17:45:54 ::1---/v1/api/recruiter/update_company_information---PATCH---Unexpected token I in JSON at position 0
+30/05/2024	17:46:25 ::1---/v1/api/recruiter/update_company_information---PATCH---Unexpected token I in JSON at position 0
+30/05/2024	17:49:10 ::1---/v1/api/recruiter/update_company_information---PATCH---'"fieldOfActivity[2]"' không hợp lệ
+30/05/2024	21:23:07 ::1---/v1/api/login---POST---Mật khẩu không chính xác
+30/05/2024	21:24:25 ::1---/v1/api/candidate/update_avatar---PATCH---Unexpected field
+30/05/2024	21:24:44 ::1---/v1/api/candidate/update_avatar---PATCH---Unexpected field
+30/05/2024	21:25:41 ::1---/v1/api/candidate/update_avatar---PATCH---Unexpected field
+30/05/2024	21:28:22 ::1---/v1/api/candidate/update_avatar---PATCH---Unexpected field
+30/05/2024	21:28:47 ::1---/v1/api/candidate/update_avatar---PATCH---Unexpected field
+30/05/2024	22:24:47 ::1---/v1/api/candidate/update_avatar---PATCH---Vui lòng đăng nhập lại
+30/05/2024	22:37:54 ::1---/v1/api/candidate/update_avatar---PATCH---image is not defined
+30/05/2024	22:38:00 ::1---/v1/api/candidate/update_avatar---PATCH---image is not defined
+30/05/2024	22:39:05 ::1---/v1/api/candidate/update_avatar---PATCH---Bạn chưa chọn file!
+30/05/2024	22:52:47 ::1---/v1/api/candidate/update_avatar---PATCH---image is not defined
+30/05/2024	22:53:33 ::1---/v1/api/candidate/update_avatar---PATCH---candidate.save is not a function
+30/05/2024	23:25:01 ::1---/v1/api/candidate/update_avatar---PATCH---Vui lòng đăng nhập lại
+30/05/2024	23:33:41 ::1---/v1/api/candidate/information---GET---Vui lòng đăng nhập lại
+30/05/2024	23:39:42 ::1---/images---GET---Page not found
+30/05/2024	23:41:32 ::1---/images/---GET---Page not found
+30/05/2024	23:41:33 ::1---/images/---GET---Page not found
+30/05/2024	23:41:33 ::1---/images/---GET---Page not found
+30/05/2024	23:48:51 ::1---/favicon.ico---GET---Page not found

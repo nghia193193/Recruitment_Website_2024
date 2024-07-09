@@ -1,0 +1,41 @@
+18/04/2024	00:23:40 ::1---/v1/api/refresh_token---POST---Token không hợp lệ
+18/04/2024	00:24:34 ::1---/v1/api/refresh_token---POST---Token không hợp lệ
+18/04/2024	00:24:42 ::1---/v1/api/refresh_token---POST---Token không hợp lệ
+18/04/2024	00:25:45 ::1---/v1/api/logout---POST---Page not found
+18/04/2024	00:25:58 ::1---/v1/api/logout---DELETE---Class constructor BadRequestError cannot be invoked without 'new'
+18/04/2024	00:26:20 ::1---/v1/api/logout---DELETE---Bad Request
+18/04/2024	00:27:58 ::1---/v1/api/logout---DELETE---Token không hợp lệ
+18/04/2024	00:31:07 ::1---/v1/api/recruiter/information---PATCH---Vui lòng đăng nhập lại
+18/04/2024	00:31:19 ::1---/v1/api/recruiter/information---GET---Vui lòng đăng nhập lại
+18/04/2024	15:49:58 ::1---/v1/api/admin/recruiters/661f3354e8607519a860b178/approve---PATCH---Vui lòng đăng nhập
+18/04/2024	15:52:26 ::1---/v1/api/admin/recruiters/661f3354e8607519a860b178/change_status---PATCH---Vui lòng đăng nhập lại
+18/04/2024	16:00:51 ::1---/v1/api/admin/recruiters---GET---Assignment to constant variable.
+18/04/2024	16:02:02 ::1---/v1/api/admin/recruiters/661f3354e8607519a860b178/approve---PATCH---Vui lòng đăng nhập
+18/04/2024	16:02:12 ::1---/v1/api/admin/recruiters/661f3354e8607519a860b178/approve---PATCH---Vui lòng đăng nhập
+18/04/2024	17:01:39 ::1---/v1/api/admin/recruiters---GET---Vui lòng đăng nhập lại
+18/04/2024	21:23:31 ::1---/v1/api/recruiter/signup---POST---"companyName" failed custom validation because xss is not defined
+18/04/2024	21:30:49 ::1---/v1/api/recruiter/signup---POST---Recruiter.create(...).lean is not a function
+18/04/2024	21:47:05 ::1---/v1/api/recruiter/signup---POST---Tài khoản đã tồn tại
+18/04/2024	21:54:21 ::1---/v1/api/recruiter/information---PATCH---"value" must be of type object
+18/04/2024	21:55:36 ::1---/v1/api/recruiter/information---PATCH---"value" must be of type object
+18/04/2024	21:56:42 ::1---/v1/api/recruiter/information---PATCH---"value" must be of type object
+18/04/2024	21:58:01 ::1---/v1/api/recruiter/information---PATCH---fieldOfActivity.split is not a function
+18/04/2024	21:59:20 ::1---/v1/api/recruiter/information---PATCH---fieldOfActivity.split is not a function
+18/04/2024	22:10:21 ::1---/v1/api/recruiter/jobs/create_job---POST---Vui lòng đăng nhập
+18/04/2024	22:10:38 ::1---/v1/api/recruiter/jobs/create_job---POST---generate is not defined
+18/04/2024	22:11:55 ::1---/v1/api/recruiter/jobs/create_job---POST---"type" must be one of [Toàn thời gian, Bán thời gian, Remote]
+18/04/2024	22:12:19 ::1---/v1/api/recruiter/jobs/create_job---POST---"levelRequirement" must be one of [Thực tập sinh, Nhân viên, Trưởng phòng]
+18/04/2024	22:12:29 ::1---/v1/api/recruiter/jobs/create_job---POST---"experience" must be one of [Không yêu cầu kinh nghiệm, Dưới 1 năm, 1 năm, 2 năm, 3 năm, 4 năm, 5 năm, Trên 5 năm]
+18/04/2024	22:12:48 ::1---/v1/api/recruiter/jobs/create_job---POST---"field" must be one of [An toàn lao động, Biên / Phiên dịch, Bán hàng kỹ thuật, Bán lẻ / bán sỉ, Báo chí / Truyền thông, Bưu chính / Viễn thông, Bảo hiểm, Bảo trì / Sửa chữa, Bất động sản, Chứng khoán / Vàng / Ngoại tệ, Công nghệ cao, Công nghệ thông tin, Công nghệ Ô tô, Cơ khí / Chế tạo / Tự động hóa, Du lịch, Dược phẩm / Công nghệ sinh học, Dầu khí / Hóa chất, Dệt may / Da giày, Dịch vụ khách hàng, Giáo dục / Đào tạo, Hóa học / Sinh học, Hoạch định / Dự án, Hàng cao cấp, Hàng gia dụng, Hàng hải, Hàng không, Hàng tiêu dùng, Hành chính / Văn phòng, IT phần cứng / Mạng, IT phần mềm, In ấn / Xuất bản, Khách sạn / Nhà hàng, Kinh doanh / Bán hàng, Kiến trúc, Kế toán / Kiểm toán, Logistics, Luật / Pháp lý, Marketing / Truyền thông / Quảng cáo, Môi trường / Xử lý chất thải, Mỹ phẩm / Trang sức, Mỹ thuật / Nghệ thuật / Điện ảnh, NGO / Phi chính phủ / Phi lợi nhuận, Ngân hàng / Tài chính, Nhân sự, Nông / Lâm / Ngư nghiệp, Phi chính phủ / Phi lợi nhuận, QA / QC, Quản lý điều hành, Spa / Làm đẹp, Sản phẩm công nghiệp, Sản xuất, Thiết kế nội thất, Thiết kế đồ họa, Thư ký / Trợ lý, Thời trang, Thực phẩm / Đồ uống, Tài chính / Đầu tư, Tư vấn, Tổ chức sự kiện / Quà tặng, Vận tải / Kho vận, Xuất nhập khẩu, Xây dựng, Y tế / Dược, Điện / Điện tử / Điện lạnh, Điện tử viễn thông, Địa chất / Khoáng sản]
+18/04/2024	22:13:56 ::1---/v1/api/recruiter/jobs/create_job---POST---Cannot apply rules to empty ruleset or the last rule added does not support rule properties
+18/04/2024	22:15:26 ::1---/v1/api/recruiter/jobs/create_job---POST---Cannot apply rules to empty ruleset or the last rule added does not support rule properties
+18/04/2024	22:15:52 ::1---/v1/api/recruiter/jobs/create_job---POST---"field" must be one of [An toàn lao động, Biên / Phiên dịch, Bán hàng kỹ thuật, Bán lẻ / bán sỉ, Báo chí / Truyền thông, Bưu chính / Viễn thông, Bảo hiểm, Bảo trì / Sửa chữa, Bất động sản, Chứng khoán / Vàng / Ngoại tệ, Công nghệ cao, Công nghệ thông tin, Công nghệ Ô tô, Cơ khí / Chế tạo / Tự động hóa, Du lịch, Dược phẩm / Công nghệ sinh học, Dầu khí / Hóa chất, Dệt may / Da giày, Dịch vụ khách hàng, Giáo dục / Đào tạo, Hóa học / Sinh học, Hoạch định / Dự án, Hàng cao cấp, Hàng gia dụng, Hàng hải, Hàng không, Hàng tiêu dùng, Hành chính / Văn phòng, IT phần cứng / Mạng, IT phần mềm, In ấn / Xuất bản, Khách sạn / Nhà hàng, Kinh doanh / Bán hàng, Kiến trúc, Kế toán / Kiểm toán, Logistics, Luật / Pháp lý, Marketing / Truyền thông / Quảng cáo, Môi trường / Xử lý chất thải, Mỹ phẩm / Trang sức, Mỹ thuật / Nghệ thuật / Điện ảnh, NGO / Phi chính phủ / Phi lợi nhuận, Ngân hàng / Tài chính, Nhân sự, Nông / Lâm / Ngư nghiệp, Phi chính phủ / Phi lợi nhuận, QA / QC, Quản lý điều hành, Spa / Làm đẹp, Sản phẩm công nghiệp, Sản xuất, Thiết kế nội thất, Thiết kế đồ họa, Thư ký / Trợ lý, Thời trang, Thực phẩm / Đồ uống, Tài chính / Đầu tư, Tư vấn, Tổ chức sự kiện / Quà tặng, Vận tải / Kho vận, Xuất nhập khẩu, Xây dựng, Y tế / Dược, Điện / Điện tử / Điện lạnh, Điện tử viễn thông, Địa chất / Khoáng sản]
+18/04/2024	22:17:03 ::1---/v1/api/recruiter/jobs/create_job---POST---'"field"' không hợp lệ
+18/04/2024	22:17:45 ::1---/v1/api/recruiter/jobs/create_job---POST---"quantity" must be a number
+18/04/2024	22:17:58 ::1---/v1/api/recruiter/jobs/create_job---POST---"quantity" must be greater than or equal to 1
+18/04/2024	22:18:05 ::1---/v1/api/recruiter/jobs/create_job---POST---"deadline" must be a valid date
+18/04/2024	22:24:39 ::1---/v1/api/recruiter/jobs/create_job---POST---'"gender"' không hợp lệ
+18/04/2024	22:24:58 ::1---/v1/api/recruiter/jobs/create_job---POST---Job.createJob is not a function
+18/04/2024	22:26:08 ::1---/v1/api/recruiter/jobs/create_job---POST---Job validation failed: recruiterId: Path `recruiterId` is required.
+18/04/2024	22:31:48 ::1---/v1/api/recruiter/jobs/create_job---POST---Job.create(...).lean is not a function
+18/04/2024	22:45:20 ::1---/v1/api/recruiter/jobs/create_job---POST---Công việc đã tồn tại

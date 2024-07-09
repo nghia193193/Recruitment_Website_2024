@@ -1,0 +1,76 @@
+13/05/2024	19:43:31 ::1---/v1/api/candidate/update_avatar---PATCH---"avatar" is required
+13/05/2024	19:45:47 ::1---/v1/api/candidate/update_avatar---PATCH---"avatar" must be a valid uri
+13/05/2024	19:45:52 ::1---/v1/api/candidate/update_avatar---PATCH---"avatar" must be a valid uri
+13/05/2024	19:46:05 ::1---/v1/api/candidate/update_avatar---PATCH---"avatar" is required
+13/05/2024	19:46:20 ::1---/v1/api/candidate/update_avatar---PATCH---"avatar" is required
+13/05/2024	19:50:27 ::1---/v1/api/candidate/update_avatar---PATCH---cloudinary is not defined
+13/05/2024	19:52:11 ::1---/v1/api/candidate/favorite_jobs---GET---Vui lòng đăng nhập
+13/05/2024	19:53:23 ::1---/v1/api/candidate/favorite_jobs/add/12312312---GET---Page not found
+13/05/2024	19:53:31 ::1---/v1/api/candidate/favorite_jobs/add/12312312---POST---Id không hợp lệ
+13/05/2024	19:54:00 ::1---/v1/api/candidate/favorite_jobs/add/664093f99bc3ed7d2ade2b24---POST---Cannot read properties of null (reading 'favoriteJobs')
+13/05/2024	19:54:56 ::1---/v1/api/candidate/favorite_jobs---GET---Không tìm thấy công việc
+13/05/2024	20:01:09 ::1---/v1/api/candidate/favorite_jobs/add/664093f99bc3ed7d2ade2b24---POST---Không tìm thấy công việc này, vui lòng thử lại
+13/05/2024	20:01:35 ::1---/v1/api/candidate/favorite_jobs/add/664093f99bc3ed7d2ade2b25---POST---Cannot read properties of null (reading 'favoriteJobs')
+13/05/2024	20:06:55 ::1---/v1/api/candidate/favorite_jobs/add/662f4f7488a6f0c504c764db---POST---Bạn đã thêm công việc này vào công việc yêu thích rồi.
+13/05/2024	20:10:23 ::1---/v1/api/candidate/favorite_jobs---GET---Assignment to constant variable.
+13/05/2024	20:14:33 ::1---/v1/api/candidate/favorite_jobs/remove/662f4f7488a6f0c504c764db---DELETE---Vui lòng đăng nhập
+13/05/2024	20:15:18 ::1---/v1/api/candidate/favorite_jobs/remove/662f4f7488a6f0c504c764db---DELETE---"page" is required
+13/05/2024	21:13:32 ::1---/v1/api/candidate/favorite_jobs---GET---Vui lòng đăng nhập lại
+13/05/2024	21:40:52 ::1---/v1/api/candidate/resumes---GET---Cast to ObjectId failed for value "{ candidateId: '6640df941342d7ccc07b74d7' }" (type Object) at path "_id" for model "Resume"
+13/05/2024	22:27:16 ::1---/v1/api/jobs?page=1.4&limit=3.2---GET---"page" must be an integer
+13/05/2024	22:58:09 ::1---/v1/api/candidate/resumes/add---POST---Vui lòng đăng nhập
+13/05/2024	22:58:09 ::1---/v1/api/candidate/resumes/add---POST---Vui lòng đăng nhập
+13/05/2024	23:03:59 ::1---/v1/api/candidate/resumes/add---POST---Vui lòng đăng nhập
+13/05/2024	23:04:18 ::1---/v1/api/candidate/resumes/add---POST---Vui lòng đăng nhập lại
+13/05/2024	23:04:35 ::1---/v1/api/candidate/resumes/add---POST---"name" is not allowed to be empty
+13/05/2024	23:05:30 ::1---/v1/api/candidate/resumes/add---POST---"title" is not allowed to be empty
+13/05/2024	23:05:44 ::1---/v1/api/candidate/resumes/add---POST---"avatar" is not allowed to be empty
+13/05/2024	23:05:55 ::1---/v1/api/candidate/resumes/add---POST---"goal" is not allowed to be empty
+13/05/2024	23:06:13 ::1---/v1/api/candidate/resumes/add---POST---"phone" is not allowed to be empty
+13/05/2024	23:06:27 ::1---/v1/api/candidate/resumes/add---POST---Không phải là số điện thoại Việt Nam hợp lệ
+13/05/2024	23:06:41 ::1---/v1/api/candidate/resumes/add---POST---"educationLevel" is not allowed to be empty
+13/05/2024	23:07:00 ::1---/v1/api/candidate/resumes/add---POST---"homeTown" is not allowed to be empty
+13/05/2024	23:07:12 ::1---/v1/api/candidate/resumes/add---POST---"dateOfBirth" must be in ISO 8601 date format
+13/05/2024	23:08:06 ::1---/v1/api/candidate/resumes/add---POST---"english" is not allowed to be empty
+13/05/2024	23:08:19 ::1---/v1/api/candidate/resumes/add---POST---"jobType" must be one of [Toàn thời gian, Bán thời gian, Làm từ xa]
+13/05/2024	23:08:53 ::1---/v1/api/candidate/resumes/add---POST---'"jobType"' không hợp lệ
+13/05/2024	23:09:18 ::1---/v1/api/candidate/resumes/add---POST---'"jobType"' không hợp lệ
+13/05/2024	23:10:37 ::1---/v1/api/candidate/resumes/add---POST---'"jobType"' không hợp lệ
+13/05/2024	23:13:15 ::1---/v1/api/candidate/resumes/add---POST---"jobType" is required
+13/05/2024	23:17:09 ::1---/v1/api/candidate/resumes/add---POST---'"jobType"' không hợp lệ
+13/05/2024	23:24:03 ::1---/v1/api/candidate/resumes/add---POST---"GPA" must be a number
+13/05/2024	23:24:17 ::1---/v1/api/candidate/resumes/add---POST---"certifications" must be an array
+13/05/2024	23:24:29 ::1---/v1/api/candidate/resumes/add---POST---"certifications[0]" must be of type object
+13/05/2024	23:24:44 ::1---/v1/api/candidate/resumes/add---POST---Unexpected number in JSON at position 2
+13/05/2024	23:25:02 ::1---/v1/api/candidate/resumes/add---POST---"certifications[0].uploadLink" is required
+13/05/2024	23:25:15 ::1---/v1/api/candidate/resumes/add---POST---"certifications[0].name" is required
+13/05/2024	23:25:38 ::1---/v1/api/candidate/resumes/add---POST---"certifications[0].uploadLink" must be a valid uri
+13/05/2024	23:25:44 ::1---/v1/api/candidate/resumes/add---POST---"educations" must be an array
+13/05/2024	23:26:02 ::1---/v1/api/candidate/resumes/add---POST---Unexpected token } in JSON at position 117
+13/05/2024	23:26:54 ::1---/v1/api/candidate/resumes/add---POST---FavoriteJob.addResume is not a function
+13/05/2024	23:27:31 ::1---/v1/api/candidate/resumes/add---POST---Resume validation failed: avatar: Cast to string failed for value "{
+  name: '246473694_176695411291241_6111864146654646265_n.jpg',
+  data: <Buffer >,
+  size: 6389,
+  encoding: '7bit',
+  tempFilePath: '\\tmp\\tmp-1-1715617651136',
+  truncated: false,
+  mimetype: 'image/jpeg',
+  md5: 'bebece6b0eaa1cd0dfc4b411c5d50ee9',
+  mv: [Function: mv]
+}" (type Object) at path "avatar"
+13/05/2024	23:34:33 ::1---/v1/api/candidate/resumes/add---POST---Operation `candidates.findOne()` buffering timed out after 10000ms
+13/05/2024	23:34:58 ::1---/v1/api/candidate/resumes/add---POST---cloudinary is not defined
+13/05/2024	23:37:50 ::1---/v1/api/candidate/resumes/add---POST---this.create(...).lean is not a function
+13/05/2024	23:40:38 ::1---/v1/api/candidate/resumes/add---POST---Operation `candidates.findOne()` buffering timed out after 10000ms
+13/05/2024	23:41:36 ::1---/v1/api/candidate/resumes---GET---Vui lòng đăng nhập lại
+13/05/2024	23:44:37 ::1---/v1/api/candidate/information---GET---Vui lòng đăng nhập lại
+13/05/2024	23:48:57 ::1---/v1/api/candidate/resumes/add---POST---Unexpected token o in JSON at position 1
+13/05/2024	23:50:43 ::1---/v1/api/candidate/resumes/add---POST---"avatar" is required
+13/05/2024	23:51:38 ::1---/v1/api/candidate/resumes/add---POST---"avatar" is required
+13/05/2024	23:52:16 ::1---/v1/api/candidate/resumes/add---POST---"avatar" is required
+13/05/2024	23:53:25 ::1---/v1/api/candidate/resumes/add---POST---"avatar" is required
+13/05/2024	23:54:19 ::1---/v1/api/candidate/resumes/add---POST---"avatar" is required
+13/05/2024	23:54:29 ::1---/v1/api/candidate/resumes/add---POST---"avatar" must be a valid uri
+13/05/2024	23:55:13 ::1---/v1/api/candidate/resumes/add---POST---"certifications" must be an array
+13/05/2024	23:58:05 ::1---/v1/api/candidate/resumes/add---POST---Unexpected token o in JSON at position 1

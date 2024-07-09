@@ -1,0 +1,9 @@
+11/06/2024	19:02:17 ::1---/v1/api/recruiter/create_payment_url---POST---Page not found
+11/06/2024	19:02:25 ::1---/v1/api/recruiter/payment/create_payment_url---POST---OK is not defined
+11/06/2024	19:06:13 ::1---/v1/api/recruiter/vnpay_ipn?vnp_Amount=150000000&vnp_BankCode=NCB&vnp_BankTranNo=VNP14454370&vnp_CardType=ATM&vnp_OrderInfo=Thanh+to%C3%A1n+cho+m%C3%A3+giao+d%E1%BB%8Bch%3A+66683d041ef7137a33bb1f05&vnp_PayDate=20240611190450&vnp_ResponseCode=00&vnp_TmnCode=5PV2YZN1&vnp_TransactionNo=14454370&vnp_TransactionStatus=00&vnp_TxnRef=66683d041ef7137a33bb1f05&vnp_SecureHash=99c5e631594216f9dce5a195b8e5916d7e8c9ee916c8842f4f11f6bca340a7588b50a350193b3f0cf0625865ea07e3859308dd721223f0bcfe5321638ff97813---GET---Page not found
+11/06/2024	19:06:46 ::1---/v1/api/recruiter/order/order_info---GET---Vui lòng đăng nhập
+11/06/2024	19:06:55 ::1---/v1/api/recruiter/order/order_info---GET---OK is not defined
+11/06/2024	19:16:11 ::1---/v1/api/recruiter/order/cancel_order---PATCH---Bạn cần nâng cấp để sử dụng chức năng.
+11/06/2024	19:16:58 ::1---/v1/api/recruiter/order/cancel_order---PATCH---BadRequestError is not defined
+11/06/2024	19:18:44 ::1---/v1/api/recruiter/order/cancel_order---PATCH---"reasonCancel" is required
+11/06/2024	19:18:51 ::1---/v1/api/recruiter/order/cancel_order---PATCH---"reasonCancel" is required

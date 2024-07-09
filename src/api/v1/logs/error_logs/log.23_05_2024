@@ -1,0 +1,41 @@
+23/05/2024	16:29:45 ::1---/v1/api/candidate/favorite_recruiters---GET---Vui lòng đăng nhập
+23/05/2024	16:31:17 ::1---/v1/api/candidate/favorite_recruiters/check/662f4f7488a6f0c504c764db---GET---Vui lòng đăng nhập
+23/05/2024	16:31:24 ::1---/v1/api/candidate/favorite_recruiters/check/662f4f7488a6f0c504c764db---GET---BadRequestError is not defined
+23/05/2024	16:32:21 ::1---/v1/api/candidate/favorite_recruiters/check/662f4f7488a6f0c504c764db---GET---Không tìm thấy nhà tuyển dụng này, vui lòng thử lại
+23/05/2024	16:35:36 ::1---/v1/api/candidate/favorite_recruiters/add/6634399b7e09cd1bcf5039b4---POST---Vui lòng đăng nhập
+23/05/2024	16:35:41 ::1---/v1/api/candidate/favorite_recruiters/add/6634399b7e09cd1bcf5039b4---POST---Không tìm thấy nhà tuyển dụng này, vui lòng thử lại
+23/05/2024	16:36:25 ::1---/v1/api/candidate/favorite_recruiters/add/662f489df9935d12abe2c12b---POST---Bạn đã thêm nhà tuyển dụng vào nhà tuyển dụng yêu thích.
+23/05/2024	16:37:41 ::1---/v1/api/candidate/favorite_recruiters/remove/662f4f7488a6f0c504c764db---DELETE---Vui lòng đăng nhập
+23/05/2024	16:37:44 ::1---/v1/api/candidate/favorite_recruiters/remove/662f4f7488a6f0c504c764db---DELETE---Có lỗi xảy ra vui lòng thử lại.
+23/05/2024	16:38:53 ::1---/v1/api/candidate/favorite_recruiters/remove/662f4f7488a6f0c504c764d---DELETE---Id không hợp lệ
+23/05/2024	16:39:48 ::1---/v1/api/candidate/favorite_recruiters/remove_all---DELETE---Vui lòng đăng nhập
+23/05/2024	16:41:04 ::1---/v1/api/candidate/favorite_recruiters/add/6634399b7e09cd1bcf5039b4---POST---Không tìm thấy nhà tuyển dụng này, vui lòng thử lại
+23/05/2024	21:05:25 ::1---/v1/api/recruiter/update_information---PATCH---Vui lòng đăng nhập lại
+23/05/2024	21:07:00 ::1---/v1/api/recruiter/update_information---PATCH---Unexpected token A in JSON at position 1
+23/05/2024	21:07:41 ::1---/v1/api/recruiter/update_information---PATCH---"employeeNumber" must be a number
+23/05/2024	21:07:50 ::1---/v1/api/recruiter/information---GET---Vui lòng đăng nhập lại
+23/05/2024	21:09:13 ::1---/v1/api/recruiter/update_information---PATCH---"slug" is required
+23/05/2024	21:11:27 ::1---/v1/api/recruiter/update_information---PATCH---undefined
+23/05/2024	21:12:52 ::1---/v1/api/recruiter/update_information---PATCH---Unexpected token s in JSON at position 1
+23/05/2024	21:15:19 undefined---/v1/api/recruiter/update_information---PATCH---Server returned unexpected status code - 502
+23/05/2024	21:18:35 ::1---/v1/api/recruiter/update_information---PATCH---"fieldOfActivity" must be an array
+23/05/2024	21:20:34 ::1---/v1/api/recruiter/update_information---PATCH---'"fieldOfActivity[1]"' không hợp lệ
+23/05/2024	21:25:39 ::1---/v1/api/recruiter/update_information---PATCH---undefined
+23/05/2024	21:29:41 ::1---/v1/api/recruiter/update_information---PATCH---aborted
+23/05/2024	21:31:51 ::1---/v1/api/recruiter/update_information---PATCH---'"fieldOfActivity[1]"' không hợp lệ
+23/05/2024	21:35:17 ::1---/v1/api/recruiter/update_information---PATCH---"fieldOfActivity" is required
+23/05/2024	21:36:25 ::1---/v1/api/recruiter/update_information---PATCH---undefined
+23/05/2024	21:42:43 undefined---/v1/api/recruiter/update_information---PATCH---aborted
+23/05/2024	22:38:00 ::1---/v1/api/recruiter/signup---POST---Email này đã được sử dụng vui lòng nhập email khác
+23/05/2024	22:39:58 ::1---/v1/api/recruiter/verify?email=vietnampro193913@gmail.com---POST---OTP không chính xác
+23/05/2024	22:54:59 ::1---/v1/api/recruiter/signup---POST---Email này đã được sử dụng vui lòng nhập email khác
+23/05/2024	22:59:30 ::1---/v1/api/recruiter/signup---POST---E11000 duplicate key error collection: Recruiment_Website.recruiters index: slug_1 dup key: { slug: null }
+23/05/2024	23:03:47 ::1---/v1/api/recruiter/signup---POST---E11000 duplicate key error collection: Recruiment_Website.recruiters index: slug_1 dup key: { slug: null }
+23/05/2024	23:04:29 ::1---/v1/api/recruiter/signup---POST---E11000 duplicate key error collection: Recruiment_Website.recruiters index: slug_1 dup key: { slug: null }
+23/05/2024	23:05:21 ::1---/v1/api/recruiter/signup---POST---E11000 duplicate key error collection: Recruiment_Website.recruiters index: slug_1 dup key: { slug: null }
+23/05/2024	23:05:42 ::1---/v1/api/recruiter/signup---POST---E11000 duplicate key error collection: Recruiment_Website.recruiters index: slug_1 dup key: { slug: null }
+23/05/2024	23:09:40 ::1---/v1/api/recruiter/signup---POST---Email này đã được đăng ký, vui lòng truy cập email để xác nhận tài khoản
+23/05/2024	23:09:46 ::1---/v1/api/recruiter/signup---POST---E11000 duplicate key error collection: Recruiment_Website.recruiters index: slug_1 dup key: { slug: null }
+23/05/2024	23:10:39 ::1---/v1/api/recruiter/signup---POST---E11000 duplicate key error collection: Recruiment_Website.recruiters index: slug_1 dup key: { slug: null }
+23/05/2024	23:26:55 ::1---/v1/api/recruiter/signup---POST---Email này đã được đăng ký, vui lòng truy cập email để xác nhận tài khoản
+23/05/2024	23:31:53 ::1---/v1/api/recruiter/verify?email=vietnampro193913@gmail.com---POST---OTP không chính xác

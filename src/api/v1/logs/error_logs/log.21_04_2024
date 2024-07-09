@@ -1,0 +1,20 @@
+21/04/2024	19:52:13 ::1---/v1/api/recruiter/information---GET---Vui lòng đăng nhập lại
+21/04/2024	19:54:19 ::1---/v1/api/recruiter/information---PATCH---Vui lòng đăng nhập lại
+21/04/2024	20:43:30 ::1---/v1/api/recruiter/change_password---POST---Vui lòng đăng nhập
+21/04/2024	20:43:46 ::1---/v1/api/recruiter/change_password---POST---"currentPassword" is required
+21/04/2024	20:44:37 ::1---/v1/api/recruiter/change_password---POST---"currentPassword" is not allowed to be empty
+21/04/2024	20:44:49 ::1---/v1/api/recruiter/change_password---POST---"currentPassword" length must be at least 8 characters long
+21/04/2024	20:45:08 ::1---/v1/api/recruiter/change_password---POST---"newPassword" length must be at least 8 characters long
+21/04/2024	20:45:20 ::1---/v1/api/recruiter/change_password---POST---"confirmNewPassword" must be [ref:newPassword]
+21/04/2024	20:51:18 ::1---/v1/api/recruiter/change_password---POST---Mật khẩu xác nhận không khớp
+21/04/2024	20:51:50 ::1---/v1/api/recruiter/change_password---POST---Mật khẩu xác nhận không khớp
+21/04/2024	20:52:09 ::1---/v1/api/recruiter/change_password---POST---Unexpected token } in JSON at position 78
+21/04/2024	20:52:15 ::1---/v1/api/recruiter/change_password---POST---Vui lòng đăng nhập lại
+21/04/2024	20:52:34 ::1---/v1/api/recruiter/change_password---POST---Vui lòng nhập mật khẩu xác nhận
+21/04/2024	20:52:43 ::1---/v1/api/recruiter/change_password---POST---Mật khẩu xác nhận không khớp
+21/04/2024	20:53:23 ::1---/v1/api/recruiter/change_password---POST---Login is not defined
+21/04/2024	20:54:07 ::1---/v1/api/recruiter/change_password---POST---Login is not defined
+21/04/2024	20:55:06 ::1---/v1/api/recruiter/change_password---POST---Mật khẩu hiện tại không chính xác
+21/04/2024	20:55:13 ::1---/v1/api/recruiter/change_password---POST---Login validation failed: password: Cast to string failed for value "Promise { <pending> }" (type Promise) at path "password"
+21/04/2024	20:57:46 ::1---/v1/api/recruiter/change_password---POST---Mật khẩu hiện tại không chính xác
+21/04/2024	20:58:12 ::1---/v1/api/login---POST---Mật khẩu không chính xác

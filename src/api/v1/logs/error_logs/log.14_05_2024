@@ -1,0 +1,33 @@
+14/05/2024	20:06:43 ::1---/v1/api/candidate/favorite_jobs/remove_all---DELETE---page is not defined
+14/05/2024	20:07:21 ::1---/v1/api/candidate/favorite_jobs/remove_all---DELETE---page is not defined
+14/05/2024	20:10:15 ::1---/v1/api/candidate/favorite_jobs/remove_all---DELETE---Không có công việc nào trong danh sách.
+14/05/2024	20:21:29 ::1---/v1/api/candidate/change_password---POST---Vui lòng đăng nhập
+14/05/2024	20:21:46 ::1---/v1/api/candidate/change_password---POST---"currentPassword" is required
+14/05/2024	20:22:09 ::1---/v1/api/candidate/change_password---POST---"currentPassword" is not allowed to be empty
+14/05/2024	20:23:00 ::1---/v1/api/candidate/change_password---POST---"currentPassword" length must be at least 8 characters long
+14/05/2024	20:23:08 ::1---/v1/api/candidate/change_password---POST---"newPassword" is not allowed to be empty
+14/05/2024	20:23:19 ::1---/v1/api/candidate/change_password---POST---"newPassword" length must be at least 8 characters long
+14/05/2024	20:23:25 ::1---/v1/api/candidate/change_password---POST---Mật khẩu xác nhận không khớp
+14/05/2024	20:23:31 ::1---/v1/api/candidate/change_password---POST---Mật khẩu hiện tại không chính xác
+14/05/2024	21:30:15 ::1---/v1/api/candidate/resumes/update/123123---PATCH---Vui lòng đăng nhập
+14/05/2024	21:30:34 ::1---/v1/api/candidate/information---GET---Vui lòng đăng nhập lại
+14/05/2024	21:30:53 ::1---/v1/api/login---POST---Mật khẩu không chính xác
+14/05/2024	21:31:38 ::1---/v1/api/candidate/resumes/update/123123---PATCH---"name" is required
+14/05/2024	21:32:11 ::1---/v1/api/candidate/resumes/update/123123---PATCH---"resumeId" is required
+14/05/2024	21:37:14 ::1---/v1/api/candidate/resumes/update/123123---PUT---"resumeId" is required
+14/05/2024	21:49:03 ::1---/v1/api/candidate/resumes/update/123123---PUT---Id không hợp lệ
+14/05/2024	21:50:17 ::1---/v1/api/candidate/resumes/update/664247adc3dbd4383fd7fc5d---PUT---"name" is required
+14/05/2024	21:59:07 ::1---/v1/api/candidate/resumes/add---POST---Vui lòng đăng nhập lại
+14/05/2024	21:59:32 ::1---/v1/api/candidate/resumes/add---POST---"avatar" is required
+14/05/2024	22:00:06 ::1---/v1/api/candidate/resumes/update/664247adc3dbd4383fd7fc5d---PUT---"avatar" is not allowed to be empty
+14/05/2024	22:00:36 ::1---/v1/api/candidate/resumes/update/664247adc3dbd4383fd7fc5d---PUT---"activitiy" is not allowed
+14/05/2024	22:01:09 ::1---/v1/api/candidate/resumes/update/664247adc3dbd4383fd7fc5d---PUT---Có lỗi xảy ra vui lòng thử lại
+14/05/2024	22:01:59 ::1---/v1/api/candidate/resumes/update/66437c5fb5dee8e142a677c3---PUT---ava is not defined
+14/05/2024	22:04:11 ::1---/v1/api/candidate/resumes/update/66437c5fb5dee8e142a677c3---PUT---"name" is not allowed to be empty
+14/05/2024	22:06:08 ::1---/v1/api/candidate/resumes/change_status/12312---PATCH---Id không hợp lệ
+14/05/2024	22:08:58 ::1---/v1/api/candidate/resumes/change_status/66437c5fb5dee8e142a677c2---PATCH---Có lỗi xảy ra vui lòng thử lại.
+14/05/2024	22:10:16 ::1---/v1/api/candidate/resumes/change_status/66437c5fb5dee8e142a677c3---PATCH---"status" is required
+14/05/2024	22:11:29 ::1---/v1/api/candidate/resumes/change_status/66437c5fb5dee8e142a677c3---PATCH---'"status"' không hợp lệ
+14/05/2024	22:11:57 ::1---/v1/api/candidate/resumes/delete/123123---DELETE---Vui lòng đăng nhập
+14/05/2024	22:12:13 ::1---/v1/api/candidate/resumes/delete/123123---DELETE---Id không hợp lệ
+14/05/2024	22:12:32 ::1---/v1/api/candidate/resumes/delete/66437c5fb5dee8e142a677c2---DELETE---Có lỗi xảy ra vui lòng thử lại.

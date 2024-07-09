@@ -1,0 +1,7 @@
+20/05/2024	16:18:06 ::1---/v1/api/candidate/favorite_jobs/check/6634399b7e09cd1bcf5039b---GET---Vui lòng đăng nhập
+20/05/2024	16:18:12 ::1---/v1/api/candidate/favorite_jobs/check/6634399b7e09cd1bcf5039b---GET---Id không hợp lệ
+20/05/2024	16:18:46 ::1---/v1/api/candidate/favorite_jobs---GET---Vui lòng đăng nhập lại
+20/05/2024	19:47:41 ::1---/v1/api/recruiter/jobs/applications/662f4f7488a6f0c504c764db---GET---Bạn cần được chấp thuận để sử dụng chức năng
+20/05/2024	19:57:32 ::1---/v1/api/recruiter/jobs/applications/detail/6646105b0fecf4288aba1696---GET---Vui lòng đăng nhập lại
+20/05/2024	23:31:17 ::1---/v1/api/candidate/resumes/update/6644e389d50ba2609ba8aed3---PATCH---Vui lòng đăng nhập lại
+20/05/2024	23:31:32 ::1---/v1/api/candidate/resumes/update/6644e389d50ba2609ba8aed3---PATCH---"majorr" is not allowed

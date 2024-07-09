@@ -1,0 +1,7 @@
+19/04/2024	00:42:50 ::1---/v1/api/recruiter/jobs/create_job---POST---Vui lòng đăng nhập lại
+19/04/2024	00:42:54 ::1---/v1/api/recruiter/jobs/create_job---POST---joi.string.valid is not a function
+19/04/2024	00:43:22 ::1---/v1/api/recruiter/jobs/create_job---POST---"province" is required
+19/04/2024	00:43:43 ::1---/v1/api/recruiter/jobs/create_job---POST---Unexpected string in JSON at position 142
+19/04/2024	00:43:54 ::1---/v1/api/recruiter/jobs/create_job---POST---'"province"' không hợp lệ
+19/04/2024	00:44:43 ::1---/v1/api/recruiter/jobs/create_job---POST---'"province"' không hợp lệ
+19/04/2024	00:44:48 ::1---/v1/api/recruiter/jobs/create_job---POST---Công việc đã tồn tại

@@ -1,0 +1,435 @@
+03/06/2024	08:33:26 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	08:33:30 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	08:40:16 ::1---/v1/api/recruiter/update_company_information---PATCH---Recruiter validation failed: companyCoverPhoto: Cast to string failed for value "{
+  publicId: 'hjdlfuhqhzsyozj30hmm',
+  url: 'https://res.cloudinary.com/de84ozlrg/image/upload/hjdlfuhqhzsyozj30hmm?_a=BAMABmUo0'
+}" (type Object) at path "companyCoverPhoto", companyLogo: Cast to string failed for value "{
+  publicId: 'ynuteh7dnl3tlkcc0vxf',
+  url: 'https://res.cloudinary.com/de84ozlrg/image/upload/ynuteh7dnl3tlkcc0vxf?_a=BAMABmTE0'
+}" (type Object) at path "companyLogo", avatar: Cast to string failed for value "{
+  publicId: 'bcengll75bvhbxcijinu',
+  url: 'https://res.cloudinary.com/de84ozlrg/image/upload/bcengll75bvhbxcijinu?_a=BAMABmUo0'
+}" (type Object) at path "avatar"
+03/06/2024	08:40:21 ::1---/v1/api/recruiter/update_company_information---PATCH---Recruiter validation failed: companyCoverPhoto: Cast to string failed for value "{
+  publicId: 'hjdlfuhqhzsyozj30hmm',
+  url: 'https://res.cloudinary.com/de84ozlrg/image/upload/hjdlfuhqhzsyozj30hmm?_a=BAMABmUo0'
+}" (type Object) at path "companyCoverPhoto", companyLogo: Cast to string failed for value "{
+  publicId: 'ynuteh7dnl3tlkcc0vxf',
+  url: 'https://res.cloudinary.com/de84ozlrg/image/upload/ynuteh7dnl3tlkcc0vxf?_a=BAMABmTE0'
+}" (type Object) at path "companyLogo", avatar: Cast to string failed for value "{
+  publicId: 'bcengll75bvhbxcijinu',
+  url: 'https://res.cloudinary.com/de84ozlrg/image/upload/bcengll75bvhbxcijinu?_a=BAMABmUo0'
+}" (type Object) at path "avatar"
+03/06/2024	08:49:00 ::1---/v1/api/recruiter/update_company_information---PATCH---Recruiter validation failed: companyCoverPhoto: Cast to string failed for value "{
+  publicId: 'hjdlfuhqhzsyozj30hmm',
+  url: 'https://res.cloudinary.com/de84ozlrg/image/upload/hjdlfuhqhzsyozj30hmm?_a=BAMABmUo0'
+}" (type Object) at path "companyCoverPhoto", companyLogo: Cast to string failed for value "{
+  publicId: 'ynuteh7dnl3tlkcc0vxf',
+  url: 'https://res.cloudinary.com/de84ozlrg/image/upload/ynuteh7dnl3tlkcc0vxf?_a=BAMABmTE0'
+}" (type Object) at path "companyLogo", avatar: Cast to string failed for value "{
+  publicId: 'bcengll75bvhbxcijinu',
+  url: 'https://res.cloudinary.com/de84ozlrg/image/upload/bcengll75bvhbxcijinu?_a=BAMABmUo0'
+}" (type Object) at path "avatar"
+03/06/2024	08:49:14 ::1---/v1/api/recruiter/update_company_information---PATCH---Recruiter validation failed: companyCoverPhoto: Cast to string failed for value "{
+  publicId: 'hjdlfuhqhzsyozj30hmm',
+  url: 'https://res.cloudinary.com/de84ozlrg/image/upload/hjdlfuhqhzsyozj30hmm?_a=BAMABmUo0'
+}" (type Object) at path "companyCoverPhoto", companyLogo: Cast to string failed for value "{
+  publicId: 'ynuteh7dnl3tlkcc0vxf',
+  url: 'https://res.cloudinary.com/de84ozlrg/image/upload/ynuteh7dnl3tlkcc0vxf?_a=BAMABmTE0'
+}" (type Object) at path "companyLogo", avatar: Cast to string failed for value "{
+  publicId: 'bcengll75bvhbxcijinu',
+  url: 'https://res.cloudinary.com/de84ozlrg/image/upload/bcengll75bvhbxcijinu?_a=BAMABmUo0'
+}" (type Object) at path "avatar"
+03/06/2024	08:52:40 ::1---/favicon.ico---GET---Page not found
+03/06/2024	09:04:15 ::1---/v1/api/recruiter/check_premium_account---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	09:04:15 ::1---/v1/api/recruiter/check_premium_account---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	09:04:21 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	09:04:21 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	09:04:21 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	09:04:21 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	09:04:23 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	09:04:23 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	09:04:24 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	09:04:24 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	09:04:25 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=5---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	09:04:26 ::1---/v1/api/recruiter/jobs/declined_jobs?page=1&limit=5---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	09:04:26 ::1---/v1/api/recruiter/jobs/nearing_expiration_jobs?page=1&limit=5---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	09:04:27 ::1---/v1/api/recruiter/jobs/expired_jobs?page=1&limit=5---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	09:04:27 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=5---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	09:04:28 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	09:04:30 ::1---/images/152f623d-df07-451d-879a-19f59fb812f3.jpg---GET---Page not found
+03/06/2024	09:04:49 ::1---/images/152f623d-df07-451d-879a-19f59fb812f3.jpg---GET---Page not found
+03/06/2024	09:06:49 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:07:26 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:07:27 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:07:37 ::1---/v1/api/candidate/resumes/update/665b64567d19da4254e3d328---PATCH---uploadFile phải là một chuỗi!
+03/06/2024	09:08:34 ::1---/v1/api/candidate/resumes/delete_upload_certification/fgrfhjnps9zr7brmk8p0---DELETE---Page not found
+03/06/2024	09:09:04 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:09:07 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:09:15 ::1---/v1/api/candidate/resumes/delete_upload_certification/fgrfhjnps9zr7brmk8p0---DELETE---Page not found
+03/06/2024	09:09:28 ::1---/v1/api/candidate/resumes/update/665b64567d19da4254e3d328---PATCH---uploadFile phải là một chuỗi!
+03/06/2024	09:09:43 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:11:02 ::1---/v1/api/candidate/resumes/detail/665b64567d19da4254e3d328---GET---Vui lòng đăng nhập lại
+03/06/2024	09:12:15 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:12:20 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:12:26 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:12:35 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:18:20 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:21:31 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:23:05 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:23:19 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:25:48 ::1---/v1/api/recruiter/check_premium_account---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	09:25:48 ::1---/v1/api/recruiter/check_premium_account---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	09:27:31 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:29:35 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:29:41 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:31:38 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:31:39 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:31:54 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:32:00 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:32:07 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:32:18 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:32:35 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:32:50 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:32:54 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:33:14 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:34:21 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:35:52 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:35:56 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:36:05 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:36:58 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:37:52 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:50:26 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:50:28 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:55:02 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:55:04 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:56:20 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:56:23 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:56:25 ::1---/images/bc3dd9bc-c2aa-4709-9c2a-6a6624232540.jpg---GET---Page not found
+03/06/2024	09:56:36 ::1---/images/f2ca9e26-5d7d-45ca-8350-7f6980d1d6f1.pdf---GET---Page not found
+03/06/2024	09:56:44 ::1---/images/f2ca9e26-5d7d-45ca-8350-7f6980d1d6f1.pdf---GET---Page not found
+03/06/2024	09:57:40 ::1---/v1/api/candidate/resumes/update/665b64567d19da4254e3d328---PATCH---Ảnh đại diện không hợp lệ.
+03/06/2024	10:04:28 ::1---/v1/api/candidate/resumes/update/665b64567d19da4254e3d328---PATCH---Ảnh đại diện không hợp lệ.
+03/06/2024	10:20:36 ::1---/v1/api/candidate/resumes/add---POST---uploadFile phải là một chuỗi!
+03/06/2024	10:22:34 ::1---/v1/api/candidate/resumes/add---POST---uploadFile phải là một chuỗi!
+03/06/2024	10:22:37 ::1---/v1/api/candidate/resumes/delete_upload_certification---DELETE---"uploadFile" must be a string
+03/06/2024	10:37:23 ::1---/v1/api/recruiter/check_premium_account---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	10:37:24 ::1---/v1/api/recruiter/check_premium_account---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	10:38:24 ::1---/v1/api/recruiter/check_premium_account---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	10:38:25 ::1---/v1/api/recruiter/check_premium_account---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	10:38:31 ::1---/v1/api/recruiter/create_payment_url---POST---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	10:38:35 ::1---/v1/api/recruiter/check_premium_account---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	10:38:35 ::1---/v1/api/recruiter/check_premium_account---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	10:38:37 ::1---/v1/api/recruiter/create_payment_url---POST---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	10:39:33 ::1---/v1/api/admin/recruiters/661d5b4bf37bdb5683f66bcf/approve---PATCH---invalid_grant
+03/06/2024	10:41:47 ::1---/v1/api/recruiter/check_premium_account---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	10:43:48 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	10:43:48 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	10:43:48 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	10:43:48 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	10:43:49 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=5---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	10:43:50 ::1---/v1/api/recruiter/jobs/declined_jobs?page=1&limit=5---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	10:43:50 ::1---/v1/api/recruiter/jobs/nearing_expiration_jobs?page=1&limit=5---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	10:43:51 ::1---/v1/api/recruiter/jobs/expired_jobs?page=1&limit=5---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	10:43:51 ::1---/v1/api/recruiter/jobs/nearing_expiration_jobs?page=1&limit=5---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	10:43:52 ::1---/v1/api/recruiter/jobs/declined_jobs?page=1&limit=5---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	10:43:52 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=5---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	10:43:52 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	10:44:14 ::1---/v1/api/recruiter/jobs/accepted_jobs---GET---Bạn cần được chấp thuận để sử dụng chức năng
+03/06/2024	10:45:14 ::1---/v1/api/admin/recruiters/661d5b4bf37bdb5683f66bcf/approve---PATCH---invalid_grant
+03/06/2024	10:57:13 ::1---/v1/api/recruiter/list_advanced_resume?page=1&limit=5---GET---"page" is not allowed
+03/06/2024	10:57:13 ::1---/v1/api/recruiter/list_advanced_resume?page=1&limit=5---GET---"page" is not allowed
+03/06/2024	10:57:24 ::1---/v1/api/recruiter/list_advanced_resume?page=1&limit=5---GET---"page" is not allowed
+03/06/2024	10:57:25 ::1---/v1/api/recruiter/list_advanced_resume?page=1&limit=5---GET---"page" is not allowed
+03/06/2024	10:57:53 ::1---/v1/api/recruiter/list_advanced_resume?page=1&limit=5---GET---"page" is not allowed
+03/06/2024	10:57:54 ::1---/v1/api/recruiter/list_advanced_resume?page=1&limit=5---GET---"page" is not allowed
+03/06/2024	10:58:12 ::1---/v1/api/recruiter/list_advanced_resume?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	11:00:12 ::1---/v1/api/recruiter/list_advanced_resume?page=1&limit=10---GET---"page" is not allowed
+03/06/2024	11:00:17 ::1---/v1/api/recruiter/list_advanced_resume?page=1&limit=10---GET---"page" is not allowed
+03/06/2024	11:00:17 ::1---/v1/api/recruiter/list_advanced_resume?page=1&limit=10---GET---"page" is not allowed
+03/06/2024	11:01:05 ::1---/v1/api/recruiter/list_advanced_resume?page%20=1&limit%20=5---GET---"page " is not allowed
+03/06/2024	11:23:32 ::1---/v1/api/recruiter/jobs/applications/detail/66536c1c7eb0448b8e344757---GET---Có lỗi xảy ra vui lòng thử lại
+03/06/2024	11:23:33 ::1---/v1/api/recruiter/jobs/applications/detail/66536c1c7eb0448b8e344757---GET---Có lỗi xảy ra vui lòng thử lại
+03/06/2024	13:13:40 ::1---/v1/api/recruiter/information---GET---Vui lòng đăng nhập lại
+03/06/2024	13:13:40 ::1---/v1/api/recruiter/information---GET---Vui lòng đăng nhập lại
+03/06/2024	13:13:41 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+03/06/2024	13:13:41 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+03/06/2024	13:22:31 ::1---/v1/api/recruiter/list_advanced_resume---GET---Vui lòng đăng nhập lại
+03/06/2024	14:01:38 ::1---/v1/api/recruiter/list_advanced_resume?jobType=Th%E1%BB%B1c+t%E1%BA%ADp---GET---'"jobType"' không hợp lệ
+03/06/2024	14:15:38 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập lại
+03/06/2024	14:15:38 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập lại
+03/06/2024	14:15:38 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+03/06/2024	14:15:38 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+03/06/2024	14:15:40 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:15:40 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:15:40 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:15:40 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:15:44 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:15:44 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:15:44 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:15:44 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:15:48 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:15:48 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:15:48 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:15:48 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:15:53 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:15:53 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:15:53 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:15:53 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:15:57 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:15:57 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:15:57 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:15:57 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:16:00 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:16:00 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:16:00 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:16:00 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:16:03 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:16:03 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:16:03 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:16:03 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:16:06 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:16:07 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:16:07 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:16:07 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:16:09 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:16:09 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:16:09 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:16:09 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:16:13 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:16:13 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:16:13 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:16:13 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:16:17 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:16:17 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:16:17 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:16:17 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:16:19 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:16:19 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:16:19 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:16:20 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:16:51 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:16:51 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:16:51 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:16:51 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:16:53 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:16:53 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:16:53 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:16:53 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:16:57 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:16:57 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:16:57 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:16:57 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:01 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:01 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:01 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:01 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:04 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:04 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:04 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:04 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:07 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:07 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:07 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:07 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:10 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:10 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:10 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:10 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:14 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:14 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:14 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:14 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:17 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:18 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:18 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:18 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:21 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:21 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:21 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:21 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:25 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:25 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:25 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:25 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:29 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:29 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:29 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:29 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:33 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:33 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:33 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:33 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:36 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:36 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:36 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:36 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:40 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:40 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:40 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:40 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:56 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:56 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:56 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:56 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:58 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:58 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:17:58 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:17:58 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:18:00 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:18:00 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:18:00 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:18:00 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:18:01 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:18:01 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:18:01 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:18:01 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:18:02 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:18:02 ::1---/v1/api/recruiter/application_status---GET---Vui lòng đăng nhập
+03/06/2024	14:18:02 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:18:02 ::1---/v1/api/recruiter/list_advanced_resume?---GET---Vui lòng đăng nhập
+03/06/2024	14:37:43 ::1---/v1/api/recruiter/jobs/applications/66462dad398b9230cddc2c26---GET---Vui lòng đăng nhập lại
+03/06/2024	15:21:02 ::1---/v1/api/recruiter/notifications---GET---Vui lòng đăng nhập lại
+03/06/2024	15:21:02 ::1---/v1/api/recruiter/notifications---GET---Vui lòng đăng nhập lại
+03/06/2024	15:21:02 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+03/06/2024	15:21:02 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+03/06/2024	18:43:47 ::1---/v1/api/admin/information---GET---Vui lòng đăng nhập lại
+03/06/2024	18:43:47 ::1---/v1/api/admin/information---GET---Vui lòng đăng nhập lại
+03/06/2024	18:43:48 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+03/06/2024	18:43:48 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+03/06/2024	18:44:21 ::1---/favicon.ico---GET---Page not found
+<<<<<<< HEAD
+03/06/2024	19:48:57 ::1---/images/152f623d-df07-451d-879a-19f59fb812f3.jpg---GET---Page not found
+03/06/2024	19:48:58 ::1---/images/152f623d-df07-451d-879a-19f59fb812f3.jpg---GET---Page not found
+03/06/2024	19:51:50 ::1---/images/70ad9dff-349f-4b41-a521-70c26b6f4c70.png---GET---Page not found
+03/06/2024	19:51:54 ::1---/images/70ad9dff-349f-4b41-a521-70c26b6f4c70.png---GET---Page not found
+03/06/2024	19:52:52 ::1---/images/152f623d-df07-451d-879a-19f59fb812f3.jpg---GET---Page not found
+03/06/2024	19:52:52 ::1---/images/152f623d-df07-451d-879a-19f59fb812f3.jpg---GET---Page not found
+03/06/2024	19:53:08 ::1---/v1/api/admin/recruiters/664091af9bc3ed7d2ade2abb/approve---PATCH---invalid_grant
+03/06/2024	19:53:15 ::1---/v1/api/admin/recruiters/661d5b4bf37bdb5683f66bcf/approve---PATCH---invalid_grant
+03/06/2024	19:53:18 ::1---/images/152f623d-df07-451d-879a-19f59fb812f3.jpg---GET---Page not found
+03/06/2024	19:53:18 ::1---/images/152f623d-df07-451d-879a-19f59fb812f3.jpg---GET---Page not found
+03/06/2024	20:04:05 ::1---/v1/api/candidate/resumes/update/66536c1c7eb0448b8e344757---PATCH---Cannot read properties of undefined (reading 'split')
+03/06/2024	20:04:26 ::1---/v1/api/candidate/resumes/update/66536c1c7eb0448b8e344757---PATCH---Cannot read properties of undefined (reading 'split')
+03/06/2024	20:04:32 ::1---/v1/api/candidate/resumes/update/66536c1c7eb0448b8e344757---GET---Page not found
+03/06/2024	20:11:33 ::1---/v1/api/candidate/resumes/update/6646c76451a89f580068b39d---PATCH---Cannot read properties of undefined (reading 'split')
+03/06/2024	20:12:35 ::1---/v1/api/candidate/resumes/update/6646c76451a89f580068b39d---PATCH---Cannot read properties of undefined (reading 'split')
+03/06/2024	20:14:35 ::1---/images/488be031-048a-4366-b02f-ed72975686bd.jpg---GET---Page not found
+03/06/2024	20:14:39 ::1---/images/488be031-048a-4366-b02f-ed72975686bd.jpg---GET---Page not found
+03/06/2024	20:14:46 ::1---/images/488be031-048a-4366-b02f-ed72975686bd.jpg---GET---Page not found
+03/06/2024	20:14:49 ::1---/images/488be031-048a-4366-b02f-ed72975686bd.jpg---GET---Page not found
+03/06/2024	20:14:55 ::1---/images/488be031-048a-4366-b02f-ed72975686bd.jpg---GET---Page not found
+03/06/2024	20:14:58 ::1---/images/488be031-048a-4366-b02f-ed72975686bd.jpg---GET---Page not found
+03/06/2024	20:15:20 ::1---/images/488be031-048a-4366-b02f-ed72975686bd.jpg---GET---Page not found
+03/06/2024	20:15:23 ::1---/images/488be031-048a-4366-b02f-ed72975686bd.jpg---GET---Page not found
+03/06/2024	20:15:30 ::1---/v1/api/candidate/resumes/update/6646b3baeff1f8a8d72014e7---PATCH---uploadFile không được để trống!
+03/06/2024	20:15:49 ::1---/images/488be031-048a-4366-b02f-ed72975686bd.jpg---GET---Page not found
+03/06/2024	20:15:53 ::1---/images/488be031-048a-4366-b02f-ed72975686bd.jpg---GET---Page not found
+03/06/2024	20:16:10 ::1---/images/488be031-048a-4366-b02f-ed72975686bd.jpg---GET---Page not found
+03/06/2024	20:16:13 ::1---/images/488be031-048a-4366-b02f-ed72975686bd.jpg---GET---Page not found
+03/06/2024	22:44:02 ::1---/v1/api/candidate/information---GET---Vui lòng đăng nhập lại
+03/06/2024	22:44:02 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập lại
+03/06/2024	22:44:02 ::1---/v1/api/candidate/information---GET---Vui lòng đăng nhập lại
+03/06/2024	22:44:02 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập lại
+03/06/2024	22:44:04 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+03/06/2024	22:44:04 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+03/06/2024	22:44:04 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+03/06/2024	22:44:04 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+03/06/2024	22:44:06 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:06 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:07 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:07 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:11 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:11 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:13 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:13 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:16 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:16 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:19 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:19 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:22 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:22 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:24 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:24 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:28 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:28 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:30 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:30 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:33 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:33 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:35 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:36 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:38 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:38 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:40 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:40 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:43 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:43 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:46 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:46 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:49 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:49 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:51 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:51 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:53 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:53 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:56 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:56 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:58 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:44:58 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:45:00 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:45:00 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:45:02 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:45:02 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:45:03 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+03/06/2024	22:45:03 ::1---/v1/api/candidate/resumes?page=1&limit=5---GET---Vui lòng đăng nhập
+=======
+03/06/2024	19:51:46 ::1---/images/152f623d-df07-451d-879a-19f59fb812f3.jpg---GET---Page not found
+03/06/2024	19:51:46 ::1---/images/152f623d-df07-451d-879a-19f59fb812f3.jpg---GET---Page not found
+03/06/2024	19:52:25 ::1---/v1/api/events?limit=6&page=1---GET---Page not found
+03/06/2024	19:52:25 ::1---/v1/api/events?limit=6&page=1---GET---Page not found
+03/06/2024	19:52:27 ::1---/images/33d47e04-8645-4056-89b8-36647d9e7031.png---GET---Page not found
+03/06/2024	19:52:30 ::1---/images/33d47e04-8645-4056-89b8-36647d9e7031.png---GET---Page not found
+03/06/2024	19:52:36 ::1---/images/33d47e04-8645-4056-89b8-36647d9e7031.png---GET---Page not found
+03/06/2024	19:52:41 ::1---/images/33d47e04-8645-4056-89b8-36647d9e7031.png---GET---Page not found
+03/06/2024	19:52:51 ::1---/images/152f623d-df07-451d-879a-19f59fb812f3.jpg---GET---Page not found
+03/06/2024	19:52:51 ::1---/images/152f623d-df07-451d-879a-19f59fb812f3.jpg---GET---Page not found
+03/06/2024	19:52:53 ::1---/images/33d47e04-8645-4056-89b8-36647d9e7031.png---GET---Page not found
+03/06/2024	19:52:53 ::1---/images/33d47e04-8645-4056-89b8-36647d9e7031.png---GET---Page not found
+03/06/2024	19:52:54 ::1---/images/152f623d-df07-451d-879a-19f59fb812f3.jpg---GET---Page not found
+03/06/2024	19:52:54 ::1---/images/152f623d-df07-451d-879a-19f59fb812f3.jpg---GET---Page not found
+03/06/2024	19:52:55 ::1---/images/33d47e04-8645-4056-89b8-36647d9e7031.png---GET---Page not found
+03/06/2024	19:53:43 ::1---/images/33d47e04-8645-4056-89b8-36647d9e7031.png---GET---Page not found
+03/06/2024	19:53:43 ::1---/images/0d9b557d-112a-4b7a-bd0e-6cbc66cdd26e.png---GET---Page not found
+03/06/2024	19:53:43 ::1---/images/33d47e04-8645-4056-89b8-36647d9e7031.png---GET---Page not found
+03/06/2024	19:53:46 ::1---/images/33d47e04-8645-4056-89b8-36647d9e7031.png---GET---Page not found
+03/06/2024	19:53:46 ::1---/images/0d9b557d-112a-4b7a-bd0e-6cbc66cdd26e.png---GET---Page not found
+03/06/2024	19:53:46 ::1---/images/33d47e04-8645-4056-89b8-36647d9e7031.png---GET---Page not found
+03/06/2024	19:53:49 ::1---/images/33d47e04-8645-4056-89b8-36647d9e7031.png---GET---Page not found
+03/06/2024	19:53:49 ::1---/images/0d9b557d-112a-4b7a-bd0e-6cbc66cdd26e.png---GET---Page not found
+03/06/2024	19:53:50 ::1---/images/33d47e04-8645-4056-89b8-36647d9e7031.png---GET---Page not found
+03/06/2024	19:54:20 ::1---/images/33d47e04-8645-4056-89b8-36647d9e7031.png---GET---Page not found
+03/06/2024	19:54:20 ::1---/images/0d9b557d-112a-4b7a-bd0e-6cbc66cdd26e.png---GET---Page not found
+03/06/2024	19:54:20 ::1---/images/33d47e04-8645-4056-89b8-36647d9e7031.png---GET---Page not found
+03/06/2024	19:54:24 ::1---/images/ae9b2983-217d-42eb-a6bd-445211118f87.jpg---GET---Page not found
+03/06/2024	19:54:24 ::1---/images/33d47e04-8645-4056-89b8-36647d9e7031.png---GET---Page not found
+03/06/2024	19:54:24 ::1---/images/0d9b557d-112a-4b7a-bd0e-6cbc66cdd26e.png---GET---Page not found
+03/06/2024	19:54:24 ::1---/images/152f623d-df07-451d-879a-19f59fb812f3.jpg---GET---Page not found
+03/06/2024	19:54:24 ::1---/images/33d47e04-8645-4056-89b8-36647d9e7031.png---GET---Page not found
+03/06/2024	19:54:24 ::1---/images/ae9b2983-217d-42eb-a6bd-445211118f87.jpg---GET---Page not found
+03/06/2024	19:54:24 ::1---/images/0d9b557d-112a-4b7a-bd0e-6cbc66cdd26e.png---GET---Page not found
+03/06/2024	19:54:24 ::1---/images/152f623d-df07-451d-879a-19f59fb812f3.jpg---GET---Page not found
+03/06/2024	19:54:31 ::1---/images/33d47e04-8645-4056-89b8-36647d9e7031.png---GET---Page not found
+03/06/2024	19:54:31 ::1---/images/0d9b557d-112a-4b7a-bd0e-6cbc66cdd26e.png---GET---Page not found
+03/06/2024	22:00:29 ::1---/v1/api/recruiters/favorite_resumes/list---GET---Page not found
+03/06/2024	22:01:15 ::1---/v1/api/recruiter/favorite_resumes/list---GET---FavoriteResumeValidation.validategetListFavoriteResume is not a function
+03/06/2024	22:02:32 ::1---/v1/api/recruiter/favorite_resumes/add/66536c1c7eb0448b8e344757---POST---Vui lòng đăng nhập
+03/06/2024	22:04:07 ::1---/v1/api/recruiter/favorite_resumes/add/66536c1c7eb0448b8e344757---POST---Bạn đã thêm resume vào mục yêu thích rồi.
+03/06/2024	22:04:35 ::1---/v1/api/recruiter/favorite_resumes/remove/66536c1c7eb0448b8e344757---DELETE---Vui lòng đăng nhập
+03/06/2024	22:04:45 ::1---/v1/api/recruiter/favorite_resumes/remove/66536c1c7eb0448b8e344757---DELETE---jobId is not defined
+03/06/2024	22:07:12 ::1---/v1/api/recruiter/favorite_resumes/remove_all---DELETE---Vui lòng đăng nhập
+03/06/2024	22:07:18 ::1---/v1/api/recruiter/favorite_resumes/remove_all---DELETE---Có lỗi xảy ra vui lòng thử lại.
+03/06/2024	22:07:27 ::1---/v1/api/recruiter/favorite_resumes/remove_all---DELETE---Có lỗi xảy ra vui lòng thử lại.
+03/06/2024	22:17:27 ::1---/v1/api/recruiter/favorite_resumes/list?searchText=tr%E1%BB%8Dng---GET---Bạn cần nâng cấp để sử dụng chức năng.
+03/06/2024	22:22:23 ::1---/v1/api/recruiter/list_advanced_resume?searchText=developer---GET---educationLevel is not defined
+>>>>>>> 9d91c866460403b13182b66debde6d3b4863c50b

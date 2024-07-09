@@ -1,0 +1,31 @@
+29/04/2024	14:13:01 ::1---/v1/api/recruiter/signup---POST---invalid_grant
+29/04/2024	14:15:07 ::1---/v1/api/recruiter/verify?email=vietnampro193913@gmail.com---POST---OTP không chính xác
+29/04/2024	14:15:45 ::1---/v1/api/recruiter/information---GET---Vui lòng đăng nhập lại
+29/04/2024	14:17:35 ::1---/v1/api/recruiter/update_information---PATCH---Vui lòng đăng nhập lại
+29/04/2024	14:18:00 ::1---/v1/api/recruiter/update_information---PATCH---"employeeNumber" must be a number
+29/04/2024	14:21:21 ::1---/v1/api/admin/recruiters/sfsfsdf---GET---Vui lòng đăng nhập
+29/04/2024	14:21:28 ::1---/v1/api/admin/recruiters/sfsfsdf---GET---Id không hợp lệ
+29/04/2024	14:21:41 ::1---/v1/api/admin/recruiters/662f489df9935d12abe2c12b---GET---message is not defined
+29/04/2024	14:23:32 ::1---/v1/api/admin/recruiters/661f3354e8607519a860b178/approve---PATCH---"acceptanceStatus" is required
+29/04/2024	14:23:54 ::1---/v1/api/admin/recruiters/661f3354e8607519a860b178/approve---PATCH---"acceptanceStatus" must be one of [accept, decline]
+29/04/2024	14:24:25 ::1---/v1/api/admin/recruiters/661f3354e8607519a860b178/approve---PATCH---'"acceptanceStatus"' không hợp lệ
+29/04/2024	14:24:36 ::1---/v1/api/admin/recruiters/661f3354e8607519a860b178/approve---PATCH---Có lỗi xảy ra vui lòng thử lại
+29/04/2024	14:25:10 ::1---/v1/api/admin/recruiters/662f489df9935d12abe2c12b/approve---PATCH---Cannot read properties of undefined (reading 'role')
+29/04/2024	14:30:06 ::1---/v1/api/admin/recruiters/662f489df9935d12abe2c12b/approve---PATCH---'"acceptanceStatus"' không hợp lệ
+29/04/2024	14:32:50 ::1---/v1/api/admin/recruiters?status=inactive---GET---"status" is not allowed
+29/04/2024	14:32:59 ::1---/v1/api/admin/recruiters?acceptanceStatus=inactive---GET---"acceptanceStatus" must be one of [waiting, accept, decline]
+29/04/2024	14:33:23 ::1---/v1/api/admin/recruiters?acceptanceStatus=inactive---GET---'"acceptanceStatus"' không hợp lệ
+29/04/2024	14:35:54 ::1---/v1/api/recruiter/jobs/create_job---POST---Vui lòng đăng nhập lại
+29/04/2024	14:36:12 ::1---/v1/api/recruiter/jobs/create_job---POST---Bạn cần được chấp thuận để sử dụng chức năng
+29/04/2024	14:36:39 ::1---/v1/api/recruiter/jobs/create_job---POST---Bạn cần được chấp thuận để sử dụng chức năng
+29/04/2024	14:36:49 ::1---/v1/api/recruiter/jobs/create_job---POST---"gender" is required
+29/04/2024	14:44:17 ::1---/v1/api/recruiter/jobs/123123123/update_job---PATCH---Vui lòng đăng nhập
+29/04/2024	14:44:25 ::1---/v1/api/recruiter/jobs/123123123/update_job---PATCH---Id không hợp lệ
+29/04/2024	14:46:57 ::1---/v1/api/recruiter/jobs/662f4f7488a6f0c504c764db---GET---Vui lòng đăng nhập lại
+29/04/2024	21:02:17 ::1---/v1/api/admin/jobs/6623df3a1c8d996b7c102f0b---PATCH---Vui lòng đăng nhập lại
+29/04/2024	21:15:31 ::1---/v1/api/jobs---GET---provinceOfVietNam is not defined
+29/04/2024	21:16:20 ::1---/v1/api/jobs---GET---Job is not defined
+29/04/2024	21:16:37 ::1---/v1/api/jobs---GET---Invalid time value
+29/04/2024	21:31:28 ::1---/v1/api/jobs?conga=s---GET---"conga" is not allowed
+29/04/2024	21:40:26 ::1---/v1/api/jobs/fsdfsdfsdf---GET---Page not found
+29/04/2024	21:41:18 ::1---/v1/api/jobs/fsdfsdfsdf---GET---Id không hợp lệ

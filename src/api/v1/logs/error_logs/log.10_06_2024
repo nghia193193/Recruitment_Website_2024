@@ -1,0 +1,40 @@
+10/06/2024	13:50:09 ::1---/v1/api/recruiter/information---GET---Vui lòng đăng nhập lại
+10/06/2024	13:50:09 ::1---/v1/api/recruiter/information---GET---Vui lòng đăng nhập lại
+10/06/2024	13:50:09 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+10/06/2024	13:50:09 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+10/06/2024	13:50:11 ::1---/images/5c94c995-ee5c-453b-99ed-216fe26e49f4.png---GET---Page not found
+10/06/2024	13:50:11 ::1---/images/00b094f4-59c2-40ac-8ea5-0739d5972bcb.png---GET---Page not found
+10/06/2024	13:50:11 ::1---/images/700bfbdd-0cd0-4883-9bc9-f6e46bdafd3e.png---GET---Page not found
+10/06/2024	13:50:11 ::1---/images/00b094f4-59c2-40ac-8ea5-0739d5972bcb.png---GET---Page not found
+10/06/2024	13:50:28 ::1---/images/00b094f4-59c2-40ac-8ea5-0739d5972bcb.png---GET---Page not found
+10/06/2024	13:50:28 ::1---/images/5c94c995-ee5c-453b-99ed-216fe26e49f4.png---GET---Page not found
+10/06/2024	13:50:28 ::1---/images/700bfbdd-0cd0-4883-9bc9-f6e46bdafd3e.png---GET---Page not found
+10/06/2024	13:51:09 ::1---/v1/api/candidate/resumes/update/664b8d10a32897a8ead6ac2f---PATCH---Ảnh đại diện không hợp lệ.
+10/06/2024	13:51:16 ::1---/v1/api/candidate/resumes/update/664b8d10a32897a8ead6ac2f---PATCH---Ảnh đại diện không hợp lệ.
+10/06/2024	13:53:23 ::1---/v1/api/candidate/resumes/update/664b8d10a32897a8ead6ac2f---PATCH---Ảnh đại diện không hợp lệ.
+10/06/2024	13:57:22 ::1---/v1/api/candidate/resumes/update/6646b3baeff1f8a8d72014e7---PATCH---Vui lòng đăng nhập lại
+10/06/2024	13:57:37 ::1---/v1/api/candidate/resumes/update/6646b3baeff1f8a8d72014e7---PATCH---The "path" argument must be of type string. Received undefined
+10/06/2024	14:02:53 ::1---/v1/api/candidate/resumes/update/6646b3baeff1f8a8d72014e7---PATCH---formatInTimeZone is not defined
+10/06/2024	14:18:49 ::1---/images/e8b3c4be-607b-4888-9158-7aee665ee273.jpg---GET---Page not found
+10/06/2024	14:18:49 ::1---/images/3f0e002f-50f0-4c02-9131-42c7fc3b49aa.jpg---GET---Page not found
+10/06/2024	14:18:49 ::1---/images/5c94c995-ee5c-453b-99ed-216fe26e49f4.png---GET---Page not found
+10/06/2024	14:18:49 ::1---/images/2f082b4a-a001-45f2-952f-60dfdcb46074.jpg---GET---Page not found
+10/06/2024	14:18:49 ::1---/images/00b094f4-59c2-40ac-8ea5-0739d5972bcb.png---GET---Page not found
+10/06/2024	14:18:49 ::1---/images/b8fd0ea6-3774-435e-b006-c00f000580f2.jpg---GET---Page not found
+10/06/2024	14:18:49 ::1---/images/700bfbdd-0cd0-4883-9bc9-f6e46bdafd3e.png---GET---Page not found
+10/06/2024	14:18:49 ::1---/images/e8b3c4be-607b-4888-9158-7aee665ee273.jpg---GET---Page not found
+10/06/2024	14:18:49 ::1---/images/3f0e002f-50f0-4c02-9131-42c7fc3b49aa.jpg---GET---Page not found
+10/06/2024	14:18:49 ::1---/images/5c94c995-ee5c-453b-99ed-216fe26e49f4.png---GET---Page not found
+10/06/2024	14:18:49 ::1---/images/2f082b4a-a001-45f2-952f-60dfdcb46074.jpg---GET---Page not found
+10/06/2024	14:18:49 ::1---/images/00b094f4-59c2-40ac-8ea5-0739d5972bcb.png---GET---Page not found
+10/06/2024	14:18:49 ::1---/images/b8fd0ea6-3774-435e-b006-c00f000580f2.jpg---GET---Page not found
+10/06/2024	14:18:49 ::1---/images/700bfbdd-0cd0-4883-9bc9-f6e46bdafd3e.png---GET---Page not found
+10/06/2024	14:18:53 ::1---/images/00b094f4-59c2-40ac-8ea5-0739d5972bcb.png---GET---Page not found
+10/06/2024	14:18:53 ::1---/images/00b094f4-59c2-40ac-8ea5-0739d5972bcb.png---GET---Page not found
+10/06/2024	14:18:57 ::1---/v1/api/events?limit=6&page=1---GET---Page not found
+10/06/2024	14:18:57 ::1---/v1/api/events?limit=6&page=1---GET---Page not found
+10/06/2024	14:19:31 ::1---/v1/api/events?limit=6&page=2---GET---Page not found
+10/06/2024	14:19:32 ::1---/v1/api/events?limit=6&page=3---GET---Page not found
+10/06/2024	14:19:34 ::1---/v1/api/events?limit=6&page=2---GET---Page not found
+10/06/2024	14:19:35 ::1---/v1/api/events?limit=6&page=1---GET---Page not found
+10/06/2024	14:25:36 ::1---/v1/api/candidate/resumes/update/6646b3baeff1f8a8d72014e7---PATCH---'"themeId"' không hợp lệ
