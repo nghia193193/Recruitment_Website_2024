@@ -1,8 +1,0 @@
-14/04/2024	17:01:36 ::ffff:127.0.0.1---/v1/api/login---POST---Tài khoản không tồn tại
-14/04/2024	17:02:14 ::ffff:127.0.0.1---/v1/api/recruiter/signup---POST---Tài khoản đã tồn tại
-14/04/2024	17:11:26 ::ffff:127.0.0.1---/v1/api/login---POST---Cannot read properties of undefined (reading 'toString')
-14/04/2024	17:46:40 ::ffff:127.0.0.1---/v1/api/login---POST---Mật khẩu không chính xác
-14/04/2024	17:46:47 ::ffff:127.0.0.1---/v1/api/login---POST---Tài khoản không tồn tại
-14/04/2024	17:49:51 ::ffff:127.0.0.1---/v1/api/login---POST---Tài khoản không tồn tại
-14/04/2024	17:50:42 ::ffff:127.0.0.1---/v1/api/login---POST---Cannot read properties of undefined (reading 'toString')
-14/04/2024	18:06:08 ::ffff:127.0.0.1---/v1/api/recruiter/information---GET---Recruiter is not defined
