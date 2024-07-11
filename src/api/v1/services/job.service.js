@@ -89,6 +89,7 @@ class JobService {
             }
             // format data
             const acceptedNumber = await ApplicationService.getJobAcceptedApplicationNumber({ jobId });
+            job.quantity = job.quantity === 'o' ? "Không giới hạn" : job.quantity;
             job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
             job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
             job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");

@@ -73,9 +73,14 @@ class AdminJobManagementValidation {
             }).required().messages({
                 'any.empty': "Lợi ích không được để trống",
             }),
-            quantity: joi.number().integer().min(1).required().messages({
-                'number.base': "Số lượng phải là số nguyên",
-                'number.min': "Số lượng phải lớn hơn hoặc bằng 1"
+            quantity: joi.alternatives().try(
+                joi.string().valid('o').required(),
+                joi.number().integer().min(1).required(),
+            ).messages({
+                'string.valid': "Số lượng không hợp lệ",
+                'number.base': "Số lượng không hợp lệ",
+                'number.min': "Số lượng phải lớn hơn hoặc bằng 1",
+                'alternatives.types': "Số lượng không hợp lệ"
             }),
             deadline: joi.date().iso().required().messages({
                 'date.format': "'deadline' phải là một ngày hợp lệ theo định dạng ISO"
@@ -149,9 +154,14 @@ class AdminJobManagementValidation {
             }).messages({
                 'any.empty': "Lợi ích không được để trống",
             }),
-            quantity: joi.number().integer().min(1).messages({
-                'number.base': "Số lượng phải là số nguyên",
-                'number.min': "Số lượng phải lớn hơn hoặc bằng 1"
+            quantity: joi.alternatives().try(
+                joi.string().valid('o'),
+                joi.number().integer().min(1),
+            ).messages({
+                'string.valid': "Số lượng không hợp lệ",
+                'number.base': "Số lượng không hợp lệ",
+                'number.min': "Số lượng phải lớn hơn hoặc bằng 1",
+                'alternatives.types': "Số lượng không hợp lệ"
             }),
             deadline: joi.date().iso().messages({
                 'date.format': "'deadline' phải là một ngày hợp lệ theo định dạng ISO"

@@ -71,10 +71,10 @@ class RecruiterController {
         }
         const { companyLogo, companyCoverPhoto } = value;
         if (companyLogo) {
-            value.companyLogo = `http://localhost:${process.env.PORT}/images/${companyLogo[0].filename}`;
+            value.companyLogo = `${process.env.DOMAIN}/images/${companyLogo[0].filename}`;
         }
         if (companyCoverPhoto) {
-            value.companyCoverPhoto = `http://localhost:${process.env.PORT}/images/${companyCoverPhoto[0].filename}`;
+            value.companyCoverPhoto = `${process.env.DOMAIN}/images/${companyCoverPhoto[0].filename}`;
         }
         const { metadata, message } = await RecruiterService.updateInformation({ ...value, ...req.payload });
         new OK({
@@ -102,7 +102,7 @@ class RecruiterController {
             throw new BadRequestError(error.details[0].message);
         }
         const { avatar } = value;
-        value.avatar = `http://localhost:${process.env.PORT}/images/${avatar[0].filename}`;
+        value.avatar = `${process.env.DOMAIN}/images/${avatar[0].filename}`;
         const { metadata, message } = await RecruiterService.updateAvatar({ ...req.payload, ...value });
         new OK({
             message: message,
@@ -150,10 +150,10 @@ class RecruiterController {
         }
         const { companyLogo, companyCoverPhoto } = value;
         if (companyLogo) {
-            value.companyLogo = `http://localhost:${process.env.PORT}/images/${companyLogo[0].filename}`;
+            value.companyLogo = `${process.env.DOMAIN}/images/${companyLogo[0].filename}`;
         }
         if (companyCoverPhoto) {
-            value.companyCoverPhoto = `http://localhost:${process.env.PORT}/images/${companyCoverPhoto[0].filename}`;
+            value.companyCoverPhoto = `${process.env.DOMAIN}/images/${companyCoverPhoto[0].filename}`;
         }
         const { metadata, message } = await RecruiterService.updateCompany({ ...value, ...req.payload });
         new OK({

@@ -1,0 +1,32 @@
+11/07/2024	15:09:57 ::1---/v1/api/recruiter/information---GET---Vui lòng đăng nhập lại
+11/07/2024	15:09:58 ::1---/v1/api/recruiter/information---GET---Vui lòng đăng nhập lại
+11/07/2024	15:09:58 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+11/07/2024	15:09:58 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+11/07/2024	15:25:06 ::1---/v1/api/recruiter/jobs/668f9636b82e2acce654285a/update_job---PATCH---joialternatives is not defined
+11/07/2024	15:26:13 ::1---/v1/api/recruiter/jobs/668f9636b82e2acce654285a/update_job---PATCH---"quantity" must be one of [o, number]
+11/07/2024	15:27:32 ::1---/v1/api/recruiter/jobs/668f9636b82e2acce654285a/update_job---PATCH---"quantity" must be one of [o, Không giới hạn, number]
+11/07/2024	15:28:47 ::1---/v1/api/recruiter/jobs/668f9636b82e2acce654285a/update_job---PATCH---"quantity" must be one of [o, Không giới hạn, number]
+11/07/2024	15:29:37 ::1---/v1/api/recruiter/jobs/668f9636b82e2acce654285a/update_job---PATCH---"quantity" must be one of [o, Không giới hạn, number]
+11/07/2024	15:29:56 ::1---/v1/api/recruiter/jobs/668f9636b82e2acce654285a/update_job---PATCH---"quantity" must be one of [o, Không giới hạn, number]
+11/07/2024	15:31:03 ::1---/v1/api/recruiter/jobs/668f9636b82e2acce654285a/update_job---PATCH---"quantity" must be one of [o, Không giới hạn, number]
+11/07/2024	15:31:22 ::1---/v1/api/recruiter/jobs/668f9636b82e2acce654285a/update_job---PATCH---"quantity" must be one of [o, Không giới hạn, number]
+11/07/2024	15:33:48 ::1---/v1/api/recruiter/jobs/668f9636b82e2acce654285a/update_job---PATCH---"quantity" must be one of [o, Không giới hạn, number]
+11/07/2024	15:35:05 ::ffff:127.0.0.1---/v1/api/recruiter/jobs/668f9636b82e2acce654285a/update_job---PATCH---"quantity" must be one of [o, Không giới hạn, number]
+11/07/2024	15:38:28 ::1---/v1/api/recruiter/jobs/668f9636b82e2acce654285a/update_job---PATCH---"quantity" must be one of [o, Không giới hạn, number]
+11/07/2024	15:39:13 ::ffff:127.0.0.1---/v1/api/recruiter/jobs/668f9636b82e2acce654285a/update_job---PATCH---Số lượng không hợp lệ
+11/07/2024	16:03:14 ::1---/v1/api/admin/jobs/update/668f9fa973acb56269666f54---PATCH---"salary" is not allowed to be empty
+11/07/2024	16:04:06 ::1---/v1/api/admin/jobs/update/668f9fa973acb56269666f54---PATCH---"salary" is not allowed to be empty
+11/07/2024	16:04:41 ::ffff:127.0.0.1---/v1/api/recruiter/jobs/668f9fa973acb56269666f54/update_job---PATCH---"salary" is not allowed to be empty
+11/07/2024	20:30:01 ::1---/v1/api/recruiter/information---GET---Vui lòng đăng nhập lại
+11/07/2024	20:30:02 ::1---/v1/api/recruiter/information---GET---Vui lòng đăng nhập lại
+11/07/2024	20:30:02 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+11/07/2024	20:30:02 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+11/07/2024	20:59:54 ::1---/v1/api/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---'"type"' không hợp lệ
+11/07/2024	20:59:54 ::1---/v1/api/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---'"type"' không hợp lệ
+11/07/2024	21:01:47 ::1---/v1/api/recruiter/jobs/668ba2300cc51f5f551667dd/update_job---PATCH---Số lượng không hợp lệ
+11/07/2024	21:13:04 ::1---/v1/api/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---'"type"' không hợp lệ
+11/07/2024	21:13:04 ::1---/v1/api/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---'"type"' không hợp lệ
+11/07/2024	21:13:16 ::1---/v1/api/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---'"type"' không hợp lệ
+11/07/2024	21:13:16 ::1---/v1/api/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---'"type"' không hợp lệ
+11/07/2024	21:13:16 ::1---/v1/api/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---'"type"' không hợp lệ
+11/07/2024	21:13:16 ::1---/v1/api/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---'"type"' không hợp lệ

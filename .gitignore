@@ -3,3 +3,4 @@ Dockerfile
 .Dockerignore
 ab.exe
 abs.exe
+manifest.yaml

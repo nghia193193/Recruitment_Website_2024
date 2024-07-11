@@ -51,7 +51,7 @@ const jobSchema = new Schema({
         required: true
     }, // lợi ích
     quantity: { // số lượng tuyển
-        type: Number,
+        type: String,
         reuired: true
     },
     deadline: { // hạn tuyển

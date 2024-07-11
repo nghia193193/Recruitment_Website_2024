@@ -633,8 +633,10 @@ class RecruiterService {
             let application;
             const acceptedNumber = await ApplicationService.getJobAcceptedApplicationNumber({ jobId });
             if (status === "Đã nhận") {
-                if (acceptedNumber >= quantity) {
-                    throw new BadRequestError("Đã đủ số lượng cần tuyển, không thể nhận thêm!");
+                if (quantity !== 'o' && quantity !== 'Không giới hạn') {
+                    if (acceptedNumber >= +quantity) {
+                        throw new BadRequestError("Đã đủ số lượng cần tuyển, không thể nhận thêm!");
+                    }
                 }
                 application = await Application.findOneAndUpdate({ _id: applicationId }, {
                     $set: {

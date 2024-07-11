@@ -57,7 +57,7 @@ class ResumeController {
             throw new BadRequestError(error.details[0].message);
         }
         const { avatar } = value;
-        value.avatar = `http://localhost:${process.env.PORT}/images/${avatar[0].filename}`;
+        value.avatar = `${process.env.DOMAIN}/images/${avatar[0].filename}`;
         const { message, metadata } = await ResumeService.addResume({ ...req.payload, ...value });
         new OK({
             message,
@@ -93,7 +93,7 @@ class ResumeController {
         }
         const { avatar } = value;
         if (avatar) {
-            value.avatar = `http://localhost:${process.env.PORT}/images/${avatar[0].filename}`;
+            value.avatar = `${process.env.DOMAIN}/images/${avatar[0].filename}`;
         }
         const { message, metadata } = await ResumeService.updateResume({ ...req.payload, ...value });
         new OK({

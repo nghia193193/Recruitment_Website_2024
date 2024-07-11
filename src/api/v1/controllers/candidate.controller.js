@@ -74,7 +74,7 @@ class CandidateController {
             throw new BadRequestError(error.details[0].message);
         }
         const { avatar } = value;
-        value.avatar = `http://localhost:${process.env.PORT}/images/${avatar[0].filename}`;
+        value.avatar = `${process.env.DOMAIN}/images/${avatar[0].filename}`;
         const { message, metadata } = await CandidateService.updateAvatar({ ...req.payload, ...value });
         new OK({
             message,
@@ -254,7 +254,7 @@ class CandidateController {
             throw new BadRequestError(error.details[0].message);
         }
         let { uploadFile } = value;
-        uploadFile = `http://localhost:${process.env.PORT}/images/${uploadFile[0].filename}`;
+        uploadFile = `${process.env.DOMAIN}/images/${uploadFile[0].filename}`;
         const message = "Upload thành công.";
         const metadata = {
             uploadFile

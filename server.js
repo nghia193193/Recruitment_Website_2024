@@ -1,8 +1,6 @@
 const jwt = require('jsonwebtoken');
-
 const app = require('./src/api/v1/app');
-const { app: { port } } = require('./src/api/v1/configs/config.mongodb');
-const { UnauthorizedRequestError } = require('./src/api/v1/core/error.response');
+const config = require('./src/api/v1/configs/config.mongodb');
 const server = require('http').Server(app);
 const io = require('socket.io')(server, {
     cors: {
@@ -35,8 +33,8 @@ global._io.use((socket, next) => {
 
 global._io.on('connection', SocketService.connection);
 
-server.listen(port, () => {
-    console.log(`Server is running on ${port}`)
+server.listen(config.app.port, () => {
+    console.log(`Server is running on ${config.app.port}`)
 })
 
 

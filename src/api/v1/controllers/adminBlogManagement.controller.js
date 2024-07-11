@@ -49,7 +49,7 @@ class AdminBlogMangementController {
             throw new BadRequestError(error.details[0].message);
         }
         const { uploadFile } = value;
-        value.uploadFile = `http://localhost:${process.env.PORT}/images/${uploadFile[0].filename}`;
+        value.uploadFile = `${process.env.DOMAIN}/images/${uploadFile[0].filename}`;
         const { metadata, message, options } = await BlogService.createBlog({ ...req.payload, ...value });
         new CREATED({
             message: message,
@@ -78,7 +78,7 @@ class AdminBlogMangementController {
         }
         const { uploadFile } = value;
         if (uploadFile) {
-            value.uploadFile = `http://localhost:${process.env.PORT}/images/${uploadFile[0].filename}`;
+            value.uploadFile = `${process.env.DOMAIN}/images/${uploadFile[0].filename}`;
         }
         const { metadata, message, options } = await BlogService.updateBlog(value);
         new OK({

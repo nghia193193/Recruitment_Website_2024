@@ -50,10 +50,10 @@ class AdminRecruiterManagementController {
         }
         const { companyLogo, companyCoverPhoto } = value;
         if (companyLogo) {
-            value.companyLogo = `http://localhost:${process.env.PORT}/images/${companyLogo[0].filename}`;
+            value.companyLogo = `${process.env.DOMAIN}/images/${companyLogo[0].filename}`;
         }
         if (companyCoverPhoto) {
-            value.companyCoverPhoto = `http://localhost:${process.env.PORT}/images/${companyCoverPhoto[0].filename}`;
+            value.companyCoverPhoto = `${process.env.DOMAIN}/images/${companyCoverPhoto[0].filename}`;
         }
         const { metadata, message } = await AdminRecruiterManagementService.createRecruiter({ ...value });
         new CREATED({
@@ -82,10 +82,10 @@ class AdminRecruiterManagementController {
         }
         const { companyLogo, companyCoverPhoto } = value;
         if (companyLogo) {
-            value.companyLogo = `http://localhost:${process.env.PORT}/images/${companyLogo[0].filename}`;
+            value.companyLogo = `${process.env.DOMAIN}/images/${companyLogo[0].filename}`;
         }
         if (companyCoverPhoto) {
-            value.companyCoverPhoto = `http://localhost:${process.env.PORT}/images/${companyCoverPhoto[0].filename}`;
+            value.companyCoverPhoto = `${process.env.DOMAIN}/images/${companyCoverPhoto[0].filename}`;
         }
         const { metadata, message } = await AdminRecruiterManagementService.updateRecruiter({ ...value });
         new OK({
