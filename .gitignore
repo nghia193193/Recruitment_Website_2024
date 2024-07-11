@@ -4,3 +4,5 @@ Dockerfile
 ab.exe
 abs.exe
 manifest.yaml
+.env
+ecosystem.config.js
