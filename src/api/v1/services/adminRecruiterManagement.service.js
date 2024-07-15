@@ -287,7 +287,7 @@ class AdminRecruiterManagementService {
             } else {
                 result = await Recruiter.findOneAndUpdate({ _id: recruiterId }, {
                     $set: {
-                        acceptanceStatus: acceptanceStatus, reasonDecline, firstApproval: false
+                        acceptanceStatus: acceptanceStatus, reasonDecline
                     }
                 }, {
                     new: true,

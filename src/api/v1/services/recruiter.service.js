@@ -263,16 +263,29 @@ class RecruiterService {
     static updateProfile = async ({ userId, name, position, phone, contactEmail }) => {
         try {
             const recruiter = await Recruiter.findById(userId)
-                .select("-__v -_id -loginId -verifyEmail -firstApproval -firstUpdate -createdAt -updatedAt -oldInfo -acceptanceStatus").lean();
-            const result = await Recruiter.findOneAndUpdate({ _id: userId }, {
-                $set: {
-                    name, position, phone, contactEmail,
-                    acceptanceStatus: "waiting", oldInfo: { ...recruiter }
-                }
-            }, {
-                new: true,
-                select: { createdAt: 0, updatedAt: 0, __v: 0 }
-            }).lean().populate('loginId')
+                .select("-__v -_id -loginId -verifyEmail -firstApproval -firstUpdate -createdAt -updatedAt -acceptanceStatus").lean();
+            let result;
+            if (!recruiter.oldInfo?.name) {
+                result = await Recruiter.findOneAndUpdate({ _id: userId }, {
+                    $set: {
+                        name, position, phone, contactEmail,
+                        acceptanceStatus: "waiting", oldInfo: { ...recruiter }
+                    }
+                }, {
+                    new: true,
+                    select: { createdAt: 0, updatedAt: 0, __v: 0 }
+                }).lean().populate('loginId')
+            } else {
+                result = await Recruiter.findOneAndUpdate({ _id: userId }, {
+                    $set: {
+                        name, position, phone, contactEmail,
+                        acceptanceStatus: "waiting"
+                    }
+                }, {
+                    new: true,
+                    select: { createdAt: 0, updatedAt: 0, __v: 0 }
+                }).lean().populate('loginId')
+            }
             if (!result) {
                 throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại');
             }
@@ -304,16 +317,43 @@ class RecruiterService {
                 }
             }
             const recruiter = await Recruiter.findById(userId)
-                .select("-__v -_id -loginId -verifyEmail -firstApproval -firstUpdate -createdAt -updatedAt -oldInfo -acceptanceStatus").lean();
-            const result = await Recruiter.findByIdAndUpdate(userId, {
-                $set: {
-                    companyName, companyWebsite, companyAddress, about, employeeNumber, fieldOfActivity, slug,
-                    acceptanceStatus: "waiting", companyLogo, companyCoverPhoto, oldInfo: { ...recruiter }
+                .select("-__v -_id -loginId -verifyEmail -firstApproval -firstUpdate -createdAt -updatedAt -acceptanceStatus").lean();
+            let result;
+            if (!recruiter.oldInfo?.name) {
+                result = await Recruiter.findByIdAndUpdate(userId, {
+                    $set: {
+                        companyName, companyWebsite, companyAddress, about, employeeNumber, fieldOfActivity, slug,
+                        acceptanceStatus: "waiting", companyLogo, companyCoverPhoto, oldInfo: { ...recruiter }
+                    }
+                }, {
+                    new: true,
+                    select: { __v: 0 }
+                }).populate('loginId').lean()
+            } else {
+                if (companyLogo) {
+                    if (companyLogo !== recruiter.companyLogo && recruiter.companyLogo !== recruiter.oldInfo.companyLogo) {
+                        const splitArr = companyLogo.split("/");
+                        const image = splitArr[splitArr.length - 1];
+                        clearImage(image);
+                    }
                 }
-            }, {
-                new: true,
-                select: { __v: 0 }
-            }).populate('loginId').lean()
+                if (companyCoverPhoto) {
+                    if (companyCoverPhoto !== recruiter.companyCoverPhoto && recruiter.companyCoverPhoto !== recruiter.oldInfo.companyCoverPhoto) {
+                        const splitArr = companyCoverPhoto.split("/");
+                        const image = splitArr[splitArr.length - 1];
+                        clearImage(image);
+                    }
+                }
+                result = await Recruiter.findByIdAndUpdate(userId, {
+                    $set: {
+                        companyName, companyWebsite, companyAddress, about, employeeNumber, fieldOfActivity, slug,
+                        acceptanceStatus: "waiting", companyLogo, companyCoverPhoto
+                    }
+                }, {
+                    new: true,
+                    select: { __v: 0 }
+                }).populate('loginId').lean()
+            }  
             if (!result) {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
             }
@@ -633,7 +673,7 @@ class RecruiterService {
             let application;
             const acceptedNumber = await ApplicationService.getJobAcceptedApplicationNumber({ jobId });
             if (status === "Đã nhận") {
-                if (quantity !== 'o' && quantity !== 'Không giới hạn') {
+                if (quantity !== 'o') {
                     if (acceptedNumber >= +quantity) {
                         throw new BadRequestError("Đã đủ số lượng cần tuyển, không thể nhận thêm!");
                     }
