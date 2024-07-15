@@ -27,12 +27,8 @@ router.patch('/update_company_information', verifyAccessToken, authPageRecruiter
 router.post('/change_password', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.changePassword));
 // create job
 router.post('/jobs/create_job', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.createJob));
-// get list waiting job
-router.get('/jobs/waiting_jobs', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListWaitingJob));
-// get list accepted job
-router.get('/jobs/accepted_jobs', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListAcceptedJob));
-// get list declined job
-router.get('/jobs/declined_jobs', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListDeclinedJob));
+// get list job
+router.get('/jobs/list_job', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListJobOfRecruiterById));
 // get list nearing expiration job
 router.get('/jobs/nearing_expiration_jobs', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListNearingExpirationdJob));
 // get list expired job

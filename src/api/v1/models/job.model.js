@@ -72,14 +72,7 @@ const jobSchema = new Schema({
         type: String,
         enum: ['active', 'inactive'],
         default: 'active'
-    },
-    acceptanceStatus: {
-        type: String,
-        enum: ["waiting", "accept", "decline"],
-        default: "waiting"
-    },
-    approvalDate: Date,
-    reasonDecline: String
+    }
 }, {
     timestamps: true
 })

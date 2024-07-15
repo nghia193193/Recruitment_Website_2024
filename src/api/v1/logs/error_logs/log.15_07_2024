@@ -14,3 +14,128 @@
 15/07/2024	07:17:01 ::1---/v1/api/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---'"type"' không hợp lệ
 15/07/2024	07:17:01 ::1---/v1/api/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---'"type"' không hợp lệ
 15/07/2024	07:17:01 ::1---/v1/api/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---'"type"' không hợp lệ
+15/07/2024	09:36:53 ::ffff:127.0.0.1---/api/v1/majors---GET---Page not found
+15/07/2024	09:36:53 ::ffff:127.0.0.1---/api/v1/jobs?page=1&limit=10---GET---Page not found
+15/07/2024	09:36:53 ::ffff:127.0.0.1---/api/v1/recruiters?page=1&limit=10---GET---Page not found
+15/07/2024	09:36:53 ::ffff:127.0.0.1---/api/v1/highlighted_jobs?page=1&limit=6---GET---Page not found
+15/07/2024	09:36:53 ::ffff:127.0.0.1---/api/v1/blogs?page=1&limit=10---GET---Page not found
+15/07/2024	09:36:53 ::ffff:127.0.0.1---/api/v1/experience---GET---Page not found
+15/07/2024	09:36:53 ::ffff:127.0.0.1---/api/v1/level_requirement---GET---Page not found
+15/07/2024	09:36:53 ::ffff:127.0.0.1---/api/v1/field_of_activity---GET---Page not found
+15/07/2024	09:36:53 ::ffff:127.0.0.1---/api/v1/gender_requirement---GET---Page not found
+15/07/2024	09:36:53 ::ffff:127.0.0.1---/api/v1/job_type---GET---Page not found
+15/07/2024	09:36:57 ::1---/api/v1/login---POST---Page not found
+15/07/2024	09:37:22 ::1---/api/v1/login---POST---Page not found
+15/07/2024	09:37:28 ::1---/api/v1/login---POST---Page not found
+15/07/2024	09:37:29 ::1---/api/v1/recruiters?page=1&limit=6---GET---Page not found
+15/07/2024	09:37:29 ::1---/api/v1/recruiters?page=1&limit=6---GET---Page not found
+15/07/2024	09:37:31 ::1---/api/v1/login---POST---Page not found
+15/07/2024	09:37:52 ::1---/api/v1/jobs?page=1&limit=6---GET---Page not found
+15/07/2024	09:37:52 ::1---/api/v1/jobs?page=1&limit=6---GET---Page not found
+15/07/2024	09:37:56 ::1---/api/v1/recruiters?page=1&limit=6---GET---Page not found
+15/07/2024	09:37:56 ::1---/api/v1/recruiters?page=1&limit=6---GET---Page not found
+15/07/2024	09:37:57 ::1---/api/v1/jobs?page=1&limit=6---GET---Page not found
+15/07/2024	09:37:57 ::1---/api/v1/jobs?page=1&limit=6---GET---Page not found
+15/07/2024	09:37:58 ::1---/api/v1/blogs?type=%C4%90%E1%BB%8Bnh+h%C6%B0%E1%BB%9Bng+ngh%E1%BB%81+nghi%E1%BB%87p&page=1&limit=4---GET---Page not found
+15/07/2024	09:37:58 ::1---/api/v1/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---Page not found
+15/07/2024	09:37:58 ::1---/api/v1/blogs?type=Ch%E1%BA%BF+%C4%91%E1%BB%99+l%C6%B0%C6%A1ng+th%C6%B0%E1%BB%9Fng&page=1&limit=4---GET---Page not found
+15/07/2024	09:37:58 ::1---/api/v1/blogs?type=Ki%E1%BA%BFn+th%E1%BB%A9c+chuy%C3%AAn+ng%C3%A0nh&page=1&limit=4---GET---Page not found
+15/07/2024	09:37:58 ::1---/api/v1/blogs?page=1&limit=5---GET---Page not found
+15/07/2024	09:37:58 ::1---/api/v1/blogs?type=%C4%90%E1%BB%8Bnh+h%C6%B0%E1%BB%9Bng+ngh%E1%BB%81+nghi%E1%BB%87p&page=1&limit=4---GET---Page not found
+15/07/2024	09:37:58 ::1---/api/v1/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---Page not found
+15/07/2024	09:37:58 ::1---/api/v1/blogs?type=Ch%E1%BA%BF+%C4%91%E1%BB%99+l%C6%B0%C6%A1ng+th%C6%B0%E1%BB%9Fng&page=1&limit=4---GET---Page not found
+15/07/2024	09:37:58 ::1---/api/v1/blogs?type=Ki%E1%BA%BFn+th%E1%BB%A9c+chuy%C3%AAn+ng%C3%A0nh&page=1&limit=4---GET---Page not found
+15/07/2024	09:37:58 ::1---/api/v1/blogs?page=1&limit=5---GET---Page not found
+15/07/2024	09:37:58 ::1---/api/v1/blogs?type=%C4%90%E1%BB%8Bnh+h%C6%B0%E1%BB%9Bng+ngh%E1%BB%81+nghi%E1%BB%87p&page=1&limit=4---GET---Page not found
+15/07/2024	09:37:58 ::1---/api/v1/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---Page not found
+15/07/2024	09:37:58 ::1---/api/v1/blogs?type=Ch%E1%BA%BF+%C4%91%E1%BB%99+l%C6%B0%C6%A1ng+th%C6%B0%E1%BB%9Fng&page=1&limit=4---GET---Page not found
+15/07/2024	09:37:58 ::1---/api/v1/blogs?type=Ki%E1%BA%BFn+th%E1%BB%A9c+chuy%C3%AAn+ng%C3%A0nh&page=1&limit=4---GET---Page not found
+15/07/2024	09:37:58 ::1---/api/v1/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---Page not found
+15/07/2024	09:37:58 ::1---/api/v1/blogs?type=%C4%90%E1%BB%8Bnh+h%C6%B0%E1%BB%9Bng+ngh%E1%BB%81+nghi%E1%BB%87p&page=1&limit=4---GET---Page not found
+15/07/2024	09:37:58 ::1---/api/v1/blogs?type=Ch%E1%BA%BF+%C4%91%E1%BB%99+l%C6%B0%C6%A1ng+th%C6%B0%E1%BB%9Fng&page=1&limit=4---GET---Page not found
+15/07/2024	09:37:58 ::1---/api/v1/blogs?type=Ki%E1%BA%BFn+th%E1%BB%A9c+chuy%C3%AAn+ng%C3%A0nh&page=1&limit=4---GET---Page not found
+15/07/2024	09:38:00 ::1---/api/v1/jobs?page=1&limit=6---GET---Page not found
+15/07/2024	09:38:00 ::1---/api/v1/jobs?page=1&limit=6---GET---Page not found
+15/07/2024	09:41:15 ::1---/images/fe212183-6836-490a-861c-a131323672c9.png---GET---Page not found
+15/07/2024	21:00:24 ::1---/v1/api/login---POST---Mật khẩu không chính xác
+15/07/2024	21:11:14 ::1---/v1/api/recruiter/jobs/create_job---POST---Bạn đã đạt giới hạn số bài đăng tuyển dụng trong tháng là: 10 bài.
+15/07/2024	21:11:27 ::1---/v1/api/recruiter/jobs/create_job---POST---Bạn đã đạt giới hạn số bài đăng tuyển dụng trong tháng là: 10 bài.
+15/07/2024	21:11:33 ::1---/v1/api/recruiter/jobs/create_job---POST---Bạn đã đạt giới hạn số bài đăng tuyển dụng trong tháng là: 10 bài.
+15/07/2024	21:27:42 ::1---/v1/api/recruiter/jobs/create_job---POST---Bạn đã đạt giới hạn số bài đăng tuyển dụng trong tháng là: 10 bài.
+15/07/2024	21:39:21 ::1---/images/16a07639-9b74-46ea-8f2e-f18c6dc01607.png---GET---Page not found
+15/07/2024	21:39:24 ::1---/images/16a07639-9b74-46ea-8f2e-f18c6dc01607.png---GET---Page not found
+15/07/2024	21:40:37 ::1---/images/16a07639-9b74-46ea-8f2e-f18c6dc01607.png---GET---Page not found
+15/07/2024	22:54:57 ::1---/v1/api/recruiter/notifications/list_notification---GET---Vui lòng đăng nhập lại
+15/07/2024	22:54:57 ::1---/v1/api/recruiter/notifications/list_notification---GET---Vui lòng đăng nhập lại
+15/07/2024	22:54:57 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+15/07/2024	22:54:57 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+15/07/2024	22:55:13 ::1---/v1/api/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---'"type"' không hợp lệ
+15/07/2024	22:55:13 ::1---/v1/api/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---'"type"' không hợp lệ
+15/07/2024	22:55:14 ::1---/v1/api/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---'"type"' không hợp lệ
+15/07/2024	22:55:14 ::1---/v1/api/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---'"type"' không hợp lệ
+15/07/2024	22:58:25 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+15/07/2024	22:58:25 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	22:58:25 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+15/07/2024	22:58:25 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	22:58:28 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	22:58:28 ::1---/v1/api/recruiter/jobs/declined_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	22:58:31 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	22:58:36 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	22:58:36 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+15/07/2024	22:58:36 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	22:58:36 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+15/07/2024	23:03:24 ::1---/v1/api/recruiter/jobs/create_job---POST---acceptanceStatus is not defined
+15/07/2024	23:04:36 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+15/07/2024	23:04:36 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	23:04:37 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+15/07/2024	23:04:37 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	23:04:39 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	23:04:40 ::1---/v1/api/recruiter/jobs/declined_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	23:06:35 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+15/07/2024	23:06:35 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	23:06:35 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+15/07/2024	23:06:35 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	23:06:36 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	23:06:37 ::1---/v1/api/recruiter/jobs/declined_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	23:06:38 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	23:06:38 ::1---/v1/api/recruiter/jobs/declined_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	23:06:39 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	23:06:40 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	23:08:08 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+15/07/2024	23:08:08 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	23:08:09 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+15/07/2024	23:08:09 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	23:08:27 ::1---/v1/api/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---'"type"' không hợp lệ
+15/07/2024	23:08:27 ::1---/v1/api/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---'"type"' không hợp lệ
+15/07/2024	23:08:27 ::1---/v1/api/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---'"type"' không hợp lệ
+15/07/2024	23:08:27 ::1---/v1/api/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---'"type"' không hợp lệ
+15/07/2024	23:08:34 ::1---/v1/api/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---'"type"' không hợp lệ
+15/07/2024	23:08:34 ::1---/v1/api/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---'"type"' không hợp lệ
+15/07/2024	23:08:34 ::1---/v1/api/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---'"type"' không hợp lệ
+15/07/2024	23:08:34 ::1---/v1/api/blogs?type=B%C3%AD+ki%E1%BA%BFp+t%C3%ACm+vi%E1%BB%87c&page=1&limit=4---GET---'"type"' không hợp lệ
+15/07/2024	23:08:39 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+15/07/2024	23:08:40 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	23:08:40 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+15/07/2024	23:08:40 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	23:08:40 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+15/07/2024	23:08:40 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	23:08:40 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+15/07/2024	23:08:40 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	23:09:24 ::1---/v1/api/candidate/favorite_jobs/check/66954968b2492b1b70ba6351---GET---Hiện tại không thể thêm công việc này
+15/07/2024	23:09:24 ::1---/v1/api/candidate/favorite_jobs/check/66954968b2492b1b70ba6351---GET---Hiện tại không thể thêm công việc này
+15/07/2024	23:09:25 ::1---/v1/api/candidate/favorite_jobs/check/66954968b2492b1b70ba6351---GET---Hiện tại không thể thêm công việc này
+15/07/2024	23:09:25 ::1---/v1/api/candidate/favorite_jobs/check/66954968b2492b1b70ba6351---GET---Hiện tại không thể thêm công việc này
+15/07/2024	23:12:50 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+15/07/2024	23:12:50 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	23:12:50 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+15/07/2024	23:12:50 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+15/07/2024	23:15:40 ::1---/v1/api/candidate/favorite_jobs/check/66954a81fb9212af66bd6bac---GET---Hiện tại không thể thêm công việc này
+15/07/2024	23:15:41 ::1---/v1/api/candidate/favorite_jobs/check/66954a81fb9212af66bd6bac---GET---Hiện tại không thể thêm công việc này
+15/07/2024	23:15:41 ::1---/v1/api/candidate/favorite_jobs/check/66954a81fb9212af66bd6bac---GET---Hiện tại không thể thêm công việc này
+15/07/2024	23:15:42 ::1---/v1/api/candidate/favorite_jobs/check/66954a81fb9212af66bd6bac---GET---Hiện tại không thể thêm công việc này
+15/07/2024	23:16:01 ::1---/v1/api/candidate/favorite_jobs/check/66954a81fb9212af66bd6bac---GET---Hiện tại không thể thêm công việc này
+15/07/2024	23:16:01 ::1---/v1/api/candidate/favorite_jobs/check/66954a81fb9212af66bd6bac---GET---Hiện tại không thể thêm công việc này
+15/07/2024	23:17:01 ::1---/v1/api/candidate/favorite_jobs/check/66954a81fb9212af66bd6bac---GET---Hiện tại không thể thêm công việc này
+15/07/2024	23:17:01 ::1---/v1/api/candidate/favorite_jobs/check/66954a81fb9212af66bd6bac---GET---Hiện tại không thể thêm công việc này
+15/07/2024	23:17:02 ::1---/v1/api/candidate/favorite_jobs/check/66954a81fb9212af66bd6bac---GET---Hiện tại không thể thêm công việc này
+15/07/2024	23:17:02 ::1---/v1/api/candidate/favorite_jobs/check/66954a81fb9212af66bd6bac---GET---Hiện tại không thể thêm công việc này

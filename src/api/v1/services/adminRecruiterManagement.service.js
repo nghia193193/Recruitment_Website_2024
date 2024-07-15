@@ -6,6 +6,7 @@ const { default: mongoose } = require('mongoose');
 const bcrypt = require('bcryptjs');
 const { clearImage } = require('../utils/processImage');
 const RecruiterService = require('./recruiter.service');
+const { RecruiterPostLimit } = require('../models/recruiterPostLimit.model');
 
 class AdminRecruiterManagementService {
     static getListRecruiterByAdmin = async function ({ searchText, field, acceptanceStatus, page, limit }) {
@@ -251,6 +252,7 @@ class AdminRecruiterManagementService {
 
     }
 
+    // Duyệt nhà tuyển dụng
     static approveRecruiter = async ({ recruiterId, acceptanceStatus, reasonDecline }) => {
         try {
             const recruiter = await Recruiter.findById(recruiterId).lean();
@@ -284,6 +286,12 @@ class AdminRecruiterManagementService {
                     new: true,
                     select: { __v: 0, createdAt: 0, udatedAt: 0 }
                 }).populate('loginId').lean()
+
+                // Tạo limit post cho nhà tuyển dụng nếu chưa có
+                const isExist = await RecruiterPostLimit.findOne({ recruiterId }).lean();
+                if (!isExist) {
+                    await RecruiterPostLimit.create({ recruiterId });
+                }
             } else {
                 result = await Recruiter.findOneAndUpdate({ _id: recruiterId }, {
                     $set: {

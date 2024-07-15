@@ -280,12 +280,12 @@ class RecruiterController {
         }).send(res)
     }
 
-    getListAcceptedJob = async (req, res, next) => {
+    getListJobOfRecruiterById = async (req, res, next) => {
         const { error, value } = RecruiterValidation.validateRecruiterGetListJob({ ...req.body, ...req.query });
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const { metadata, message, options } = await JobService.getListAcceptedJobByRecruiter({ ...value, ...req.payload });
+        const { metadata, message, options } = await JobService.getListJobOfRecruiterById({ ...value, ...req.payload });
         new OK({
             message: message,
             metadata: { ...metadata },

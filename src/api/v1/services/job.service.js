@@ -5,6 +5,7 @@ const ApplicationService = require("./application.service");
 const { NotFoundRequestError } = require("../core/error.response");
 
 class JobService {
+    // Lấy danh sách công việc
     static getListJob = async ({ name, province, type, levelRequirement, experience, field,
         genderRequirement, page, limit }) => {
         try {
@@ -13,7 +14,6 @@ class JobService {
             // query
             const query = {
                 status: "active",
-                acceptanceStatus: "accept",
                 deadline: { $gte: Date.now() }
             };
             let result;
@@ -38,14 +38,14 @@ class JobService {
             if (name) {
                 query["$text"] = { $search: `"${name}"` };
                 result = await Job.find(query, { score: { $meta: "textScore" } }).lean().populate("recruiterId")
-                    .select("name field type levelRequirement experience salary province approvalDate deadline recruiterId createdAt updatedAt")
-                    .sort({ score: { $meta: "textScore" }, approvalDate: -1 })
+                    .select("name field type levelRequirement experience salary province deadline recruiterId createdAt updatedAt")
+                    .sort({ score: { $meta: "textScore" }, updatedAt: -1 })
                     .skip((page - 1) * limit)
                     .limit(limit)
             } else {
                 result = await Job.find(query).lean().populate("recruiterId")
-                    .select("name field type levelRequirement experience salary province approvalDate deadline recruiterId createdAt updatedAt")
-                    .sort({ approvalDate: -1 })
+                    .select("name field type levelRequirement experience salary province deadline recruiterId createdAt updatedAt")
+                    .sort({ updatedAt: -1 })
                     .skip((page - 1) * limit)
                     .limit(limit)
             }
@@ -58,7 +58,6 @@ class JobService {
                     job.companyLogo = job.recruiterId.companyLogo ?? null;
                     job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
                     job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-                    job.approvalDate = job.approvalDate ? formatInTimeZone(job.approvalDate, "Asia/Ho_Chi_Minh", "dd/MM/yyyy") : null;
                     job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
                     delete job.recruiterId;
                     return { ...job };
@@ -80,6 +79,7 @@ class JobService {
         }
     }
 
+    // Lấy thông tin chi tiết công việc
     static getJobDetail = async ({ jobId }) => {
         try {
             let job = await Job.findById(jobId).lean().populate("recruiterId")
@@ -93,7 +93,6 @@ class JobService {
             job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
             job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
             job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-            job.approvalDate = job.approvalDate ? formatInTimeZone(job.approvalDate, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX") : undefined;
             job.companyName = job.recruiterId.companyName ?? null;
             job.companySlug = job.recruiterId.slug ?? null;
             job.companyLogo = job.recruiterId.companyLogo ?? null;
@@ -101,7 +100,6 @@ class JobService {
             job.companyAddress = job.recruiterId.companyAddress;
             job.acceptedNumber = acceptedNumber;
             job.recruiterId = job.recruiterId._id.toString();
-            job.reasonDecline = job.reasonDecline ?? null;
 
             return {
                 message: "Lấy thông tin công việc thành công",
@@ -112,6 +110,7 @@ class JobService {
         }
     }
 
+    // Lấy danh sách công việc của nhà tuyển dụng theo slug
     static getListJobOfRecruiter = async ({ slug, name, province, type, levelRequirement, experience, field,
         genderRequirement, page, limit }) => {
         try {
@@ -121,7 +120,6 @@ class JobService {
             const matchStage = {
                 "recruiters.slug": slug,
                 "status": "active",
-                "acceptanceStatus": "accept",
                 "deadline": { $gte: new Date() }
             }
             if (province) matchStage.province = province;
@@ -162,8 +160,6 @@ class JobService {
                     "experience": 1,
                     "field": 1,
                     "deadline": 1,
-                    "acceptanceStatus": 1,
-                    "approvalDate": 1,
                     "recruiters.companyName": 1,
                     "recruiters.slug": 1,
                     "recruiters.employeeNumber": 1,
@@ -195,7 +191,6 @@ class JobService {
                 job.employeeNumber = job.recruiters[0].employeeNumber;
                 job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
                 job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-                job.approvalDate = job.approvalDate ? formatInTimeZone(job.approvalDate, "Asia/Ho_Chi_Minh", "dd/MM/yyyy") : null;
                 job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
                 delete job.recruiters;
                 return { ...job };
@@ -217,6 +212,7 @@ class JobService {
         }
     }
 
+    // Lấy danh sách công việc liên quan theo lĩnh vực
     static getListRelatedJobByField = async ({ jobId, name, province, type, levelRequirement, experience,
         genderRequirement, page, limit }) => {
         try {
@@ -231,7 +227,6 @@ class JobService {
             const query = {
                 _id: { $ne: jobId },
                 status: "active",
-                acceptanceStatus: "accept",
                 deadline: { $gte: Date.now() },
                 field: field
             };
@@ -255,7 +250,7 @@ class JobService {
             }
             const length = await Job.find(query).lean().countDocuments();
             let result = await Job.find(query).lean().populate("recruiterId")
-                .select("name field type levelRequirement experience salary province approvalDate deadline recruiterId createdAt updatedAt")
+                .select("name field type levelRequirement experience salary province deadline recruiterId createdAt updatedAt")
                 .skip((page - 1) * limit)
                 .limit(limit)
                 .sort({ updatedAt: -1 })
@@ -265,7 +260,6 @@ class JobService {
                 job.companyLogo = job.recruiterId.companyLogo ?? null;
                 job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
                 job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-                job.approvalDate = job.approvalDate ? formatInTimeZone(job.approvalDate, "Asia/Ho_Chi_Minh", "dd/MM/yyyy") : null;
                 job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
                 delete job.recruiterId;
                 return { ...job };
@@ -287,7 +281,8 @@ class JobService {
         }
     }
 
-    static getListJobPremiumPrivilege = async ({ companyName, name, field, levelRequirement, acceptanceStatus, page, limit }) => {
+    // Lấy danh sách công việc ưu tiên tài khoản premium
+    static getListJobPremiumPrivilege = async ({ companyName, name, field, levelRequirement, page, limit }) => {
         try {
             page = page ? page : 1;
             limit = limit ? limit : 5;
@@ -307,9 +302,6 @@ class JobService {
             }
             if (levelRequirement) {
                 query["levelRequirement"] = levelRequirement;
-            }
-            if (acceptanceStatus) {
-                query["acceptanceStatus"] = acceptanceStatus;
             }
 
             const commonPipeline = [
@@ -360,8 +352,6 @@ class JobService {
                         "levelRequirement": 1,
                         "field": 1,
                         "deadline": 1,
-                        "acceptanceStatus": 1,
-                        "reasonDecline": 1,
                         "recruiters.companyName": 1,
                         "recruiters.slug": 1,
                         "recruiters.employeeNumber": 1,
@@ -379,40 +369,13 @@ class JobService {
             ];
             const resultPipeline = [
                 { $match: match },
+                ...commonPipeline,
                 {
-                    $facet: {
-                        waiting: [
-                            ...commonPipeline,
-                            {
-                                $match: { acceptanceStatus: "waiting" }
-                            },
-                            {
-                                $sort: {
-                                    "premiumAccount": -1,
-                                    "updatedAt": 1
-                                }
-                            }
-                        ],
-                        nonWaiting: [
-                            ...commonPipeline,
-                            {
-                                $match: { acceptanceStatus: { $ne: "waiting" } }
-                            },
-                            {
-                                $sort: {
-                                    "updatedAt": -1
-                                }
-                            }
-                        ]
+                    $sort: {
+                        "premiumAccount": -1,
+                        "updatedAt": -1
                     }
                 },
-                {
-                    $project: {
-                        results: { $concatArrays: ["$waiting", "$nonWaiting"] }
-                    }
-                },
-                { $unwind: "$results" },
-                { $replaceRoot: { newRoot: "$results" } },
                 {
                     $skip: (page - 1) * limit
                 },
@@ -425,7 +388,6 @@ class JobService {
             const length = totalDocument.length > 0 ? totalDocument[0].totalDocuments : 0;
             let result = await Job.aggregate(resultPipeline);
             result = result.map(job => {
-                job.reasonDecline = job.reasonDecline ?? null;
                 job.companySlug = job.recruiters[0].slug ?? null;
                 job.companyName = job.recruiters[0].companyName ?? null;
                 job.companyLogo = job.recruiters[0].companyLogo ?? null;
@@ -447,6 +409,7 @@ class JobService {
         }
     }
 
+    // Lấy danh sách công việc nổi bật trang chủ
     static getListJobPremiumPrivilegeHome = async ({ name, province, type, levelRequirement, experience, field,
         genderRequirement, page, limit }) => {
         try {
@@ -454,7 +417,6 @@ class JobService {
             limit = limit ? limit : 5;
             const match = {
                 status: "active",
-                acceptanceStatus: "accept",
                 deadline: { $gte: new Date() }
             };
             if (name) {
@@ -542,8 +504,6 @@ class JobService {
                         "levelRequirement": 1,
                         "field": 1,
                         "deadline": 1,
-                        "acceptanceStatus": 1,
-                        "reasonDecline": 1,
                         "recruiters.companyName": 1,
                         "recruiters.slug": 1,
                         "recruiters.employeeNumber": 1,
@@ -582,7 +542,6 @@ class JobService {
             const length = totalDocument.length > 0 ? totalDocument[0].totalDocuments : 0;
             let result = await Job.aggregate(resultPipeline);
             result = result.map(job => {
-                job.reasonDecline = job.reasonDecline ?? null;
                 job.companySlug = job.recruiters[0].slug ?? null;
                 job.companyName = job.recruiters[0].companyName ?? null;
                 job.companyLogo = job.recruiters[0].companyLogo ?? null;
@@ -604,65 +563,13 @@ class JobService {
         }
     }
 
-    static getListWaitingJobByRecruiter = async function ({ userId, name, field, levelRequirement, status, page, limit }) {
+    // Lấy danh sách công việc của nhà tuyển dụng
+    static getListJobOfRecruiterById = async function ({ userId, name, field, levelRequirement, status, page, limit }) {
         try {
             page = page ? +page : 1;
             limit = limit ? +limit : 5;
             const query = {
                 recruiterId: userId,
-                acceptanceStatus: "waiting"
-            }
-            if (name) {
-                query["$text"] = { $search: name };
-            }
-            if (field) {
-                query["field"] = field;
-            }
-            if (levelRequirement) {
-                query["levelRequirement"] = levelRequirement;
-            }
-            if (status) {
-                query["status"] = status;
-            }
-            const length = await Job.find(query).lean().countDocuments();
-            let result = await Job.find(query).lean()
-                .select("name field type levelRequirement status deadline reasonDecline")
-                .skip((page - 1) * limit)
-                .limit(limit)
-                .sort({ updatedAt: -1 })
-            let mappedList = await Promise.all(
-                result.map(async (item) => {
-                    const applicationNumber = await ApplicationService.getJobApplicationNumber({ jobId: item._id });
-                    return {
-                        ...item,
-                        reasonDecline: item.reasonDecline ?? null,
-                        applicationNumber: applicationNumber
-                    }
-                })
-            )
-            return {
-                message: "Lấy danh sách công việc thành công",
-                metadata: {
-                    listWaitingJob: mappedList,
-                    totalElement: length
-                },
-                options: {
-                    page: page,
-                    limit: limit
-                }
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    static getListAcceptedJobByRecruiter = async function ({ userId, name, field, levelRequirement, status, page, limit }) {
-        try {
-            page = page ? +page : 1;
-            limit = limit ? +limit : 5;
-            const query = {
-                recruiterId: userId,
-                acceptanceStatus: "accept",
                 deadline: { $gte: Date.now() }
             }
             if (name) {
@@ -679,7 +586,7 @@ class JobService {
             }
             const length = await Job.find(query).lean().countDocuments();
             const result = await Job.find(query).lean()
-                .select("name field type levelRequirement status deadline reasonDecline")
+                .select("name field type levelRequirement status deadline")
                 .skip((page - 1) * limit)
                 .limit(limit)
                 .sort({ updatedAt: -1 })
@@ -688,7 +595,6 @@ class JobService {
                     const applicationNumber = await ApplicationService.getJobApplicationNumber({ jobId: item._id });
                     return {
                         ...item,
-                        reasonDecline: item.reasonDecline ?? null,
                         applicationNumber: applicationNumber
                     }
                 })
@@ -709,58 +615,7 @@ class JobService {
         }
     }
 
-    static getListDeclinedJobByRecruiter = async function ({ userId, name, field, levelRequirement, status, page, limit }) {
-        try {
-            page = page ? +page : 1;
-            limit = limit ? +limit : 5;
-            const query = {
-                recruiterId: userId,
-                acceptanceStatus: "decline"
-            }
-            if (name) {
-                query["$text"] = { $search: name };
-            }
-            if (field) {
-                query["field"] = field;
-            }
-            if (levelRequirement) {
-                query["levelRequirement"] = levelRequirement;
-            }
-            if (status) {
-                query["status"] = status;
-            }
-            const length = await Job.find(query).lean().countDocuments();
-            let result = await Job.find(query).lean()
-                .select("name field type levelRequirement status deadline reasonDecline")
-                .skip((page - 1) * limit)
-                .limit(limit)
-                .sort({ updatedAt: -1 })
-            let mappedList = await Promise.all(
-                result.map(async (item) => {
-                    const applicationNumber = await ApplicationService.getJobApplicationNumber({ jobId: item._id });
-                    return {
-                        ...item,
-                        reasonDecline: item.reasonDecline ?? null,
-                        applicationNumber: applicationNumber
-                    }
-                })
-            )
-            return {
-                message: "Lấy danh sách công việc thành công",
-                metadata: {
-                    listDeclinedJob: mappedList,
-                    totalElement: length
-                },
-                options: {
-                    page: page,
-                    limit: limit
-                }
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
+    // Lấy danh sách công việc sắp hết hạn
     static getListNearingExpirationdJobByRecruiter = async function ({ userId, name, field, levelRequirement, status, page, limit }) {
         try {
             page = page ? +page : 1;
@@ -785,7 +640,7 @@ class JobService {
             }
             const length = await Job.find(query).lean().countDocuments();
             let result = await Job.find(query).lean()
-                .select("name field type levelRequirement status deadline reasonDecline")
+                .select("name field type levelRequirement status deadline")
                 .skip((page - 1) * limit)
                 .limit(limit)
                 .sort({ updatedAt: -1 })
@@ -794,7 +649,6 @@ class JobService {
                     const applicationNumber = await ApplicationService.getJobApplicationNumber({ jobId: item._id });
                     return {
                         ...item,
-                        reasonDecline: item.reasonDecline ?? null,
                         applicationNumber: applicationNumber
                     }
                 })
@@ -815,6 +669,7 @@ class JobService {
         }
     }
 
+    // Lấy danh sách công việc đã hết hạn
     static getListExpiredJobByRecruiter = async function ({ userId, name, field, levelRequirement, status, page, limit }) {
         try {
             page = page ? +page : 1;
@@ -837,7 +692,7 @@ class JobService {
             }
             const length = await Job.find(query).lean().countDocuments();
             let result = await Job.find(query).lean()
-                .select("name field type levelRequirement status deadline reasonDecline")
+                .select("name field type levelRequirement status deadline")
                 .skip((page - 1) * limit)
                 .limit(limit)
                 .sort({ updatedAt: -1 })
@@ -846,7 +701,6 @@ class JobService {
                     const applicationNumber = await ApplicationService.getJobApplicationNumber({ jobId: item._id });
                     return {
                         ...item,
-                        reasonDecline: item.reasonDecline ?? null,
                         applicationNumber: applicationNumber
                     }
                 })
@@ -867,6 +721,7 @@ class JobService {
         }
     }
 
+    // Lấy thông tin chi tiết công việc bằng nhà tuyển dụng
     static getJobDetailByRecruiter = async function ({ jobId }) {
         try {
             let job = await Job.findOne({ _id: jobId }).lean()
@@ -874,7 +729,6 @@ class JobService {
             if (!job) {
                 throw new NotFoundRequestError("Không tìm thấy công việc");
             }
-            job.reasonDecline = job.reasonDecline ?? null;
             job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
             job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
             return {

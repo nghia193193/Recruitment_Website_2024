@@ -13,7 +13,5 @@ router.post('/create', verifyAccessToken, authPageAdmin, asyncHandler(adminJobMa
 router.patch('/update/:jobId', verifyAccessToken, authPageAdmin, asyncHandler(adminJobManagementController.updateJob));
 // get job detail
 router.get('/detail/:jobId', verifyAccessToken, authPageAdmin, asyncHandler(jobController.getJobDetail));
-// approve job
-router.patch('/approve/:jobId', verifyAccessToken, authPageAdmin, asyncHandler(adminJobManagementController.approveJob));
 
 module.exports = router;

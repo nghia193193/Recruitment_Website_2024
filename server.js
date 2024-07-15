@@ -8,6 +8,7 @@ const io = require('socket.io')(server, {
     }
 });
 const SocketService = require('./src/api/v1/services/socket.service');
+const SchedulerService = require('./src/api/v1/services/scheduler.service');
 
 global._io = io;
 
@@ -34,7 +35,8 @@ global._io.use((socket, next) => {
 global._io.on('connection', SocketService.connection);
 
 server.listen(config.app.port, () => {
-    console.log(`Server is running on ${config.app.port}`)
+    console.log(`Server is running on ${config.app.port}`);
+    SchedulerService.schedulePostCountReset();
 })
 
 

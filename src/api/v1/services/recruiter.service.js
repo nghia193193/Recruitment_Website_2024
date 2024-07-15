@@ -10,7 +10,6 @@ const { status, applicationStatus, mapRolePermission } = require("../utils");
 const bcrypt = require('bcryptjs');
 const RedisService = require("./redis.service");
 const EmailService = require("./email.service");
-const JobService = require("./job.service");
 const OTPService = require("./otp.service");
 const { clearImage } = require('../utils/processImage');
 const mongoose = require('mongoose');
@@ -18,6 +17,9 @@ const ApplicationService = require("./application.service");
 const FavoriteRecruiterService = require("./favoriteRecruiter.service");
 const { formatInTimeZone } = require("date-fns-tz");
 const socketService = require("./socket.service");
+const { RecruiterPostLimit } = require("../models/recruiterPostLimit.model");
+const { FavoriteRecruiter } = require("../models/favoriteRecruiter.model");
+require('dotenv').config();
 
 
 class RecruiterService {
@@ -353,7 +355,7 @@ class RecruiterService {
                     new: true,
                     select: { __v: 0 }
                 }).populate('loginId').lean()
-            }  
+            }
             if (!result) {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
             }
@@ -575,15 +577,62 @@ class RecruiterService {
         }
     }
 
+    // Tạo công việc
     static createJob = async ({ userId, name, location, province, type, levelRequirement, experience, salary,
         field, description, requirement, benefit, quantity, deadline, gender }) => {
         try {
+            // Check premium account
+            const premiumAccount = await Order.checkPremiumAccount({ recruiterId: userId });
+            let limitPost;
+            if (premiumAccount) {
+                limitPost = 10;
+            } else {
+                limitPost = 3;
+            }
+            // Check limit post
+            const recruiterLimitPost = await RecruiterPostLimit.findOne({ recruiterId: userId });
+            if (recruiterLimitPost.postCount >= limitPost) {
+                throw new BadRequestError(`Bạn đã đạt giới hạn số bài đăng tuyển dụng trong tháng là: ${limitPost} bài.`);
+            }
             const result = await Job.create({
                 name, location, province, type, levelRequirement, experience, salary, field, description,
                 requirement, benefit, quantity, deadline, gender, recruiterId: userId
             })
             if (!result) {
                 throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại.');
+            }
+            // Cập nhật số lượng bài đăng
+            const isUpdate = await RecruiterPostLimit.findOneAndUpdate({ recruiterId: userId }, {
+                $inc: { postCount: 1 }
+            }, {
+                new: true
+            })
+            if (!isUpdate) {
+                throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại.');
+            }
+            // Thông báo tới ứng viên yêu thích nhà tuyển dụng
+            const userSockets = socketService.getUserSockets();
+            const listCandidate = await FavoriteRecruiter.find({ favoriteRecruiters: userId.toString() }).lean();
+            const recruiter = await Recruiter.findById(userId).lean();
+            if (listCandidate.length !== 0) {
+                for (let i = 0; i < listCandidate.length; i++) {
+                    const notificationCandidate = await Notification.create({
+                        senderId: userId,
+                        receiverId: listCandidate[i].candidateId,
+                        senderCode: mapRolePermission["RECRUITER"],
+                        link: `${process.env.FE_URL}/jobs/${result._id.toString()}`,
+                        title: "Nhà tuyển dụng đã đăng việc làm mới.",
+                        content: `${recruiter.companyName} vừa đăng tải tin tuyển dụng mới. Vào xem ngay!`
+                    })
+                    if (!notificationCandidate) {
+                        throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+                    }
+                    const socketId = userSockets.get(listCandidate[i].candidateId.toString());
+                    if (socketId) {
+                        _io.to(socketId).emit('user_notification', notificationCandidate);
+                        console.log(`Notification sent to user ${listCandidate[i].candidateId}: ${notificationCandidate}`);
+                    }
+                }
             }
             const returnResult = result.toObject();
             delete returnResult.recruiterId;
@@ -605,7 +654,7 @@ class RecruiterService {
             const job = await Job.findOneAndUpdate({ _id: jobId, recruiterId: userId }, {
                 $set: {
                     name, location, province, type, levelRequirement, experience, salary,
-                    field, description, requirement, benefit, quantity, deadline, gender, acceptanceStatus: "waiting"
+                    field, description, requirement, benefit, quantity, deadline, gender
                 }
             }, {
                 new: true,
