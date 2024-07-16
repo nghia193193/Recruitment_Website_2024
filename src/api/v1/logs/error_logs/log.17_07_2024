@@ -16,3 +16,8 @@
 17/07/2024	00:16:08 ::1---/v1/api/login---POST---Mật khẩu không chính xác
 17/07/2024	00:16:22 ::1---/v1/api/recruiter/information---GET---Cannot read properties of undefined (reading 'totalViolations')
 17/07/2024	00:27:39 ::1---/v1/api/login---POST---Mật khẩu không chính xác
+17/07/2024	00:59:39 ::1---/v1/api/admin/jobs/list_job?acceptanceStatus=accept&page=1&limit=5---GET---BadRequestError is not defined
+17/07/2024	00:59:39 ::1---/v1/api/admin/jobs/list_job?acceptanceStatus=accept&page=1&limit=5---GET---BadRequestError is not defined
+17/07/2024	01:51:17 ::1---/v1/api/recruiter/information---GET---Vui lòng đăng nhập lại
+17/07/2024	02:27:05 ::1---/v1/api/login---POST---Tài khoản của bạn đã bị khóa, vui lòng liên hệ với quản trị viên để biết thêm chi tiết.
+17/07/2024	02:27:35 ::1---/v1/api/login---POST---Tài khoản của bạn đã bị khóa, vui lòng liên hệ với quản trị viên để biết thêm chi tiết.

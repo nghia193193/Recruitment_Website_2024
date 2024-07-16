@@ -66,6 +66,10 @@ const recruiterSchema = new Schema({
     oldInfo: {
         type: Object,
         default: {}
+    },
+    isBan: {
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true

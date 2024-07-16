@@ -141,22 +141,36 @@ class AdminJobManagementService {
                     select: { __v: 0 }
                 }).lean()
                 const recruiterBannedJobCount = await ReportService.recruiterBannedJobCount({ recruiterId: result.recruiterId });
-                const notification = await Notification.create({
-                    senderId: userId,
-                    receiverId: result.recruiterId,
-                    senderCode: mapRolePermission['ADMIN'],
-                    title: 'Cảnh báo vi phạm',
-                    content: `Công việc ${result.name} đã bị khóa do vi phạm. Hiện tại bạn có ${recruiterBannedJobCount} công việc đã bị khóa. Lưu ý rằng khi bạn có 3 công việc bị khóa thì tài khoản bạn sẽ bị cấm.`,
-                    link: `${process.env.FE_URL}/recruiter/profile/jobsPosted`
-                })
-                if (!notification) {
-                    throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
-                }
-                const userSockets = socketService.getUserSockets();
-                const socketId = userSockets.get(result.recruiterId.toString());
-                if (socketId) {
-                    _io.to(socketId).emit('user_notification', notification);
-                    console.log(`Notification sent to user ${application.candidateId.toString()}: ${notification}`);
+                if (recruiterBannedJobCount < 3) {
+                    const notification = await Notification.create({
+                        senderId: userId,
+                        receiverId: result.recruiterId,
+                        senderCode: mapRolePermission['ADMIN'],
+                        title: 'Cảnh báo vi phạm',
+                        content: `Công việc ${result.name} đã bị khóa do vi phạm. Hiện tại bạn có ${recruiterBannedJobCount} công việc đã bị khóa. Lưu ý rằng khi bạn có 3 công việc bị khóa thì tài khoản bạn sẽ bị cấm.`,
+                        link: `${process.env.FE_URL}/recruiter/profile/jobsPosted`
+                    })
+                    if (!notification) {
+                        throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+                    }
+                    const userSockets = socketService.getUserSockets();
+                    const socketId = userSockets.get(result.recruiterId.toString());
+                    if (socketId) {
+                        _io.to(socketId).emit('user_notification', notification);
+                        console.log(`Notification sent to user ${result.recruiterId.toString()}: ${notification}`);
+                    }
+                } else {
+                    const recruiter = await Recruiter.findByIdAndUpdate(result.recruiterId, {
+                        $set: {
+                            isBan: true
+                        }
+                    }, {
+                        new: true
+                    }).lean();
+                    if (!recruiter) {
+                        throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại.');
+                    }
+                    await EmailService.sendBanMailToRecruiter({ toEmail: recruiter.email, companyName: recruiter.companyName });
                 }
             } else {
                 result = await Job.findByIdAndUpdate(jobId, {

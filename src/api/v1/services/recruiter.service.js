@@ -172,9 +172,9 @@ class RecruiterService {
             const recruiterBannedJobCount = await ReportService.recruiterBannedJobCount({ recruiterId: userId });
             let limitPost;
             if (premiumAccount) {
-                recruiterBannedJobCount === 2 ? limitPost = 8 : limitPost = 10;
+                recruiterBannedJobCount >= 2 ? limitPost = 8 : limitPost = 10;
             } else {
-                recruiterBannedJobCount === 2 ? limitPost = 2 : limitPost = 3;
+                recruiterBannedJobCount >= 2 ? limitPost = 2 : limitPost = 3;
             }
             const likeNumber = await FavoriteRecruiterService.getLikeNumber({ recruiterId: userId });
             recruiterInfor.role = recruiterInfor.loginId?.role;
@@ -599,9 +599,9 @@ class RecruiterService {
             const recruiterBannedJobCount = await ReportService.recruiterBannedJobCount({ recruiterId: userId });
             let limitPost;
             if (premiumAccount) {
-                recruiterBannedJobCount === 2 ? limitPost = 8 : limitPost = 10;
+                recruiterBannedJobCount >= 2 ? limitPost = 8 : limitPost = 10;
             } else {
-                recruiterBannedJobCount === 2 ? limitPost = 2 : limitPost = 3;
+                recruiterBannedJobCount >= 2 ? limitPost = 2 : limitPost = 3;
             }
             // Check limit post
             const recruiterLimitPost = await RecruiterPostLimit.findOne({ recruiterId: userId });

@@ -28,6 +28,11 @@ class AccessService {
             if (!user) {
                 throw new BadRequestError('Tài khoản không tồn tại')
             }
+            if (userRole === "RECRUITER") {
+                if (user?.isBan) {
+                    throw new BadRequestError('Tài khoản của bạn đã bị khóa, vui lòng liên hệ với quản trị viên để biết thêm chi tiết.')
+                }
+            }
             const accessToken = await JWTService.signAccessToken(user._id.toString());
             const refreshToken = await JWTService.signRefreshToken(user._id.toString());
             //return 200

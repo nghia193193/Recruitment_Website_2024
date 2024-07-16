@@ -137,6 +137,35 @@ class EmailService {
             throw error;
         }
     }
-}
 
+    static sendBanMailToRecruiter = async ({ toEmail, companyName }) => {
+        try {
+            // send mail
+            let mailDetails = {
+                from: `${process.env.MAIL_SEND}`,
+                to: toEmail,
+                subject: 'Thông báo cấm hoạt động',
+                html: ` 
+                <div style="text-align: left; font-family: arial; margin: 0px 300px; background-color: white; border-radius: 10px; border: solid 1px grey"> 
+                    <div style="padding: 20px">
+                        <span style="margin: 5px 2px">Xin chào <b>${companyName}</b>,</span>
+                        <p style="margin: 5px 2px">Chúng tôi xin thông báo rằng tài khoản của bạn đã bị cấm hoạt động trên trang web của chúng tôi.</p>
+                        <p style="margin: 5px 2px">Lý do: <b>Vi phạm chính sách sử dụng trang web.</b></p>
+                        <p style="margin: 5px 2px">Nếu bạn có bất kỳ thắc mắc nào vui lòng liên hệ với chúng tôi qua email: <b>
+                        ${process.env.MAIL_SEND}</b></p>
+                        <p style="margin: 20px 2px">Trân trọng,</p>
+                        <p style="margin: 5px 2px">Careerhub Services</p>
+                    </div>
+                </div>
+            `
+            };
+            const transporter = await createTransporter();
+            transporter.sendMail(mailDetails, err => {
+                throw new InternalServerError('Có lỗi xảy ra');
+            });
+        } catch (error) {
+            throw error;
+        }
+    }
+}
 module.exports = EmailService;
