@@ -19,6 +19,7 @@ const { formatInTimeZone } = require("date-fns-tz");
 const socketService = require("./socket.service");
 const { RecruiterPostLimit } = require("../models/recruiterPostLimit.model");
 const { FavoriteRecruiter } = require("../models/favoriteRecruiter.model");
+const ReportService = require("./report.service");
 require('dotenv').config();
 
 
@@ -166,13 +167,14 @@ class RecruiterService {
             if (!recruiterInfor) {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
             }
-            const recruiterPostLimit = await RecruiterPostLimit.findOne({ recruiter: userId }).lean(); 
+            const recruiterPostLimit = await RecruiterPostLimit.findOne({ recruiter: userId }).lean();
             const premiumAccount = await Order.checkPremiumAccount({ recruiterId: userId });
+            const recruiterBannedJobCount = await ReportService.recruiterBannedJobCount({ recruiterId: userId });
             let limitPost;
             if (premiumAccount) {
-                limitPost = 10;
+                recruiterBannedJobCount === 2 ? limitPost = 8 : limitPost = 10;
             } else {
-                limitPost = 3;
+                recruiterBannedJobCount === 2 ? limitPost = 2 : limitPost = 3;
             }
             const likeNumber = await FavoriteRecruiterService.getLikeNumber({ recruiterId: userId });
             recruiterInfor.role = recruiterInfor.loginId?.role;
@@ -593,11 +595,13 @@ class RecruiterService {
         try {
             // Check premium account
             const premiumAccount = await Order.checkPremiumAccount({ recruiterId: userId });
+            // Check số công việc bị ban
+            const recruiterBannedJobCount = await ReportService.recruiterBannedJobCount({ recruiterId: userId });
             let limitPost;
             if (premiumAccount) {
-                limitPost = 10;
+                recruiterBannedJobCount === 2 ? limitPost = 8 : limitPost = 10;
             } else {
-                limitPost = 3;
+                recruiterBannedJobCount === 2 ? limitPost = 2 : limitPost = 3;
             }
             // Check limit post
             const recruiterLimitPost = await RecruiterPostLimit.findOne({ recruiterId: userId });
@@ -758,7 +762,7 @@ class RecruiterService {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
             }
             // Gửi email thông báo cho ứng viên
-            await EmailService.sendApplicationResultMail({toEmail: result.email, userName: result.name, jobName, result: status});
+            await EmailService.sendApplicationResultMail({ toEmail: result.email, userName: result.name, jobName, result: status });
             // Thông báo tới ứng viên
             const notification = await Notification.create({
                 senderId: userId,

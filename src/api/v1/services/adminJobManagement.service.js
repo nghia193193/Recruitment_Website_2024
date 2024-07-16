@@ -128,13 +128,13 @@ class AdminJobManagementService {
     }
 
     // Cấm công việc
-    static banJob = async ({ userId, jobId, isBan, bannedReason }) => {
+    static banJob = async ({ userId, jobId, isBan, reasonBan }) => {
         try {
             let result;
             if (isBan == true) {
                 result = await Job.findByIdAndUpdate(jobId, {
                     $set: {
-                        isBan, bannedReason, bannedAt: new Date()
+                        isBan, banReason: reasonBan, bannedAt: new Date()
                     }
                 }, {
                     new: true,
@@ -161,7 +161,7 @@ class AdminJobManagementService {
             } else {
                 result = await Job.findByIdAndUpdate(jobId, {
                     $set: {
-                        isBan, bannedReason: null, bannedAt: null
+                        isBan, banReason: null, bannedAt: null
                     }
                 }, {
                     new: true,

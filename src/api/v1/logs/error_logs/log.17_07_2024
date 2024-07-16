@@ -11,3 +11,8 @@
 17/07/2024	00:04:03 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
 17/07/2024	00:04:03 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
 17/07/2024	00:04:03 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+17/07/2024	00:14:01 ::1---/v1/api/login---POST---Mật khẩu không chính xác
+17/07/2024	00:16:01 ::1---/v1/api/login---POST---Mật khẩu không chính xác
+17/07/2024	00:16:08 ::1---/v1/api/login---POST---Mật khẩu không chính xác
+17/07/2024	00:16:22 ::1---/v1/api/recruiter/information---GET---Cannot read properties of undefined (reading 'totalViolations')
+17/07/2024	00:27:39 ::1---/v1/api/login---POST---Mật khẩu không chính xác

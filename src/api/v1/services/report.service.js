@@ -86,7 +86,7 @@ class ReportService {
                 }
             ]
             const result = await Report.aggregate(pipeline);
-            return result[0].totalViolations;
+            return result.length === 0 ? 0 : result[0].totalViolations;
         } catch (error) {
             throw error;
         }
