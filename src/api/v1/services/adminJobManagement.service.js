@@ -9,6 +9,7 @@ const EmailService = require('./email.service');
 const socketService = require('./socket.service');
 const { Report } = require('../models/report.model');
 const { formatInTimeZone } = require('date-fns-tz');
+const ReportService = require('./report.service');
 
 
 class AdminJobManagementService {
@@ -67,13 +68,22 @@ class AdminJobManagementService {
     // Xem chi tiết công việc
     static getJobDetail = async function ({ jobId }) {
         try {
-            let job = await Job.findOne({ _id: jobId }).lean()
-                .select("-__v -recruiterId")
+            let job = await Job.findOne({ _id: jobId }).populate('recruiterId').lean()
+                .select("-__v")
             if (!job) {
                 throw new NotFoundRequestError("Không tìm thấy công việc");
             }
+            job.quantity = job.quantity === 'o' ? "Không giới hạn" : job.quantity;
+            job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
             job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
             job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+            job.companyName = job.recruiterId.companyName ?? null;
+            job.companySlug = job.recruiterId.slug ?? null;
+            job.companyLogo = job.recruiterId.companyLogo ?? null;
+            job.employeeNumber = job.recruiterId.employeeNumber;
+            job.companyAddress = job.recruiterId.companyAddress;
+            job.recruiterId = job.recruiterId._id.toString();
+            job.banReason = job?.banReason ?? null;
             return {
                 message: "Lấy thông tin công việc thành công",
                 metadata: { ...job }
@@ -118,18 +128,36 @@ class AdminJobManagementService {
     }
 
     // Cấm công việc
-    static banJob = async ({ jobId, isBan, bannedReason }) => {
+    static banJob = async ({ userId, jobId, isBan, bannedReason }) => {
         try {
             let result;
-            if (isBan) {
+            if (isBan == true) {
                 result = await Job.findByIdAndUpdate(jobId, {
                     $set: {
                         isBan, bannedReason, bannedAt: new Date()
                     }
                 }, {
                     new: true,
-                    select: { __v: 0, recruiterId: 0 }
+                    select: { __v: 0 }
                 }).lean()
+                const recruiterBannedJobCount = await ReportService.recruiterBannedJobCount({ recruiterId: result.recruiterId });
+                const notification = await Notification.create({
+                    senderId: userId,
+                    receiverId: result.recruiterId,
+                    senderCode: mapRolePermission['ADMIN'],
+                    title: 'Cảnh báo vi phạm',
+                    content: `Công việc ${result.name} đã bị khóa do vi phạm. Hiện tại bạn có ${recruiterBannedJobCount} công việc đã bị khóa. Lưu ý rằng khi bạn có 3 công việc bị khóa thì tài khoản bạn sẽ bị cấm.`,
+                    link: `${process.env.FE_URL}/recruiter/profile/jobsPosted`
+                })
+                if (!notification) {
+                    throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại.");
+                }
+                const userSockets = socketService.getUserSockets();
+                const socketId = userSockets.get(result.recruiterId.toString());
+                if (socketId) {
+                    _io.to(socketId).emit('user_notification', notification);
+                    console.log(`Notification sent to user ${application.candidateId.toString()}: ${notification}`);
+                }
             } else {
                 result = await Job.findByIdAndUpdate(jobId, {
                     $set: {
@@ -137,7 +165,7 @@ class AdminJobManagementService {
                     }
                 }, {
                     new: true,
-                    select: { __v: 0, recruiterId: 0 }
+                    select: { __v: 0 }
                 }).lean()
             }
             if (!result) {
@@ -146,7 +174,7 @@ class AdminJobManagementService {
             const reporters = await Report.find({ jobId }).lean();
             if (reporters.length !== 0) {
                 for (let i = 0; i < reporters.length; i++) {
-                    await EmailService.sendThanksMailToReporter({toEmail: reporters[i].email, name: reporters[i].name, jobName: result.name});
+                    await EmailService.sendThanksMailToReporter({ toEmail: reporters[i].email, name: reporters[i].name, jobName: result.name });
                 }
             }
         } catch (error) {
@@ -180,6 +208,27 @@ class AdminJobManagementService {
             const commonPipeline = [
                 {
                     $lookup: {
+                        from: 'orders',
+                        let: { recruiterId: '$recruiterId' },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ['$recruiterId', '$$recruiterId'] },
+                                            { $eq: ['$status', 'Thành công'] },
+                                            { $gt: ['$validTo', new Date()] }
+                                        ]
+                                    }
+                                }
+                            },
+                            { $project: { _id: 1 } }
+                        ],
+                        as: 'premiumDetails'
+                    }
+                },
+                {
+                    $lookup: {
                         from: 'reports',
                         let: { jobId: '$_id' },
                         pipeline: [
@@ -197,6 +246,7 @@ class AdminJobManagementService {
                 },
                 {
                     $addFields: {
+                        premiumAccount: { $gt: [{ $size: '$premiumDetails' }, 0] },
                         reportNumber: { $ifNull: [{ $arrayElemAt: ['$reportDetails.reportNumber', 0] }, 0] }
                     }
                 },
@@ -230,6 +280,7 @@ class AdminJobManagementService {
                         "recruiters.slug": 1,
                         "recruiters.employeeNumber": 1,
                         "recruiters.companyLogo": 1,
+                        "premiumAccount": 1,
                         "reportNumber": 1,
                         "updatedAt": 1,
                     }

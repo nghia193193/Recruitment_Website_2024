@@ -69,3 +69,19 @@
 16/07/2024	20:33:54 ::1---/v1/api/admin/jobs/list_reported_job?limit=50---GET---"jobId" is required
 16/07/2024	20:34:52 ::1---/v1/api/admin/jobs/list_reported_job?limit=50---GET---Vui lòng đăng nhập lại
 16/07/2024	20:35:06 ::1---/v1/api/admin/jobs/list_reported_job?limit=50---GET---acceptanceStatus is not defined
+16/07/2024	22:54:11 ::1---/v1/api/jobs/6623df3a1c8d996b7c102f0b---GET---Không tìm thấy công việc
+16/07/2024	22:56:52 ::1---/v1/api/login---POST---Operation `logins.findOne()` buffering timed out after 10000ms
+16/07/2024	22:57:14 ::1---/v1/api/admin/jobs/detail/665f47b999e376daa1f56908---GET---acceptedNumber is not defined
+16/07/2024	23:01:07 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+16/07/2024	23:01:07 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+16/07/2024	23:01:07 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+16/07/2024	23:01:07 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+16/07/2024	23:01:08 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=5---GET---Id không hợp lệ
+16/07/2024	23:01:08 ::1---/v1/api/recruiter/jobs/declined_jobs?page=1&limit=5---GET---Id không hợp lệ
+16/07/2024	23:01:11 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+17/07/2024	00:00:08 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+17/07/2024	00:00:08 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+17/07/2024	00:00:08 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+17/07/2024	00:00:08 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+17/07/2024	00:00:13 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=5---GET---Id không hợp lệ
+17/07/2024	00:00:14 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ

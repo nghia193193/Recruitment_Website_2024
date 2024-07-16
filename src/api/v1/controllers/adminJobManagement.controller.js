@@ -45,7 +45,7 @@ class AdminJobManagementController {
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        await AdminJobManagementService.banJob({ ...value });
+        await AdminJobManagementService.banJob({ ...value, ...req.payload });
         new OK({
             message: "Xử lí ban công việc thành công",
             metadata: {}

@@ -2,7 +2,8 @@ const { formatInTimeZone } = require("date-fns-tz");
 const { InternalServerError } = require("../core/error.response");
 const { Report } = require("../models/report.model");
 const { Job } = require("../models/job.model");
-
+const { default: mongoose } = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 
 class ReportService {
     // Tạo báo cáo
@@ -30,7 +31,7 @@ class ReportService {
                 .limit(limit)
             reports = reports.map(report => {
                 report = report.toObject();
-                report.createdAt = formatInTimeZone(report.createdAt, "Asia/Ho_Chi_Minh" , "dd/MM/yyyy HH:mm:ss");
+                report.createdAt = formatInTimeZone(report.createdAt, "Asia/Ho_Chi_Minh", "dd/MM/yyyy HH:mm:ss");
                 return report;
             })
             if (!reports) throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại sau.");
@@ -49,8 +50,43 @@ class ReportService {
             if (!job) throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại sau.");
             const report = await Report.findOne({ _id: reportId, jobId }).lean();
             if (!report) throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại sau.");
-            report.createdAt = formatInTimeZone(report.createdAt, "Asia/Ho_Chi_Minh" , "dd/MM/yyyy HH:mm:ss");
+            report.createdAt = formatInTimeZone(report.createdAt, "Asia/Ho_Chi_Minh", "dd/MM/yyyy HH:mm:ss");
             return report;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static recruiterBannedJobCount = async ({ recruiterId }) => {
+        try {
+            const pipeline = [
+                {
+                    $lookup: {
+                        from: 'jobs',
+                        localField: 'jobId',
+                        foreignField: '_id',
+                        as: 'job'
+                    }
+                },
+                {
+                    $match: {
+                        "job.recruiterId": { $eq: new ObjectId(recruiterId) }
+                    }
+                },
+                {
+                    $group: {
+                        _id: null,
+                        totalViolations: { $sum: 1 }
+                    }
+                },
+                {
+                    $project: {
+                        "totalViolations": 1
+                    }
+                }
+            ]
+            const result = await Report.aggregate(pipeline);
+            return result[0].totalViolations;
         } catch (error) {
             throw error;
         }

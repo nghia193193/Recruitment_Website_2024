@@ -1,0 +1,13 @@
+17/07/2024	00:02:42 ::1---/v1/api/admin/jobs/66963cfb1804d78aabf76433/ban---PATCH---Vui lòng đăng nhập lại
+17/07/2024	00:03:18 ::1---/v1/api/recruiter/information---GET---Vui lòng đăng nhập lại
+17/07/2024	00:03:18 ::1---/v1/api/recruiter/information---GET---Vui lòng đăng nhập lại
+17/07/2024	00:03:18 ::1---/v1/api/recruiter/information---GET---Vui lòng đăng nhập lại
+17/07/2024	00:03:18 ::1---/v1/api/recruiter/information---GET---Vui lòng đăng nhập lại
+17/07/2024	00:03:18 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+17/07/2024	00:03:18 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+17/07/2024	00:03:18 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+17/07/2024	00:03:18 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+17/07/2024	00:04:03 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+17/07/2024	00:04:03 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+17/07/2024	00:04:03 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+17/07/2024	00:04:03 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ

@@ -82,8 +82,8 @@ class JobService {
     // Lấy thông tin chi tiết công việc
     static getJobDetail = async ({ jobId }) => {
         try {
-            let job = await Job.findOne({ _id: jobId, isBan: false }).lean().populate("recruiterId")
-                .select("-__v")
+            let job = await Job.findOne({ _id: jobId, isBan: false }).populate("recruiterId")
+                .select("-__v").lean()
             if (!job) {
                 throw new NotFoundRequestError("Không tìm thấy công việc");
             }
@@ -620,7 +620,8 @@ class JobService {
                     const applicationNumber = await ApplicationService.getJobApplicationNumber({ jobId: item._id });
                     return {
                         ...item,
-                        applicationNumber: applicationNumber
+                        applicationNumber: applicationNumber,
+                        banReason: item?.banReason ?? null
                     }
                 })
             )
@@ -674,7 +675,8 @@ class JobService {
                     const applicationNumber = await ApplicationService.getJobApplicationNumber({ jobId: item._id });
                     return {
                         ...item,
-                        applicationNumber: applicationNumber
+                        applicationNumber: applicationNumber,
+                        banReason: item?.banReason ?? null
                     }
                 })
             )
@@ -717,7 +719,7 @@ class JobService {
             }
             const length = await Job.find(query).lean().countDocuments();
             let result = await Job.find(query).lean()
-                .select("name field type levelRequirement status deadline isBan")
+                .select("name field type levelRequirement status deadline isBan banReason")
                 .skip((page - 1) * limit)
                 .limit(limit)
                 .sort({ updatedAt: -1 })
@@ -726,7 +728,8 @@ class JobService {
                     const applicationNumber = await ApplicationService.getJobApplicationNumber({ jobId: item._id });
                     return {
                         ...item,
-                        applicationNumber: applicationNumber
+                        applicationNumber: applicationNumber,
+                        banReason: item?.banReason ?? null
                     }
                 })
             )
