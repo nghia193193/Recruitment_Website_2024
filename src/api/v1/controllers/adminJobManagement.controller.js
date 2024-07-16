@@ -28,15 +28,15 @@ class AdminJobManagementController {
         }).send(res)
     }
 
-    approveJob = async (req, res, next) => {
-        const { error, value } = AdminJobManagementValidation.validateApproveJob({ ...req.params, ...req.body });
+    banJob = async (req, res, next) => {
+        const { error, value } = AdminJobManagementValidation.validateBanJob({ ...req.params, ...req.body });
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const { metadata, message } = await AdminJobManagementService.approveJob({ ...req.payload, ...value });
+        await AdminJobManagementService.banJob({ ...value });
         new OK({
-            message: message,
-            metadata: { ...metadata },
+            message: "Xử lí ban công việc thành công",
+            metadata: {}
         }).send(res)
     }
 }

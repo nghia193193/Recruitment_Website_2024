@@ -3,6 +3,7 @@ const { asyncHandler } = require('../../auth/checkAuth');
 const { verifyAccessToken, authPageAdmin } = require('../../middlewares');
 const adminJobManagementController = require('../../controllers/adminJobManagement.controller');
 const jobController = require('../../controllers/job.controller');
+const reportController = require('../../controllers/report.controller');
 const router = express.Router();
 
 // get list job
@@ -13,5 +14,11 @@ router.post('/create', verifyAccessToken, authPageAdmin, asyncHandler(adminJobMa
 router.patch('/update/:jobId', verifyAccessToken, authPageAdmin, asyncHandler(adminJobManagementController.updateJob));
 // get job detail
 router.get('/detail/:jobId', verifyAccessToken, authPageAdmin, asyncHandler(jobController.getJobDetail));
+// get list report of job
+router.get('/:jobId/reports', verifyAccessToken, authPageAdmin, asyncHandler(reportController.getListReportOfJob));
+// read report
+router.get('/:jobId/reports/:reportId', verifyAccessToken, authPageAdmin, asyncHandler(reportController.readReport));
+// ban job
+router.patch('/:jobId/ban', verifyAccessToken, authPageAdmin, asyncHandler(adminJobManagementController.banJob));
 
 module.exports = router;

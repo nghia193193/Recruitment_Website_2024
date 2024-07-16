@@ -166,6 +166,14 @@ class RecruiterService {
             if (!recruiterInfor) {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
             }
+            const recruiterPostLimit = await RecruiterPostLimit.findOne({ recruiter: userId }).lean(); 
+            const premiumAccount = await Order.checkPremiumAccount({ recruiterId: userId });
+            let limitPost;
+            if (premiumAccount) {
+                limitPost = 10;
+            } else {
+                limitPost = 3;
+            }
             const likeNumber = await FavoriteRecruiterService.getLikeNumber({ recruiterId: userId });
             recruiterInfor.role = recruiterInfor.loginId?.role;
             delete recruiterInfor.loginId;
@@ -174,6 +182,8 @@ class RecruiterService {
             recruiterInfor.companyCoverPhoto = recruiterInfor.companyCoverPhoto ?? null;
             recruiterInfor.slug = recruiterInfor.slug ?? null;
             recruiterInfor.likeNumber = likeNumber;
+            recruiterInfor.postCount = recruiterPostLimit?.postCount ?? 0;
+            recruiterInfor.limitPost = limitPost;
             recruiterInfor.reasonDecline = recruiterInfor.reasonDecline ?? null;
             return {
                 message: "Lấy thông tin thành công",
@@ -713,8 +723,8 @@ class RecruiterService {
     static approveApplication = async ({ userId, applicationId, status, reasonDecline }) => {
         try {
             const companyName = (await Recruiter.findById(userId).lean()).companyName;
-            // validate recruiter
-            const { result, jobId, jobName, quantity } = await ApplicationService.getApplicationDetail({ userId, applicationId });
+            // validate application
+            const { result, jobId, jobName, quantity } = await ApplicationService.getApplicationDetail({ applicationId });
             if (!result) {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
             }
@@ -734,6 +744,7 @@ class RecruiterService {
                 }, {
                     new: true
                 }).lean()
+
             } else {
                 application = await Application.findOneAndUpdate({ _id: applicationId }, {
                     $set: {
@@ -746,6 +757,9 @@ class RecruiterService {
             if (!application) {
                 throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
             }
+            // Gửi email thông báo cho ứng viên
+            await EmailService.sendApplicationResultMail({toEmail: result.email, userName: result.name, jobName, result: status});
+            // Thông báo tới ứng viên
             const notification = await Notification.create({
                 senderId: userId,
                 receiverId: application.candidateId.toString(),

@@ -2,6 +2,7 @@ const express = require('express');
 const accessController = require('../../controllers/access.controller');
 const recruiterController = require('../../controllers/recruiter.controller');
 const jobController = require('../../controllers/job.controller');
+const reportController = require('../../controllers/report.controller');
 const { asyncHandler } = require('../../auth/checkAuth');
 const router = express.Router();
 
@@ -48,5 +49,7 @@ router.get('/recruiters', asyncHandler(recruiterController.getListRecruiterHomeP
 router.get('/recruiters/:slug', asyncHandler(recruiterController.getInformationBySlug));
 // get list related recruiter
 router.get('/recruiters/:recruiterId/related_recruiter', asyncHandler(recruiterController.getListRelatedRecruiter));
+// create report
+router.post('/jobs/:jobId/create_report', asyncHandler(reportController.createReport));
 
 module.exports = router;

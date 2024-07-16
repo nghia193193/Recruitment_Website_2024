@@ -72,7 +72,13 @@ const jobSchema = new Schema({
         type: String,
         enum: ['active', 'inactive'],
         default: 'active'
-    }
+    },
+    isBan: {
+        type: Boolean,
+        default: false
+    },
+    banReason: String,
+    bannedAt: Date
 }, {
     timestamps: true
 })

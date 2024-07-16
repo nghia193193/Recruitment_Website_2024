@@ -92,6 +92,36 @@ class AdminJobManagementService {
             throw error;
         }
     }
+
+    static banJob = async ({ jobId, isBan, bannedReason }) => {
+        try {
+            let result;
+            if (isBan) {
+                result = await Job.findByIdAndUpdate(jobId, {
+                    $set: {
+                        isBan, bannedReason, bannedAt: new Date()
+                    }
+                }, {
+                    new: true,
+                    select: { __v: 0, recruiterId: 0 }
+                }).lean()
+            } else {
+                result = await Job.findByIdAndUpdate(jobId, {
+                    $set: {
+                        isBan, bannedReason: null, bannedAt: null
+                    }
+                }, {
+                    new: true,
+                    select: { __v: 0, recruiterId: 0 }
+                }).lean()
+            }
+            if (!result) {
+                throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại.');
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 module.exports = AdminJobManagementService;

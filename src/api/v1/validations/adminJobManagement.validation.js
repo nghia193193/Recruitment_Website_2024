@@ -183,16 +183,16 @@ class AdminJobManagementValidation {
         return validateSchema.validate(data);
     }
 
-    static validateApproveJob = data => {
+    static validateBanJob = data => {   
         const validateSchema = joi.object({
             jobId: objectIdJoiSchema.required(),
-            acceptanceStatus: joi.string().valid(...["accept", "decline"]).required(),
-            reasonDecline: joi.string().custom((value, helpers) => {
-                const cleanRD = xss(value.trim());
-                if (cleanRD === '') {
+            isBan: joi.boolean().required(),
+            reasonBan: joi.string().custom((value, helpers) => {
+                value = xss(value.trim());
+                if (value === '') {
                     return helpers.error('any.empty');
                 }
-                return cleanRD;
+                return value;
             }).messages({
                 'any.empty': "Lí do không được để trống",
             })

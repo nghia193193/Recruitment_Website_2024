@@ -22,7 +22,7 @@ class EmailService {
             let mailDetails = {
                 from: `${process.env.MAIL_SEND}`,
                 to: toEmail,
-                subject: 'XÁC NHẬN ĐĂNG KÝ',
+                subject: 'Xác nhận đăng ký',
                 html: ` 
             <div style="text-align: left; font-family: arial; margin: 10px auto;"> 
                 <span style="margin: 5px 2px"><b>Xin chào</b> <b style="color: red">${userName}</b>,</span>
@@ -34,7 +34,8 @@ class EmailService {
                 </div>
                 <p style="margin: 5px 2px">Xin lưu ý rằng nếu tài khoản chưa được xác minh trong vòng <b style="color: red">10 phút</b> vui lòng yêu cầu gửi lại email xác nhận.</p>
                 <p style="margin: 5px 2px">Nếu bạn không yêu cầu vui lòng bỏ qua email này.</p>
-                <p style="margin: 20px 2px">Trân trọng.</p>
+                <p style="margin: 20px 2px">Trân trọng,</p>
+                <p style="margin: 5px 2px">Careerhub Services</p>
             </div>
             `
             };
@@ -53,7 +54,7 @@ class EmailService {
             let mailDetails = {
                 from: `${process.env.MAIL_SEND}`,
                 to: toEmail,
-                subject: 'CẬP NHẬT MẬT KHẨU',
+                subject: 'Cập nhật mật khẩu',
                 html: ` 
                 <div style="text-align: left; font-family: arial; margin: 0px 300px; background-color: white; padding: 20px; border-radius: 10px; border: solid 1px grey"> 
                     <span style="margin: 5px 2px"><b>Xin chào</b> <b style="color: red">${userName}</b>,</span>
@@ -63,7 +64,40 @@ class EmailService {
                     </div>
                     <p style="margin: 5px 2px">Xin lưu ý rằng nếu tài khoản chưa cập nhật mật khẩu trong vòng <b style="color: red">60 phút</b> vui lòng gửi lại yêu cầu.</p>
                     <p style="margin: 5px 2px">Nếu bạn không yêu cầu vui lòng bỏ qua email này.</p>
-                    <p style="margin: 20px 2px">Trân trọng.</p>
+                    <p style="margin: 20px 2px">Trân trọng,</p>
+                    <p style="margin: 5px 2px">Careerhub Services</p>
+                </div>
+            `
+            };
+            const transporter = await createTransporter();
+            transporter.sendMail(mailDetails, err => {
+                throw new InternalServerError('Có lỗi xảy ra');
+            });
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static sendApplicationResultMail = async ({ toEmail, userName, jobName, result }) => {
+        try {
+            // send mail
+            let mailDetails = {
+                from: `${process.env.MAIL_SEND}`,
+                to: toEmail,
+                subject: 'Hồ sơ của bạn đã được duyệt',
+                html: ` 
+                <div style="text-align: left; font-family: arial; margin: 0px 300px; background-color: white; border-radius: 10px; border: solid 1px grey"> 
+                    <div style="padding: 20px">
+                        <span style="margin: 5px 2px">Xin chào <b>${userName}</b>,</span>
+                        <p style="margin: 5px 2px">Cảm ơn bạn đã ứng tuyển vào công việc <b>${jobName}</b>. Hồ sơ ứng tuyển của bạn đã được nhà tuyển dụng duyệt với kết quả là <b>${result}.</b></p>
+                        ${result === "Đã nhận" ? `
+                            <p style="margin: 5px 2px">Chúc mừng bạn đã ứng tuyển thành công. Nhà tuyển dụng sẽ liên hệ với bạn trong thời gian sớm nhất để cung cấp thêm thông tin về các bước tiếp theo.</p>
+                            ` : `
+                            <p style="margin: 5px 2px">Rất tiếc, hồ sơ của bạn chưa phù hợp với yêu cầu của vị trí này. Nếu bạn muốn xem thông tin chi tiết hơn vui lòng truy cập phần hồ sơ ứng tuyển. Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi. Chúc bạn sớm tìm được công việc như ý.</p>
+                        `}
+                        <p style="margin: 20px 2px">Trân trọng,</p>
+                        <p style="margin: 5px 2px">Careerhub Services</p>
+                    </div>
                 </div>
             `
             };

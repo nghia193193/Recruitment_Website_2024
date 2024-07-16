@@ -26,6 +26,7 @@ class JobValidation {
 
     static validateGetListJobPremiumPrivilege = data => {
         const validateSchema = joi.object({
+            isBan: joi.boolean(),
             companyName: joi.string().custom((value) => {
                 const companyName = xss(value);
                 return companyName;

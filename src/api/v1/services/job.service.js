@@ -11,9 +11,9 @@ class JobService {
         try {
             page = page ? +page : 1;
             limit = limit ? +limit : 5;
-            // query
             const query = {
                 status: "active",
+                isBan: false,
                 deadline: { $gte: Date.now() }
             };
             let result;
@@ -82,7 +82,7 @@ class JobService {
     // Lấy thông tin chi tiết công việc
     static getJobDetail = async ({ jobId }) => {
         try {
-            let job = await Job.findById(jobId).lean().populate("recruiterId")
+            let job = await Job.findOne({ _id: jobId, isBan: false }).lean().populate("recruiterId")
                 .select("-__v")
             if (!job) {
                 throw new NotFoundRequestError("Không tìm thấy công việc");
@@ -120,6 +120,7 @@ class JobService {
             const matchStage = {
                 "recruiters.slug": slug,
                 "status": "active",
+                "isBan": false,
                 "deadline": { $gte: new Date() }
             }
             if (province) matchStage.province = province;
@@ -281,8 +282,8 @@ class JobService {
         }
     }
 
-    // Lấy danh sách công việc ưu tiên tài khoản premium
-    static getListJobPremiumPrivilege = async ({ companyName, name, field, levelRequirement, page, limit }) => {
+    // Lấy danh sách công việc ưu tiên tài khoản premium bởi admin
+    static getListJobPremiumPrivilege = async ({ isBan, companyName, name, field, levelRequirement, page, limit }) => {
         try {
             page = page ? page : 1;
             limit = limit ? limit : 5;
@@ -292,6 +293,9 @@ class JobService {
             };
             if (name) {
                 match["$text"] = { $search: name };
+            }
+            if (isBan) {
+                match["isBan"] = isBan;
             }
             const query = {};
             if (companyName) {
@@ -327,8 +331,26 @@ class JobService {
                     }
                 },
                 {
+                    $lookup: {
+                        from: 'reports',
+                        let: { jobId: '$_id' },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $eq: ['$jobId', '$$jobId']
+                                    }
+                                }
+                            },
+                            { $count: 'reportNumber' }
+                        ],
+                        as: 'reportDetails'
+                    }
+                },
+                {
                     $addFields: {
-                        premiumAccount: { $gt: [{ $size: '$premiumDetails' }, 0] }
+                        premiumAccount: { $gt: [{ $size: '$premiumDetails' }, 0] },
+                        reportNumber: { $ifNull: [{ $arrayElemAt: ['$reportDetails.reportNumber', 0] }, 0] }
                     }
                 },
                 {
@@ -357,6 +379,7 @@ class JobService {
                         "recruiters.employeeNumber": 1,
                         "recruiters.companyLogo": 1,
                         "premiumAccount": 1,
+                        "reportNumber": 1,
                         "updatedAt": 1,
                     }
                 }
@@ -373,6 +396,7 @@ class JobService {
                 {
                     $sort: {
                         "premiumAccount": -1,
+                        "reportNumber": -1,
                         "updatedAt": -1
                     }
                 },
@@ -417,6 +441,7 @@ class JobService {
             limit = limit ? limit : 5;
             const match = {
                 status: "active",
+                isBan: false,
                 deadline: { $gte: new Date() }
             };
             if (name) {
@@ -586,7 +611,7 @@ class JobService {
             }
             const length = await Job.find(query).lean().countDocuments();
             const result = await Job.find(query).lean()
-                .select("name field type levelRequirement status deadline")
+                .select("name field type levelRequirement status deadline isBan")
                 .skip((page - 1) * limit)
                 .limit(limit)
                 .sort({ updatedAt: -1 })
@@ -640,7 +665,7 @@ class JobService {
             }
             const length = await Job.find(query).lean().countDocuments();
             let result = await Job.find(query).lean()
-                .select("name field type levelRequirement status deadline")
+                .select("name field type levelRequirement status deadline isBan")
                 .skip((page - 1) * limit)
                 .limit(limit)
                 .sort({ updatedAt: -1 })
@@ -692,7 +717,7 @@ class JobService {
             }
             const length = await Job.find(query).lean().countDocuments();
             let result = await Job.find(query).lean()
-                .select("name field type levelRequirement status deadline")
+                .select("name field type levelRequirement status deadline isBan")
                 .skip((page - 1) * limit)
                 .limit(limit)
                 .sort({ updatedAt: -1 })
