@@ -1,7 +1,7 @@
 const joi = require('joi');
 const xss = require('xss');
 const mongoose = require('mongoose');
-const { provinceOfVietNam, jobType, levelRequirement, experience, fieldOfActivity, genderRequirement, acceptanceStatus } = require('../utils');
+const { provinceOfVietNam, jobType, levelRequirement, experience, fieldOfActivity, genderRequirement } = require('../utils');
 
 class JobValidation {
     static validateGetListJob = data => {
@@ -37,7 +37,6 @@ class JobValidation {
             }),
             field: joi.string().valid(...fieldOfActivity),
             levelRequirement: joi.string().valid(...levelRequirement),
-            acceptanceStatus: joi.string().valid(...acceptanceStatus),
             page: joi.number().integer().min(1),
             limit: joi.number().integer().min(1)
         }).messages({

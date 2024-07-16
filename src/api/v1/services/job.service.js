@@ -294,10 +294,10 @@ class JobService {
             if (name) {
                 match["$text"] = { $search: name };
             }
-            if (isBan) {
-                match["isBan"] = isBan;
-            }
             const query = {};
+            if (isBan === true || isBan === false) {
+                query["isBan"] = isBan;
+            }
             if (companyName) {
                 query["recruiters.companyName"] = new RegExp(companyName, "i");
             }

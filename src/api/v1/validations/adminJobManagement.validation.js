@@ -201,6 +201,24 @@ class AdminJobManagementValidation {
         })
         return validateSchema.validate(data);
     }
+
+    static validateListReportedJob = data => {
+        const validateSchema = joi.object({
+            companyName: joi.string().custom((value) => {
+                const companyName = xss(value);
+                return companyName;
+            }),
+            name: joi.string().custom((value) => {
+                const cleanName = xss(value);
+                return cleanName;
+            }),
+            field: joi.string().valid(...fieldOfActivity),
+            levelRequirement: joi.string().valid(...levelRequirement),
+            page: joi.number().integer().min(1),
+            limit: joi.number().integer().min(1)
+        })
+        return validateSchema.validate(data);
+    }
 }
 
 const objectIdValidator = (value, helpers) => {

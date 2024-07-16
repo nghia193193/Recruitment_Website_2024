@@ -16,6 +16,18 @@ class AdminJobManagementController {
         }).send(res)
     }
 
+    getJobDetail = async (req, res, next) => {
+        const { error, value } = AdminJobManagementValidation.validateJobId(req.params);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata } = await AdminJobManagementService.getJobDetail(value);
+        new OK({
+            message,
+            metadata: { ...metadata }
+        }).send(res)
+    }
+
     updateJob = async (req, res, next) => {
         const { error, value } = AdminJobManagementValidation.validateUpdateJob({ ...req.body, ...req.params });
         if (error) {
@@ -37,6 +49,19 @@ class AdminJobManagementController {
         new OK({
             message: "Xử lí ban công việc thành công",
             metadata: {}
+        }).send(res)
+    }
+
+    getListReportedJob = async (req, res, next) => {
+        const { error, value } = AdminJobManagementValidation.validateListReportedJob(req.query);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { message, metadata, options } = await AdminJobManagementService.getListReportedJob(value);
+        new OK({
+            message,
+            metadata: { ...metadata },
+            options
         }).send(res)
     }
 }

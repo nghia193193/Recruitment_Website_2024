@@ -109,6 +109,34 @@ class EmailService {
             throw error;
         }
     }
+
+    static sendThanksMailToReporter = async ({ toEmail, name, jobName }) => {
+        try {
+            // send mail
+            let mailDetails = {
+                from: `${process.env.MAIL_SEND}`,
+                to: toEmail,
+                subject: 'Cảm ơn bạn đã báo cáo vi phạm',
+                html: ` 
+                <div style="text-align: left; font-family: arial; margin: 0px 300px; background-color: white; border-radius: 10px; border: solid 1px grey"> 
+                    <div style="padding: 20px">
+                        <span style="margin: 5px 2px">Xin chào <b>${name}</b>,</span>
+                        <p style="margin: 5px 2px">Cảm ơn bạn đã báo cáo vi phạm công việc <b>${jobName}</b>. Chúng tôi đã kiểm tra và xử lý công việc bạn báo cáo.</p>
+                        <p style="margin: 5px 2px">Chúng tôi rất trân trọng sự hợp tác của bạn trong việc giữ gìn môi trường làm việc chuyên nghiệp và công bằng. Chúc bạn có những trải nghiệm tốt đẹp tại trang web của chúng tôi.</p>
+                        <p style="margin: 20px 2px">Trân trọng,</p>
+                        <p style="margin: 5px 2px">Careerhub Services</p>
+                    </div>
+                </div>
+            `
+            };
+            const transporter = await createTransporter();
+            transporter.sendMail(mailDetails, err => {
+                throw new InternalServerError('Có lỗi xảy ra');
+            });
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 module.exports = EmailService;

@@ -8,12 +8,14 @@ const router = express.Router();
 
 // get list job
 router.get('/list_job', verifyAccessToken, authPageAdmin, asyncHandler(jobController.getListJobPremiumPrivilege));
+// get list reported job
+router.get('/list_reported_job', verifyAccessToken, authPageAdmin, asyncHandler(adminJobManagementController.getListReportedJob));
 // create job
 router.post('/create', verifyAccessToken, authPageAdmin, asyncHandler(adminJobManagementController.createJob));
 // update job
 router.patch('/update/:jobId', verifyAccessToken, authPageAdmin, asyncHandler(adminJobManagementController.updateJob));
 // get job detail
-router.get('/detail/:jobId', verifyAccessToken, authPageAdmin, asyncHandler(jobController.getJobDetail));
+router.get('/detail/:jobId', verifyAccessToken, authPageAdmin, asyncHandler(adminJobManagementController.getJobDetail));
 // get list report of job
 router.get('/:jobId/reports', verifyAccessToken, authPageAdmin, asyncHandler(reportController.getListReportOfJob));
 // read report

@@ -64,3 +64,8 @@
 16/07/2024	18:03:37 ::1---/v1/api/recruiter/notifications/list_notification---GET---Vui lòng đăng nhập lại
 16/07/2024	18:03:37 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
 16/07/2024	18:03:37 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+16/07/2024	20:32:14 ::1---/v1/api/admin/jobs/list_reported_job?limit=50---GET---"jobId" is required
+16/07/2024	20:33:13 ::1---/v1/api/admin/jobs/list_reported_job?limit=50---GET---"jobId" is required
+16/07/2024	20:33:54 ::1---/v1/api/admin/jobs/list_reported_job?limit=50---GET---"jobId" is required
+16/07/2024	20:34:52 ::1---/v1/api/admin/jobs/list_reported_job?limit=50---GET---Vui lòng đăng nhập lại
+16/07/2024	20:35:06 ::1---/v1/api/admin/jobs/list_reported_job?limit=50---GET---acceptanceStatus is not defined
