@@ -21,3 +21,55 @@
 17/07/2024	01:51:17 ::1---/v1/api/recruiter/information---GET---Vui lòng đăng nhập lại
 17/07/2024	02:27:05 ::1---/v1/api/login---POST---Tài khoản của bạn đã bị khóa, vui lòng liên hệ với quản trị viên để biết thêm chi tiết.
 17/07/2024	02:27:35 ::1---/v1/api/login---POST---Tài khoản của bạn đã bị khóa, vui lòng liên hệ với quản trị viên để biết thêm chi tiết.
+17/07/2024	14:36:14 ::1---/v1/api/login---POST---Tài khoản của bạn đã bị khóa, vui lòng liên hệ với quản trị viên để biết thêm chi tiết.
+17/07/2024	14:36:30 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:36:31 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:36:31 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:36:31 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:36:38 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:36:39 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:36:39 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:36:39 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:37:32 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:37:33 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:37:35 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:37:35 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:37:45 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:37:46 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:38:24 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:38:25 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:39:01 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:39:01 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:40:11 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+17/07/2024	14:40:11 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+17/07/2024	14:40:11 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+17/07/2024	14:40:11 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+17/07/2024	14:40:14 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+17/07/2024	14:40:14 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+17/07/2024	14:40:14 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+17/07/2024	14:40:14 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+17/07/2024	14:44:32 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+17/07/2024	14:44:32 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+17/07/2024	14:44:32 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+17/07/2024	14:44:32 ::1---/v1/api/recruiter/jobs/accepted_jobs?page=1&limit=5---GET---Id không hợp lệ
+17/07/2024	14:44:45 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:44:45 ::1---/v1/api/candidate/favorite_jobs/check/6697765f577bb7b7d0756751---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:44:46 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:44:46 ::1---/v1/api/candidate/favorite_jobs/check/6697765f577bb7b7d0756751---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:44:46 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:44:46 ::1---/v1/api/candidate/favorite_jobs/check/6697765f577bb7b7d0756751---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:44:46 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:44:46 ::1---/v1/api/candidate/favorite_jobs/check/6697765f577bb7b7d0756751---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:44:54 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:44:54 ::1---/v1/api/candidate/favorite_jobs/check/6697765f577bb7b7d0756751---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:44:55 ::1---/v1/api/candidate/favorite_jobs/check/6697765f577bb7b7d0756751---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:44:55 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:44:55 ::1---/v1/api/candidate/favorite_jobs/check/6697765f577bb7b7d0756751---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:44:55 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:44:55 ::1---/v1/api/candidate/favorite_jobs/check/6697765f577bb7b7d0756751---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:44:55 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:44:58 ::1---/v1/api/candidate/favorite_jobs/check/6697765f577bb7b7d0756751---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:44:59 ::1---/v1/api/candidate/favorite_jobs/check/6697765f577bb7b7d0756751---GET---Hiện tại không thể thêm công việc này
+17/07/2024	14:45:01 ::1---/v1/api/candidate/jobs/apply/6697765f577bb7b7d0756751---POST---Có lỗi xảy ra vui lòng thử lại.
+17/07/2024	14:52:50 ::1---/v1/api/admin/jobs/detail/664f488210fd81e433a4946e---GET---Bạn không có quyền
+17/07/2024	14:53:20 ::1---/v1/api/recruiter/jobs/664f488210fd81e433a4946e---GET---Không tìm thấy công việc

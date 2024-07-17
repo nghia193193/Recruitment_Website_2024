@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const { Login } = require("../models/login.model");
 const RedisService = require("./redis.service");
 const JWTService = require("./jwt.service");
-const { BadRequestError, InternalServerError } = require("../core/error.response");
+const { BadRequestError, InternalServerError, ForbiddenRequestError } = require("../core/error.response");
 const { findUserByRole } = require("../utils/findUser");
 const { fieldOfActivity, jobType, levelRequirement, experience, genderRequirement, provinceOfVietNam, mapRolePermission, workStatus, resumeExperience } = require('../utils');
 const client = require('../dbs/init.redis');
@@ -30,7 +30,7 @@ class AccessService {
             }
             if (userRole === "RECRUITER") {
                 if (user?.isBan) {
-                    throw new BadRequestError('Tài khoản của bạn đã bị khóa, vui lòng liên hệ với quản trị viên để biết thêm chi tiết.')
+                    throw new ForbiddenRequestError('Tài khoản của bạn đã bị khóa, vui lòng liên hệ với quản trị viên để biết thêm chi tiết.')
                 }
             }
             const accessToken = await JWTService.signAccessToken(user._id.toString());

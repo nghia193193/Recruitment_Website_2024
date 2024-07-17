@@ -228,7 +228,7 @@ class RecruiterController {
         if (error) {
             throw new BadRequestError(error.details[0].message);
         }
-        const { metadata, message } = await JobService.getJobDetail({ ...value, ...req.payload });
+        const { metadata, message } = await JobService.getJobDetailByRecruiter({ ...value, ...req.payload });
         new OK({
             message: message,
             metadata: { ...metadata }

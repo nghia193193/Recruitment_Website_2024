@@ -13,8 +13,7 @@ class FavoriteJobService {
         }
         let query = {
             _id: { $in: candidate.favoriteJobs },
-            status: "active",
-            acceptanceStatus: "accept"
+            status: "active"
         }
         if (name) {
             query.$text = { $search: `"${name}"` };
@@ -52,7 +51,7 @@ class FavoriteJobService {
         if (!job) {
             throw new BadRequestError("Không tìm thấy công việc này, vui lòng thử lại");
         }
-        if (job.status !== "active" || job.acceptanceStatus !== "accept") {
+        if (job.status !== "active") {
             throw new BadRequestError("Hiện tại không thể thêm công việc này");
         }
         // check đã có list chưa
@@ -82,7 +81,7 @@ class FavoriteJobService {
         if (!job) {
             throw new BadRequestError("Không tìm thấy công việc này, vui lòng thử lại");
         }
-        if (job.status !== "active" || job.acceptanceStatus !== "accept") {
+        if (job.status !== "active" !== "accept") {
             throw new BadRequestError("Hiện tại không thể thêm công việc này");
         }
         // check đã có list chưa

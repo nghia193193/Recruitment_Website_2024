@@ -486,7 +486,7 @@ class CandidateService {
             if (!job) {
                 throw new BadRequestError("Không tìm thấy công việc.");
             }
-            if (job.status !== "active" || job.acceptanceStatus !== "accept" || new Date(job.deadline) < Date.now()) {
+            if (job.status !== "active" || new Date(job.deadline) < Date.now()) {
                 throw new BadRequestError("Có lỗi xảy ra vui lòng thử lại.");
             }
             // check resume
