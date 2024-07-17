@@ -528,6 +528,15 @@ class RecruiterValidation {
         })
         return validateSchema.validate(data);
     }
+
+    static validateGetListSuggestedResume = data => {
+        const validateSchema = joi.object({
+            jobId: objectIdJoiSchema.required(),
+            page: joi.number().integer().min(1),
+            limit: joi.number().integer().min(1)
+        })
+        return validateSchema.validate(data);
+    }
 }
 
 const objectIdValidator = (value, helpers) => {

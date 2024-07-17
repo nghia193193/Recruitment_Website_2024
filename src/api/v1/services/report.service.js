@@ -56,41 +56,6 @@ class ReportService {
             throw error;
         }
     }
-
-    static recruiterBannedJobCount = async ({ recruiterId }) => {
-        try {
-            const pipeline = [
-                {
-                    $lookup: {
-                        from: 'jobs',
-                        localField: 'jobId',
-                        foreignField: '_id',
-                        as: 'job'
-                    }
-                },
-                {
-                    $match: {
-                        "job.recruiterId": { $eq: new ObjectId(recruiterId) }
-                    }
-                },
-                {
-                    $group: {
-                        _id: null,
-                        totalViolations: { $sum: 1 }
-                    }
-                },
-                {
-                    $project: {
-                        "totalViolations": 1
-                    }
-                }
-            ]
-            const result = await Report.aggregate(pipeline);
-            return result.length === 0 ? 0 : result[0].totalViolations;
-        } catch (error) {
-            throw error;
-        }
-    }
 }
 
 module.exports = ReportService;

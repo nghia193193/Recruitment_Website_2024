@@ -372,6 +372,19 @@ class RecruiterController {
             options: { page, limit }
         }).send(res)
     }
+
+    getListSuggestedResume = async (req, res, next) => {
+        const { error, value } = RecruiterValidation.validateGetListSuggestedResume({ ...req.query, ...req.params });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { totalElement, listSuggestedCandidate, page, limit } = await JobService.getListSuggestedResume(value);
+        new OK({
+            message: "Lấy danh sách ứng viên gợi ý thành công",
+            metadata: { totalElement, listSuggestedCandidate },
+            options: { page, limit }
+        }).send(res)
+    }
 }
 
 module.exports = new RecruiterController();

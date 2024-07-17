@@ -10,6 +10,7 @@ const socketService = require('./socket.service');
 const { Report } = require('../models/report.model');
 const { formatInTimeZone } = require('date-fns-tz');
 const ReportService = require('./report.service');
+const JobService = require('./job.service');
 
 
 class AdminJobManagementService {
@@ -140,7 +141,7 @@ class AdminJobManagementService {
                     new: true,
                     select: { __v: 0 }
                 }).lean()
-                const recruiterBannedJobCount = await ReportService.recruiterBannedJobCount({ recruiterId: result.recruiterId });
+                const recruiterBannedJobCount = await JobService.getRecruiterBannedJobCount({ recruiterId: result.recruiterId });
                 if (recruiterBannedJobCount < 3) {
                     const notification = await Notification.create({
                         senderId: userId,
@@ -187,7 +188,8 @@ class AdminJobManagementService {
                     new: true,
                     select: { __v: 0 }
                 }).lean()
-                const recruiterBannedJobCount = await ReportService.recruiterBannedJobCount({ recruiterId: result.recruiterId });
+                const recruiterBannedJobCount = await JobService.getRecruiterBannedJobCount({ recruiterId: result.recruiterId });
+                console.log(recruiterBannedJobCount)
                 if (recruiterBannedJobCount === 2) {
                     const recruiter = await Recruiter.findByIdAndUpdate(result.recruiterId, {
                         $set: {

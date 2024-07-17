@@ -43,6 +43,8 @@ router.get('/jobs/:jobId', verifyAccessToken, authPageRecruiter, asyncHandler(re
 router.patch('/jobs/:jobId/update_job', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.updateJob));
 // change job status
 router.patch('/jobs/:jobId/change_status', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.changeJobStatus));
+// get list job suggested resume
+router.get('/jobs/:jobId/suggested_resumes', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListSuggestedResume));
 // get list job application experience
 router.get('/jobs/applications/:jobId/list_experience', verifyAccessToken, authPageRecruiter, asyncHandler(applicationController.getListJobApplicationExperience));
 // get list job application

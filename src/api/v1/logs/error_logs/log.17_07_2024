@@ -137,3 +137,30 @@
 17/07/2024	20:48:27 ::1---/images/b99b9668-ca84-4756-b2fb-e14eb79eafc3.jpg---GET---Page not found
 17/07/2024	20:48:29 ::1---/images/b99b9668-ca84-4756-b2fb-e14eb79eafc3.jpg---GET---Page not found
 17/07/2024	20:49:56 ::1---/v1/api/login---POST---Tài khoản của bạn đã bị khóa, vui lòng liên hệ với quản trị viên để biết thêm chi tiết.
+17/07/2024	21:51:33 ::1---/images/16a07639-9b74-46ea-8f2e-f18c6dc01607.png---GET---Page not found
+17/07/2024	22:10:35 ::1---/images/b99b9668-ca84-4756-b2fb-e14eb79eafc3.jpg---GET---Page not found
+17/07/2024	22:10:36 ::1---/images/b99b9668-ca84-4756-b2fb-e14eb79eafc3.jpg---GET---Page not found
+17/07/2024	22:10:45 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+17/07/2024	22:10:45 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+17/07/2024	22:12:09 ::1---/images/16a07639-9b74-46ea-8f2e-f18c6dc01607.png---GET---Page not found
+17/07/2024	22:22:34 ::1---/v1/api/login---POST---Operation `logins.findOne()` buffering timed out after 10000ms
+17/07/2024	22:23:41 ::1---/api/v1/recruiter/jobs/6534bc1bfea4f99a0578e2c9/suggested-user---GET---Page not found
+17/07/2024	22:23:55 ::1---/api/v1/recruiter/jobs/6534bc1bfea4f99a0578e2c9/suggested_resumes---GET---Page not found
+17/07/2024	22:24:42 ::1---/api/v1/recruiter/jobs/66462dad398b9230cddc2c26/suggested_resumes---GET---Page not found
+17/07/2024	22:25:22 ::1---/api/v1/recruiter/jobs/66462dad398b9230cddc2c26/suggested_resumes---GET---Page not found
+17/07/2024	22:25:45 ::1---/api/v1/recruiter/jobs/66462dad398b9230cddc2c26/suggested_resumes---GET---Page not found
+17/07/2024	22:26:28 ::1---/api/v1/recruiter/jobs/66462dad398b9230cddc2c26/suggested_resumes---GET---Page not found
+17/07/2024	22:26:33 ::1---/api/v1/recruiter/jobs/66462dad398b9230cddc2c26---GET---Page not found
+17/07/2024	22:26:45 ::1---/api/v1/recruiter/jobs/66462dad398b9230cddc2c26/suggested_resumes---GET---Page not found
+17/07/2024	22:27:18 ::1---/api/v1/recruiter/jobs/66462dad398b9230cddc2c26/suggested_resumes---GET---Page not found
+17/07/2024	22:27:33 ::1---/v1/api/recruiter/statistic/job_statistic?startDate=2024-05-10T17:00:00.000Z&endDate=2024-06-15T17:00:00.000Z---GET---Vui lòng đăng nhập lại
+17/07/2024	22:27:52 ::1---/api/v1/recruiter/jobs/66462dad398b9230cddc2c26/suggested_resumes---GET---Page not found
+17/07/2024	22:28:54 ::1---/v1/api/recruiter/jobs/66462dad398b9230cddc2c26/suggested_resumes---GET---$function not allowed in this atlas tier
+17/07/2024	22:32:15 ::1---/v1/api/admin/blogs/list_blog?status=active&page=1&limit=5---GET---Vui lòng đăng nhập lại
+17/07/2024	22:32:15 ::1---/v1/api/admin/blogs/list_blog?status=active&page=1&limit=5---GET---Vui lòng đăng nhập lại
+17/07/2024	22:32:15 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+17/07/2024	22:32:15 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+17/07/2024	23:08:17 ::1---/images/16a07639-9b74-46ea-8f2e-f18c6dc01607.png---GET---Page not found
+17/07/2024	23:08:53 ::1---/images/16a07639-9b74-46ea-8f2e-f18c6dc01607.png---GET---Page not found
+17/07/2024	23:09:03 ::1---/images/16a07639-9b74-46ea-8f2e-f18c6dc01607.png---GET---Page not found
+17/07/2024	23:09:54 ::1---/images/16a07639-9b74-46ea-8f2e-f18c6dc01607.png---GET---Page not found

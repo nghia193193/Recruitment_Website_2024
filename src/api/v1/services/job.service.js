@@ -3,6 +3,7 @@ const { Job } = require("../models/job.model");
 const { Order } = require("../models/order.model");
 const ApplicationService = require("./application.service");
 const { NotFoundRequestError } = require("../core/error.response");
+const { Resume } = require("../models/resume.model");
 
 class JobService {
     // Lấy danh sách công việc trang chủ
@@ -394,6 +395,11 @@ class JobService {
                         localField: "recruiterId",
                         foreignField: "_id",
                         as: "recruiters"
+                    }
+                },
+                {
+                    $match: {
+                        "recruiters.isBan": false
                     }
                 },
                 {
@@ -794,6 +800,15 @@ class JobService {
         }
     }
 
+    static getRecruiterBannedJobCount = async function ({ recruiterId }) {
+        try {
+            const bannedJobCount = await Job.find({ recruiterId: recruiterId, isBan: true }).countDocuments();
+            return bannedJobCount;
+        } catch (error) {
+            throw error;
+        }
+    }
+
     static getListBannedJobByRecruiter = async function ({ userId, name, field, levelRequirement, status, page, limit }) {
         try {
             page = page ? +page : 1;
@@ -825,6 +840,91 @@ class JobService {
             )
             return {
                 listBannedJob: mappedList, totalElement: length, page, limit
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getListSuggestedResume = async function ({ jobId, page, limit }) {
+        try {
+            page = page ? +page : 1;
+            limit = limit ? +limit : 5;
+            const job = await Job.findById(jobId).lean();
+            if (!job) {
+                throw new NotFoundRequestError("Không tìm thấy công việc");
+            }
+            const jobKeywords = job.name.toLowerCase().split(' ');
+            const pipeline = [
+                {
+                    $match: {
+                        status: 'active',
+                        allowSearch: true,
+                        jobType: job.type,
+                        experience: job.experience
+                    }
+                },
+                {
+                    $addFields: {
+                        titleWords: { $split: [{ $toLower: '$title' }, ' '] },
+                        jobWords: jobKeywords
+                    }
+                },
+                {
+                    $addFields: {
+                        commonWords: {
+                            $size: {
+                                $setIntersection: ['$titleWords', '$jobWords']
+                            }
+                        }
+                    }
+                },
+                {
+                    $addFields: {
+                        titleSimilarity: {
+                            $multiply: [
+                                { $divide: ['$commonWords', { $size: '$jobWords' }] },
+                                100
+                            ]
+                        }
+                    }
+                },
+                {
+                    $match: {
+                        titleSimilarity: { $gte: 50 }
+                    }
+                },
+                {
+                    $project: {
+                        _id: 1,
+                        title: 1,
+                        name: 1,
+                        educationLevel: 1,
+                        major: 1,
+                        jobType: 1,
+                        experience: 1,
+                        avatar: 1
+                    }
+                }
+            ]
+            const totalDocument = await Resume.aggregate([...pipeline, { $count: "totalDocuments" }]);
+            const length = totalDocument.length > 0 ? totalDocument[0].totalDocuments : 0;
+            let listSuggestedCandidate = await Resume.aggregate([
+                ...pipeline,
+                {
+                    $sort: {
+                        "titleSimilarity": -1
+                    }
+                },
+                {
+                    $skip: (page - 1) * limit
+                },
+                {
+                    $limit: limit
+                }
+            ]);
+            return {
+                listSuggestedCandidate, totalElement: length, page, limit
             }
         } catch (error) {
             throw error;

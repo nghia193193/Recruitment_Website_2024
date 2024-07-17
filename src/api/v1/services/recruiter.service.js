@@ -20,6 +20,7 @@ const socketService = require("./socket.service");
 const { RecruiterPostLimit } = require("../models/recruiterPostLimit.model");
 const { FavoriteRecruiter } = require("../models/favoriteRecruiter.model");
 const ReportService = require("./report.service");
+const JobService = require("./job.service");
 require('dotenv').config();
 
 
@@ -169,7 +170,7 @@ class RecruiterService {
             }
             const recruiterPostLimit = await RecruiterPostLimit.findOne({ recruiter: userId }).lean();
             const premiumAccount = await Order.checkPremiumAccount({ recruiterId: userId });
-            const recruiterBannedJobCount = await ReportService.recruiterBannedJobCount({ recruiterId: userId });
+            const recruiterBannedJobCount = await JobService.getRecruiterBannedJobCount({ recruiterId: userId });
             let limitPost;
             if (premiumAccount) {
                 recruiterBannedJobCount >= 2 ? limitPost = 8 : limitPost = 10;
@@ -598,7 +599,7 @@ class RecruiterService {
             // Check premium account
             const premiumAccount = await Order.checkPremiumAccount({ recruiterId: userId });
             // Check số công việc bị ban
-            const recruiterBannedJobCount = await ReportService.recruiterBannedJobCount({ recruiterId: userId });
+            const recruiterBannedJobCount = await JobService.recruiterBannedJobCount({ recruiterId: userId });
             let limitPost;
             if (premiumAccount) {
                 recruiterBannedJobCount >= 2 ? limitPost = 8 : limitPost = 10;
