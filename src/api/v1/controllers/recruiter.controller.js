@@ -359,6 +359,19 @@ class RecruiterController {
             metadata: { ...metadata }
         }).send(res)
     }
+
+    getListBannedJob = async (req, res, next) => {
+        const { error, value } = RecruiterValidation.validateRecruiterGetListJob({ ...req.body, ...req.query });
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { totalElement, listBannedJob, page, limit } = await JobService.getListBannedJobByRecruiter({ ...value, ...req.payload });
+        new OK({
+            message: "Lấy danh sách công việc bị khóa thành công",
+            metadata: { totalElement, listBannedJob },
+            options: { page, limit }
+        }).send(res)
+    }
 }
 
 module.exports = new RecruiterController();

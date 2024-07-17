@@ -33,6 +33,8 @@ router.get('/jobs/list_job', verifyAccessToken, authPageRecruiter, asyncHandler(
 router.get('/jobs/nearing_expiration_jobs', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListNearingExpirationdJob));
 // get list expired job
 router.get('/jobs/expired_jobs', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListExpiredJob));
+// get list banned job
+router.get('/jobs/banned_jobs', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getListBannedJob));
 // get job status
 router.get('/jobs/status', verifyAccessToken, authPageRecruiter, asyncHandler(recruiterController.getJobStatus));
 // get job detail

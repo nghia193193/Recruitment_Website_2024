@@ -5,7 +5,7 @@ const ApplicationService = require("./application.service");
 const { NotFoundRequestError } = require("../core/error.response");
 
 class JobService {
-    // Lấy danh sách công việc
+    // Lấy danh sách công việc trang chủ
     static getListJob = async ({ name, province, type, levelRequirement, experience, field,
         genderRequirement, page, limit }) => {
         try {
@@ -110,7 +110,7 @@ class JobService {
         }
     }
 
-    // Lấy thông tin chi tiết công việc
+    // Lấy thông tin chi tiết công việc trang chủ
     static getJobDetail = async ({ jobId }) => {
         try {
             let job = await Job.findOne({ _id: jobId, isBan: false }).populate("recruiterId")
@@ -667,7 +667,7 @@ class JobService {
         }
     }
 
-    // Lấy danh sách công việc sắp hết hạn
+    // Lấy danh sách công việc sắp hết hạn bởi nhà tuyển dụng
     static getListNearingExpirationdJobByRecruiter = async function ({ userId, name, field, levelRequirement, status, page, limit }) {
         try {
             page = page ? +page : 1;
@@ -722,7 +722,7 @@ class JobService {
         }
     }
 
-    // Lấy danh sách công việc đã hết hạn
+    // Lấy danh sách công việc đã hết hạn bởi nhà tuyển dụng
     static getListExpiredJobByRecruiter = async function ({ userId, name, field, levelRequirement, status, page, limit }) {
         try {
             page = page ? +page : 1;
@@ -788,6 +788,43 @@ class JobService {
             return {
                 message: "Lấy thông tin công việc thành công",
                 metadata: { ...job }
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static getListBannedJobByRecruiter = async function ({ userId, name, field, levelRequirement, status, page, limit }) {
+        try {
+            page = page ? +page : 1;
+            limit = limit ? +limit : 5;
+            const query = {
+                recruiterId: userId,
+                isBan: true
+            }
+            if (name) query["$text"] = { $search: `"${name}"` };
+            if (field) query["field"] = field;
+            if (levelRequirement) query["levelRequirement"] = levelRequirement;
+            if (status) query["status"] = status;
+            const length = await Job.find(query).lean().countDocuments();
+            let result = await Job.find(query).lean()
+                .select("name field type levelRequirement status deadline isBan bannedAt banReason")
+                .skip((page - 1) * limit)
+                .limit(limit)
+                .sort({ updatedAt: -1 })
+            let mappedList = await Promise.all(
+                result.map(async (item) => {
+                    const applicationNumber = await ApplicationService.getJobApplicationNumber({ jobId: item._id });
+                    return {
+                        ...item,
+                        applicationNumber: applicationNumber,
+                        banReason: item?.banReason ?? null,
+                        bannedAt: formatInTimeZone(item.bannedAt, "Asia/Ho_Chi_Minh", "dd/MM/yyyy HH:mm:ss")
+                    }
+                })
+            )
+            return {
+                listBannedJob: mappedList, totalElement: length, page, limit
             }
         } catch (error) {
             throw error;
