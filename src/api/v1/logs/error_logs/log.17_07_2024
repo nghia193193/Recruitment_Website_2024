@@ -127,3 +127,13 @@
 17/07/2024	19:51:13 ::1---/v1/api/recruiter/jobs/declined_jobs?page=1&limit=5---GET---Id không hợp lệ
 17/07/2024	19:51:33 ::1---/v1/api/recruiter/jobs/declined_jobs?page=1&limit=5---GET---Id không hợp lệ
 17/07/2024	20:06:05 ::1---/v1/api/recruiter/jobs/banned_jobs---GET---Vui lòng đăng nhập lại
+17/07/2024	20:16:17 ::1---/images/b99b9668-ca84-4756-b2fb-e14eb79eafc3.jpg---GET---Page not found
+17/07/2024	20:16:19 ::1---/images/b99b9668-ca84-4756-b2fb-e14eb79eafc3.jpg---GET---Page not found
+17/07/2024	20:42:14 ::1---/images/b99b9668-ca84-4756-b2fb-e14eb79eafc3.jpg---GET---Page not found
+17/07/2024	20:43:18 ::1---/v1/api/login---POST---Tài khoản của bạn đã bị khóa, vui lòng liên hệ với quản trị viên để biết thêm chi tiết.
+17/07/2024	20:46:22 ::1---/images/b99b9668-ca84-4756-b2fb-e14eb79eafc3.jpg---GET---Page not found
+17/07/2024	20:46:24 ::1---/images/b99b9668-ca84-4756-b2fb-e14eb79eafc3.jpg---GET---Page not found
+17/07/2024	20:47:46 ::1---/v1/api/login---POST---Mật khẩu không chính xác
+17/07/2024	20:48:27 ::1---/images/b99b9668-ca84-4756-b2fb-e14eb79eafc3.jpg---GET---Page not found
+17/07/2024	20:48:29 ::1---/images/b99b9668-ca84-4756-b2fb-e14eb79eafc3.jpg---GET---Page not found
+17/07/2024	20:49:56 ::1---/v1/api/login---POST---Tài khoản của bạn đã bị khóa, vui lòng liên hệ với quản trị viên để biết thêm chi tiết.

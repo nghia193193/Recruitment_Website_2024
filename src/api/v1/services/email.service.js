@@ -25,7 +25,7 @@ class EmailService {
                 subject: 'Xác nhận đăng ký',
                 html: ` 
             <div style="text-align: left; font-family: arial; margin: 10px auto;"> 
-                <span style="margin: 5px 2px"><b>Xin chào</b> <b style="color: red">${userName}</b>,</span>
+                <span style="margin: 5px 2px">Xin chào ${userName},</span>
                 <p style="margin: 5px 2px">Cảm ơn bạn đã đăng ký dịch vụ của chúng tôi.</p>
                 <p style="margin: 5px 2px">Mã xác nhận OTP của bạn là: <b >${otp}</b></p>
                 <p style="margin: 5px 2px">Vui lòng nhập vào nút bên dưới để xác minh email của bạn.</p>
@@ -35,7 +35,7 @@ class EmailService {
                 <p style="margin: 5px 2px">Xin lưu ý rằng nếu tài khoản chưa được xác minh trong vòng <b style="color: red">10 phút</b> vui lòng yêu cầu gửi lại email xác nhận.</p>
                 <p style="margin: 5px 2px">Nếu bạn không yêu cầu vui lòng bỏ qua email này.</p>
                 <p style="margin: 20px 2px">Trân trọng,</p>
-                <p style="margin: 5px 2px">Careerhub Services</p>
+                <p style="margin: 5px 2px">Đội ngũ Careerhub</p>
             </div>
             `
             };
@@ -57,7 +57,7 @@ class EmailService {
                 subject: 'Cập nhật mật khẩu',
                 html: ` 
                 <div style="text-align: left; font-family: arial; margin: 0px 300px; background-color: white; padding: 20px; border-radius: 10px; border: solid 1px grey"> 
-                    <span style="margin: 5px 2px"><b>Xin chào</b> <b style="color: red">${userName}</b>,</span>
+                    <span style="margin: 5px 2px"><b>Xin chào ${userName},</span>
                     <p style="margin: 5px 2px">Gần đây bạn đã yêu cầu đặt lại mật khẩu. Vui lòng kích vào nút bên dưới để tiến hành đặt lại mật khẩu.</p>
                     <div style="display: flex; margin: 30px">
                         <button style="background-color: #008000; padding: 10px 20px; margin: 0px auto; border-radius: 20px; border-style: none"><a href="${process.env.FE_URL}/forgot-password/confirm-password?email=${toEmail}&token=${token}" style="font-size: 15px; color: white; text-decoration: none">Đặt lại mật khẩu</a></button>
@@ -65,7 +65,7 @@ class EmailService {
                     <p style="margin: 5px 2px">Xin lưu ý rằng nếu tài khoản chưa cập nhật mật khẩu trong vòng <b style="color: red">60 phút</b> vui lòng gửi lại yêu cầu.</p>
                     <p style="margin: 5px 2px">Nếu bạn không yêu cầu vui lòng bỏ qua email này.</p>
                     <p style="margin: 20px 2px">Trân trọng,</p>
-                    <p style="margin: 5px 2px">Careerhub Services</p>
+                    <p style="margin: 5px 2px">Đội ngũ Careerhub</p>
                 </div>
             `
             };
@@ -88,7 +88,7 @@ class EmailService {
                 html: ` 
                 <div style="text-align: left; font-family: arial; margin: 0px 300px; background-color: white; border-radius: 10px; border: solid 1px grey"> 
                     <div style="padding: 20px">
-                        <span style="margin: 5px 2px">Xin chào <b>${userName}</b>,</span>
+                        <span style="margin: 5px 2px">Xin chào ${userName},</span>
                         <p style="margin: 5px 2px">Cảm ơn bạn đã ứng tuyển vào công việc <b>${jobName}</b>. Hồ sơ ứng tuyển của bạn đã được nhà tuyển dụng duyệt với kết quả là <b>${result}.</b></p>
                         ${result === "Đã nhận" ? `
                             <p style="margin: 5px 2px">Chúc mừng bạn đã ứng tuyển thành công. Nhà tuyển dụng sẽ liên hệ với bạn trong thời gian sớm nhất để cung cấp thêm thông tin về các bước tiếp theo.</p>
@@ -96,7 +96,7 @@ class EmailService {
                             <p style="margin: 5px 2px">Rất tiếc, hồ sơ của bạn chưa phù hợp với yêu cầu của vị trí này. Nếu bạn muốn xem thông tin chi tiết hơn vui lòng truy cập phần hồ sơ ứng tuyển. Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi. Chúc bạn sớm tìm được công việc như ý.</p>
                         `}
                         <p style="margin: 20px 2px">Trân trọng,</p>
-                        <p style="margin: 5px 2px">Careerhub Services</p>
+                        <p style="margin: 5px 2px">Đội ngũ Careerhub</p>
                     </div>
                 </div>
             `
@@ -120,11 +120,11 @@ class EmailService {
                 html: ` 
                 <div style="text-align: left; font-family: arial; margin: 0px 300px; background-color: white; border-radius: 10px; border: solid 1px grey"> 
                     <div style="padding: 20px">
-                        <span style="margin: 5px 2px">Xin chào <b>${name}</b>,</span>
+                        <span style="margin: 5px 2px">Xin chào ${name},</span>
                         <p style="margin: 5px 2px">Cảm ơn bạn đã báo cáo vi phạm công việc <b>${jobName}</b>. Chúng tôi đã kiểm tra và xử lý công việc bạn báo cáo.</p>
                         <p style="margin: 5px 2px">Chúng tôi rất trân trọng sự hợp tác của bạn trong việc giữ gìn môi trường làm việc chuyên nghiệp và công bằng. Chúc bạn có những trải nghiệm tốt đẹp tại trang web của chúng tôi.</p>
                         <p style="margin: 20px 2px">Trân trọng,</p>
-                        <p style="margin: 5px 2px">Careerhub Services</p>
+                        <p style="margin: 5px 2px">Đội ngũ Careerhub</p>
                     </div>
                 </div>
             `
@@ -148,13 +148,40 @@ class EmailService {
                 html: ` 
                 <div style="text-align: left; font-family: arial; margin: 0px 300px; background-color: white; border-radius: 10px; border: solid 1px grey"> 
                     <div style="padding: 20px">
-                        <span style="margin: 5px 2px">Xin chào <b>${companyName}</b>,</span>
+                        <span style="margin: 5px 2px">Xin chào ${companyName},</span>
                         <p style="margin: 5px 2px">Chúng tôi xin thông báo rằng tài khoản của bạn đã bị cấm hoạt động trên trang web của chúng tôi.</p>
                         <p style="margin: 5px 2px">Lý do: <b>Vi phạm chính sách sử dụng trang web.</b></p>
                         <p style="margin: 5px 2px">Nếu bạn có bất kỳ thắc mắc nào vui lòng liên hệ với chúng tôi qua email: <b>
                         ${process.env.MAIL_SEND}</b></p>
                         <p style="margin: 20px 2px">Trân trọng,</p>
-                        <p style="margin: 5px 2px">Careerhub Services</p>
+                        <p style="margin: 5px 2px">Đội ngũ Careerhub</p>
+                    </div>
+                </div>
+            `
+            };
+            const transporter = await createTransporter();
+            transporter.sendMail(mailDetails, err => {
+                throw new InternalServerError('Có lỗi xảy ra');
+            });
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static sendUnbanMailToRecruiter = async ({ toEmail, companyName }) => {
+        try {
+            // send mail
+            let mailDetails = {
+                from: `${process.env.MAIL_SEND}`,
+                to: toEmail,
+                subject: 'Thông báo mở khóa tài khoản',
+                html: ` 
+                <div style="text-align: left; font-family: arial; margin: 0px 300px; background-color: white; border-radius: 10px; border: solid 1px grey"> 
+                    <div style="padding: 20px">
+                        <span style="margin: 5px 2px">Xin chào ${companyName},</span>
+                        <p style="margin: 5px 2px">Chúng tôi đã xác nhận khiếu nại của bạn là hợp lý và thực hiện mở khóa tài khoản. Chúng tôi hi vọng bạn sẽ chấp hành chính sách của trang web và tránh vi phạm trong tương lai. Chúc bạn tìm kiếm được những ứng viên phù hợp.</p>
+                        <p style="margin: 20px 2px">Trân trọng,</p>
+                        <p style="margin: 5px 2px">Đội ngũ Careerhub</p>
                     </div>
                 </div>
             `

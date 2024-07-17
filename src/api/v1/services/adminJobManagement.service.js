@@ -172,6 +172,12 @@ class AdminJobManagementService {
                     }
                     await EmailService.sendBanMailToRecruiter({ toEmail: recruiter.email, companyName: recruiter.companyName });
                 }
+                const reporters = await Report.find({ jobId }).lean();
+                if (reporters.length !== 0) {
+                    for (let i = 0; i < reporters.length; i++) {
+                        await EmailService.sendThanksMailToReporter({ toEmail: reporters[i].email, name: reporters[i].name, jobName: result.name });
+                    }
+                }
             } else {
                 result = await Job.findByIdAndUpdate(jobId, {
                     $set: {
@@ -181,15 +187,20 @@ class AdminJobManagementService {
                     new: true,
                     select: { __v: 0 }
                 }).lean()
+                const recruiterBannedJobCount = await ReportService.recruiterBannedJobCount({ recruiterId: result.recruiterId });
+                if (recruiterBannedJobCount === 2) {
+                    const recruiter = await Recruiter.findByIdAndUpdate(result.recruiterId, {
+                        $set: {
+                            isBan: false
+                        }
+                    }, {
+                        new: true
+                    }).lean();
+                    await EmailService.sendUnbanMailToRecruiter({ toEmail: recruiter.email, companyName: recruiter.companyName });
+                }
             }
             if (!result) {
                 throw new InternalServerError('Có lỗi xảy ra vui lòng thử lại.');
-            }
-            const reporters = await Report.find({ jobId }).lean();
-            if (reporters.length !== 0) {
-                for (let i = 0; i < reporters.length; i++) {
-                    await EmailService.sendThanksMailToReporter({ toEmail: reporters[i].email, name: reporters[i].name, jobName: result.name });
-                }
             }
         } catch (error) {
             throw error;
@@ -239,6 +250,19 @@ class AdminJobManagementService {
                             { $project: { _id: 1 } }
                         ],
                         as: 'premiumDetails'
+                    }
+                },
+                {
+                    $lookup: {
+                        from: 'recruiters',
+                        localField: 'recruiterId',
+                        foreignField: '_id',
+                        as: 'recruiter'
+                    }
+                },
+                {
+                    $match: {
+                        'recruiter.isBan': false
                     }
                 },
                 {

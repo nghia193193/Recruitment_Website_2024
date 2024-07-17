@@ -308,19 +308,14 @@ class RecruiterStatisticService {
                 $group: {
                     _id: "$date",
                     dailyTotalJobs: { $sum: 1 },
-                    dailyWaiting: {
+                    dailyBannedJobs: {
                         $sum: {
-                            $cond: [{ $eq: ["$acceptanceStatus", "waiting"] }, 1, 0]
+                            $cond: [{ $eq: ["$isBan", true] }, 1, 0]
                         }
                     },
-                    dailyAccepted: {
+                    dailyActiveJobs: {
                         $sum: {
-                            $cond: [{ $eq: ["$acceptanceStatus", "accept"] }, 1, 0]
-                        }
-                    },
-                    dailyRejected: {
-                        $sum: {
-                            $cond: [{ $eq: ["$acceptanceStatus", "decline"] }, 1, 0]
+                            $cond: [{ $eq: ["$isBan", false] }, 1, 0]
                         }
                     }
                 },
@@ -330,16 +325,14 @@ class RecruiterStatisticService {
                 $group: {
                     _id: null,
                     totalJobs: { $sum: "$dailyTotalJobs" },
-                    totalWaiting: { $sum: "$dailyWaiting" },
-                    totalAccepted: { $sum: "$dailyAccepted" },
-                    totalRejected: { $sum: "$dailyRejected" },
+                    totalBannedJobs: { $sum: "$dailyBannedJobs" },
+                    totalActiveJobs: { $sum: "$dailyActiveJobs" },
                     dailyDetails: {
                         $push: {
                             day: "$_id",
                             totalJobs: "$dailyTotalJobs",
-                            waiting: "$dailyWaiting",
-                            accepted: "$dailyAccepted",
-                            rejected: "$dailyRejected"
+                            bannedJobs: "$dailyBannedJobs",
+                            activeJobs: "$dailyActiveJobs"
                         }
                     }
                 }
@@ -348,9 +341,8 @@ class RecruiterStatisticService {
                 $project: {
                     _id: 0,
                     totalJobs: 1,
-                    totalWaiting: 1,
-                    totalAccepted: 1,
-                    totalRejected: 1,
+                    totalBannedJobs: 1,
+                    totalActiveJobs: 1,
                     dailyDetails: {
                         $map: {
                             input: "$dailyDetails",
@@ -369,9 +361,8 @@ class RecruiterStatisticService {
         ]);
         return {
             totalJobs: stats[0].totalJobs,
-            totalWaiting: stats[0].totalWaiting,
-            totalAccepted: stats[0].totalAccepted,
-            totalRejected: stats[0].totalRejected,
+            totalBannedJobs: stats[0].totalBannedJobs,
+            totalActiveJobs: stats[0].totalActiveJobs,
             dailyDetails: stats[0].dailyDetails,
             startDate: formatInTimeZone(startDate, 'Asia/Ho_Chi_Minh', 'dd/MM/yyyy'),
             endDate: formatInTimeZone(endDate, 'Asia/Ho_Chi_Minh', 'dd/MM/yyyy')
@@ -400,19 +391,14 @@ class RecruiterStatisticService {
                             year: { $year: "$updatedAt" }
                         },
                         dailyTotalJobs: { $sum: 1 },
-                        dailyWaiting: {
+                        dailyBannedJobs: {
                             $sum: {
-                                $cond: [{ $eq: ["$acceptanceStatus", "waiting"] }, 1, 0]
+                                $cond: [{ $eq: ["$isBan", true] }, 1, 0]
                             }
                         },
-                        dailyAccepted: {
+                        dailyActiveJobs: {
                             $sum: {
-                                $cond: [{ $eq: ["$acceptanceStatus", "accept"] }, 1, 0]
-                            }
-                        },
-                        dailyRejected: {
-                            $sum: {
-                                $cond: [{ $eq: ["$acceptanceStatus", "decline"] }, 1, 0]
+                                $cond: [{ $eq: ["$isBan", false] }, 1, 0]
                             }
                         }
                     },
@@ -422,16 +408,14 @@ class RecruiterStatisticService {
                     $group: {
                         _id: null,
                         totalJobs: { $sum: "$dailyTotalJobs" },
-                        totalWaiting: { $sum: "$dailyWaiting" },
-                        totalAccepted: { $sum: "$dailyAccepted" },
-                        totalRejected: { $sum: "$dailyRejected" },
+                        totalBannedJobs: { $sum: "$dailyBannedJobs" },
+                        totalActiveJobs: { $sum: "$dailyActiveJobs" },
                         monthlyDetails: {
                             $push: {
                                 day: "$_id.day",
                                 totalJobs: "$dailyTotalJobs",
-                                waiting: "$dailyWaiting",
-                                accepted: "$dailyAccepted",
-                                rejected: "$dailyRejected"
+                                bannedJobs: "$dailyBannedJobs",
+                                activeJobs: "$dailyActiveJobs"
                             }
                         }
                     }
@@ -440,9 +424,8 @@ class RecruiterStatisticService {
                     $project: {
                         _id: 0,
                         totalJobs: 1,
-                        totalWaiting: 1,
-                        totalAccepted: 1,
-                        totalRejected: 1,
+                        totalBannedJobs: 1,
+                        totalActiveJobs: 1,
                         monthlyDetails: 1
                     }
                 }
@@ -451,9 +434,8 @@ class RecruiterStatisticService {
                 month,
                 year,
                 totalJobs: stats[0]?.totalJobs ?? 0,
-                totalWaiting: stats[0]?.totalWaiting ?? 0,
-                totalAccepted: stats[0]?.totalAccepted ?? 0,
-                totalRejected: stats[0]?.totalRejected ?? 0,
+                totalBannedJobs: stats[0]?.totalBannedJobs ?? 0,
+                totalActiveJobs: stats[0]?.totalActiveJobs ?? 0,
                 monthlyDetails: stats[0]?.monthlyDetails ?? []
             };
         } catch (error) {
@@ -479,19 +461,14 @@ class RecruiterStatisticService {
                             year: { $year: "$updatedAt" }
                         },
                         monthlyTotalJobs: { $sum: 1 },
-                        monthlyWaiting: {
+                        monthlyBannedJobs: {
                             $sum: {
-                                $cond: [{ $eq: ["$acceptanceStatus", "waiting"] }, 1, 0]
+                                $cond: [{ $eq: ["$isBan", true] }, 1, 0]
                             }
                         },
-                        monthlyAccepted: {
+                        monthlyActiveJobs: {
                             $sum: {
-                                $cond: [{ $eq: ["$acceptanceStatus", "accept"] }, 1, 0]
-                            }
-                        },
-                        monthlyRejected: {
-                            $sum: {
-                                $cond: [{ $eq: ["$acceptanceStatus", "decline"] }, 1, 0]
+                                $cond: [{ $eq: ["$isBan", false] }, 1, 0]
                             }
                         }
                     },
@@ -501,16 +478,14 @@ class RecruiterStatisticService {
                     $group: {
                         _id: null,
                         totalJobs: { $sum: "$monthlyTotalJobs" },
-                        totalWaiting: { $sum: "$monthlyWaiting" },
-                        totalAccepted: { $sum: "$monthlyAccepted" },
-                        totalRejected: { $sum: "$monthlyRejected" },
+                        totalBannedJobs: { $sum: "$monthlyBannedJobs" },
+                        totalActiveJobs: { $sum: "$monthlyActiveJobs" },
                         yearlyDetails: {
                             $push: {
                                 month: "$_id.month",
                                 totalJobs: "$monthlyTotalJobs",
-                                waiting: "$monthlyWaiting",
-                                accepted: "$monthlyAccepted",
-                                rejected: "$monthlyRejected"
+                                bannedJobs: "$monthlyBannedJobs",
+                                activeJobs: "$monthlyActiveJobs"
                             }
                         }
                     }
@@ -519,9 +494,8 @@ class RecruiterStatisticService {
                     $project: {
                         _id: 0,
                         totalJobs: 1,
-                        totalWaiting: 1,
-                        totalAccepted: 1,
-                        totalRejected: 1,
+                        totalBannedJobs: 1,
+                        totalActiveJobs: 1,
                         yearlyDetails: 1
                     }
                 }
@@ -529,9 +503,8 @@ class RecruiterStatisticService {
             return {
                 year,
                 totalJobs: stats[0]?.totalJobs ?? 0,
-                totalWaiting: stats[0]?.totalWaiting ?? 0,
-                totalAccepted: stats[0]?.totalAccepted ?? 0,
-                totalRejected: stats[0]?.totalRejected ?? 0,
+                totalBannedJobs: stats[0]?.totalBannedJobs ?? 0,
+                totalActiveJobs: stats[0]?.totalActiveJobs ?? 0,
                 yearlyDetails: stats[0]?.yearlyDetails ?? []
             };
         } catch (error) {
@@ -545,8 +518,8 @@ class RecruiterStatisticService {
                 {
                     $match: {
                         recruiterId: new mongoose.Types.ObjectId(recruiterId),
-                        acceptanceStatus: "accept",
                         status: "active",
+                        isBan: false,
                         deadline: { $gte: new Date() },
                     }
                 },
