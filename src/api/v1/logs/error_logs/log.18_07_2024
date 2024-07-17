@@ -1,0 +1,46 @@
+18/07/2024	00:18:22 ::1---/v1/api/candidate/information---GET---Vui lòng đăng nhập lại
+18/07/2024	00:18:22 ::1---/v1/api/candidate/information---GET---Vui lòng đăng nhập lại
+18/07/2024	00:18:22 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+18/07/2024	00:18:22 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+18/07/2024	00:18:46 ::1---/images/b99b9668-ca84-4756-b2fb-e14eb79eafc3.jpg---GET---Page not found
+18/07/2024	00:18:47 ::1---/images/b99b9668-ca84-4756-b2fb-e14eb79eafc3.jpg---GET---Page not found
+18/07/2024	00:20:37 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+18/07/2024	00:20:37 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+18/07/2024	00:21:41 ::1---/images/16a07639-9b74-46ea-8f2e-f18c6dc01607.png---GET---Page not found
+18/07/2024	00:26:38 ::1---/images/16a07639-9b74-46ea-8f2e-f18c6dc01607.png---GET---Page not found
+18/07/2024	00:29:56 ::1---/images/16a07639-9b74-46ea-8f2e-f18c6dc01607.png---GET---Page not found
+18/07/2024	00:31:01 ::1---/images/b99b9668-ca84-4756-b2fb-e14eb79eafc3.jpg---GET---Page not found
+18/07/2024	00:31:02 ::1---/images/b99b9668-ca84-4756-b2fb-e14eb79eafc3.jpg---GET---Page not found
+18/07/2024	00:31:04 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+18/07/2024	00:31:04 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+18/07/2024	00:31:08 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+18/07/2024	00:31:09 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+18/07/2024	00:33:42 ::1---/v1/api/admin/information---GET---Vui lòng đăng nhập lại
+18/07/2024	00:33:42 ::1---/v1/api/admin/information---GET---Vui lòng đăng nhập lại
+18/07/2024	00:33:42 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+18/07/2024	00:33:42 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+18/07/2024	00:35:27 ::1---/images/b99b9668-ca84-4756-b2fb-e14eb79eafc3.jpg---GET---Page not found
+18/07/2024	00:35:28 ::1---/images/b99b9668-ca84-4756-b2fb-e14eb79eafc3.jpg---GET---Page not found
+18/07/2024	00:36:22 ::1---/images/16a07639-9b74-46ea-8f2e-f18c6dc01607.png---GET---Page not found
+18/07/2024	00:36:33 ::1---/images/16a07639-9b74-46ea-8f2e-f18c6dc01607.png---GET---Page not found
+18/07/2024	00:36:53 ::1---/images/16a07639-9b74-46ea-8f2e-f18c6dc01607.png---GET---Page not found
+18/07/2024	00:37:18 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+18/07/2024	00:37:18 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+18/07/2024	00:37:58 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+18/07/2024	00:37:58 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+18/07/2024	00:38:23 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+18/07/2024	00:38:23 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+18/07/2024	00:39:32 ::1---/v1/api/recruiter/jobs/create_job---POST---JobService.recruiterBannedJobCount is not a function
+18/07/2024	00:41:43 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+18/07/2024	00:41:43 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+18/07/2024	00:41:49 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+18/07/2024	00:41:49 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+18/07/2024	00:42:27 ::1---/v1/api/recruiter/jobs/66980256a37f9957d64ae118/update_job---PATCH---"deadline" must be a valid date
+18/07/2024	00:42:45 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+18/07/2024	00:42:45 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+18/07/2024	00:43:01 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+18/07/2024	00:43:01 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+18/07/2024	00:43:21 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+18/07/2024	00:43:22 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+18/07/2024	00:43:25 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ
+18/07/2024	00:43:26 ::1---/v1/api/recruiter/jobs/waiting_jobs?page=1&limit=10---GET---Id không hợp lệ

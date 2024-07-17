@@ -599,7 +599,7 @@ class RecruiterService {
             // Check premium account
             const premiumAccount = await Order.checkPremiumAccount({ recruiterId: userId });
             // Check số công việc bị ban
-            const recruiterBannedJobCount = await JobService.recruiterBannedJobCount({ recruiterId: userId });
+            const recruiterBannedJobCount = await JobService.getRecruiterBannedJobCount({ recruiterId: userId });
             let limitPost;
             if (premiumAccount) {
                 recruiterBannedJobCount >= 2 ? limitPost = 8 : limitPost = 10;
