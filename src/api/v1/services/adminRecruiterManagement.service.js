@@ -14,7 +14,8 @@ class AdminRecruiterManagementService {
             page = page ? +page : 1;
             limit = limit ? +limit : 5;
             let query = {
-                firstUpdate: false
+                firstUpdate: false,
+                isBan: false
             };
             let listRecruiter;
             if (acceptanceStatus) query["acceptanceStatus"] = acceptanceStatus;

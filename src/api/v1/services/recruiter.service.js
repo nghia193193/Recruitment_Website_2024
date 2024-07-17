@@ -413,7 +413,8 @@ class RecruiterService {
             page = page ? +page : 1;
             limit = limit ? +limit : 5;
             let query = {
-                firstApproval: false
+                firstApproval: false,
+                isBan: false
             };
             let listRecruiter;
             if (searchText) {
@@ -542,7 +543,8 @@ class RecruiterService {
             let query = {
                 _id: { $ne: recruiterId },
                 fieldOfActivity: { $in: field },
-                acceptanceStatus: "accept"
+                acceptanceStatus: "accept",
+                isBan: false
             };
             let listRecruiter;
             if (searchText) {

@@ -118,6 +118,9 @@ class JobService {
             if (!job) {
                 throw new NotFoundRequestError("Không tìm thấy công việc");
             }
+            if (job.recruiterId?.isBan) {
+                throw new NotFoundRequestError("Không tìm thấy công việc");
+            }
             // format data
             const acceptedNumber = await ApplicationService.getJobAcceptedApplicationNumber({ jobId });
             job.quantity = job.quantity === 'o' ? "Không giới hạn" : job.quantity;
@@ -260,7 +263,8 @@ class JobService {
                 _id: { $ne: jobId },
                 status: "active",
                 deadline: { $gte: Date.now() },
-                field: field
+                field: field,
+                isBan: false
             };
             if (name) {
                 query["$text"] = { $search: name };
