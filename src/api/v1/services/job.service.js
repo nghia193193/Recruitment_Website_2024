@@ -14,52 +14,83 @@ class JobService {
             const query = {
                 status: "active",
                 isBan: false,
-                deadline: { $gte: Date.now() }
+                deadline: { $gte: new Date() }
             };
-            let result;
-            if (province) {
-                query["province"] = province;
-            }
-            if (type) {
-                query["type"] = type;
-            }
-            if (experience) {
-                query["experience"] = experience;
-            }
-            if (field) {
-                query["field"] = field;
-            }
-            if (levelRequirement) {
-                query["levelRequirement"] = levelRequirement;
-            }
-            if (genderRequirement) {
-                query["genderRequirement"] = genderRequirement;
-            }
-            if (name) {
-                query["$text"] = { $search: `"${name}"` };
-                result = await Job.find(query, { score: { $meta: "textScore" } }).lean().populate("recruiterId")
-                    .select("name field type levelRequirement experience salary province deadline recruiterId createdAt updatedAt")
-                    .sort({ score: { $meta: "textScore" }, updatedAt: -1 })
-                    .skip((page - 1) * limit)
-                    .limit(limit)
-            } else {
-                result = await Job.find(query).lean().populate("recruiterId")
-                    .select("name field type levelRequirement experience salary province deadline recruiterId createdAt updatedAt")
-                    .sort({ updatedAt: -1 })
-                    .skip((page - 1) * limit)
-                    .limit(limit)
-            }
-            const length = await Job.find(query).lean().countDocuments();
+            if (name) query["$text"] = { $search: `"${name}"` };
+            if (province) query["province"] = province;
+            if (type) query["type"] = type;
+            if (experience) query["experience"] = experience;
+            if (field) query["field"] = field;
+            if (levelRequirement) query["levelRequirement"] = levelRequirement;
+            if (genderRequirement) query["genderRequirement"] = genderRequirement;
+
+            const pipeline = [
+                {
+                    $match: query
+                },
+                {
+                    $lookup: {
+                        from: "recruiters",
+                        localField: "recruiterId",
+                        foreignField: "_id",
+                        as: "recruiter"
+                    }
+                },
+                {
+                    $unwind: "$recruiter"
+                },
+                {
+                    $match: {
+                        "recruiter.isBan": false
+                    }
+                },
+                {
+                    $project: {
+                        "name": 1,
+                        "type": 1,
+                        "salary": 1,
+                        "province": 1,
+                        "levelRequirement": 1,
+                        "genderRequirement": 1,
+                        "experience": 1,
+                        "field": 1,
+                        "deadline": 1,
+                        "recruiter._id": 1,
+                        "recruiter.companyName": 1,
+                        "recruiter.companyLogo": 1,
+                        "createdAt": 1,
+                        "updatedAt": 1
+                    }
+                }
+            ];
+
+            const totalDocument = await Job.aggregate([...pipeline, { $count: "totalDocuments" }]);
+            const length = totalDocument.length > 0 ? totalDocument[0].totalDocuments : 0;
+            console.log(length)
+            let result = await Job.aggregate([
+                ...pipeline,
+                {
+                    $sort: {
+                        "updatedAt": -1
+                    }
+                },
+                {
+                    $skip: (page - 1) * limit
+                },
+                {
+                    $limit: limit
+                }
+            ]);
+            console.log(result)
             // format data
             let mappedJobs = await Promise.all(
                 result.map(async (job) => {
-                    job.premiumAccount = await Order.checkPremiumAccount({ recruiterId: job.recruiterId._id.toString() });
-                    job.companyName = job.recruiterId.companyName ?? null;
-                    job.companyLogo = job.recruiterId.companyLogo ?? null;
+                    job.premiumAccount = await Order.checkPremiumAccount({ recruiterId: job.recruiter._id.toString() });
+                    job.companyName = job.recruiter.companyName ?? null;
+                    job.companyLogo = job.recruiter.companyLogo ?? null;
                     job.createdAt = formatInTimeZone(job.createdAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
                     job.updatedAt = formatInTimeZone(job.updatedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
                     job.deadline = formatInTimeZone(job.deadline, "Asia/Ho_Chi_Minh", "dd/MM/yyyy");
-                    delete job.recruiterId;
                     return { ...job };
                 })
             )
@@ -444,27 +475,13 @@ class JobService {
                 isBan: false,
                 deadline: { $gte: new Date() }
             };
-            if (name) {
-                match["$text"] = { $search: name };
-            }
-            if (province) {
-                match["province"] = province;
-            }
-            if (type) {
-                match["type"] = type;
-            }
-            if (experience) {
-                match["experience"] = experience;
-            }
-            if (field) {
-                match["field"] = field;
-            }
-            if (levelRequirement) {
-                match["levelRequirement"] = levelRequirement;
-            }
-            if (genderRequirement) {
-                match["genderRequirement"] = genderRequirement;
-            }
+            if (name) match["$text"] = { $search: name };
+            if (province) match["province"] = province;
+            if (type) match["type"] = type;
+            if (experience) match["experience"] = experience;
+            if (field) match["field"] = field;
+            if (levelRequirement) match["levelRequirement"] = levelRequirement;
+            if (genderRequirement) match["genderRequirement"] = genderRequirement;
 
             const commonPipeline = [
                 {
@@ -517,6 +534,11 @@ class JobService {
                         localField: "recruiterId",
                         foreignField: "_id",
                         as: "recruiters"
+                    }
+                },
+                {
+                    $match: {
+                        "recruiters.isBan": false
                     }
                 },
                 {

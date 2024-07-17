@@ -355,6 +355,65 @@ class AdminRecruiterManagementService {
             throw error;
         }
     }
+
+    // Lấy thông tin nhà tuyển dụng bị cấm
+    static getListBannedRecruiter = async function ({ searchText, field, page, limit }) {
+        try {
+            page = page ? +page : 1;
+            limit = limit ? +limit : 5;
+            let query = {
+                isBan: true
+            };
+            let listRecruiter;
+            if (field) query["fieldOfActivity"] = { "$in": [field] };
+            const pipeline = [
+                {
+                    $project: {
+                        __v: 0,
+                        loginId: 0,
+                        avatar: 0
+                    }
+                },
+                { $sort: { updatedAt: -1 } },
+                { $skip: (page - 1) * limit },
+                { $limit: limit }
+            ]
+            if (searchText) {
+                query["$text"] = { $search: searchText };
+                listRecruiter = await Recruiter.aggregate([
+                    { $match: query },
+                    ...pipeline
+                ])
+            } else {
+                listRecruiter = await Recruiter.aggregate([
+                    { $match: query },
+                    ...pipeline
+                ])
+            }
+            const totalElement = await Recruiter.find(query).lean().countDocuments();
+            return {
+                totalElement, listRecruiter, page, limit
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    // Mở khóa nhà tuyển dụng
+    static unbanRecruiter = async ({ recruiterId }) => {
+        try {
+            const result = await Recruiter.findByIdAndUpdate(recruiterId, {
+                $set: {
+                    isBan: false
+                }
+            }).lean();
+            if (!result) {
+                throw new InternalServerError("Có lỗi xảy ra vui lòng thử lại");
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 module.exports = AdminRecruiterManagementService;

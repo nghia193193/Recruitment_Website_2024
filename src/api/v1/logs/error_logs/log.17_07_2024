@@ -73,3 +73,45 @@
 17/07/2024	14:45:01 ::1---/v1/api/candidate/jobs/apply/6697765f577bb7b7d0756751---POST---Có lỗi xảy ra vui lòng thử lại.
 17/07/2024	14:52:50 ::1---/v1/api/admin/jobs/detail/664f488210fd81e433a4946e---GET---Bạn không có quyền
 17/07/2024	14:53:20 ::1---/v1/api/recruiter/jobs/664f488210fd81e433a4946e---GET---Không tìm thấy công việc
+17/07/2024	15:14:37 ::1---/v1/api/candidate/favorite_jobs/check/6697765f577bb7b7d0756751---GET---Không tìm thấy công việc này, vui lòng thử lại
+17/07/2024	15:14:38 ::1---/v1/api/candidate/favorite_jobs/check/6697765f577bb7b7d0756751---GET---Không tìm thấy công việc này, vui lòng thử lại
+17/07/2024	15:15:32 ::1---/v1/api/candidate/favorite_jobs/check/6697765f577bb7b7d0756751---GET---Không tìm thấy công việc này, vui lòng thử lại
+17/07/2024	15:15:32 ::1---/v1/api/candidate/favorite_jobs/check/6697765f577bb7b7d0756751---GET---Không tìm thấy công việc này, vui lòng thử lại
+17/07/2024	15:33:07 ::1---/v1/api/jobs?page=1&limit=6---GET---Cannot read properties of undefined (reading '_id')
+17/07/2024	15:33:07 ::1---/v1/api/jobs?page=1&limit=6---GET---Cannot read properties of undefined (reading '_id')
+17/07/2024	15:35:29 ::1---/v1/api/jobs?page=1&limit=6---GET---Cannot read properties of undefined (reading '_id')
+17/07/2024	15:35:29 ::1---/v1/api/jobs?page=1&limit=6---GET---Cannot read properties of undefined (reading '_id')
+17/07/2024	15:39:26 ::1---/v1/api/jobs?page=1&limit=6---GET---Cannot read properties of undefined (reading 'companyName')
+17/07/2024	15:39:26 ::1---/v1/api/jobs?page=1&limit=6---GET---Cannot read properties of undefined (reading 'companyName')
+17/07/2024	15:39:35 ::1---/v1/api/jobs?page=1&limit=6---GET---Cannot read properties of undefined (reading 'companyName')
+17/07/2024	15:39:35 ::1---/v1/api/jobs?page=1&limit=6---GET---Cannot read properties of undefined (reading 'companyName')
+17/07/2024	15:39:57 ::1---/v1/api/jobs?page=1&limit=6---GET---Cannot read properties of undefined (reading 'companyName')
+17/07/2024	15:39:57 ::1---/v1/api/jobs?page=1&limit=6---GET---Cannot read properties of undefined (reading 'companyName')
+17/07/2024	15:40:23 ::1---/v1/api/jobs?page=1&limit=6---GET---Cannot read properties of undefined (reading 'companyName')
+17/07/2024	15:40:24 ::1---/v1/api/jobs?page=1&limit=6---GET---Cannot read properties of undefined (reading 'companyName')
+17/07/2024	15:44:44 ::1---/v1/api/candidate/favorite_jobs/check/667c15a195cc5e5faa58d426---GET---Vui lòng đăng nhập lại
+17/07/2024	15:44:44 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Vui lòng đăng nhập lại
+17/07/2024	15:44:44 ::1---/v1/api/candidate/favorite_jobs/check/66519518807f2f82e5cf413f---GET---Vui lòng đăng nhập lại
+17/07/2024	15:44:44 ::1---/v1/api/candidate/favorite_jobs/check/667c15a195cc5e5faa58d426---GET---Vui lòng đăng nhập lại
+17/07/2024	15:44:45 ::1---/v1/api/candidate/favorite_jobs/check/668c0156ae1871de48e4bda8---GET---Vui lòng đăng nhập lại
+17/07/2024	15:44:45 ::1---/v1/api/candidate/favorite_jobs/check/668ba5c5e9181de33c956f3b---GET---Vui lòng đăng nhập lại
+17/07/2024	15:44:45 ::1---/v1/api/candidate/favorite_jobs/check/66955662430eebf048017afe---GET---Vui lòng đăng nhập lại
+17/07/2024	15:44:45 ::1---/v1/api/candidate/favorite_jobs/check/66463851398b9230cddc3218---GET---Vui lòng đăng nhập lại
+17/07/2024	15:44:45 ::1---/v1/api/candidate/favorite_jobs/check/66519518807f2f82e5cf413f---GET---Vui lòng đăng nhập lại
+17/07/2024	15:44:45 ::1---/v1/api/candidate/favorite_jobs/check/668c0156ae1871de48e4bda8---GET---Vui lòng đăng nhập lại
+17/07/2024	15:44:45 ::1---/v1/api/candidate/favorite_jobs/check/668ba5c5e9181de33c956f3b---GET---Vui lòng đăng nhập lại
+17/07/2024	15:44:45 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+17/07/2024	15:44:45 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+17/07/2024	15:44:45 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+17/07/2024	15:44:45 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+17/07/2024	15:44:45 ::1---/v1/api/candidate/favorite_jobs/check/66463851398b9230cddc3218---GET---Vui lòng đăng nhập lại
+17/07/2024	15:44:45 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+17/07/2024	15:44:45 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+17/07/2024	15:44:45 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+17/07/2024	15:44:45 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+17/07/2024	15:44:45 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+17/07/2024	15:44:45 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+17/07/2024	15:44:45 ::1---/v1/api/auth/refresh-access-token---POST---Page not found
+17/07/2024	16:29:40 ::1---/v1/api/admin/recruiters/list_banned_recruiter---GET---Page not found
+17/07/2024	16:32:16 ::1---/v1/api/admin/recruiters/list_banned_recruiter?searchText=vietinbank&field=Ng%C3%A2n%20h%C3%A0ng%20/%20T%C3%A0i%20ch%C3%ADnh---GET---"field" is not allowed
+17/07/2024	16:34:36 ::1---/v1/api/admin/recruiters/unban/sdfsdfsd---PATCH---Id không hợp lệ

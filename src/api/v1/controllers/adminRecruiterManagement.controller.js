@@ -117,6 +117,31 @@ class AdminRecruiterManagementController {
             metadata: { ...metadata },
         }).send(res)
     }
+
+    getListBannedRecruiter = async (req, res, next) => {
+        const { error, value } = AdminRecruiterManagementValidation.validateGetListBannedRecruiter(req.query);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        const { totalElement, listRecruiter, page, limit } = await AdminRecruiterManagementService.getListBannedRecruiter(value);
+        new OK({
+            message: "Lấy danh sách nhà tuyển dụng bị cấm thành công",
+            metadata: { totalElement, listRecruiter },
+            options: { page, limit }
+        }).send(res)
+    }
+
+    unbanRecruiter = async (req, res, next) => {
+        const { error, value } = AdminRecruiterManagementValidation.validateRecruiterId(req.params);
+        if (error) {
+            throw new BadRequestError(error.details[0].message);
+        }
+        await AdminRecruiterManagementService.unbanRecruiter(value);
+        new OK({
+            message: "Mở khóa nhà tuyển dụng thành công",
+            metadata: {}
+        }).send(res)
+    }
 }
 
 module.exports = new AdminRecruiterManagementController();

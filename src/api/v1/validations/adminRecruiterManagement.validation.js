@@ -235,6 +235,19 @@ class AdminRecruiterManagementValidation {
         return validateSchema.validate(data);
     }
 
+    static validateGetListBannedRecruiter = data => {
+        const validateSchema = joi.object({
+            searchText: joi.string().custom((value) => {
+                value = xss(value.trim());
+                return value;
+            }),
+            field: joi.string().valid(...fieldOfActivity),
+            page: joi.number().integer().min(1),
+            limit: joi.number().integer().min(1)
+        })
+        return validateSchema.validate(data);
+    }
+
     static validateRecruiterId = data => {
         const validateSchema = joi.object({
             recruiterId: objectIdJoiSchema.required()

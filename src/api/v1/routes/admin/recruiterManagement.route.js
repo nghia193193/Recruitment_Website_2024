@@ -16,5 +16,9 @@ router.patch('/update/:recruiterId', verifyAccessToken, authPageAdmin, asyncHand
 router.get('/information/:recruiterId', verifyAccessToken, authPageAdmin, asyncHandler(adminRecruiterManagementController.getRecruiterInformation));
 // approve recruiter
 router.patch('/approve/:recruiterId', verifyAccessToken, authPageAdmin, asyncHandler(adminRecruiterManagementController.approveRecruiter));
+// get list banned recruiter
+router.get('/list_banned_recruiter', verifyAccessToken, authPageAdmin, asyncHandler(adminRecruiterManagementController.getListBannedRecruiter));
+// unban recruiter
+router.patch('/unban/:recruiterId', verifyAccessToken, authPageAdmin, asyncHandler(adminRecruiterManagementController.unbanRecruiter));
 
 module.exports = router;

@@ -81,7 +81,7 @@ class FavoriteJobService {
         if (!job) {
             throw new BadRequestError("Không tìm thấy công việc này, vui lòng thử lại");
         }
-        if (job.status !== "active" !== "accept") {
+        if (job.status !== "active") {
             throw new BadRequestError("Hiện tại không thể thêm công việc này");
         }
         // check đã có list chưa
